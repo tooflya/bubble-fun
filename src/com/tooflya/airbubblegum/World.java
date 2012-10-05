@@ -22,8 +22,8 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 	private BitmapTextureAtlas texture;
 
-	private EntityManager chikies;
-	private EntityManager airgums;
+	public EntityManager chikies;
+	public EntityManager airgums;
 
 	// ===========================================================
 	// Constructors
@@ -65,9 +65,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Chiky chiky;
 		Airgum airgum;
 		for (int i = 0; i < this.chikies.getCount(); i++) {
-			chiky = (Chiky)this.chikies.getByIndex(i);
+			chiky = (Chiky) this.chikies.getByIndex(i);
 			for (int j = 0; j < this.airgums.getCount(); j++) {
-				airgum = (Airgum)this.airgums.getByIndex(j);
+				airgum = (Airgum) this.airgums.getByIndex(j);
 				if (this.isCollide(chiky, airgum)) {
 					chiky.destroy();
 					airgum.destroy();
