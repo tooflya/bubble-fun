@@ -2,12 +2,13 @@ package com.tooflya.airbubblegum.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.airbubblegum.Options;
 
 /**
  * @author Tooflya.com
  * @since
  */
-public class Chikis extends Entity {
+public class Chiky extends Entity {
 
 	// ===========================================================
 	// Constants
@@ -17,6 +18,10 @@ public class Chikis extends Entity {
 	// Fields
 	// ===========================================================
 
+	private float time = 0;
+	private float timeStep = 1;
+	private float offsetTime = 0;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -24,13 +29,34 @@ public class Chikis extends Entity {
 	/**
 	 * @param pTiledTextureRegion
 	 */
-	public Chikis(TiledTextureRegion pTiledTextureRegion) {
+	public Chiky(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	// ===========================================================
+	// Setters
+	// ===========================================================
+
+	public void setOffsetTime(final float offsetTime) {
+		this.offsetTime = offsetTime;
+		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
+	}
+
+	// ===========================================================
+	// Getters
+	// ===========================================================
+
+	private float getCalculatedX() {
+		return (float) (Math.sin(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) + this.getWidth());
+	}
+
+	private float getCalculatedY() {
+		return (float) (Math.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) + this.getHeight());
+	}
 
 	// ===========================================================
 	// Virtual methods
@@ -45,11 +71,9 @@ public class Chikis extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-// TODO: Add code.
-//		this.setPosition(this.mX - Game.world.personage.runStep * (Options.fps / Game.fps), this.mY);
-//		if (this.mX + this.getWidthScaled() < 0) {
-//			this.destroy();
-//		}
+		this.time += this.timeStep;
+		this.setCenterX(this.getCalculatedX());
+		this.setCenterY(this.getCalculatedY());
 	}
 
 	/*
@@ -59,6 +83,6 @@ public class Chikis extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Chikis(getTextureRegion());
+		return new Chiky(getTextureRegion());
 	}
 }
