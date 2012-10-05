@@ -65,6 +65,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	/**  */
 	public static ScreenManager screens;
 
+	/** */
+	public static World world;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -156,6 +159,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Create screen manager */
 		screens = new ScreenManager();
 
+		/** */
+		world = new World();
+
 		/** Create game timer */
 		GameTimer = new TimerHandler(1f / Options.fps, true, new GameTimer());
 
@@ -171,7 +177,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onComplete() {
-		screens.set(Screen.LEVEL); // TODO: Change to MENU.
+		screens.set(Screen.LEVEL);
 	}
 
 	/*
