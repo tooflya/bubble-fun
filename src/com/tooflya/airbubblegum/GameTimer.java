@@ -32,6 +32,7 @@ public class GameTimer implements ITimerCallback {
 	 */
 	@Override
 	public void onTimePassed(final TimerHandler pTimerHandler) {
+		Game.world.update();
 	}
 
 	public static void reset() {

@@ -68,6 +68,6 @@ public class Airgum extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Chiky(getTextureRegion());
+		return new Airgum(getTextureRegion());
 	}
 }
