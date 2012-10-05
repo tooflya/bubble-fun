@@ -12,25 +12,21 @@ import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.util.FPSCounter;
-import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.FontFactory;
-import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
-import android.R;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BitmapFactory.Options;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 
-import com.background.AsyncTaskLoader;
-import com.background.IAsyncCallback;
+import com.tooflya.airbubblegum.background.AsyncTaskLoader;
+import com.tooflya.airbubblegum.background.IAsyncCallback;
+import com.tooflya.airbubblegum.managers.ScreenManager;
+import com.tooflya.airbubblegum.screens.LoadingScreen;
 
 /**
  * @author Tooflya.com
@@ -61,20 +57,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static boolean isGameLoaded = false;
 
 	/**  */
-	public static Font font, font2;
-
-	/**  */
-	private final static BitmapTextureAtlas fontTexture = new BitmapTextureAtlas(128, 128, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	/**  */
 	public static float fps;
 
 	/**  */
 	public static TimerHandler GameTimer;
-
-	/** Accelerometer data */
-	public static float accelerometerX = 0;
-	public static float accelerometerY = 0;
 
 	/**  */
 	public static ScreenManager screens;
@@ -85,9 +71,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	/**  */
 	private long screenChangeTime = 0;
-
-	/**  */
-	public static World world;
 
 	// ===========================================================
 	// Virtual methods
@@ -120,16 +103,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Initialize camera parameters */
 		Options.cameraWidth = displayMetrics.widthPixels;
 		Options.cameraHeight = displayMetrics.heightPixels;
-		Options.cameraWidthOrigin = displayMetrics.widthPixels;
-		Options.cameraHeightOrigin = displayMetrics.heightPixels;
 
 		Options.cameraCenterX = Options.cameraWidth / 2;
 		Options.cameraCenterY = Options.cameraHeight / 2;
-		Options.cameraCenterOriginX = Options.cameraWidth / 2;
-		Options.cameraCenterOriginY = Options.cameraHeight / 2;
-
-		Options.cameraMaxCenterX = Options.cameraCenterX * 2;
-		Options.cameraMaxCenterY = Options.cameraCenterY * 2;
 
 		Options.CAMERA_RATIO_FACTOR = Options.cameraHeight / Options.cameraOriginRatioY;
 
@@ -152,11 +128,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Try to init our engine */
 		engine = new LimitedFPSEngine(options, Options.fps);
 
-		try {
-			engine.setTouchController(new MultiTouchController());
-		} catch (final MultiTouchException e) {
-		}
-
 		/**  */
 		instance = this;
 
@@ -172,12 +143,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		FontFactory.setAssetBasePath("font/");
-
-		font = FontFactory.createFromAsset(fontTexture, getApplicationContext(), "casual.ttf", 15, true, Color.RED);
-		font2 = FontFactory.createFromAsset(fontTexture, getApplicationContext(), "casual.ttf", 25, true, Color.WHITE);
-
-		this.getEngine().getFontManager().loadFonts(font, font2);
-		this.getEngine().getTextureManager().loadTextures(fontTexture);
 	}
 
 	/*
@@ -191,10 +156,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Create screen manager */
 		screens = new ScreenManager();
 
-		world = new World();
-
 		/** Create game timer */
-		GameTimer = new TimerHandler(1f / Options.fps, true, new GameTimer(world));
+		GameTimer = new TimerHandler(1f / Options.fps, true, new GameTimer());
 
 		/** White while progressbar is running */
 		while (!isGameLoaded) {
@@ -252,7 +215,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		new AsyncTaskLoader().execute(this);
 
 		/** Create loading screen and return her scene for attaching to the activity */
-		return new SplashScreen();
+		return new LoadingScreen();
 	}
 
 	/*
@@ -284,8 +247,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		super.onResumeGame();
 
 		// TODO: Release all music, update handlers and other active things
-
-		// this.enableAccelerometerSensor(this);
 	}
 
 	/*
@@ -298,8 +259,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		super.onPauseGame();
 
 		// TODO: Stop all music, update handlers and other active things
-
-		// this.disableAccelerometerSensor();
 	}
 
 	/*
@@ -324,26 +283,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		}
 
 		return super.onKeyDown(keyCode, event);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.ui.activity.LayoutGameActivity#getLayoutID()
-	 */
-	@Override
-	protected int getLayoutID() {
-		return R.layout.main;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.ui.activity.LayoutGameActivity#getRenderSurfaceViewID ()
-	 */
-	@Override
-	protected int getRenderSurfaceViewID() {
-		return R.id.main_rendersurfaceview;
 	}
 
 	// ===========================================================
