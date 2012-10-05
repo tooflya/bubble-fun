@@ -113,7 +113,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
 		/** Initialize the configuration of engine */
-		final EngineOptions options = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new FillResolutionPolicy(), camera)
+		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
 				.setWakeLockOptions(WakeLockOptions.SCREEN_BRIGHT)
 				.setWakeLockOptions(WakeLockOptions.SCREEN_ON)
 				.setNeedsMusic(true)
