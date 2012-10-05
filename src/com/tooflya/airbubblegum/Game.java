@@ -171,7 +171,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onComplete() {
-		screens.set(Screen.MENU);
+		screens.set(Screen.LEVEL); // TODO: Change to MENU.
 	}
 
 	/*

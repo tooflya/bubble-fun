@@ -61,12 +61,27 @@ public class World extends org.anddev.andengine.entity.Entity {
 	}
 
 	private void checkCollision() {
-		// TODO: Add code.
+		Entity chiky;
+		Entity airgum;
+		for (int i = 0; i < this.chikies.getCount(); i++) {
+			chiky = this.chikies.getByIndex(i);
+			for (int j = 0; j < this.airgums.getCount(); j++) {
+				airgum = this.airgums.getByIndex(j);
+				if (this.isCollide(chiky, airgum)) {
+					chiky.destroy();
+					airgum.destroy();
+					i--;
+					break;
+				}
+			}
+		}
 	}
 
-	private boolean isCollide(Entity upEntity, Entity downEntity) {
-		// TODO: Add code of circles collision.
-		return false;
+	private boolean isCollide(Entity entity1, Entity entity2) {
+		final float x = entity2.getCenterX() - entity1.getCenterX();
+		final float y = entity2.getCenterY() - entity1.getCenterY();
+		final float d = entity2.getWidthScaled() + entity1.getWidthScaled();
+		return x * x + y * y < d * d;
 	}
 
 	public void update() {

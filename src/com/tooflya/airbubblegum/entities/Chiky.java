@@ -58,7 +58,7 @@ public class Chiky extends Entity {
 	}
 
 	private float getCalculatedY() {
-		return FloatMath.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) + this.getHeight());
+		return FloatMath.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) + this.getHeight();
 	}
 
 	// ===========================================================
@@ -75,8 +75,7 @@ public class Chiky extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.time += this.timeStep;
-		this.setCenterX(this.getCalculatedX());
-		this.setCenterY(this.getCalculatedY());
+		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
 	}
 
 	/*
