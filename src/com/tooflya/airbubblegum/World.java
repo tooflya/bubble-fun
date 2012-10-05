@@ -8,8 +8,6 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import com.tooflya.airbubblegum.entities.Chiky;
 import com.tooflya.airbubblegum.entities.Entity;
 import com.tooflya.airbubblegum.managers.EntityManager;
-import com.tooflya.bouncekid.Options;
-import com.tooflya.bouncekid.entity.Block;
 
 public class World extends org.anddev.andengine.entity.Entity {
 
@@ -33,7 +31,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 	public World() {
 		super();
 
-		Game.screens.get(Screen.MAIN).attachChild(this);
+		Game.screens.get(Screen.LEVEL).attachChild(this);
 
 		this.texture = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		Game.loadTextures(texture);
