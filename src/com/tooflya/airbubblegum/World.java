@@ -38,7 +38,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Game.loadTextures(texture);
 
 		this.chikies = new EntityManager(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
-		this.airgums = new EntityManager(10, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 0, 1, 1)));
+		this.airgums = new EntityManager(100, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 64, 0, 1, 1)));
 
 		this.init();
 	}
@@ -86,6 +86,6 @@ public class World extends org.anddev.andengine.entity.Entity {
 	}
 
 	public void update() {
-		// Add code of update chikies.
+		this.checkCollision();
 	}
 }
