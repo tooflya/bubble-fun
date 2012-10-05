@@ -1,11 +1,16 @@
 package com.tooflya.airbubblegum.screens;
 
+import org.anddev.andengine.engine.handler.timer.ITimerCallback;
+import org.anddev.andengine.engine.handler.timer.TimerHandler;
+import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.airbubblegum.Game;
+import com.tooflya.airbubblegum.Options;
 import com.tooflya.airbubblegum.Screen;
 import com.tooflya.airbubblegum.entities.Entity;
 
@@ -34,7 +39,7 @@ public class LoadingScreen extends Screen {
 		}
 	};
 
-	private final static Entity mProgressBar = new Entity(228, 421, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "", 0, 0, 1, 1), false) {
+	private final static Entity mProgressBar = new Entity(228, 421, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_line.png", 0, 735, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -47,6 +52,21 @@ public class LoadingScreen extends Screen {
 		}
 	};
 
+	private final static TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
+		@Override
+		public void onTimePassed(TimerHandler pTimerHandler) {
+
+			/** Changing size of progressbar */
+			if (mProgressBar.getWidth() < 400 * Options.CAMERA_RATIO_FACTOR) {
+				mProgressBar.getTextureRegion().setWidth(mProgressBar.getTextureRegion().getWidth() + 3);
+				mProgressBar.setWidth(mProgressBar.getTextureRegion().getWidth() + 3);
+			} else {
+				/** If progressbar is full */
+				Game.isGameLoaded = true;
+			}
+		}
+	});
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -56,6 +76,19 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 
 	public LoadingScreen() {
+		Game.loadTextures(mBackgroundTextureAtlas);
+
+		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
+
+		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.attachChild(mBackground);
+
+		mProgressBar.setWidth(1);
+		mProgressBar.getTextureRegion().setWidth(1);
+		this.attachChild(mProgressBar);
+
+		/** Register timer of loading progressbar changes */
+		registerUpdateHandler(mTimer);
 	}
 
 	// ===========================================================
