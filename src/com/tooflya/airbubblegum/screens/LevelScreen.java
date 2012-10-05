@@ -57,7 +57,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	@Override
 	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pTouchEvent) {
-		Game.world.airgums.create().setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
+		switch (pTouchEvent.getAction()) {
+		case TouchEvent.ACTION_UP:
+			Game.world.airgums.create().setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
+			break;
+		}
 
 		return false;
 	}
