@@ -22,7 +22,7 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float time = 0;
-	private float timeStep = 1;
+	private float timeStep = 0.1f;
 	private float offsetTime = 0;
 
 	// ===========================================================
