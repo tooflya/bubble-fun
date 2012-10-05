@@ -1,5 +1,9 @@
 package com.tooflya.airbubblegum.screens;
 
+import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+
 import com.tooflya.airbubblegum.Screen;
 
 /**
@@ -11,6 +15,8 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
