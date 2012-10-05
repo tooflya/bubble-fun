@@ -6,7 +6,9 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
+import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Options;
+import com.tooflya.airbubblegum.Screen;
 import com.tooflya.airbubblegum.managers.EntityManager;
 
 /**
@@ -47,7 +49,7 @@ public abstract class Entity extends AnimatedSprite {
 		this.mX = this.mX - (this.getWidthScaled() - Options.cameraWidth) / 2;
 
 		if (pNeedParent) {
-// TODO:			Game.screens.get(Screen.MAIN).attachChild(this);
+			Game.screens.get(Screen.LEVEL).attachChild(this);
 		}
 	}
 
