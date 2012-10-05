@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
+import com.tooflya.airbubblegum.entities.Airgum;
 import com.tooflya.airbubblegum.entities.Chiky;
 import com.tooflya.airbubblegum.entities.Entity;
 import com.tooflya.airbubblegum.managers.EntityManager;
@@ -37,7 +38,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Game.loadTextures(texture);
 
 		this.chikies = new EntityManager(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
-		this.airgums = new EntityManager(10, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 0, 1, 1)));
+		this.airgums = new EntityManager(10, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 0, 1, 1)));
 
 		this.init();
 	}
@@ -61,12 +62,12 @@ public class World extends org.anddev.andengine.entity.Entity {
 	}
 
 	private void checkCollision() {
-		Entity chiky;
-		Entity airgum;
+		Chiky chiky;
+		Airgum airgum;
 		for (int i = 0; i < this.chikies.getCount(); i++) {
-			chiky = this.chikies.getByIndex(i);
+			chiky = (Chiky)this.chikies.getByIndex(i);
 			for (int j = 0; j < this.airgums.getCount(); j++) {
-				airgum = this.airgums.getByIndex(j);
+				airgum = (Airgum)this.airgums.getByIndex(j);
 				if (this.isCollide(chiky, airgum)) {
 					chiky.destroy();
 					airgum.destroy();
