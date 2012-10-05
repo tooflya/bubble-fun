@@ -54,11 +54,11 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float getCalculatedX() {
-		return FloatMath.sin(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) + this.getWidth();
+		return Options.cameraWidth / 2 + FloatMath.sin(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) / 2;
 	}
 
 	private float getCalculatedY() {
-		return FloatMath.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) + this.getHeight();
+		return Options.cameraHeight / 2 + FloatMath.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) / 2;
 	}
 
 	// ===========================================================
