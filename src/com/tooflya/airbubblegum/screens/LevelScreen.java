@@ -1,5 +1,9 @@
 package com.tooflya.airbubblegum.screens;
 
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.anddev.andengine.input.touch.TouchEvent;
+
 import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Screen;
 
@@ -7,7 +11,7 @@ import com.tooflya.airbubblegum.Screen;
  * @author Tooflya.com
  * @since
  */
-public class LevelScreen extends Screen {
+public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	// ===========================================================
 	// Constants
@@ -22,6 +26,7 @@ public class LevelScreen extends Screen {
 	// ===========================================================
 
 	public LevelScreen() {
+		this.setOnSceneTouchListener(this);
 	}
 
 	// ===========================================================
@@ -48,6 +53,11 @@ public class LevelScreen extends Screen {
 		Game.close();
 
 		return true;
+	}
+
+	@Override
+	public boolean onSceneTouchEvent(Scene arg0, TouchEvent arg1) {
+		return false;
 	}
 
 	// ===========================================================
