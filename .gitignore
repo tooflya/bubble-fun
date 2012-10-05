@@ -1,16 +1,13 @@
-# built application files
-*.apk
-*.ap_
-
-# files for the dex VM
-*.dex
-
-# Java class files
-*.class
-
-# generated files
-bin/
-gen/
-
-# Local configuration file (sdk path, etc)
+target/**
+bin/**
+doc/**
+gen/**
+.DS_Store
+Thumbs.db
+gdb.setup
+gdbserver
+.svn
+.hg
 local.properties
+.settings
+AndEngine.iml
