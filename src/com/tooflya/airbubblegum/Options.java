@@ -7,7 +7,7 @@ package com.tooflya.airbubblegum;
 public class Options {
 	public static final boolean DEBUG = true;
 
-	public static float PI = 3.14159265358979f;
+	public static float PI = (float) Math.asin(1);
 
 	/** Camera parameters */
 	public static int cameraWidth;
