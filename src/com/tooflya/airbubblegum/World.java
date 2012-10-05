@@ -24,6 +24,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 	private BitmapTextureAtlas texture;
 
 	private EntityManager chikies;
+	private EntityManager airgums;
 
 	// ===========================================================
 	// Constructors
@@ -38,6 +39,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Game.loadTextures(texture);
 
 		this.chikies = new EntityManager(10, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
+		this.airgums = new EntityManager(10, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 0, 1, 1)));
 
 		this.init();
 	}
@@ -45,6 +47,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 	public void init() {
 		this.chikies.clear();
 		this.generateChikies(10); // TODO: Change count depending to level number.
+		this.airgums.clear();
 	}
 
 	// ===========================================================

@@ -2,6 +2,9 @@ package com.tooflya.airbubblegum.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.annotation.SuppressLint;
+import android.util.FloatMath;
+
 import com.tooflya.airbubblegum.Options;
 
 /**
@@ -51,11 +54,11 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float getCalculatedX() {
-		return (float) (Math.sin(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) + this.getWidth());
+		return FloatMath.sin(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) + this.getWidth();
 	}
 
 	private float getCalculatedY() {
-		return (float) (Math.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) + this.getHeight());
+		return FloatMath.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) + this.getHeight());
 	}
 
 	// ===========================================================
