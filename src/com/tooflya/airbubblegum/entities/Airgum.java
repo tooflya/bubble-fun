@@ -16,7 +16,7 @@ public class Airgum extends Entity {
 	// Fields
 	// ===========================================================
 
-	private float stepY = 1;
+	private float stepY = 2f;
 
 	// ===========================================================
 	// Constructors
