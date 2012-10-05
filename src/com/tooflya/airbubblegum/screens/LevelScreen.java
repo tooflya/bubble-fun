@@ -39,8 +39,22 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 * @see com.tooflya.bouncekid.Screen#onDetached()
 	 */
 	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		this.registerUpdateHandler(Game.GameTimer);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.bouncekid.Screen#onDetached()
+	 */
+	@Override
 	public void onDetached() {
 		super.onDetached();
+
+		this.unregisterUpdateHandler(Game.GameTimer);
 	}
 
 	/*
