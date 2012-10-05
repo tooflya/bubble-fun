@@ -36,7 +36,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		this.texture = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		Game.loadTextures(texture);
 
-		this.chikies = new EntityManager(10, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
+		this.chikies = new EntityManager(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
 		this.airgums = new EntityManager(10, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 0, 1, 1)));
 
 		this.init();
@@ -56,7 +56,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Chiky chiky;
 		for (int i = 0; i < count; i++) {
 			chiky = (Chiky) this.chikies.create();
-			chiky.setOffsetTime(10 * i); // TODO: Set step between chikies on screen.
+			chiky.setOffsetTime(Options.PI / count * 10 * i); // TODO: Set step between chikies on screen.
 		}
 	}
 

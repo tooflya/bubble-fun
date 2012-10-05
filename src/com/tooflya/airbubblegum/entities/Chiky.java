@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import android.annotation.SuppressLint;
 import android.util.FloatMath;
 
+import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Options;
 
 /**
@@ -22,8 +23,15 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float time = 0;
-	private float timeStep = 0.1f;
+	private float timeStep = Options.PI / 180;
 	private float offsetTime = 0;
+
+	private float koefX = 0;
+	private float koefY = 0;
+
+	private int levelNumber = 1;
+
+	private float lastX = 0;
 
 	// ===========================================================
 	// Constructors
@@ -47,6 +55,8 @@ public class Chiky extends Entity {
 	public void setOffsetTime(final float offsetTime) {
 		this.offsetTime = offsetTime;
 		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
+		this.koefX = Game.random.nextInt(this.levelNumber) + 1;
+		this.koefY = Game.random.nextInt(this.levelNumber) + 1;
 	}
 
 	// ===========================================================
@@ -54,11 +64,12 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float getCalculatedX() {
-		return Options.cameraWidth / 2 + FloatMath.sin(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) / 2;
+		return Options.cameraWidth / 2 + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) / 2;
 	}
 
 	private float getCalculatedY() {
-		return Options.cameraHeight / 2 + FloatMath.cos(this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getHeight()) / 2;
+		final float constHeight = Options.cameraHeight / 10;
+		return Options.cameraHeight / 2 - constHeight + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraHeight - 2 * this.getHeight() - 2 * constHeight) / 2;
 	}
 
 	// ===========================================================
@@ -74,8 +85,24 @@ public class Chiky extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
+		this.lastX = this.getCenterX();
+
 		this.time += this.timeStep;
 		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
+
+		if (this.getCenterX() - lastX > 0) {
+			this.getTextureRegion().setFlippedHorizontal(true);
+		}
+		else {
+			this.getTextureRegion().setFlippedHorizontal(false);
+		}
+
+		// TODO: Experiment.
+		if (this.time > 10) {
+			this.levelNumber++;
+			this.time = 0;
+			this.setOffsetTime(this.offsetTime);
+		}
 	}
 
 	/*
