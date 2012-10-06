@@ -1,13 +1,18 @@
 package com.tooflya.airbubblegum;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
+import org.anddev.andengine.engine.camera.Camera;
+
 import com.tooflya.airbubblegum.entities.Airgum;
 import com.tooflya.airbubblegum.entities.Chiky;
 import com.tooflya.airbubblegum.entities.Entity;
+import com.tooflya.airbubblegum.entities.Particle;
 import com.tooflya.airbubblegum.managers.EntityManager;
 
 public class World extends org.anddev.andengine.entity.Entity {
@@ -24,6 +29,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 	public EntityManager chikies;
 	public EntityManager airgums;
+	public EntityManager feathers;
 
 	// ===========================================================
 	// Constructors
@@ -37,15 +43,16 @@ public class World extends org.anddev.andengine.entity.Entity {
 		this.texture = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		Game.loadTextures(texture);
 
-		this.chikies = new EntityManager(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
+		this.chikies = new EntityManager(30, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
 		this.airgums = new EntityManager(100, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 65, 0, 1, 1)));
+		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 130, 0, 1, 1)));
 
 		this.init();
 	}
 
 	public void init() {
 		this.chikies.clear();
-		this.generateChikies(50); // TODO: Change count depending to level number.
+		this.generateChikies(30); // TODO: Change count depending to level number.
 		this.airgums.clear();
 
 		Options.scalePower = 20; // TODO: Change count of scale power.
@@ -100,4 +107,11 @@ public class World extends org.anddev.andengine.entity.Entity {
 			Game.world.init();
 		}
 	}
+	
+	@Override
+    protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {            
+            for(int i = this.feathers.getCount() - 1; i >= 0; i--) {
+                    this.feathers.getByIndex(i).onDraw(pGL, pCamera);
+            }
+    }
 }

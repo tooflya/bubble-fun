@@ -118,6 +118,10 @@ public class Chiky extends Entity {
 				Airgum airgum = (Airgum) Game.world.airgums.create();
 				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25);
 				airgum.setScale(this.airgumScale);
+				final int particlesCount = 7;
+				for (int i = 0; i < particlesCount; i++) {
+					((Particle) Game.world.feathers.create()).Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
 				this.destroy();
 			}
 		}
