@@ -6,6 +6,8 @@ import org.anddev.andengine.input.touch.TouchEvent;
 
 import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Screen;
+import com.tooflya.airbubblegum.entities.Airgum;
+import com.tooflya.airbubblegum.entities.Entity;
 
 /**
  * @author Tooflya.com
@@ -20,6 +22,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private Airgum lastAirgum = null;
 
 	// ===========================================================
 	// Constructors
@@ -72,8 +76,17 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pTouchEvent) {
 		switch (pTouchEvent.getAction()) {
+		case TouchEvent.ACTION_DOWN:
+			if (this.lastAirgum == null)
+			{
+				this.lastAirgum = (Airgum) Game.world.airgums.create();
+				this.lastAirgum.setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
+			}
+			this.lastAirgum.setIsScale(true);
+			break;
 		case TouchEvent.ACTION_UP:
-			Game.world.airgums.create().setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
+			this.lastAirgum.setIsScale(false);
+			this.lastAirgum = null;
 			break;
 		}
 
