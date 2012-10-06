@@ -12,7 +12,7 @@ public class CloudsManager extends EntityManager {
 	}
 
 	public void generateStartClouds() {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 5; i++) {
 			this.generateCloud(true);
 		}
 	}
@@ -20,7 +20,7 @@ public class CloudsManager extends EntityManager {
 	public void generateCloud(final boolean isStart) {
 		final Cloud cloud = ((Cloud) this.create());
 
-		cloud.setScale(Options.CAMERA_RATIO_FACTOR + Game.random.nextFloat() + Game.random.nextFloat() * Options.CAMERA_RATIO_FACTOR);
+		cloud.setScale(Options.CAMERA_RATIO_FACTOR + (-0.5f + Game.random.nextFloat() * (1f + 0.5f)) + (-0.5f + Game.random.nextFloat() * (1f + 0.5f)) * Options.CAMERA_RATIO_FACTOR);
 		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraWidth + cloud.getWidthScaled())) - cloud.getWidthScaled() : Options.cameraWidth, Game.random.nextInt((int) (Options.cameraHeight - Options.cameraHeight / 3 + cloud.getHeightScaled())) - cloud.getHeightScaled());
 		cloud.setAlpha(0.4f + Game.random.nextFloat() * (1f - 0.4f));
 		cloud.setSpeed(0.2f + Game.random.nextFloat() * (2f - 0.2f));
@@ -28,7 +28,7 @@ public class CloudsManager extends EntityManager {
 	}
 
 	public void update() {
-		if (this.getCount() < 3) {
+		if (this.getCount() < 5) {
 			this.generateCloud(false);
 		}
 	}
