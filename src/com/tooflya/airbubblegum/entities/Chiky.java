@@ -2,7 +2,6 @@ package com.tooflya.airbubblegum.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import android.annotation.SuppressLint;
 import android.util.FloatMath;
 
 import com.tooflya.airbubblegum.Game;
@@ -23,13 +22,18 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float time = 0;
-	private float timeStep = Options.PI / 180;
+	private float timeStep = Options.PI / 180 / 10;
 	private float offsetTime = 0;
 
 	private float koefX = 0;
 	private float koefY = 0;
 
 	private float lastX = 0;
+
+	private boolean isNeedToFlyAway = false;
+	private int timeToFlyaAway = 0;
+
+	private float airgumScale = 1;
 
 	// ===========================================================
 	// Constructors
@@ -40,6 +44,8 @@ public class Chiky extends Entity {
 	 */
 	public Chiky(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion);
+
+		this.setScale(0.25f);
 	}
 
 	// ===========================================================
@@ -57,6 +63,12 @@ public class Chiky extends Entity {
 		this.koefY = Game.random.nextInt(Options.levelNumber) + 1;
 	}
 
+	public void setIsNeedToFlyAway(final float airgumScale) {
+		this.isNeedToFlyAway = true;
+		this.timeToFlyaAway = 40;
+		this.airgumScale = airgumScale;
+	}
+
 	// ===========================================================
 	// Getters
 	// ===========================================================
@@ -67,6 +79,10 @@ public class Chiky extends Entity {
 
 	private float getCalculatedY() {
 		return Options.cameraHeight / 2 - Options.constHeight + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraHeight - 2 * this.getHeight() - 2 * Options.constHeight) / 2;
+	}
+
+	public boolean getIsNeedToFlyAway() {
+		return this.isNeedToFlyAway;
 	}
 
 	// ===========================================================
@@ -93,6 +109,17 @@ public class Chiky extends Entity {
 		}
 		else {
 			this.getTextureRegion().setFlippedHorizontal(false);
+		}
+
+		if (this.isNeedToFlyAway) {
+			this.timeToFlyaAway--;
+			if (this.timeToFlyaAway < 0) {
+				this.isNeedToFlyAway = false;
+				Airgum airgum = (Airgum) Game.world.airgums.create();
+				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25);
+				airgum.setScale(this.airgumScale);
+				this.destroy();
+			}
 		}
 	}
 

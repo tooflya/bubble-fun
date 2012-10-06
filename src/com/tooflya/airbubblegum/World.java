@@ -9,7 +9,6 @@ import com.tooflya.airbubblegum.entities.Airgum;
 import com.tooflya.airbubblegum.entities.Chiky;
 import com.tooflya.airbubblegum.entities.Entity;
 import com.tooflya.airbubblegum.managers.EntityManager;
-import com.tooflya.airbubblegum.screens.LevelScreen;
 
 public class World extends org.anddev.andengine.entity.Entity {
 
@@ -46,9 +45,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 	public void init() {
 		this.chikies.clear();
-		this.generateChikies(10); // TODO: Change count depending to level number.
+		this.generateChikies(50); // TODO: Change count depending to level number.
 		this.airgums.clear();
-		
+
 		Options.scalePower = 20; // TODO: Change count of scale power.
 	}
 
@@ -71,8 +70,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 			chiky = (Chiky) this.chikies.getByIndex(i);
 			for (int j = 0; j < this.airgums.getCount(); j++) {
 				airgum = (Airgum) this.airgums.getByIndex(j);
-				if (this.isCollide(chiky, airgum)) {
-					chiky.destroy();
+				if (!chiky.getIsNeedToFlyAway() && this.isCollide(chiky, airgum)) {
+					chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
+					// chiky.destroy();
 					// airgum.destroy();
 					i--;
 					break;
@@ -94,7 +94,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Options.time++;
 
 		// TODO: Experiment.
-		if (Options.time > 60 * 20 || this.chikies.getCount() == 0) {
+		if (Options.time > 60 * 60 || this.chikies.getCount() == 0) {
 			Options.time = 0;
 			Options.levelNumber++;
 			Game.world.init();
