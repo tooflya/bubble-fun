@@ -127,7 +127,7 @@ public abstract class Entity extends AnimatedSprite {
 	public void hide() {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
-		this.setCullingEnabled(true);
+		// this.setCullingEnabled(true);
 	}
 
 	// ===========================================================

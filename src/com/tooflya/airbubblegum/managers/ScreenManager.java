@@ -2,6 +2,7 @@ package com.tooflya.airbubblegum.managers;
 
 import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Screen;
+import com.tooflya.airbubblegum.screens.LevelChoiseScreen;
 import com.tooflya.airbubblegum.screens.LevelScreen;
 import com.tooflya.airbubblegum.screens.MenuScreen;
 
@@ -27,11 +28,16 @@ public class ScreenManager {
 	// ===========================================================
 
 	public ScreenManager() {
+	}
+
+	public void init() {
 		screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all scenes */
 		screens[Screen.MENU] = new MenuScreen();
+		((MenuScreen) screens[Screen.MENU]).init();
 		screens[Screen.LEVEL] = new LevelScreen();
+		screens[Screen.CHOISE] = new LevelChoiseScreen();
 	}
 
 	// ===========================================================
