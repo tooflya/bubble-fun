@@ -29,8 +29,6 @@ public class Chiky extends Entity {
 	private float koefX = 0;
 	private float koefY = 0;
 
-	private int levelNumber = 1;
-
 	private float lastX = 0;
 
 	// ===========================================================
@@ -55,8 +53,8 @@ public class Chiky extends Entity {
 	public void setOffsetTime(final float offsetTime) {
 		this.offsetTime = offsetTime;
 		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
-		this.koefX = Game.random.nextInt(this.levelNumber) + 1;
-		this.koefY = Game.random.nextInt(this.levelNumber) + 1;
+		this.koefX = Game.random.nextInt(Options.levelNumber) + 1;
+		this.koefY = Game.random.nextInt(Options.levelNumber) + 1;
 	}
 
 	// ===========================================================
@@ -68,8 +66,7 @@ public class Chiky extends Entity {
 	}
 
 	private float getCalculatedY() {
-		final float constHeight = Options.cameraHeight / 10;
-		return Options.cameraHeight / 2 - constHeight + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraHeight - 2 * this.getHeight() - 2 * constHeight) / 2;
+		return Options.cameraHeight / 2 - Options.constHeight + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraHeight - 2 * this.getHeight() - 2 * Options.constHeight) / 2;
 	}
 
 	// ===========================================================
@@ -88,6 +85,7 @@ public class Chiky extends Entity {
 		this.lastX = this.getCenterX();
 
 		this.time += this.timeStep;
+
 		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
 
 		if (this.getCenterX() - lastX > 0) {
@@ -95,13 +93,6 @@ public class Chiky extends Entity {
 		}
 		else {
 			this.getTextureRegion().setFlippedHorizontal(false);
-		}
-
-		// TODO: Experiment.
-		if (this.time > 10) {
-			this.levelNumber++;
-			this.time = 0;
-			this.setOffsetTime(this.offsetTime);
 		}
 	}
 

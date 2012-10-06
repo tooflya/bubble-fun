@@ -9,6 +9,7 @@ import com.tooflya.airbubblegum.entities.Airgum;
 import com.tooflya.airbubblegum.entities.Chiky;
 import com.tooflya.airbubblegum.entities.Entity;
 import com.tooflya.airbubblegum.managers.EntityManager;
+import com.tooflya.airbubblegum.screens.LevelScreen;
 
 public class World extends org.anddev.andengine.entity.Entity {
 
@@ -38,7 +39,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Game.loadTextures(texture);
 
 		this.chikies = new EntityManager(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
-		this.airgums = new EntityManager(100, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 0, 1, 1)));
+		this.airgums = new EntityManager(100, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 65, 0, 1, 1)));
 
 		this.init();
 	}
@@ -47,6 +48,8 @@ public class World extends org.anddev.andengine.entity.Entity {
 		this.chikies.clear();
 		this.generateChikies(10); // TODO: Change count depending to level number.
 		this.airgums.clear();
+		
+		Options.scalePower = 20; // TODO: Change count of scale power.
 	}
 
 	// ===========================================================
@@ -70,7 +73,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 				airgum = (Airgum) this.airgums.getByIndex(j);
 				if (this.isCollide(chiky, airgum)) {
 					chiky.destroy();
-					airgum.destroy();
+					// airgum.destroy();
 					i--;
 					break;
 				}
@@ -81,11 +84,20 @@ public class World extends org.anddev.andengine.entity.Entity {
 	private boolean isCollide(Entity entity1, Entity entity2) {
 		final float x = entity2.getCenterX() - entity1.getCenterX();
 		final float y = entity2.getCenterY() - entity1.getCenterY();
-		final float d = entity2.getWidthScaled() + entity1.getWidthScaled();
+		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
 		return x * x + y * y < d * d;
 	}
 
 	public void update() {
-		// Add code of update chikies.
+		this.checkCollision();
+
+		Options.time++;
+
+		// TODO: Experiment.
+		if (Options.time > 60 * 20 || this.chikies.getCount() == 0) {
+			Options.time = 0;
+			Options.levelNumber++;
+			Game.world.init();
+		}
 	}
 }
