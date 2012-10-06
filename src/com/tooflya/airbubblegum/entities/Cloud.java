@@ -34,6 +34,8 @@ public class Cloud extends Entity {
 	 */
 	public Cloud(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion, false);
+
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	/**
@@ -46,6 +48,8 @@ public class Cloud extends Entity {
 		Game.screens.get(pScreen).attachChild(this);
 
 		this.mAddToScreen = pScreen;
+
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	// ===========================================================
@@ -65,7 +69,6 @@ public class Cloud extends Entity {
 		this.setScaleY(Options.CAMERA_RATIO_FACTOR);
 		this.setScaleX(Options.CAMERA_RATIO_FACTOR);
 
-		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.setAlpha(1f);
 
 		return super.create();

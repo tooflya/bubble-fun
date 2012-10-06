@@ -1,5 +1,8 @@
 package com.tooflya.airbubblegum.entities;
 
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.airbubblegum.Game;
@@ -35,9 +38,10 @@ public class Particle extends Entity {
 	 */
 	public Particle(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion);
-		this.setWidth(16);
-		this.setHeight(16);
-		this.setVisible(false);		
+		this.setWidth(16); // TODO: (R) Delete late.
+		this.setHeight(16); // TODO: (R) Delete late.
+
+		this.setColor(1f, 1f, 1f);
 	}
 
 	// ===========================================================
@@ -101,7 +105,7 @@ public class Particle extends Entity {
 		}
 		this.setAlpha(this.getAlpha() + this.stepAlpha);
 
-		time++;
+		this.time++;
 		if (this.time > this.maxTime) {
 			this.destroy();
 			return;
@@ -117,4 +121,5 @@ public class Particle extends Entity {
 	public Entity deepCopy() {
 		return new Particle(getTextureRegion());
 	}
+
 }

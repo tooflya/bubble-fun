@@ -113,7 +113,7 @@ public class MenuScreen extends Screen {
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 			switch (pAreaTouchEvent.getAction()) {
 			case TouchEvent.ACTION_UP:
-				Game.screens.set(Screen.CHOISE);
+				Game.screens.set(Screen.LEVEL);
 				break;
 			}
 

@@ -43,10 +43,9 @@ public abstract class Entity extends AnimatedSprite {
 		this.hide();
 
 		this.setScaleCenter(0, 0);
-		this.setScaleY(Options.CAMERA_RATIO_FACTOR);
-		this.setScaleX(Options.CAMERA_RATIO_FACTOR);
+		this.setScale(Options.CAMERA_RATIO_FACTOR);
 
-		this.mX = this.mX - (this.getWidthScaled() - Options.cameraWidth) / 2;
+		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
 
 		if (pNeedParent) {
 			Game.screens.get(Screen.LEVEL).attachChild(this);
@@ -160,14 +159,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param centerX
 	 */
 	public void setCenterX(final float pCenterX) {
-		this.mX = pCenterX - getWidthScaled() / 2;
+		this.mX = pCenterX - this.getWidthScaled() / 2;
 	}
 
 	/**
 	 * @param pCenterY
 	 */
 	public void setCenterY(final float pCenterY) {
-		this.mY = pCenterY - getHeightScaled() / 2;
+		this.mY = pCenterY - this.getHeightScaled() / 2;
 	}
 
 	/**
@@ -175,8 +174,8 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pCenterY
 	 */
 	public void setCenterPosition(final float pCenterX, final float pCenterY) {
-		this.mX = pCenterX - getWidthScaled() / 2;
-		this.mY = pCenterY - getHeightScaled() / 2;
+		this.mX = pCenterX - this.getWidthScaled() / 2;
+		this.mY = pCenterY - this.getHeightScaled() / 2;
 	}
 
 	/**
@@ -201,14 +200,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getCenterX() {
-		return this.mX + getWidthScaled() / 2;
+		return this.mX + this.getWidthScaled() / 2;
 	}
 
 	/**
 	 * @return
 	 */
 	public float getCenterY() {
-		return this.mY + getHeightScaled() / 2;
+		return this.mY + this.getHeightScaled() / 2;
 	}
 
 	// ===========================================================

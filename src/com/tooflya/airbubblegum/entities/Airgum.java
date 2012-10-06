@@ -19,13 +19,13 @@ public class Airgum extends Entity {
 	// Fields
 	// ===========================================================
 
-	private boolean isScale = false;
+	private boolean isScaleAction = false;
 
-	private float stepY = 2f;
+	private float stepY = 2f; // TODO: (R) Find right step.
 
-	private static float minScale = 0.1f;
-	private static float maxScale = 3;
-	private static float scaleStep = 0.05f;
+	private static float minScale = 0.1f; // TODO: (R) Find right minimal scale.
+	private static float maxScale = 3; // TODO: (R) Find right maximal scale.
+	private static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
 
 	// ===========================================================
 	// Constructors
@@ -49,10 +49,10 @@ public class Airgum extends Entity {
 	// ===========================================================
 
 	public void setIsScale(final boolean isScale) {
-		if (!this.isScale && isScale) {
+		if (!this.isScaleAction && isScale) {
 			this.setScale(Airgum.minScale);
 		}
-		this.isScale = isScale;
+		this.isScaleAction = isScale;
 	}
 
 	// ===========================================================
@@ -72,7 +72,7 @@ public class Airgum extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if (this.isScale) {
+		if (this.isScaleAction) {
 			if (this.getScaleX() + Airgum.scaleStep < Math.min(Airgum.maxScale, Options.scalePower)) {
 				this.setScale(this.getScaleX() + Airgum.scaleStep);
 				Options.scalePower -= Airgum.scaleStep;

@@ -43,7 +43,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		this.texture = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		Game.loadTextures(texture);
 
-		this.chikies = new EntityManager(30, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
+		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 1)));
 		this.airgums = new EntityManager(100, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 65, 0, 1, 1)));
 		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 130, 0, 1, 1)));
 
@@ -51,9 +51,11 @@ public class World extends org.anddev.andengine.entity.Entity {
 	}
 
 	public void init() {
+		this.airgums.clear();
 		this.chikies.clear();
 		this.generateChikies(30); // TODO: Change count depending to level number.
-		this.airgums.clear();
+
+		this.feathers.clear();
 
 		Options.scalePower = 20; // TODO: Change count of scale power.
 	}
@@ -73,16 +75,18 @@ public class World extends org.anddev.andengine.entity.Entity {
 	private void checkCollision() {
 		Chiky chiky;
 		Airgum airgum;
-		for (int i = 0; i < this.chikies.getCount(); i++) {
+		for (int i = this.chikies.getCount() - 1; i >= 0; --i) {
 			chiky = (Chiky) this.chikies.getByIndex(i);
-			for (int j = 0; j < this.airgums.getCount(); j++) {
-				airgum = (Airgum) this.airgums.getByIndex(j);
-				if (!chiky.getIsNeedToFlyAway() && this.isCollide(chiky, airgum)) {
-					chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
-					// chiky.destroy();
-					// airgum.destroy();
-					i--;
-					break;
+			if (!chiky.getIsNeedToFlyAway()) {
+				for (int j = this.airgums.getCount(); j >= 0; --j) {
+					airgum = (Airgum) this.airgums.getByIndex(j);
+					if (this.isCollide(chiky, airgum)) {
+						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
+						// TODO: (R) Maybe later it will be needed.
+						// chiky.destroy();
+						// airgum.destroy();
+						break;
+					}
 				}
 			}
 		}
@@ -101,17 +105,11 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Options.time++;
 
 		// TODO: Experiment.
-		if (Options.time > 60 * 60 || this.chikies.getCount() == 0) {
+		final float levelTime = 60;
+		if (Options.time > 60 * levelTime || this.chikies.getCount() == 0) {
 			Options.time = 0;
 			Options.levelNumber++;
 			Game.world.init();
 		}
 	}
-	
-	@Override
-    protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {            
-            for(int i = this.feathers.getCount() - 1; i >= 0; i--) {
-                    this.feathers.getByIndex(i).onDraw(pGL, pCamera);
-            }
-    }
 }

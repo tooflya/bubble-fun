@@ -22,7 +22,7 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float time = 0;
-	private float timeStep = Options.PI / 180 / 10;
+	private float timeStep = Options.PI / 180 / 10; // TODO: (R) Find right step.
 	private float offsetTime = 0;
 
 	private float koefX = 0;
@@ -45,7 +45,8 @@ public class Chiky extends Entity {
 	public Chiky(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion);
 
-		this.setScale(0.25f);
+		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+		this.setScale(0.25f); // TODO: (R) Delete this code later.
 	}
 
 	// ===========================================================
@@ -65,7 +66,7 @@ public class Chiky extends Entity {
 
 	public void setIsNeedToFlyAway(final float airgumScale) {
 		this.isNeedToFlyAway = true;
-		this.timeToFlyaAway = 40;
+		this.timeToFlyaAway = 40; // TODO: (R) Change later.
 		this.airgumScale = airgumScale;
 	}
 
@@ -74,11 +75,11 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float getCalculatedX() {
-		return Options.cameraWidth / 2 + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraWidth - 2 * this.getWidth()) / 2;
+		return Options.cameraCenterX + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraCenterX - this.getWidth());
 	}
 
 	private float getCalculatedY() {
-		return Options.cameraHeight / 2 - Options.constHeight + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraHeight - 2 * this.getHeight() - 2 * Options.constHeight) / 2;
+		return Options.cameraCenterY + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraCenterY - this.getHeight() - Options.constHeight) - Options.constHeight;
 	}
 
 	public boolean getIsNeedToFlyAway() {
@@ -116,11 +117,15 @@ public class Chiky extends Entity {
 			if (this.timeToFlyaAway < 0) {
 				this.isNeedToFlyAway = false;
 				Airgum airgum = (Airgum) Game.world.airgums.create();
-				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25);
+				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 				airgum.setScale(this.airgumScale);
-				final int particlesCount = 7;
+				final int particlesCount = 7; // TODO: Correct later. Maybe need to make another function.
+				Particle particle;
 				for (int i = 0; i < particlesCount; i++) {
-					((Particle) Game.world.feathers.create()).Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					particle = ((Particle) Game.world.feathers.create());
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
 				}
 				this.destroy();
 			}
