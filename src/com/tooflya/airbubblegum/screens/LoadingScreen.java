@@ -38,7 +38,20 @@ public class LoadingScreen extends Screen {
 		}
 	};
 
-	private final static Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_line.png", 0, 735, 1, 1), false) {
+	private final static Entity mPreloadBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-bar.png", 0, 580, 1, 1), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_line.png", 0, 660, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -57,8 +70,8 @@ public class LoadingScreen extends Screen {
 
 			/** Changing size of progressbar */
 			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.CAMERA_RATIO_FACTOR) {
-				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 3));
-				mProgressBar.setWidth(mProgressBar.getWidth() + 3);
+				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 10));
+				mProgressBar.setWidth(mProgressBar.getWidth() + 10);
 			} else {
 				/** If progressbar is full */
 				Game.isGameLoaded = true;
@@ -82,7 +95,10 @@ public class LoadingScreen extends Screen {
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.attachChild(mBackground);
 
-		mProgressBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 843f * Options.CAMERA_RATIO_FACTOR);
+		mPreloadBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 766f * Options.CAMERA_RATIO_FACTOR);
+		this.attachChild(mPreloadBar);
+
+		mProgressBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 800f * Options.CAMERA_RATIO_FACTOR);
 		mProgressBar.setWidth(1);
 		mProgressBar.getTextureRegion().setWidth(1);
 		this.attachChild(mProgressBar);

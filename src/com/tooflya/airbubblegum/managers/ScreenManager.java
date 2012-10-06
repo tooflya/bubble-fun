@@ -27,10 +27,14 @@ public class ScreenManager {
 	// ===========================================================
 
 	public ScreenManager() {
+	}
+
+	public void init() {
 		screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all scenes */
 		screens[Screen.MENU] = new MenuScreen();
+		((MenuScreen) screens[Screen.MENU]).init();
 		screens[Screen.LEVEL] = new LevelScreen();
 	}
 

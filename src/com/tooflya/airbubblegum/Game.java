@@ -110,7 +110,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.cameraCenterX = Options.cameraWidth / 2;
 		Options.cameraCenterY = Options.cameraHeight / 2;
 
-		Options.CAMERA_RATIO_FACTOR = Options.cameraHeight / Options.cameraOriginRatioY;
+		Options.CAMERA_RATIO_FACTOR = Options.cameraWidth / Options.cameraOriginRatioX;
 
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
@@ -158,6 +158,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** Create screen manager */
 		screens = new ScreenManager();
+		screens.init();
 
 		/** */
 		world = new World();
@@ -177,7 +178,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onComplete() {
-		screens.set(Screen.LEVEL);
+		screens.set(Screen.MENU);
 	}
 
 	/*
