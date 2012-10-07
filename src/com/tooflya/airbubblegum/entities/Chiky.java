@@ -76,7 +76,7 @@ public class Chiky extends Entity {
 		this.timeToFall = 40; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
 
-		this.animate(new long[] { 300, 300 }, 2, 3, true);
+		// this.animate(new long[] { 300, 300 }, 1, 3, true);
 	}
 
 	// ===========================================================
