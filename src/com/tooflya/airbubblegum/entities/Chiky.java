@@ -35,6 +35,7 @@ public class Chiky extends Entity {
 
 	private float fallStepX = 0;
 	private float fallStepY = 0;
+	private int fallSign = 1;
 
 	private int state = 0; // 0 - fly; 1 - flyWithGum; 2 - fall;
 
@@ -112,7 +113,7 @@ public class Chiky extends Entity {
 		switch (this.state) {
 		case 0:
 			this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
-			
+
 			break;
 		case 1:
 			this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
@@ -132,16 +133,31 @@ public class Chiky extends Entity {
 				}
 
 				this.state = 2;
-				this.fallStepX = Game.random.nextFloat() * 4 - 2f;
-				this.fallStepY = 20;
+				this.fallStepX = Game.random.nextFloat() * 1 + 0.1f;
+				this.fallStepY = Game.random.nextFloat() * 2 + 1;
+				this.fallSign = 1;
+				if (Game.random.nextInt(2) != 0) {
+					this.fallSign = -1;
+				}
+
+				this.time = 0; // TODO: (R) Try make a initialize function?
 			}
 			break;
 		case 2:
-			this.setCenterPosition(this.getCenterX() + this.fallStepX, this.getCenterY() + this.fallStepY);
-			
+
+			this.time -= this.timeStep; // TODO: (R) Some strange code.
+			this.time += this.fallStepX; // TODO: (R) Some strange code.
+
+			this.setCenterPosition(this.getCenterX() + 5 * this.fallSign * this.fallStepX, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY);
+
+			if (this.time > this.fallStepY) {
+				this.setRotation(this.getRotation() + 20);
+			}
+
 			if (this.getY() > Options.cameraHeight) {
 				this.state = 0;
 				this.animate(new long[] { 300, 300 }, 0, 1, true);
+				this.setRotation(0);
 				this.destroy();
 			}
 			break;
