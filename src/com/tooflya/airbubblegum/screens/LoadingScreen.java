@@ -114,6 +114,15 @@ public class LoadingScreen extends Screen {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see com.tooflya.airbubblegum.Screen#init()
+	 */
+	@Override
+	public void init() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.tooflya.bouncekid.Screen#onDetached()
 	 */
 	@Override

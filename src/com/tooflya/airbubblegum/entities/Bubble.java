@@ -31,10 +31,18 @@ public class Bubble extends Entity {
 	protected float mScaleX = mMaxScaleX;
 
 	private boolean mIsAnimationReverse;
-	private boolean mIsAlreadyFollow;
 
 	private final float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
 	private float mOffsetY;
+
+	protected boolean isScaleAction = false;
+	protected boolean isFlyAction = true;
+
+	private float stepY = 2f; // TODO: (R) Find right step.
+
+	private static float minScale = 0.1f; // TODO: (R) Find right minimal scale.
+	private static float maxScale = 2; // TODO: (R) Find right maximal scale.
+	private static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
 
 	// ===========================================================
 	// Constructors
@@ -42,14 +50,36 @@ public class Bubble extends Entity {
 
 	/**
 	 * @param pTiledTextureRegion
+	 * @param pNeedParent
+	 */
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
+		super(pTiledTextureRegion, pNeedParent);
+
+		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+	}
+
+	/**
+	 * @param pTiledTextureRegion
 	 */
 	public Bubble(TiledTextureRegion pTiledTextureRegion) {
-		super(pTiledTextureRegion, false);
+		this(pTiledTextureRegion, true);
+	}
 
-		this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
+	// ===========================================================
+	// Setters
+	// ===========================================================
 
+	public void setIsScale(final boolean isScale) {
+		if (!this.isScaleAction && isScale) {
+			this.setScale(minScale);
+		}
+		this.isScaleAction = isScale;
 		this.mScaleY = this.getScaleY();
 	}
+
+	// ===========================================================
+	// Getters
+	// ===========================================================
 
 	// ===========================================================
 	// Methods
@@ -68,46 +98,61 @@ public class Bubble extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if (this.mIsYReverse) {
-			this.mScaleY -= mSpeedScaleY;
-			if (this.mScaleY < mMinScaleY) {
-				this.mIsYReverse = !this.mIsYReverse;
-			}
-		} else {
-			this.mScaleY += mSpeedScaleY;
-			if (this.mScaleY > mMaxScaleY) {
-				this.mIsYReverse = !this.mIsYReverse;
+		if (this.isScaleAction) {
+			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
+				this.setScale(this.getScaleX() + scaleStep);
+				Options.scalePower -= scaleStep;
 			}
 		}
+		else {
+			if (this.isFlyAction) {
+				this.setCenterY(this.getCenterY() - this.stepY);
+				if (this.getCenterY() + this.getHeightScaled() < 0) {
+					this.destroy();
+				}
+			}
 
-		if (this.mIsXReverse) {
-			this.mScaleX -= mSpeedScaleX;
-			if (this.mScaleX < mMinScaleX) {
-				this.mIsXReverse = !this.mIsXReverse;
+			if (this.mIsYReverse) {
+				this.mScaleY -= mSpeedScaleY;
+				if (this.mScaleY < mMinScaleY) {
+					this.mIsYReverse = !this.mIsYReverse;
+				}
+			} else {
+				this.mScaleY += mSpeedScaleY;
+				if (this.mScaleY > mMaxScaleY) {
+					this.mIsYReverse = !this.mIsYReverse;
+				}
 			}
-		} else {
-			this.mScaleX += mSpeedScaleX;
-			if (this.mScaleX > mMaxScaleX) {
-				this.mIsXReverse = !this.mIsXReverse;
+
+			if (this.mIsXReverse) {
+				this.mScaleX -= mSpeedScaleX;
+				if (this.mScaleX < mMinScaleX) {
+					this.mIsXReverse = !this.mIsXReverse;
+				}
+			} else {
+				this.mScaleX += mSpeedScaleX;
+				if (this.mScaleX > mMaxScaleX) {
+					this.mIsXReverse = !this.mIsXReverse;
+				}
 			}
+
+			// this.setScaleY(this.mScaleY);
+			// this.setScaleX(this.mScaleX);
+
+			if (this.mIsAnimationReverse) {
+				this.mOffsetY += TIME_TO_ANIMATION;
+				if (this.mOffsetY > this.mMaxOffsetY) {
+					this.mIsAnimationReverse = false;
+				}
+			} else {
+				this.mOffsetY -= TIME_TO_ANIMATION;
+				if (this.mOffsetY < this.mMinOffsetY) {
+					this.mIsAnimationReverse = true;
+				}
+			}
+
+			this.mY += mOffsetY;
 		}
-
-		this.setScaleY(this.mScaleY);
-		this.setScaleX(this.mScaleX);
-
-		if (this.mIsAnimationReverse) {
-			this.mOffsetY += TIME_TO_ANIMATION;
-			if (this.mOffsetY > this.mMaxOffsetY) {
-				this.mIsAnimationReverse = false;
-			}
-		} else {
-			this.mOffsetY -= TIME_TO_ANIMATION;
-			if (this.mOffsetY < this.mMinOffsetY) {
-				this.mIsAnimationReverse = true;
-			}
-		}
-
-		this.mY += mOffsetY;
 	}
 
 	/*
@@ -117,7 +162,7 @@ public class Bubble extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return null;
+		return new Bubble(getTextureRegion());
 	}
 
 }

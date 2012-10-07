@@ -46,7 +46,7 @@ public class Chiky extends Entity {
 		super(pTiledTextureRegion);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
-		
+
 		this.animate(new long[] { 300, 300 }, 0, 1, true);
 	}
 
@@ -117,7 +117,7 @@ public class Chiky extends Entity {
 			this.timeToFlyaAway--;
 			if (this.timeToFlyaAway < 0) {
 				this.isNeedToFlyAway = false;
-				Airgum airgum = (Airgum) Game.world.airgums.create();
+				Bubble airgum = (Bubble) Game.world.airgums.create();
 				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 				airgum.setScale(this.airgumScale);
 				final int particlesCount = 7; // TODO: Correct later. Maybe need to make another function.

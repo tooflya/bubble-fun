@@ -1,15 +1,11 @@
 package com.tooflya.airbubblegum;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
-import org.anddev.andengine.engine.camera.Camera;
-
-import com.tooflya.airbubblegum.entities.Airgum;
+import com.tooflya.airbubblegum.entities.Bubble;
 import com.tooflya.airbubblegum.entities.Chiky;
 import com.tooflya.airbubblegum.entities.Entity;
 import com.tooflya.airbubblegum.entities.Particle;
@@ -44,8 +40,8 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Game.loadTextures(texture);
 
 		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 4)));
-		this.airgums = new EntityManager(100, new Airgum(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 65, 0, 1, 1)));
-		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather.png", 130, 0, 1, 2)));
+		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 65, 0, 1, 1)));
+		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather.png", 330, 0, 1, 2)));
 
 		this.init();
 	}
@@ -74,12 +70,12 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 	private void checkCollision() {
 		Chiky chiky;
-		Airgum airgum;
+		Bubble airgum;
 		for (int i = this.chikies.getCount() - 1; i >= 0; --i) {
 			chiky = (Chiky) this.chikies.getByIndex(i);
 			if (!chiky.getIsNeedToFlyAway()) {
 				for (int j = this.airgums.getCount(); j >= 0; --j) {
-					airgum = (Airgum) this.airgums.getByIndex(j);
+					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
 						// TODO: (R) Maybe later it will be needed.

@@ -54,16 +54,22 @@ public class LevelChoiseScreen extends Screen {
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 	}
 
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#init()
+	 */
+	@Override
 	public void init() {
 		this.attachChild(mBackground);
 
 		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.CHOISE));
 		this.clouds.generateStartClouds();
 	}
-
-	// ===========================================================
-	// Virtual methods
-	// ===========================================================
 
 	/*
 	 * (non-Javadoc)

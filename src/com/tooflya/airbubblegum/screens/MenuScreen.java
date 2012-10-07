@@ -100,7 +100,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mPlayIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-play-animation.png", 581, 100, 1, 1)) {
+	private final static Bubble mPlayIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-play-animation.png", 581, 100, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -109,6 +109,8 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public Entity create() {
+			this.isFlyAction = false;
+
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
@@ -145,7 +147,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mMoreIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-more-animation.png", 581, 400, 1, 1)) {
+	private final static Bubble mMoreIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-more-animation.png", 581, 400, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -154,6 +156,8 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public Entity create() {
+			this.isFlyAction = false;
+
 			this.mIsYReverse = true;
 			this.mIsXReverse = false;
 
@@ -180,7 +184,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mSoundIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "sound-icon.png", 581, 600, 1, 1)) {
+	private final static Bubble mSoundIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "sound-icon.png", 581, 600, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -189,6 +193,8 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public Entity create() {
+			this.isFlyAction = false;
+
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
@@ -214,11 +220,11 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private CloudsManager clouds;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private CloudsManager clouds;
 
 	// ===========================================================
 	// Constructors
@@ -234,8 +240,21 @@ public class MenuScreen extends Screen {
 		mPlayIcon.create().setCenterPosition(Options.cameraCenterX - 170 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY - 90 * Options.CAMERA_RATIO_FACTOR);
 		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 130 * Options.CAMERA_RATIO_FACTOR);
 		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 300 * Options.CAMERA_RATIO_FACTOR);
+
+		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 130 * Options.CAMERA_RATIO_FACTOR);
+		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 300 * Options.CAMERA_RATIO_FACTOR);
 	}
 
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#init()
+	 */
+	@Override
 	public void init() {
 		this.attachChild(mBackground);
 
@@ -254,10 +273,6 @@ public class MenuScreen extends Screen {
 		this.registerTouchArea(mMoreIcon);
 		this.registerTouchArea(mSoundIcon);
 	}
-
-	// ===========================================================
-	// Virtual methods
-	// ===========================================================
 
 	/*
 	 * (non-Javadoc)

@@ -105,7 +105,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** Initialize camera parameters */
 		Options.cameraWidth = displayMetrics.widthPixels;
-		Options.cameraHeight = displayMetrics.heightPixels;			
+		Options.cameraHeight = displayMetrics.heightPixels;
 
 		Options.cameraCenterX = Options.cameraWidth / 2;
 		Options.cameraCenterY = Options.cameraHeight / 2;
@@ -116,7 +116,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
 		Options.constHeight = Options.cameraHeight / 10; // TODO: Maybe need correct value.
-		
+
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
 				.setWakeLockOptions(WakeLockOptions.SCREEN_BRIGHT)
@@ -159,8 +159,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void workToDo() {
 
 		/** Create screen manager */
-		screens = new ScreenManager();
-		screens.init();
+		(screens = new ScreenManager()).init();
 
 		/** */
 		world = new World();
