@@ -30,10 +30,13 @@ public class Chiky extends Entity {
 
 	private float lastX = 0;
 
-	private boolean isNeedToFlyAway = false;
-	private int timeToFlyaAway = 0;
-
+	private int timeToFall = 0;
 	private float airgumScale = 1;
+
+	private float fallStepX = 0;
+	private float fallStepY = 0;
+
+	private int state = 0; // 0 - fly; 1 - flyWithGum; 2 - fall;
 
 	// ===========================================================
 	// Constructors
@@ -46,7 +49,7 @@ public class Chiky extends Entity {
 		super(pTiledTextureRegion);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
-		
+
 		this.animate(new long[] { 300, 300 }, 0, 1, true);
 	}
 
@@ -66,9 +69,11 @@ public class Chiky extends Entity {
 	}
 
 	public void setIsNeedToFlyAway(final float airgumScale) {
-		this.isNeedToFlyAway = true;
-		this.timeToFlyaAway = 40; // TODO: (R) Change later.
+		this.state = 1;
+		this.timeToFall = 40; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
+
+		this.animate(new long[] { 300, 300 }, 2, 3, true);
 	}
 
 	// ===========================================================
@@ -83,8 +88,8 @@ public class Chiky extends Entity {
 		return Options.cameraCenterY + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraCenterY - this.getHeight() - Options.constHeight) - Options.constHeight;
 	}
 
-	public boolean getIsNeedToFlyAway() {
-		return this.isNeedToFlyAway;
+	public boolean getIsFly() {
+		return this.state == 0;
 	}
 
 	// ===========================================================
@@ -100,23 +105,20 @@ public class Chiky extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.lastX = this.getCenterX();
-
 		this.time += this.timeStep;
 
-		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
+		this.lastX = this.getCenterX();
 
-		if (this.getCenterX() - lastX > 0) {
-			this.getTextureRegion().setFlippedHorizontal(false);
-		}
-		else {
-			this.getTextureRegion().setFlippedHorizontal(true);
-		}
+		switch (this.state) {
+		case 0:
+			this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
+			
+			break;
+		case 1:
+			this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
 
-		if (this.isNeedToFlyAway) {
-			this.timeToFlyaAway--;
-			if (this.timeToFlyaAway < 0) {
-				this.isNeedToFlyAway = false;
+			this.timeToFall--;
+			if (this.timeToFall <= 0) {
 				Airgum airgum = (Airgum) Game.world.airgums.create();
 				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 				airgum.setScale(this.airgumScale);
@@ -128,9 +130,30 @@ public class Chiky extends Entity {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
 				}
+
+				this.state = 2;
+				this.fallStepX = Game.random.nextFloat() * 4 - 2f;
+				this.fallStepY = 20;
+			}
+			break;
+		case 2:
+			this.setCenterPosition(this.getCenterX() + this.fallStepX, this.getCenterY() + this.fallStepY);
+			
+			if (this.getY() > Options.cameraHeight) {
+				this.state = 0;
+				this.animate(new long[] { 300, 300 }, 0, 1, true);
 				this.destroy();
 			}
+			break;
 		}
+
+		if (this.getCenterX() - lastX > 0) {
+			this.getTextureRegion().setFlippedHorizontal(false);
+		}
+		else {
+			this.getTextureRegion().setFlippedHorizontal(true);
+		}
+
 	}
 
 	/*
