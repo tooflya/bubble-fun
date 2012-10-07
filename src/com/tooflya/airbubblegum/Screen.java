@@ -28,8 +28,9 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Screen() {
+		this.loadResources();
 	}
 
 	// ===========================================================
@@ -75,6 +76,10 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 
 	public abstract void init();
+
+	public abstract void loadResources();
+
+	public abstract void unloadResources();
 
 	public abstract boolean onBackPressed();
 }

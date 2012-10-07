@@ -47,7 +47,7 @@ public class Bubble extends Entity {
 	private static float scaleStep = 0.05f * Options.CAMERA_RATIO_FACTOR;; // TODO: (R) Find right step of scale.
 
 	private int timeToDeath = 0;
-	private int maxTimeToDeath = 300;
+	private int maxTimeToDeath = 150;
 
 	// ===========================================================
 	// Constructors

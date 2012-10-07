@@ -38,8 +38,6 @@ public class Particle extends Entity {
 	 */
 	public Particle(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion);
-		this.setWidth(16); // TODO: (R) Delete late.
-		this.setHeight(16); // TODO: (R) Delete late.
 	}
 
 	// ===========================================================
@@ -55,7 +53,7 @@ public class Particle extends Entity {
 		stepRotation = Game.random.nextFloat() * 10;
 
 		time = 0;
-		maxTime = Game.random.nextInt(90);
+		maxTime = Game.random.nextInt(400);
 
 		this.setScale(1);
 		stepScale = -Game.random.nextFloat() / maxTime;

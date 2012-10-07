@@ -1,5 +1,6 @@
 package com.tooflya.airbubblegum.screens;
 
+import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -10,7 +11,9 @@ import com.tooflya.airbubblegum.Options;
 import com.tooflya.airbubblegum.Screen;
 import com.tooflya.airbubblegum.entities.Cloud;
 import com.tooflya.airbubblegum.entities.Entity;
+import com.tooflya.airbubblegum.entities.LevelIcon;
 import com.tooflya.airbubblegum.managers.CloudsManager;
+import com.tooflya.airbubblegum.managers.LevelsManager;
 
 /**
  * @author Tooflya.com
@@ -43,14 +46,13 @@ public class LevelChoiseScreen extends Screen {
 	// ===========================================================
 
 	private CloudsManager clouds;
+	private LevelsManager levels;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LevelChoiseScreen() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
-
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 	}
 
@@ -65,10 +67,13 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public void init() {
-		this.attachChild(mBackground);
+		this.setBackground(new SpriteBackground(mBackground));
 
 		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.CHOISE));
 		this.clouds.generateStartClouds();
+
+		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "level-icon.png", 450, 0, 1, 1), Screen.CHOISE));
+		this.levels.generate();
 	}
 
 	/*
@@ -91,6 +96,26 @@ public class LevelChoiseScreen extends Screen {
 	@Override
 	public void onDetached() {
 		super.onDetached();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#loadResources()
+	 */
+	@Override
+	public void loadResources() {
+		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
+	 */
+	@Override
+	public void unloadResources() {
+		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
 	}
 
 	/*
