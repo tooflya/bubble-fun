@@ -3,7 +3,7 @@ package com.tooflya.airbubblegum;
 import java.util.Random;
 
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.LimitedFPSEngine;
+import org.anddev.andengine.engine.FixedStepEngine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -131,7 +131,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine */
-		engine = new LimitedFPSEngine(options, Options.fps);
+		engine = new FixedStepEngine(options, Options.fps);
 
 		/**  */
 		instance = this;

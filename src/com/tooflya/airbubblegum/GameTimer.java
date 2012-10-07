@@ -32,6 +32,7 @@ public class GameTimer implements ITimerCallback {
 	 */
 	@Override
 	public void onTimePassed(final TimerHandler pTimerHandler) {
+		System.out.println(Game.fps);
 		Game.world.update();
 	}
 

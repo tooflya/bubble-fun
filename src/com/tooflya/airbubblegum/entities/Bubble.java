@@ -2,6 +2,7 @@ package com.tooflya.airbubblegum.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Options;
 
 public class Bubble extends Entity {
@@ -106,7 +107,7 @@ public class Bubble extends Entity {
 		}
 		else {
 			if (this.isFlyAction) {
-				this.setCenterY(this.getCenterY() - this.stepY);
+				this.setCenterY(this.getCenterY() - this.stepY * (Options.fps / Game.fps));
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}
@@ -151,7 +152,7 @@ public class Bubble extends Entity {
 				}
 			}
 
-			this.mY += mOffsetY;
+			//this.mY += mOffsetY;
 		}
 	}
 
