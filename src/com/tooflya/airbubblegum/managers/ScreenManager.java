@@ -83,8 +83,9 @@ public class ScreenManager {
 		/** Create all scenes */
 		screens[Screen.MENU] = new MenuScreen();
 		((MenuScreen) screens[Screen.MENU]).init();
-		screens[Screen.LEVEL] = new LevelScreen();
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
+		((LevelChoiseScreen) screens[Screen.CHOISE]).init();
+		screens[Screen.LEVEL] = new LevelScreen();
 	}
 
 	// ===========================================================
@@ -92,7 +93,7 @@ public class ScreenManager {
 	// ===========================================================
 
 	public void set(final int pScreen) {
-		//splash.
+		// splash.
 		screens[pScreen].setScene(Game.engine);
 		screens[pScreen].onAttached();
 		Screen.screen = pScreen;
