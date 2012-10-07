@@ -40,8 +40,6 @@ public class Particle extends Entity {
 		super(pTiledTextureRegion);
 		this.setWidth(16); // TODO: (R) Delete late.
 		this.setHeight(16); // TODO: (R) Delete late.
-
-		this.setColor(1f, 1f, 1f);
 	}
 
 	// ===========================================================
