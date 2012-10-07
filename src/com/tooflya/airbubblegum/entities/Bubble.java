@@ -22,7 +22,7 @@ public class Bubble extends Entity {
 
 	protected float mMinScaleY;
 	protected float mMaxScaleY;
-	protected float mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+	protected float mSpeedScaleY = 0.006f * Options.CAMERA_RATIO_FACTOR;
 
 	protected boolean mIsYReverse = false;
 	protected boolean mIsXReverse = true;
@@ -80,8 +80,8 @@ public class Bubble extends Entity {
 		}
 		this.isScaleAction = isScale;
 
-		this.mMinScaleX = this.getScaleX() - (0.f * Options.CAMERA_RATIO_FACTOR);
-		this.mMinScaleY = this.getScaleY();
+		this.mMinScaleX = this.getScaleX() - (0.2f * Options.CAMERA_RATIO_FACTOR);
+		this.mMinScaleY = this.getScaleY()- (0.2f * Options.CAMERA_RATIO_FACTOR);
 
 		this.mMaxScaleX = this.getScaleX();
 		this.mMaxScaleY = this.getScaleY() + (0.2f * Options.CAMERA_RATIO_FACTOR);
