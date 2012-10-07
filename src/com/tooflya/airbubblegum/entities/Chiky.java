@@ -133,11 +133,11 @@ public class Chiky extends Entity {
 				}
 
 				this.state = 2;
-				this.fallStepX = Game.random.nextFloat() * 1 + 0.1f;
-				this.fallStepY = Game.random.nextFloat() * 2 + 1;
-				this.fallSign = 1;
+				this.fallStepX = Game.random.nextFloat() * 1 + 0.1f; // TODO: (R) Some strange code.
+				this.fallStepY = Game.random.nextFloat() * 2 + 1; // TODO: (R) Some strange code.
+				this.fallSign = 1; // TODO: (R) Some strange code.
 				if (Game.random.nextInt(2) != 0) {
-					this.fallSign = -1;
+					this.fallSign = -1; // TODO: (R) Some strange code.
 				}
 
 				this.time = 0; // TODO: (R) Try make a initialize function?
@@ -148,7 +148,7 @@ public class Chiky extends Entity {
 			this.time -= this.timeStep; // TODO: (R) Some strange code.
 			this.time += this.fallStepX; // TODO: (R) Some strange code.
 
-			this.setCenterPosition(this.getCenterX() + 5 * this.fallSign * this.fallStepX, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY);
+			this.setCenterPosition(this.getCenterX() + 5 * this.fallSign * this.fallStepX, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY); // TODO: (R) Some strange code.
 
 			if (this.time > this.fallStepY) {
 				this.setRotation(this.getRotation() + 20);
