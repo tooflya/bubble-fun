@@ -124,6 +124,7 @@ public class Chiky extends Entity {
 				Bubble airgum = (Bubble) Game.world.airgums.create();
 				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 				airgum.setScale(this.airgumScale);
+				airgum.setIsScale(false);
 				final int particlesCount = 7; // TODO: Correct later. Maybe need to make another function.
 				Particle particle;
 				for (int i = 0; i < particlesCount; i++) {
