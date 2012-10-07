@@ -55,8 +55,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public LevelScreen() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
-
 		this.setOnSceneTouchListener(this);
 	}
 
@@ -114,11 +112,31 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see com.tooflya.airbubblegum.Screen#loadResources()
+	 */
+	@Override
+	public void loadResources() {
+		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
+	 */
+	@Override
+	public void unloadResources() {
+		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
 	public boolean onBackPressed() {
-		Game.close();
+		Game.screens.set(Screen.MENU);
 
 		return true;
 	}

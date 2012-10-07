@@ -261,7 +261,7 @@ public class MenuScreen extends Screen {
 	// ===========================================================
 
 	public MenuScreen() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		this.loadResources();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mTwitterIcon.create().setPosition(0 + ICONS_PADDING, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
@@ -324,6 +324,26 @@ public class MenuScreen extends Screen {
 	@Override
 	public void onDetached() {
 		super.onDetached();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#loadResources()
+	 */
+	@Override
+	public void loadResources() {
+		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
+	 */
+	@Override
+	public void unloadResources() {
+		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
 	}
 
 	/*

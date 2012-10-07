@@ -127,7 +127,7 @@ public class Chiky extends Entity {
 					airgum.setScale(this.airgumScale);
 					airgum.setIsScale(false);
 				}
-				final int particlesCount = 7; // TODO: Correct later. Maybe need to make another function.
+				final int particlesCount = 20; // TODO: Correct later. Maybe need to make another function.
 				Particle particle;
 				for (int i = 0; i < particlesCount; i++) {
 					particle = ((Particle) Game.world.feathers.create());

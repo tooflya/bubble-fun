@@ -88,8 +88,6 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 
 	public LoadingScreen() {
-		Game.loadTextures(mBackgroundTextureAtlas);
-
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
@@ -129,7 +127,28 @@ public class LoadingScreen extends Screen {
 	public void onDetached() {
 		super.onDetached();
 
-		clearUpdateHandlers();
+		this.clearUpdateHandlers();
+		this.unloadResources();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#loadResources()
+	 */
+	@Override
+	public void loadResources() {
+		Game.loadTextures(mBackgroundTextureAtlas);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
+	 */
+	@Override
+	public void unloadResources() {
+		Game.unloadTextures(mBackgroundTextureAtlas);
 	}
 
 	/*
