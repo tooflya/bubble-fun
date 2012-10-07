@@ -136,8 +136,8 @@ public class Bubble extends Entity {
 				}
 			}
 
-			// this.setScaleY(this.mScaleY);
-			// this.setScaleX(this.mScaleX);
+			this.setScaleY(this.mScaleY);
+			this.setScaleX(this.mScaleX);
 
 			if (this.mIsAnimationReverse) {
 				this.mOffsetY += TIME_TO_ANIMATION;
