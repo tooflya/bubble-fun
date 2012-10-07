@@ -96,7 +96,14 @@ public class World extends org.anddev.andengine.entity.Entity {
 		return x * x + y * y < d * d;
 	}
 
-	public void update() {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 */
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
 		this.checkCollision();
 
 		Options.time++;

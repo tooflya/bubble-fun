@@ -114,8 +114,18 @@ public class MenuScreen extends Screen {
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
-			this.mScaleY = mMinScaleY;
-			this.mScaleX = mMaxScaleX;
+			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+
+			this.isScaleDefined = true;
 
 			return super.create();
 		}
@@ -161,8 +171,18 @@ public class MenuScreen extends Screen {
 			this.mIsYReverse = true;
 			this.mIsXReverse = false;
 
-			this.mScaleY = mMaxScaleY;
-			this.mScaleX = mMinScaleX;
+			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+
+			this.isScaleDefined = true;
 
 			return super.create();
 		}
@@ -198,8 +218,18 @@ public class MenuScreen extends Screen {
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
-			this.mScaleY = mMinScaleY;
-			this.mScaleX = mMaxScaleX;
+			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+
+			this.isScaleDefined = true;
 
 			return super.create();
 		}

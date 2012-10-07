@@ -60,9 +60,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static float fps;
 
 	/**  */
-	public static TimerHandler GameTimer;
-
-	/**  */
 	public static ScreenManager screens;
 
 	/** */
@@ -163,9 +160,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** */
 		world = new World();
-
-		/** Create game timer */
-		GameTimer = new TimerHandler(1f / Options.fps, true, new GameTimer());
 
 		/** White while progressbar is running */
 		while (!isGameLoaded) {
