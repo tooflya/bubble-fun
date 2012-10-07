@@ -51,6 +51,7 @@ public class Chiky extends Entity {
 		super(pTiledTextureRegion);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 
 		this.animate(new long[] { 300, 300 }, 0, 1, true);
 	}
@@ -75,7 +76,7 @@ public class Chiky extends Entity {
 		this.timeToFall = 40; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
 
-		this.animate(new long[] { 300, 300 }, 2, 3, true);
+		// this.animate(new long[] { 300, 300 }, 1, 3, true);
 	}
 
 	// ===========================================================
@@ -127,9 +128,8 @@ public class Chiky extends Entity {
 					airgum.setScale(this.airgumScale);
 					airgum.setIsScale(false);
 				}
-				final int particlesCount = 20; // TODO: Correct later. Maybe need to make another function.
 				Particle particle;
-				for (int i = 0; i < particlesCount; i++) {
+				for (int i = 0; i < Options.particlesCount; i++) {
 					particle = ((Particle) Game.world.feathers.create());
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());

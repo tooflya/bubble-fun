@@ -61,6 +61,7 @@ public class Bubble extends Entity {
 
 		if (pNeedParent) {
 			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 		} else {
 			this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 		}

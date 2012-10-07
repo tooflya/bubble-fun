@@ -39,8 +39,8 @@ public class World extends org.anddev.andengine.entity.Entity {
 		this.texture = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		Game.loadTextures(texture);
 
-		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 1, 4)));
-		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 65, 0, 1, 1)));
+		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 0, 0, 2, 1)));
+		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "airgum.png", 0, 64, 1, 1)));
 		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather.png", 330, 0, 1, 2)));
 
 		this.init();
@@ -64,7 +64,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Chiky chiky;
 		for (int i = 0; i < count; i++) {
 			chiky = (Chiky) this.chikies.create();
-			chiky.setOffsetTime(Options.PI / count * 11 * i); // TODO: Set step between chikies on screen.
+			chiky.setOffsetTime(Options.PI / 180 * 10 * i); // TODO: Set step between chikies on screen.
 		}
 	}
 
@@ -79,9 +79,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
-						// TODO: (R) Maybe later it will be needed.
+						// TODO: (R) Maybe late it will be needed.
 						// chiky.destroy();
-						// airgum.destroy();
+						airgum.destroy();
 						break;
 					}
 				}
@@ -90,8 +90,8 @@ public class World extends org.anddev.andengine.entity.Entity {
 	}
 
 	private boolean isCollide(Entity entity1, Entity entity2) {
-		final float x = entity2.getCenterX() - entity1.getCenterX();
-		final float y = entity2.getCenterY() - entity1.getCenterY();
+		final float x = (entity2.getX() + entity2.getWidth() / 2) - (entity1.getX() + entity1.getWidth() / 2);
+		final float y = (entity2.getY() + entity2.getHeight() / 2) - (entity1.getY() + entity1.getHeight() / 2);
 		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
 		return x * x + y * y < d * d;
 	}
