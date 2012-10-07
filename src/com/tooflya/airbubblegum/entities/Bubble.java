@@ -40,6 +40,7 @@ public class Bubble extends Entity {
 	protected boolean isScaleDefined = false;
 
 	private float stepY = 1f; // TODO: (R) Find right step.
+	private final float maxStepY = 3f;
 
 	public static float minScale = 0.5f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
 	private static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
@@ -98,6 +99,10 @@ public class Bubble extends Entity {
 		this.timeToDeath = (int) (this.maxTimeToDeath / this.mScaleX); // TODO: (R) Check.
 	}
 
+	public void setStepY(final float stepY){
+		this.stepY = Math.min(this.maxStepY, stepY);
+	}
+	
 	// ===========================================================
 	// Getters
 	// ===========================================================
