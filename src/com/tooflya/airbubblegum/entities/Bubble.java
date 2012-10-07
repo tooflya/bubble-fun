@@ -45,6 +45,9 @@ public class Bubble extends Entity {
 	private static float maxScale = 2; // TODO: (R) Find right maximal scale.
 	private static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
 
+	private int timeToDeath = 0;
+	private int maxTimeToDeath = 100;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -76,6 +79,8 @@ public class Bubble extends Entity {
 		}
 		this.isScaleAction = isScale;
 		this.mScaleY = this.getScaleY();
+
+		this.timeToDeath = (int) (this.maxTimeToDeath / this.mScaleX); // TODO: (R) Check.
 	}
 
 	// ===========================================================
@@ -106,6 +111,12 @@ public class Bubble extends Entity {
 			}
 		}
 		else {
+			this.timeToDeath--;
+			if (this.timeToDeath <= 0) {
+				// TODO: (R) Make a boom!
+				this.destroy();
+			}
+
 			if (this.isFlyAction) {
 				this.setCenterY(this.getCenterY() - this.stepY * (Options.fps / Game.fps));
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
@@ -152,7 +163,7 @@ public class Bubble extends Entity {
 				}
 			}
 
-			//this.mY += mOffsetY;
+			// this.mY += mOffsetY;
 		}
 	}
 
