@@ -30,4 +30,6 @@ public class Options {
 
 	public static float scalePower;
 
+	public final static int particlesCount = 7;
+
 }

@@ -90,8 +90,8 @@ public class World extends org.anddev.andengine.entity.Entity {
 	}
 
 	private boolean isCollide(Entity entity1, Entity entity2) {
-		final float x = entity2.getCenterX() - entity1.getCenterX();
-		final float y = entity2.getCenterY() - entity1.getCenterY();
+		final float x = (entity2.getX() + entity2.getWidth() / 2) - (entity1.getX() + entity1.getWidth() / 2);
+		final float y = (entity2.getY() + entity2.getHeight() / 2) - (entity1.getY() + entity1.getHeight() / 2);
 		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
 		return x * x + y * y < d * d;
 	}
