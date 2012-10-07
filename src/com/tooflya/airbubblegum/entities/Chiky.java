@@ -29,6 +29,7 @@ public class Chiky extends Entity {
 	private float koefY = 0;
 
 	private float lastX = 0;
+	private float lastY = 0;
 
 	private int timeToFall = 0;
 	private float airgumScale = 1;
@@ -133,8 +134,8 @@ public class Chiky extends Entity {
 				}
 
 				this.state = 2;
-				this.fallStepX = 0.1f * (Game.fps / Options.fps); // TODO: (R) Some strange code.
-				this.fallStepY = Game.random.nextFloat() * 2 + 1; // TODO: (R) Some strange code.
+				this.fallStepX = 10f / Game.fps; // TODO: (R) Correct magic number.
+				this.fallStepY = Game.random.nextFloat() * 5 + 1; // TODO: (R) Correct magic number.
 				this.fallSign = 1; // TODO: (R) Some strange code.
 				if (Game.random.nextInt(2) != 0) {
 					this.fallSign = -1; // TODO: (R) Some strange code.
@@ -148,7 +149,8 @@ public class Chiky extends Entity {
 			this.time -= this.timeStep; // TODO: (R) Some strange code.
 			this.time += this.fallStepX; // TODO: (R) Some strange code.
 
-			this.setCenterPosition(this.getCenterX() + 5 * this.fallSign * this.fallStepX, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY); // TODO: (R) Some strange code.
+			this.setCenterPosition(this.getCenterX() + this.fallSign * this.fallStepX, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY - this.lastY); // TODO: (R) Some strange code.
+			this.lastY = (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY;
 
 			if (this.time > this.fallStepY) {
 				this.setRotation(this.getRotation() + 20);
