@@ -81,13 +81,13 @@ public class Bubble extends Entity {
 		this.isScaleAction = isScale;
 
 		this.mMinScaleX = this.getScaleX() - (0.2f * Options.CAMERA_RATIO_FACTOR);
-		this.mMinScaleY = this.getScaleY()- (0.2f * Options.CAMERA_RATIO_FACTOR);
+		this.mMinScaleY = this.getScaleY() - (0.2f * Options.CAMERA_RATIO_FACTOR);
 
 		this.mMaxScaleX = this.getScaleX();
 		this.mMaxScaleY = this.getScaleY() + (0.2f * Options.CAMERA_RATIO_FACTOR);
 
-		this.mScaleY = this.getScaleY();
-		this.mScaleX = this.getScaleX();
+		this.mScaleY = this.mMinScaleY;
+		this.mScaleX = this.mMaxScaleX;
 
 		this.isScaleDefined = true;
 	}
