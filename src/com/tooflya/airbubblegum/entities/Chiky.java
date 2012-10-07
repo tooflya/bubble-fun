@@ -46,7 +46,8 @@ public class Chiky extends Entity {
 		super(pTiledTextureRegion);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
-		this.setScale(0.25f); // TODO: (R) Delete this code later.
+		
+		this.animate(new long[] { 300, 300 }, 0, 1, true);
 	}
 
 	// ===========================================================
@@ -106,10 +107,10 @@ public class Chiky extends Entity {
 		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
 
 		if (this.getCenterX() - lastX > 0) {
-			this.getTextureRegion().setFlippedHorizontal(true);
+			this.getTextureRegion().setFlippedHorizontal(false);
 		}
 		else {
-			this.getTextureRegion().setFlippedHorizontal(false);
+			this.getTextureRegion().setFlippedHorizontal(true);
 		}
 
 		if (this.isNeedToFlyAway) {
