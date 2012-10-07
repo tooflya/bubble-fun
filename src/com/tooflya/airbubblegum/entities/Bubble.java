@@ -2,7 +2,6 @@ package com.tooflya.airbubblegum.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Options;
 
 public class Bubble extends Entity {
@@ -17,12 +16,12 @@ public class Bubble extends Entity {
 	// Fields
 	// ===========================================================
 
-	protected float mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
-	protected float mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+	protected float mMinScaleX;
+	protected float mMaxScaleX;
 	protected float mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
 
-	protected float mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
-	protected float mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+	protected float mMinScaleY;
+	protected float mMaxScaleY;
 	protected float mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
 
 	protected boolean mIsYReverse = false;
@@ -38,11 +37,12 @@ public class Bubble extends Entity {
 
 	protected boolean isScaleAction = false;
 	protected boolean isFlyAction = true;
+	protected boolean isScaleDefined = false;
 
-	private float stepY = 2f; // TODO: (R) Find right step.
+	private float stepY = 0f; // TODO: (R) Find right step.
 
 	private static float minScale = 0.1f; // TODO: (R) Find right minimal scale.
-	private static float maxScale = 2; // TODO: (R) Find right maximal scale.
+	private static float maxScale = 1.3f; // TODO: (R) Find right maximal scale.
 	private static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
 
 	// ===========================================================
@@ -56,7 +56,11 @@ public class Bubble extends Entity {
 	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
 		super(pTiledTextureRegion, pNeedParent);
 
-		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+		if (pNeedParent) {
+			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+		} else {
+			this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
+		}
 	}
 
 	/**
@@ -75,7 +79,17 @@ public class Bubble extends Entity {
 			this.setScale(minScale);
 		}
 		this.isScaleAction = isScale;
+
+		this.mMinScaleX = this.getScaleX() - (0.f * Options.CAMERA_RATIO_FACTOR);
+		this.mMinScaleY = this.getScaleY();
+
+		this.mMaxScaleX = this.getScaleX();
+		this.mMaxScaleY = this.getScaleY() + (0.2f * Options.CAMERA_RATIO_FACTOR);
+
 		this.mScaleY = this.getScaleY();
+		this.mScaleX = this.getScaleX();
+
+		this.isScaleDefined = true;
 	}
 
 	// ===========================================================
@@ -107,52 +121,54 @@ public class Bubble extends Entity {
 		}
 		else {
 			if (this.isFlyAction) {
-				this.setCenterY(this.getCenterY() - this.stepY * (Options.fps / Game.fps));
+				this.setCenterY(this.getCenterY() - this.stepY);
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}
 			}
 
-			if (this.mIsYReverse) {
-				this.mScaleY -= mSpeedScaleY;
-				if (this.mScaleY < mMinScaleY) {
-					this.mIsYReverse = !this.mIsYReverse;
+			if (this.isScaleDefined) {
+				if (this.mIsYReverse) {
+					this.mScaleY -= mSpeedScaleY;
+					if (this.mScaleY < mMinScaleY) {
+						this.mIsYReverse = !this.mIsYReverse;
+					}
+				} else {
+					this.mScaleY += mSpeedScaleY;
+					if (this.mScaleY > mMaxScaleY) {
+						this.mIsYReverse = !this.mIsYReverse;
+					}
 				}
-			} else {
-				this.mScaleY += mSpeedScaleY;
-				if (this.mScaleY > mMaxScaleY) {
-					this.mIsYReverse = !this.mIsYReverse;
+
+				if (this.mIsXReverse) {
+					this.mScaleX -= mSpeedScaleX;
+					if (this.mScaleX < mMinScaleX) {
+						this.mIsXReverse = !this.mIsXReverse;
+					}
+				} else {
+					this.mScaleX += mSpeedScaleX;
+					if (this.mScaleX > mMaxScaleX) {
+						this.mIsXReverse = !this.mIsXReverse;
+					}
 				}
+
+				this.setScaleY(this.mScaleY);
+				this.setScaleX(this.mScaleX);
+
+				if (this.mIsAnimationReverse) {
+					this.mOffsetY += TIME_TO_ANIMATION;
+					if (this.mOffsetY > this.mMaxOffsetY) {
+						this.mIsAnimationReverse = false;
+					}
+				} else {
+					this.mOffsetY -= TIME_TO_ANIMATION;
+					if (this.mOffsetY < this.mMinOffsetY) {
+						this.mIsAnimationReverse = true;
+					}
+				}
+
+				this.mY += mOffsetY;
 			}
-
-			if (this.mIsXReverse) {
-				this.mScaleX -= mSpeedScaleX;
-				if (this.mScaleX < mMinScaleX) {
-					this.mIsXReverse = !this.mIsXReverse;
-				}
-			} else {
-				this.mScaleX += mSpeedScaleX;
-				if (this.mScaleX > mMaxScaleX) {
-					this.mIsXReverse = !this.mIsXReverse;
-				}
-			}
-
-			this.setScaleY(this.mScaleY);
-			this.setScaleX(this.mScaleX);
-
-			if (this.mIsAnimationReverse) {
-				this.mOffsetY += TIME_TO_ANIMATION;
-				if (this.mOffsetY > this.mMaxOffsetY) {
-					this.mIsAnimationReverse = false;
-				}
-			} else {
-				this.mOffsetY -= TIME_TO_ANIMATION;
-				if (this.mOffsetY < this.mMinOffsetY) {
-					this.mIsAnimationReverse = true;
-				}
-			}
-
-			//this.mY += mOffsetY;
 		}
 	}
 

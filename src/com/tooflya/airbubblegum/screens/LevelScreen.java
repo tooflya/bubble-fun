@@ -87,8 +87,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	public void onAttached() {
 		super.onAttached();
-
-		this.registerUpdateHandler(Game.GameTimer);
 	}
 
 	/*
@@ -99,8 +97,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	public void onDetached() {
 		super.onDetached();
-
-		this.unregisterUpdateHandler(Game.GameTimer);
 	}
 
 	/*
