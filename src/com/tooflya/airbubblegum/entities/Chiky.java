@@ -122,10 +122,12 @@ public class Chiky extends Entity {
 
 			this.timeToFall--;
 			if (this.timeToFall <= 0) {
-				Bubble airgum = (Bubble) Game.world.airgums.create();
-				airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
-				airgum.setScale(this.airgumScale);
-				airgum.setIsScale(false);
+				if (this.airgumScale > Bubble.minScale) {
+					Bubble airgum = (Bubble) Game.world.airgums.create();
+					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
+					airgum.setScale(this.airgumScale);
+					airgum.setIsScale(false);
+				}
 				Particle particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
 					particle = ((Particle) Game.world.feathers.create());

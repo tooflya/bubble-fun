@@ -64,7 +64,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Chiky chiky;
 		for (int i = 0; i < count; i++) {
 			chiky = (Chiky) this.chikies.create();
-			chiky.setOffsetTime(Options.PI / count * 11 * i); // TODO: Set step between chikies on screen.
+			chiky.setOffsetTime(Options.PI / 180 * 10 * i); // TODO: Set step between chikies on screen.
 		}
 	}
 
@@ -79,9 +79,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
-						// TODO: (R) Maybe later it will be needed.
+						// TODO: (R) Maybe late it will be needed.
 						// chiky.destroy();
-						// airgum.destroy();
+						airgum.destroy();
 						break;
 					}
 				}
