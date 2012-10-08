@@ -95,7 +95,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 			if (this.isCollide(this.mBigBird, airgum)) {
 				if (!this.mBigBird.mIsSleep) {
 					this.mBigBird.particles();
-					//airgum.animate(80, 1, airgum);
+					if (!airgum.isAnimationRunning()) {
+						airgum.animate(40, 0, airgum);
+					}
 				}
 				break;
 			}

@@ -172,7 +172,9 @@ public class Bubble extends Entity implements IAnimationListener {
 		else {
 			this.mDeathTime--;
 			if (this.mDeathTime <= 0 && this.isFlyAction) {
-				this.animate(180, 1, this);
+				if (!this.isAnimationRunning()) {
+					this.animate(40, 0, this);
+				}
 			}
 
 			if (this.isFlyAction) {
