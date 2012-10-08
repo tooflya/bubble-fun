@@ -150,6 +150,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				this.lastAirgum = (Bubble) Game.world.airgums.create();
 				this.lastAirgum.setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
 				this.lastAirgum.setScaleCenterY(0);
+			}
+			if (this.lastAirgum != null) {
 				this.lastAirgum.setIsScale(true);
 			}
 

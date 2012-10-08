@@ -40,6 +40,22 @@ public class Chiky extends Entity {
 
 	private int state = 0; // 0 - fly; 1 - flyWithGum; 2 - fall;
 
+	// Temp
+	private float x = 0;
+	private float y = 0;
+
+	private float startX = 0;
+	private float startY = 0;
+
+	private float stepX = 0;
+
+	private float sizeY = 0;
+
+	private Chiky leftNeighbour = null;
+	private Chiky rightNeighbour = null;
+
+	private int type = Game.random.nextInt(3);
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -59,6 +75,20 @@ public class Chiky extends Entity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void init() {
+		this.startX = Game.random.nextFloat() * (Options.cameraWidth - this.getWidthScaled()) + this.getWidthScaled() / 2; // From this.getWidthScaled() / 2 to Options.cameraWidth - this.getWidthScaled() / 2.
+		this.startY = Game.random.nextFloat() * (Options.cameraHeight - this.getHeightScaled() - Options.constHeight) + this.getHeightScaled() / 2; // From this.getHeightScaled() / 2 to Options.cameraHeight - Options.constHeight - this.getHeightScaled() / 2.
+
+		this.stepX = Game.random.nextFloat() * 6f - 3f;
+
+		this.sizeY = Game.random.nextFloat() * Options.cameraHeight / 10;
+
+		this.type = Options.levelNumber % 5; // Game.random.nextInt(5); // TODO: (R) 5 is not work yet. Ellipse. 6 - near and far.
+
+		this.x = this.startX;
+		this.y = this.startY;
+	}
 
 	// ===========================================================
 	// Setters
@@ -84,11 +114,72 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float getCalculatedX() {
-		return Options.cameraCenterX + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraCenterX - this.getWidth());
+		switch (this.type) {
+		case 1:
+			this.x += this.stepX;
+			if (this.x - this.getWidthScaled() / 2 < 0) {
+				this.stepX = +Math.abs(this.stepX);
+			}
+			if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+				this.stepX = -Math.abs(this.stepX);
+			}
+			return this.x;
+		case 2:
+			this.x += this.stepX;
+			if (this.x + this.getWidthScaled() / 2 < 0) {
+				this.x = Options.cameraWidth + this.getWidthScaled() / 2;
+			}
+			if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
+				this.x = -this.getWidthScaled() / 2;
+			}
+			return this.x;
+		case 3:
+			this.x += this.stepX;
+			if (this.x - this.getWidthScaled() / 2 < 0) {
+				this.stepX = +Math.abs(this.stepX);
+			}
+			if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+				this.stepX = -Math.abs(this.stepX);
+			}
+			return this.x;
+		case 4:
+			this.x += this.stepX;
+			if (this.x + this.getWidthScaled() / 2 < 0) {
+				this.x = Options.cameraWidth + this.getWidthScaled() / 2;
+			}
+			if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
+				this.x = -this.getWidthScaled() / 2;
+			}
+			return this.x;
+		case 5:
+			this.x += this.stepX;
+			if (this.x - this.getWidthScaled() / 2 < 0) {
+				this.stepX = +Math.abs(this.stepX);
+			}
+			if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+				this.stepX = -Math.abs(this.stepX);
+			}
+			return this.startX + FloatMath.cos(Options.PI / 180 * this.x) * (Options.cameraWidth - this.getWidthScaled()) / 2;
+		}
+
+		return Options.cameraCenterX + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraCenterX - this.getWidth()); // Variant 0.
 	}
 
 	private float getCalculatedY() {
-		return Options.cameraCenterY + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraCenterY - this.getHeight() - Options.constHeight) - Options.constHeight;
+		switch (this.type) {
+		case 1:
+			return this.y;
+		case 2:
+			return this.y;
+		case 3:
+			return this.startY + FloatMath.sin(Options.PI / 180 * this.x) * this.sizeY;
+		case 4:
+			return this.startY + FloatMath.sin(Options.PI / 180 * this.x) * this.sizeY;
+		case 5:
+			return this.startY + FloatMath.sin(Options.PI / 180 * this.x) * this.sizeY;
+		}
+
+		return Options.cameraCenterY + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraCenterY - this.getHeight() - Options.constHeight) - Options.constHeight; // Variant 0.
 	}
 
 	public boolean getIsFly() {

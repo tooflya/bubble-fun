@@ -71,6 +71,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		for (int i = 0; i < count; i++) {
 			chiky = (Chiky) this.chikies.create();
 			chiky.setOffsetTime(Options.PI / 180 * 10 * i); // TODO: Set step between chikies on screen.
+			chiky.init();
 		}
 	}
 
