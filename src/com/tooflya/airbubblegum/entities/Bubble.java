@@ -2,11 +2,13 @@ package com.tooflya.airbubblegum.entities;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.sprite.AnimatedSprite;
+import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.airbubblegum.Options;
 
-public class Bubble extends Entity {
+public class Bubble extends Entity implements IAnimationListener {
 
 	// ===========================================================
 	// Constants
@@ -105,7 +107,7 @@ public class Bubble extends Entity {
 	}
 
 	public void setSpeedX(final float pSpeed) {
-		this.mSpeedX = -pSpeed;//pSpeed > mMaxSpeedX ? mMaxSpeedX - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
+		this.mSpeedX = -pSpeed;
 	}
 
 	public void setSpeedY(final float pSpeed) {
@@ -145,6 +147,8 @@ public class Bubble extends Entity {
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 
+		this.setCurrentTileIndex(0);
+
 		return super.create();
 	}
 
@@ -168,8 +172,9 @@ public class Bubble extends Entity {
 		else {
 			this.mDeathTime--;
 			if (this.mDeathTime <= 0 && this.isFlyAction) {
-				// TODO: (R) Make a boom!
-				this.destroy();
+				if (!this.isAnimationRunning()) {
+					this.animate(40, 0, this);
+				}
 			}
 
 			if (this.isFlyAction) {
@@ -210,12 +215,12 @@ public class Bubble extends Entity {
 
 				if (this.mIsAnimationReverse) {
 					this.mOffsetY += TIME_TO_ANIMATION;
-					if (this.mOffsetY > this.mMaxOffsetY) {
+					if (this.mOffsetY > mMaxOffsetY) {
 						this.mIsAnimationReverse = false;
 					}
 				} else {
 					this.mOffsetY -= TIME_TO_ANIMATION;
-					if (this.mOffsetY < this.mMinOffsetY) {
+					if (this.mOffsetY < mMinOffsetY) {
 						this.mIsAnimationReverse = true;
 					}
 				}
@@ -233,6 +238,17 @@ public class Bubble extends Entity {
 	@Override
 	public Entity deepCopy() {
 		return new Bubble(getTextureRegion());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener#onAnimationEnd(org.anddev.andengine.entity.sprite.AnimatedSprite)
+	 */
+	@Override
+	public void onAnimationEnd(AnimatedSprite arg0) {
+		System.out.println("DIE!!!");
+		this.destroy();
 	}
 
 }

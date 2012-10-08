@@ -43,7 +43,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		Game.loadTextures(texture);
 
 		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 1, 1, 2, 2)));
-		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "main_bubble_gum.png", 0, 428, 1, 1)));
+		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
 		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather.png", 530, 0, 1, 2)));
 
 		this.mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "bird_big_animation.png", 50, 200, 2, 1), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather_new_blue.png", 530, 300, 1, 2))));
@@ -85,10 +85,6 @@ public class World extends org.anddev.andengine.entity.Entity {
 					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
-						// TODO: (R) Maybe late it will be needed.
-						// chiky.destroy();
-						// airgum.destroy();
-						break;
 					}
 				}
 			}
@@ -99,7 +95,9 @@ public class World extends org.anddev.andengine.entity.Entity {
 			if (this.isCollide(this.mBigBird, airgum)) {
 				if (!this.mBigBird.mIsSleep) {
 					this.mBigBird.particles();
-					airgum.destroy();
+					if (!airgum.isAnimationRunning()) {
+						airgum.animate(40, 0, airgum);
+					}
 				}
 				break;
 			}
