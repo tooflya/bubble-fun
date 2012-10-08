@@ -25,10 +25,9 @@ public class LevelChoiseScreen extends Screen {
 	// Constants
 	// ===========================================================
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bg_level.png", 0, 0, 1, 1), false) {
+	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bg_level.png", 0, 0, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -45,7 +44,6 @@ public class LevelChoiseScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	private CloudsManager clouds;
 	private LevelsManager levels;
 
 	// ===========================================================
@@ -69,23 +67,8 @@ public class LevelChoiseScreen extends Screen {
 	public void init() {
 		this.setBackground(new SpriteBackground(mBackground));
 
-		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.CHOISE));
-		this.clouds.generateStartClouds();
-
-		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "level-icon.png", 450, 0, 1, 1), Screen.CHOISE));
+		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level_button_2star.png", 580, 0, 1, 1), Screen.CHOISE));
 		this.levels.generate();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
-	 */
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		this.clouds.update();
 	}
 
 	/*
@@ -105,7 +88,7 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -115,7 +98,7 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundTextureAtlas);
 	}
 
 	/*
