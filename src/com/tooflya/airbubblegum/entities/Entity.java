@@ -88,7 +88,7 @@ public abstract class Entity extends AnimatedSprite {
 
 	/**
 	 * @return
-	 */	
+	 */
 	public Entity create() {
 		this.show();
 

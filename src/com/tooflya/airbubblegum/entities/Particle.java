@@ -2,10 +2,10 @@ package com.tooflya.airbubblegum.entities;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.airbubblegum.Game;
+import com.tooflya.airbubblegum.Options;
 
 /**
  * @author Tooflya.com
@@ -55,7 +55,7 @@ public class Particle extends Entity {
 		time = 0;
 		maxTime = Game.random.nextInt(400);
 
-		this.setScale(1);
+		this.setScale(1.8f * Options.CAMERA_RATIO_FACTOR);
 		stepScale = -Game.random.nextFloat() / maxTime;
 
 		this.setAlpha(1);
@@ -77,6 +77,13 @@ public class Particle extends Entity {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	@Override
+	public Entity create() {
+		this.setCurrentTileIndex(Game.random.nextInt(3));
+
+		return super.create();
+	}
 
 	/*
 	 * (non-Javadoc)
