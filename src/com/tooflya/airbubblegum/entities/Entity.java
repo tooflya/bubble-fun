@@ -3,6 +3,7 @@ package com.tooflya.airbubblegum.entities;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
+import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
@@ -88,7 +89,7 @@ public abstract class Entity extends AnimatedSprite {
 
 	/**
 	 * @return
-	 */	
+	 */
 	public Entity create() {
 		this.show();
 

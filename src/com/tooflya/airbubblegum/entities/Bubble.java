@@ -1,16 +1,29 @@
 package com.tooflya.airbubblegum.entities;
 
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.entity.sprite.AnimatedSprite;
+import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.airbubblegum.Options;
 
-public class Bubble extends Entity {
+public class Bubble extends Entity implements IAnimationListener {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
 	private final static float TIME_TO_ANIMATION = 0.02f;
+
+	public final static float mMaxSpeedY = 10f;
+	public final static float mMaxSpeedX = 10f;
+
+	public final static float minScale = 0.3f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
+	public final static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
+	public final static float scaleStep = 0.05f * Options.CAMERA_RATIO_FACTOR;; // TODO: (R) Find right step of scale.
+
+	private final static float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
 
 	// ===========================================================
 	// Fields
@@ -31,23 +44,16 @@ public class Bubble extends Entity {
 	protected float mScaleX = mMaxScaleX;
 
 	private boolean mIsAnimationReverse;
-
-	private final float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
 	private float mOffsetY;
 
 	protected boolean isScaleAction = false;
 	protected boolean isFlyAction = true;
 	protected boolean isScaleDefined = false;
 
-	private float stepY = 1f; // TODO: (R) Find right step.
-	private final float maxStepY = 3f;
-
-	public static float minScale = 0.5f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
-	private static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
-	private static float scaleStep = 0.05f * Options.CAMERA_RATIO_FACTOR;; // TODO: (R) Find right step of scale.
-
-	private int timeToDeath = 0;
-	private int maxTimeToDeath = 150;
+	private float mSpeedY;
+	private float mSpeedX;
+	private float mSpeedDecrement;
+	private float mDeathTime;
 
 	// ===========================================================
 	// Constructors
@@ -60,9 +66,12 @@ public class Bubble extends Entity {
 	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
 		super(pTiledTextureRegion, pNeedParent);
 
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
 		if (pNeedParent) {
 			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
+			this.setAlpha(0.8f);
 		} else {
 			this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 		}
@@ -95,17 +104,33 @@ public class Bubble extends Entity {
 		this.mScaleX = this.mMaxScaleX;
 
 		this.isScaleDefined = true;
-
-		this.timeToDeath = (int) (this.maxTimeToDeath / this.mScaleX); // TODO: (R) Check.
 	}
 
-	public void setStepY(final float stepY){
-		this.stepY = Math.min(this.maxStepY, stepY);
+	public void setSpeedX(final float pSpeed) {
+		this.mSpeedX = -pSpeed;
 	}
-	
+
+	public void setSpeedY(final float pSpeed) {
+		this.mSpeedY = pSpeed > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
+	}
+
 	// ===========================================================
 	// Getters
 	// ===========================================================
+
+	/**
+	 * @return
+	 */
+	public float getSpeedY() {
+		return this.mSpeedY;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getSpeedX() {
+		return this.mSpeedX;
+	}
 
 	// ===========================================================
 	// Methods
@@ -114,6 +139,18 @@ public class Bubble extends Entity {
 	// ===========================================================
 	// Virtual Methods
 	// ===========================================================
+
+	@Override
+	public Entity create() {
+		this.mSpeedX = 0f;
+		this.mSpeedY = 2f;
+		this.mDeathTime = 200f;
+		this.mSpeedDecrement = 0f;
+
+		this.setCurrentTileIndex(0);
+
+		return super.create();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -126,19 +163,23 @@ public class Bubble extends Entity {
 
 		if (this.isScaleAction) {
 			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
+				this.mSpeedY -= 0.05f;
+				this.mSpeedDecrement += 0.05f;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
 			}
 		}
 		else {
-			this.timeToDeath--;
-			if (this.timeToDeath <= 0 && this.isFlyAction) {
-				// TODO: (R) Make a boom!
-				this.destroy();
+			this.mDeathTime--;
+			if (this.mDeathTime <= 0 && this.isFlyAction) {
+				if (!this.isAnimationRunning()) {
+					this.animate(40, 0, this);
+				}
 			}
 
 			if (this.isFlyAction) {
-				this.setCenterY(this.getCenterY() - this.stepY);
+				this.mY -= this.mSpeedY;
+				this.mX -= this.mSpeedX;
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}
@@ -174,12 +215,12 @@ public class Bubble extends Entity {
 
 				if (this.mIsAnimationReverse) {
 					this.mOffsetY += TIME_TO_ANIMATION;
-					if (this.mOffsetY > this.mMaxOffsetY) {
+					if (this.mOffsetY > mMaxOffsetY) {
 						this.mIsAnimationReverse = false;
 					}
 				} else {
 					this.mOffsetY -= TIME_TO_ANIMATION;
-					if (this.mOffsetY < this.mMinOffsetY) {
+					if (this.mOffsetY < mMinOffsetY) {
 						this.mIsAnimationReverse = true;
 					}
 				}
@@ -197,6 +238,17 @@ public class Bubble extends Entity {
 	@Override
 	public Entity deepCopy() {
 		return new Bubble(getTextureRegion());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener#onAnimationEnd(org.anddev.andengine.entity.sprite.AnimatedSprite)
+	 */
+	@Override
+	public void onAnimationEnd(AnimatedSprite arg0) {
+		System.out.println("DIE!!!");
+		this.destroy();
 	}
 
 }

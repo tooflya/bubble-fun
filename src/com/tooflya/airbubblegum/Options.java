@@ -24,8 +24,6 @@ public class Options {
 
 	public static int levelNumber = 1;
 
-	public static int time = 0;
-
 	public static int constHeight;
 
 	public static float scalePower;
