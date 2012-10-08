@@ -2,6 +2,7 @@ package com.tooflya.airbubblegum.managers;
 
 import com.tooflya.airbubblegum.Options;
 import com.tooflya.airbubblegum.entities.Entity;
+import com.tooflya.airbubblegum.entities.LevelIcon;
 
 public class LevelsManager extends EntityManager {
 
@@ -32,7 +33,9 @@ public class LevelsManager extends EntityManager {
 				X = PADDING_B;
 			}
 
-			this.create().setPosition(X, Y);
+			LevelIcon icon = ((LevelIcon) this.create());
+			icon.setPosition(X, Y);
+			icon.id = i + 1;
 		}
 	}
 }
