@@ -3,7 +3,7 @@ package com.tooflya.airbubblegum;
 import java.util.Random;
 
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.LimitedFPSEngine;
+import org.anddev.andengine.engine.FixedStepEngine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -60,9 +60,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static float fps;
 
 	/**  */
-	public static TimerHandler GameTimer;
-
-	/**  */
 	public static ScreenManager screens;
 
 	/** */
@@ -105,7 +102,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** Initialize camera parameters */
 		Options.cameraWidth = displayMetrics.widthPixels;
-		Options.cameraHeight = displayMetrics.heightPixels;			
+		Options.cameraHeight = displayMetrics.heightPixels;
 
 		Options.cameraCenterX = Options.cameraWidth / 2;
 		Options.cameraCenterY = Options.cameraHeight / 2;
@@ -116,7 +113,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
 		Options.constHeight = Options.cameraHeight / 10; // TODO: Maybe need correct value.
-		
+
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
 				.setWakeLockOptions(WakeLockOptions.SCREEN_BRIGHT)
@@ -131,7 +128,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine */
-		engine = new LimitedFPSEngine(options, Options.fps);
+		engine = new FixedStepEngine(options, Options.fps);
 
 		/**  */
 		instance = this;
@@ -159,14 +156,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void workToDo() {
 
 		/** Create screen manager */
-		screens = new ScreenManager();
-		screens.init();
+		(screens = new ScreenManager()).init();
 
 		/** */
 		world = new World();
-
-		/** Create game timer */
-		GameTimer = new TimerHandler(1f / Options.fps, true, new GameTimer());
 
 		/** White while progressbar is running */
 		while (!isGameLoaded) {

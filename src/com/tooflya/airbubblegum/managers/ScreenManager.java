@@ -3,7 +3,6 @@ package com.tooflya.airbubblegum.managers;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.hud.HUD;
-import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -75,16 +74,19 @@ public class ScreenManager {
 		hud.attachChild(splash);
 		splash.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		splash.setAlpha(0f);
-	}
-
-	public void init() {
 		screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all scenes */
 		screens[Screen.MENU] = new MenuScreen();
-		((MenuScreen) screens[Screen.MENU]).init();
-		screens[Screen.LEVEL] = new LevelScreen();
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
+		screens[Screen.LEVEL] = new LevelScreen();
+	}
+
+	public void init() {
+		/** Create all scenes */
+		screens[Screen.MENU].init();
+		screens[Screen.CHOISE].init();
+		screens[Screen.LEVEL].init();
 	}
 
 	// ===========================================================
@@ -92,7 +94,7 @@ public class ScreenManager {
 	// ===========================================================
 
 	public void set(final int pScreen) {
-		//splash.
+		// splash.
 		screens[pScreen].setScene(Game.engine);
 		screens[pScreen].onAttached();
 		Screen.screen = pScreen;

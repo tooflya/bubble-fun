@@ -100,7 +100,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mPlayIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-play-animation.png", 581, 100, 1, 1)) {
+	private final static Bubble mPlayIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-play-animation.png", 581, 100, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -109,11 +109,23 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public Entity create() {
+			this.isFlyAction = false;
+
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
-			this.mScaleY = mMinScaleY;
-			this.mScaleX = mMaxScaleX;
+			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+
+			this.isScaleDefined = true;
 
 			return super.create();
 		}
@@ -127,7 +139,7 @@ public class MenuScreen extends Screen {
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 			switch (pAreaTouchEvent.getAction()) {
 			case TouchEvent.ACTION_UP:
-				Game.screens.set(Screen.LEVEL);
+				Game.screens.set(Screen.CHOISE);
 				break;
 			}
 
@@ -145,7 +157,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mMoreIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-more-animation.png", 581, 400, 1, 1)) {
+	private final static Bubble mMoreIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-more-animation.png", 581, 400, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -154,11 +166,23 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public Entity create() {
+			this.isFlyAction = false;
+
 			this.mIsYReverse = true;
 			this.mIsXReverse = false;
 
-			this.mScaleY = mMaxScaleY;
-			this.mScaleX = mMinScaleX;
+			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+
+			this.isScaleDefined = true;
 
 			return super.create();
 		}
@@ -179,7 +203,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mSoundIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "sound-icon.png", 581, 600, 1, 1)) {
+	private final static Bubble mSoundIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "sound-icon.png", 581, 600, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -188,11 +212,23 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public Entity create() {
+			this.isFlyAction = false;
+
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
-			this.mScaleY = mMinScaleY;
-			this.mScaleX = mMaxScaleX;
+			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
+			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+
+			this.mScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+
+			this.isScaleDefined = true;
 
 			return super.create();
 		}
@@ -212,19 +248,19 @@ public class MenuScreen extends Screen {
 			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 		}
 	};
-
-	private CloudsManager clouds;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private CloudsManager clouds;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public MenuScreen() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		this.loadResources();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mTwitterIcon.create().setPosition(0 + ICONS_PADDING, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
@@ -233,8 +269,21 @@ public class MenuScreen extends Screen {
 		mPlayIcon.create().setCenterPosition(Options.cameraCenterX - 170 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY - 90 * Options.CAMERA_RATIO_FACTOR);
 		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 130 * Options.CAMERA_RATIO_FACTOR);
 		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 300 * Options.CAMERA_RATIO_FACTOR);
+
+		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 130 * Options.CAMERA_RATIO_FACTOR);
+		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 300 * Options.CAMERA_RATIO_FACTOR);
 	}
 
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#init()
+	 */
+	@Override
 	public void init() {
 		this.attachChild(mBackground);
 
@@ -253,10 +302,6 @@ public class MenuScreen extends Screen {
 		this.registerTouchArea(mMoreIcon);
 		this.registerTouchArea(mSoundIcon);
 	}
-
-	// ===========================================================
-	// Virtual methods
-	// ===========================================================
 
 	/*
 	 * (non-Javadoc)
@@ -278,6 +323,26 @@ public class MenuScreen extends Screen {
 	@Override
 	public void onDetached() {
 		super.onDetached();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#loadResources()
+	 */
+	@Override
+	public void loadResources() {
+		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
+	 */
+	@Override
+	public void unloadResources() {
+		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
 	}
 
 	/*
