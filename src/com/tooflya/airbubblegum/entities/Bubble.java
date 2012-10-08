@@ -1,5 +1,7 @@
 package com.tooflya.airbubblegum.entities;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.airbubblegum.Options;
@@ -12,7 +14,8 @@ public class Bubble extends Entity {
 
 	private final static float TIME_TO_ANIMATION = 0.02f;
 
-	public final static float mMaxSpeed = 10f;
+	public final static float mMaxSpeedY = 10f;
+	public final static float mMaxSpeedX = 10f;
 
 	public final static float minScale = 0.3f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
 	public final static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
@@ -45,7 +48,8 @@ public class Bubble extends Entity {
 	protected boolean isFlyAction = true;
 	protected boolean isScaleDefined = false;
 
-	private float mSpeed;
+	private float mSpeedY;
+	private float mSpeedX;
 	private float mSpeedDecrement;
 	private float mDeathTime;
 
@@ -60,9 +64,12 @@ public class Bubble extends Entity {
 	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
 		super(pTiledTextureRegion, pNeedParent);
 
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
 		if (pNeedParent) {
 			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
+			this.setAlpha(0.8f);
 		} else {
 			this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 		}
@@ -97,16 +104,30 @@ public class Bubble extends Entity {
 		this.isScaleDefined = true;
 	}
 
-	public void setSpeed(final float pSpeed) {
-		this.mSpeed = pSpeed > mMaxSpeed ? mMaxSpeed - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
+	public void setSpeedX(final float pSpeed) {
+		this.mSpeedX = -pSpeed;//pSpeed > mMaxSpeedX ? mMaxSpeedX - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
+	}
+
+	public void setSpeedY(final float pSpeed) {
+		this.mSpeedY = pSpeed > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
 	}
 
 	// ===========================================================
 	// Getters
 	// ===========================================================
 
-	public float getSpeed() {
-		return this.mSpeed;
+	/**
+	 * @return
+	 */
+	public float getSpeedY() {
+		return this.mSpeedY;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getSpeedX() {
+		return this.mSpeedX;
 	}
 
 	// ===========================================================
@@ -119,7 +140,8 @@ public class Bubble extends Entity {
 
 	@Override
 	public Entity create() {
-		this.mSpeed = 2f;
+		this.mSpeedX = 0f;
+		this.mSpeedY = 2f;
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 
@@ -137,7 +159,7 @@ public class Bubble extends Entity {
 
 		if (this.isScaleAction) {
 			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
-				this.mSpeed -= 0.05f;
+				this.mSpeedY -= 0.05f;
 				this.mSpeedDecrement += 0.05f;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
@@ -151,7 +173,8 @@ public class Bubble extends Entity {
 			}
 
 			if (this.isFlyAction) {
-				this.setCenterY(this.getCenterY() - this.mSpeed);
+				this.mY -= this.mSpeedY;
+				this.mX -= this.mSpeedX;
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}

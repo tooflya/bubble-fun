@@ -157,8 +157,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
 				final float koef = 10f;
-				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 80f) {
-					this.lastAirgum.setSpeed(this.lastAirgum.getSpeed() + ((this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef));
+				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 10f) {
+					this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef);
+					this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 5));
 				}
 				this.lastAirgum.setIsScale(false);
 				this.lastAirgum = null;

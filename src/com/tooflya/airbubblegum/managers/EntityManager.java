@@ -59,7 +59,7 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 		return elements[index];
 	}
 
-	public Entity create() throws NullPointerException {
+	public Entity create() {
 		if (lastElementNumber + 1 < capacity) {
 			lastElementNumber++;
 
@@ -72,14 +72,18 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 	}
 
 	public void destroy(final int i) {
-		Entity temp_element = elements[i];
-		elements[i] = elements[lastElementNumber];
-		elements[lastElementNumber] = temp_element;
+		try {
+			Entity temp_element = elements[i];
+			elements[i] = elements[lastElementNumber];
+			elements[lastElementNumber] = temp_element;
 
-		elements[i].setID(i);
-		elements[lastElementNumber].setID(lastElementNumber);
+			elements[i].setID(i);
+			elements[lastElementNumber].setID(lastElementNumber);
 
-		lastElementNumber--;
+			lastElementNumber--;
+		} catch (ArrayIndexOutOfBoundsException e) {
+
+		}
 	}
 
 	public void clear() {
