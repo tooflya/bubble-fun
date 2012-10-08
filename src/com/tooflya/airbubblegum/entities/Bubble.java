@@ -12,6 +12,14 @@ public class Bubble extends Entity {
 
 	private final static float TIME_TO_ANIMATION = 0.02f;
 
+	public final static float mMaxSpeed = 10f;
+
+	public final static float minScale = 0.3f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
+	public final static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
+	public final static float scaleStep = 0.05f * Options.CAMERA_RATIO_FACTOR;; // TODO: (R) Find right step of scale.
+
+	private final static float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -31,23 +39,15 @@ public class Bubble extends Entity {
 	protected float mScaleX = mMaxScaleX;
 
 	private boolean mIsAnimationReverse;
-
-	private final float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
 	private float mOffsetY;
 
 	protected boolean isScaleAction = false;
 	protected boolean isFlyAction = true;
 	protected boolean isScaleDefined = false;
 
-	private float stepY = 1f; // TODO: (R) Find right step.
-	private final float maxStepY = 3f;
-
-	public static float minScale = 0.5f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
-	private static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
-	private static float scaleStep = 0.05f * Options.CAMERA_RATIO_FACTOR;; // TODO: (R) Find right step of scale.
-
-	private int timeToDeath = 0;
-	private int maxTimeToDeath = 150;
+	private float mSpeed;
+	private float mSpeedDecrement;
+	private float mDeathTime;
 
 	// ===========================================================
 	// Constructors
@@ -95,17 +95,19 @@ public class Bubble extends Entity {
 		this.mScaleX = this.mMaxScaleX;
 
 		this.isScaleDefined = true;
-
-		this.timeToDeath = (int) (this.maxTimeToDeath / this.mScaleX); // TODO: (R) Check.
 	}
 
-	public void setStepY(final float stepY){
-		this.stepY = Math.min(this.maxStepY, stepY);
+	public void setSpeed(final float pSpeed) {
+		this.mSpeed = pSpeed > mMaxSpeed ? mMaxSpeed - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
 	}
-	
+
 	// ===========================================================
 	// Getters
 	// ===========================================================
+
+	public float getSpeed() {
+		return this.mSpeed;
+	}
 
 	// ===========================================================
 	// Methods
@@ -114,6 +116,15 @@ public class Bubble extends Entity {
 	// ===========================================================
 	// Virtual Methods
 	// ===========================================================
+
+	@Override
+	public Entity create() {
+		this.mSpeed = 2f;
+		this.mDeathTime = 200f;
+		this.mSpeedDecrement = 0f;
+
+		return super.create();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -126,19 +137,21 @@ public class Bubble extends Entity {
 
 		if (this.isScaleAction) {
 			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
+				this.mSpeed -= 0.05f;
+				this.mSpeedDecrement += 0.05f;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
 			}
 		}
 		else {
-			this.timeToDeath--;
-			if (this.timeToDeath <= 0 && this.isFlyAction) {
+			this.mDeathTime--;
+			if (this.mDeathTime <= 0 && this.isFlyAction) {
 				// TODO: (R) Make a boom!
 				this.destroy();
 			}
 
 			if (this.isFlyAction) {
-				this.setCenterY(this.getCenterY() - this.stepY);
+				this.setCenterY(this.getCenterY() - this.mSpeed);
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}

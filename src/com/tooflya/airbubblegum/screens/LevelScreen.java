@@ -145,13 +145,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pTouchEvent) {
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
-			if (this.lastAirgum == null && pTouchEvent.getY() > Options.cameraHeight - Options.constHeight)
+			if (this.lastAirgum == null && pTouchEvent.getY() > Options.cameraHeight - Options.cameraHeight / 3)
 			{
 				this.lastAirgum = (Bubble) Game.world.airgums.create();
 				this.lastAirgum.setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
 				this.lastAirgum.setScaleCenterY(0);
-			}
-			else {
 				this.lastAirgum.setIsScale(true);
 			}
 
@@ -159,7 +157,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
 				final float koef = 10f;
-				this.lastAirgum.setStepY(Math.max(0, (pTouchEvent.getY() - this.lastAirgum.getCenterY()) / koef));
+				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 80f) {
+					this.lastAirgum.setSpeed(this.lastAirgum.getSpeed() + ((this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef));
+				}
 				this.lastAirgum.setIsScale(false);
 				this.lastAirgum = null;
 			}
