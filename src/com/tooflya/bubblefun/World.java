@@ -1,9 +1,6 @@
 package com.tooflya.bubblefun;
 
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.bubblefun.entities.BigBird;
 import com.tooflya.bubblefun.entities.Bubble;
@@ -11,6 +8,7 @@ import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class World extends org.anddev.andengine.entity.Entity {
 
@@ -22,11 +20,10 @@ public class World extends org.anddev.andengine.entity.Entity {
 	// Fields
 	// ===========================================================
 
-	private BitmapTextureAtlas texture;
-
 	public EntityManager chikies;
 	public EntityManager airgums;
 	public EntityManager feathers;
+	public EntityManager particles;
 
 	private BigBird mBigBird;
 
@@ -39,14 +36,12 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 		Game.screens.get(Screen.LEVEL).attachChild(this);
 
-		this.texture = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		Game.loadTextures(texture);
+		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "chiky.png", 1, 1, 1, 4)));
+		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
+		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2)));
+		this.particles = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1)));
 
-		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "chiky.png", 1, 1, 1, 4)));
-		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
-		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather.png", 530, 0, 1, 2)));
-
-		this.mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "bird_big_animation.png", 60, 200, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texture, Game.context, "feather_new_blue.png", 530, 300, 1, 2))));
+		this.mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 60, 200, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2))));
 
 		this.init();
 	}

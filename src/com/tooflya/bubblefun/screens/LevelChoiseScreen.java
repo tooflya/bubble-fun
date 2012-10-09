@@ -46,7 +46,7 @@ public class LevelChoiseScreen extends Screen {
 	public void init() {
 		this.setBackground(new SpriteBackground(PreloaderScreen.mBackground));
 
-		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl_btn.png", 0, 0, 1, 6), Screen.CHOISE));
+		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl_btn.png", 0, 0, 1, 5), Screen.CHOISE));
 		this.levels.generate();
 	}
 

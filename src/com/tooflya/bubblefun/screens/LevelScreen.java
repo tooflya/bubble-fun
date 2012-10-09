@@ -14,6 +14,7 @@ import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.managers.CloudsManager;
 
 /**
@@ -26,6 +27,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Constants
 	// ===========================================================
 
+	public final static BitmapTextureAtlas mBackgroundTextureAtlas0 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -132,7 +134,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -142,7 +144,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -179,6 +181,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 10f) {
 					this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef);
 					this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 5));
+
+					Particle particle;
+					for (int i = 0; i < Options.particlesCount / 2; i++) {
+						particle = ((Particle) Game.world.particles.create());
+						if (particle != null) {
+							particle.Init().setCenterPosition(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY());
+						}
+					}
 				}
 				this.lastAirgum.setIsScale(false);
 				this.lastAirgum = null;

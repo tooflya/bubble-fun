@@ -31,8 +31,22 @@ public class LevelIcon extends Entity {
 	}
 
 	public void writeNumber() {
-		this.number.setText(this.id + "");
-		this.number.setPosition(this.getCenterX() - this.number.getWidthScaled() / 2, this.getCenterY() - this.number.getHeightScaled() / 2);
+		if (this.blocked) {
+			this.number.setVisible(false);
+		} else {
+			this.number.setText(this.id + "");
+			float x = 0;
+			if (this.id < 2) {
+				x = 90 * Options.CAMERA_RATIO_FACTOR;
+			} else if (this.id < 10) {
+				x = 80 * Options.CAMERA_RATIO_FACTOR;
+			} else if (this.id < 20) {
+				x = 70 * Options.CAMERA_RATIO_FACTOR;
+			} else {
+				x = 60 * Options.CAMERA_RATIO_FACTOR;
+			}
+			this.number.setPosition(x, 30 * Options.CAMERA_RATIO_FACTOR);
+		}
 	}
 
 	/*
@@ -44,9 +58,11 @@ public class LevelIcon extends Entity {
 	public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		switch (pAreaTouchEvent.getAction()) {
 		case TouchEvent.ACTION_UP:
-			Options.levelNumber = this.id;
-			Game.world.init();
-			Game.screens.set(Screen.LOAD);
+			if (!this.blocked) {
+				Options.levelNumber = this.id;
+				Game.world.init();
+				Game.screens.set(Screen.LOAD);
+			}
 			break;
 		}
 

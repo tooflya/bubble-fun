@@ -37,6 +37,12 @@ public class LevelsManager extends EntityManager {
 			icon.setCurrentTileIndex(1);
 			icon.setPosition(X, Y);
 			icon.id = i + 1;
+
+			if (icon.id != 1) {
+				icon.setCurrentTileIndex(0);
+				icon.blocked = true;
+			}
+
 			icon.writeNumber();
 		}
 	}
