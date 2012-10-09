@@ -1,13 +1,13 @@
-package com.tooflya.airbubblegum.managers;
+package com.tooflya.bubblefun.managers;
 
 import org.anddev.andengine.engine.camera.hud.HUD;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Screen;
-import com.tooflya.airbubblegum.screens.LevelChoiseScreen;
-import com.tooflya.airbubblegum.screens.LevelScreen;
-import com.tooflya.airbubblegum.screens.MenuScreen;
-import com.tooflya.airbubblegum.screens.PreloaderScreen;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.LevelChoiseScreen;
+import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.MenuScreen;
+import com.tooflya.bubblefun.screens.PreloaderScreen;
 
 /**
  * @author Tooflya.com

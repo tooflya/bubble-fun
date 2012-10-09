@@ -1,14 +1,14 @@
-package com.tooflya.airbubblegum.entities;
+package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.content.Context;
 import android.os.Vibrator;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Options;
-import com.tooflya.airbubblegum.Screen;
-import com.tooflya.airbubblegum.managers.EntityManager;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.managers.EntityManager;
 
 public class BigBird extends Entity {
 

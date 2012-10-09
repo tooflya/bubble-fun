@@ -1,4 +1,4 @@
-package com.tooflya.airbubblegum;
+package com.tooflya.bubblefun;
 
 /**
  * @author Tooflya.com

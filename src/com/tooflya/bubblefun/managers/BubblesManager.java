@@ -1,6 +1,6 @@
-package com.tooflya.airbubblegum.managers;
+package com.tooflya.bubblefun.managers;
 
-import com.tooflya.airbubblegum.entities.Entity;
+import com.tooflya.bubblefun.entities.Entity;
 
 public class BubblesManager extends EntityManager {
 

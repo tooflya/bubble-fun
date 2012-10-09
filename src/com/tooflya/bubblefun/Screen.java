@@ -1,4 +1,4 @@
-package com.tooflya.airbubblegum;
+package com.tooflya.bubblefun;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.scene.Scene;

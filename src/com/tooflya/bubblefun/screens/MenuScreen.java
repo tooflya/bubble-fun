@@ -1,4 +1,4 @@
-package com.tooflya.airbubblegum.screens;
+package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
@@ -6,13 +6,13 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Options;
-import com.tooflya.airbubblegum.Screen;
-import com.tooflya.airbubblegum.entities.Bubble;
-import com.tooflya.airbubblegum.entities.Cloud;
-import com.tooflya.airbubblegum.entities.Entity;
-import com.tooflya.airbubblegum.managers.CloudsManager;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.Cloud;
+import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.managers.CloudsManager;
 
 /**
  * @author Tooflya.com

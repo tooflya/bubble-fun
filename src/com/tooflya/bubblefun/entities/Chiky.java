@@ -1,11 +1,11 @@
-package com.tooflya.airbubblegum.entities;
+package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Options;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
 
 /**
  * @author Tooflya.com
@@ -76,15 +76,43 @@ public class Chiky extends Entity {
 	// Methods
 	// ===========================================================
 
-	public void init() {
+	public void init(final int type, final float startX, final float startY, final float stepX) {
+		this.type = type;
+
+		this.startX = startX;
+		this.startY = startY;
+
+		this.stepX = stepX;
+
+		this.sizeY = 0;
+
+		switch (this.type) {
+		case 0:
+			this.startX = Options.cameraWidth / 2;
+			this.startY = (Options.cameraHeight - Options.constHeight) / 2;
+
+			this.x = this.startX;
+			this.y = this.startY;
+
+			return;
+		case 1:
+			this.startX = Options.cameraWidth / 2;
+			this.startY = (Options.cameraHeight - Options.constHeight) / 2;
+
+			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f);
+
+			this.x = this.startX;
+			this.y = this.startY;
+
+			return;
+		}
+
 		this.startX = Game.random.nextFloat() * (Options.cameraWidth - this.getWidthScaled()) + this.getWidthScaled() / 2; // From this.getWidthScaled() / 2 to Options.cameraWidth - this.getWidthScaled() / 2.
 		this.startY = Game.random.nextFloat() * (Options.cameraHeight - this.getHeightScaled() - Options.constHeight) + this.getHeightScaled() / 2; // From this.getHeightScaled() / 2 to Options.cameraHeight - Options.constHeight - this.getHeightScaled() / 2.
 
 		this.stepX = Game.random.nextFloat() * 6f - 3f;
 
 		this.sizeY = Game.random.nextFloat() * Options.cameraHeight / 10;
-
-		this.type = Options.levelNumber % 5; // Game.random.nextInt(5); // TODO: (R) 5 is not work yet. Ellipse. 6 - near and far.
 
 		this.x = this.startX;
 		this.y = this.startY;
@@ -114,55 +142,73 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	private float getCalculatedX() {
-		switch (this.type) {
-		case 1:
-			this.x += this.stepX;
-			if (this.x - this.getWidthScaled() / 2 < 0) {
-				this.stepX = +Math.abs(this.stepX);
-			}
-			if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-				this.stepX = -Math.abs(this.stepX);
-			}
-			return this.x;
-		case 2:
-			this.x += this.stepX;
-			if (this.x + this.getWidthScaled() / 2 < 0) {
-				this.x = Options.cameraWidth + this.getWidthScaled() / 2;
-			}
-			if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
-				this.x = -this.getWidthScaled() / 2;
-			}
-			return this.x;
-		case 3:
-			this.x += this.stepX;
-			if (this.x - this.getWidthScaled() / 2 < 0) {
-				this.stepX = +Math.abs(this.stepX);
-			}
-			if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-				this.stepX = -Math.abs(this.stepX);
-			}
-			return this.x;
-		case 4:
-			this.x += this.stepX;
-			if (this.x + this.getWidthScaled() / 2 < 0) {
-				this.x = Options.cameraWidth + this.getWidthScaled() / 2;
-			}
-			if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
-				this.x = -this.getWidthScaled() / 2;
-			}
-			return this.x;
-		case 5:
-			this.x += this.stepX;
-			if (this.x - this.getWidthScaled() / 2 < 0) {
-				this.stepX = +Math.abs(this.stepX);
-			}
-			if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-				this.stepX = -Math.abs(this.stepX);
-			}
-			return this.startX + FloatMath.cos(Options.PI / 180 * this.x) * (Options.cameraWidth - this.getWidthScaled()) / 2;
+		this.x += this.stepX;
+		if (this.x - this.getWidthScaled() / 2 < 0) {
+			this.stepX = +Math.abs(this.stepX);
 		}
+		if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+			this.stepX = -Math.abs(this.stepX);
+		}
+		return this.x;
 
-		return Options.cameraCenterX + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraCenterX - this.getWidth()); // Variant 0.
+		// switch (this.type) {
+		// case 0:
+		// this.x += this.stepX;
+		// if (this.x - this.getWidthScaled() / 2 < 0) {
+		// this.stepX = +Math.abs(this.stepX);
+		// }
+		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+		// this.stepX = -Math.abs(this.stepX);
+		// }
+		// return this.x;
+		// case 1:
+		// this.x += this.stepX;
+		// if (this.x - this.getWidthScaled() / 2 < 0) {
+		// this.stepX = +Math.abs(this.stepX);
+		// }
+		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+		// this.stepX = -Math.abs(this.stepX);
+		// }
+		// return this.x;
+		// case 2:
+		// this.x += this.stepX;
+		// if (this.x + this.getWidthScaled() / 2 < 0) {
+		// this.x = Options.cameraWidth + this.getWidthScaled() / 2;
+		// }
+		// if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
+		// this.x = -this.getWidthScaled() / 2;
+		// }
+		// return this.x;
+		// case 3:
+		// this.x += this.stepX;
+		// if (this.x - this.getWidthScaled() / 2 < 0) {
+		// this.stepX = +Math.abs(this.stepX);
+		// }
+		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+		// this.stepX = -Math.abs(this.stepX);
+		// }
+		// return this.x;
+		// case 4:
+		// this.x += this.stepX;
+		// if (this.x + this.getWidthScaled() / 2 < 0) {
+		// this.x = Options.cameraWidth + this.getWidthScaled() / 2;
+		// }
+		// if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
+		// this.x = -this.getWidthScaled() / 2;
+		// }
+		// return this.x;
+		// case 5:
+		// this.x += this.stepX;
+		// if (this.x - this.getWidthScaled() / 2 < 0) {
+		// this.stepX = +Math.abs(this.stepX);
+		// }
+		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+		// this.stepX = -Math.abs(this.stepX);
+		// }
+		// return this.startX + FloatMath.cos(Options.PI / 180 * this.x) * (Math.min(this.startX, Options.cameraWidth - this.getWidthScaled() - this.startX)) / 2;
+		// }
+		//
+		// return Options.cameraCenterX + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraCenterX - this.getWidth()); // Variant 0.
 	}
 
 	private float getCalculatedY() {

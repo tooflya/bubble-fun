@@ -1,4 +1,4 @@
-package com.tooflya.airbubblegum.screens;
+package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.opengl.texture.TextureOptions;
@@ -6,10 +6,10 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Screen;
-import com.tooflya.airbubblegum.entities.LevelIcon;
-import com.tooflya.airbubblegum.managers.LevelsManager;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.entities.LevelIcon;
+import com.tooflya.bubblefun.managers.LevelsManager;
 
 /**
  * @author Tooflya.com

@@ -1,4 +1,4 @@
-package com.tooflya.airbubblegum;
+package com.tooflya.bubblefun;
 
 import java.util.Random;
 
@@ -25,10 +25,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 
-import com.tooflya.airbubblegum.background.AsyncTaskLoader;
-import com.tooflya.airbubblegum.background.IAsyncCallback;
-import com.tooflya.airbubblegum.managers.ScreenManager;
-import com.tooflya.airbubblegum.screens.LoadingScreen;
+import com.tooflya.bubblefun.background.AsyncTaskLoader;
+import com.tooflya.bubblefun.background.IAsyncCallback;
+import com.tooflya.bubblefun.managers.ScreenManager;
+import com.tooflya.bubblefun.screens.LoadingScreen;
 
 /**
  * @author Tooflya.com

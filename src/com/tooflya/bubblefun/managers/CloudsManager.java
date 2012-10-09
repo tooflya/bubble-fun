@@ -1,9 +1,9 @@
-package com.tooflya.airbubblegum.managers;
+package com.tooflya.bubblefun.managers;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Options;
-import com.tooflya.airbubblegum.entities.Cloud;
-import com.tooflya.airbubblegum.entities.Entity;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.entities.Cloud;
+import com.tooflya.bubblefun.entities.Entity;
 
 public class CloudsManager extends EntityManager {
 

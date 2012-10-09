@@ -1,10 +1,10 @@
-package com.tooflya.airbubblegum.entities;
+package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Options;
-import com.tooflya.airbubblegum.Screen;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
 public class GraphicsBubble extends Bubble {
 

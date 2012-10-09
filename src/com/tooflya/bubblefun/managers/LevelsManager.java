@@ -1,8 +1,8 @@
-package com.tooflya.airbubblegum.managers;
+package com.tooflya.bubblefun.managers;
 
-import com.tooflya.airbubblegum.Options;
-import com.tooflya.airbubblegum.entities.Entity;
-import com.tooflya.airbubblegum.entities.LevelIcon;
+import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.LevelIcon;
 
 public class LevelsManager extends EntityManager {
 

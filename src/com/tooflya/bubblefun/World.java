@@ -1,16 +1,16 @@
-package com.tooflya.airbubblegum;
+package com.tooflya.bubblefun;
 
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
-import com.tooflya.airbubblegum.entities.BigBird;
-import com.tooflya.airbubblegum.entities.Bubble;
-import com.tooflya.airbubblegum.entities.Chiky;
-import com.tooflya.airbubblegum.entities.Entity;
-import com.tooflya.airbubblegum.entities.Particle;
-import com.tooflya.airbubblegum.managers.EntityManager;
+import com.tooflya.bubblefun.entities.BigBird;
+import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Particle;
+import com.tooflya.bubblefun.managers.EntityManager;
 
 public class World extends org.anddev.andengine.entity.Entity {
 
@@ -68,10 +68,30 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 	private void generateChikies(final int count) {
 		Chiky chiky;
+		final float stepX = 2f; // Normal speed.
+		switch (Options.levelNumber) {
+		case 1:
+			chiky = (Chiky) this.chikies.create();
+			chiky.init(0, 0, (Options.cameraHeight - Options.constHeight) / 2, stepX);
+			return;
+		case 2:
+			chiky = (Chiky) this.chikies.create();
+			chiky.init(0, Options.cameraWidth / 2, (Options.cameraHeight - Options.constHeight) * 0.50f, stepX);
+			chiky = (Chiky) this.chikies.create();
+			chiky.init(1, Options.cameraWidth / 2, (Options.cameraHeight - Options.constHeight) * 0.25f, -stepX);
+			return;
+		case 3:
+			chiky = (Chiky) this.chikies.create();
+			chiky.init(1, Options.cameraWidth / 2, (Options.cameraHeight - Options.constHeight) * 0.75f, -stepX);
+			chiky = (Chiky) this.chikies.create();
+			chiky.init(0, Options.cameraWidth / 2, (Options.cameraHeight - Options.constHeight) * 0.50f, stepX);
+			chiky = (Chiky) this.chikies.create();
+			chiky.init(1, Options.cameraWidth / 2, (Options.cameraHeight - Options.constHeight) * 0.25f, -stepX);
+			return;
+		}
 		for (int i = 0; i < count; i++) {
 			chiky = (Chiky) this.chikies.create();
 			chiky.setOffsetTime(Options.PI / 180 * 10 * i); // TODO: Set step between chikies on screen.
-			chiky.init();
 		}
 	}
 

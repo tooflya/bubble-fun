@@ -16,7 +16,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app" >
         <activity
-            android:name=".Game"
+            android:name="com.tooflya.bubblefun.Game"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.NoBackground" >
