@@ -50,10 +50,10 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected boolean isFlyAction = true;
 	protected boolean isScaleDefined = false;
 
-	private float mSpeedY;
-	private float mSpeedX;
-	private float mSpeedDecrement;
-	private float mDeathTime;
+	protected float mSpeedY;
+	protected float mSpeedX;
+	protected float mSpeedDecrement;
+	protected float mDeathTime;
 
 	// ===========================================================
 	// Constructors
@@ -63,10 +63,12 @@ public class Bubble extends Entity implements IAnimationListener {
 	 * @param pTiledTextureRegion
 	 * @param pNeedParent
 	 */
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent, final boolean pNeedAlpha) {
 		super(pTiledTextureRegion, pNeedParent);
 
-		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		if (pNeedAlpha) {
+			this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		}
 
 		if (pNeedParent) {
 			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
@@ -79,9 +81,17 @@ public class Bubble extends Entity implements IAnimationListener {
 
 	/**
 	 * @param pTiledTextureRegion
+	 * @param pNeedParent
+	 */
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
+		this(pTiledTextureRegion, pNeedParent, true);
+	}
+
+	/**
+	 * @param pTiledTextureRegion
 	 */
 	public Bubble(TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true);
+		this(pTiledTextureRegion, true, true);
 	}
 
 	// ===========================================================
@@ -247,7 +257,6 @@ public class Bubble extends Entity implements IAnimationListener {
 	 */
 	@Override
 	public void onAnimationEnd(AnimatedSprite arg0) {
-		System.out.println("DIE!!!");
 		this.destroy();
 	}
 

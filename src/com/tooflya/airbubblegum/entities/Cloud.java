@@ -83,7 +83,7 @@ public class Cloud extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mX -= this.mSpeed * (Options.fps / Game.fps);
+		this.mX -= this.mSpeed;
 		if (this.mX + this.getWidthScaled() < 0) {
 			this.destroy();
 		}

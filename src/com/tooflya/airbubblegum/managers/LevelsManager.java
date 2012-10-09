@@ -34,8 +34,10 @@ public class LevelsManager extends EntityManager {
 			}
 
 			LevelIcon icon = ((LevelIcon) this.create());
+			icon.setCurrentTileIndex(1);
 			icon.setPosition(X, Y);
 			icon.id = i + 1;
+			icon.writeNumber();
 		}
 	}
 }

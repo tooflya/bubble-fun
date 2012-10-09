@@ -29,7 +29,20 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_menu_bg.png", 0, 0, 1, 1), false) {
+	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_par1.png", 0, 0, 1, 1), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mDottedLine = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "line.png", 0, 1016, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -72,9 +85,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.attachChild(mBackground);
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
 
 		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.LEVEL));
 		this.clouds.generateStartClouds();
+
+		this.attachChild(mDottedLine);
 	}
 
 	/*
@@ -136,7 +152,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public boolean onBackPressed() {
-		Game.screens.set(Screen.MENU);
+		PreloaderScreen.isTheGame = false;
+		Game.screens.set(Screen.LOAD);
 
 		return true;
 	}

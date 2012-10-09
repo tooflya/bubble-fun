@@ -13,11 +13,12 @@ public abstract class Screen extends Scene {
 	// Constants
 	// ===========================================================
 
-	public static final int SCREENS_COUNT = 4;
+	public static final int SCREENS_COUNT = 5;
 
 	public static final int MENU = 0;
 	public static final int CHOISE = 1;
-	public static final int LEVEL = 2;
+	public static final int LOAD = 2;
+	public static final int LEVEL = 3;
 
 	// ===========================================================
 	// Fields

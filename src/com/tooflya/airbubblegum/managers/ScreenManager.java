@@ -7,6 +7,7 @@ import com.tooflya.airbubblegum.Screen;
 import com.tooflya.airbubblegum.screens.LevelChoiseScreen;
 import com.tooflya.airbubblegum.screens.LevelScreen;
 import com.tooflya.airbubblegum.screens.MenuScreen;
+import com.tooflya.airbubblegum.screens.PreloaderScreen;
 
 /**
  * @author Tooflya.com
@@ -43,6 +44,7 @@ public class ScreenManager {
 		/** Create all scenes */
 		screens[Screen.MENU] = new MenuScreen();
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
+		screens[Screen.LOAD] = new PreloaderScreen();
 		screens[Screen.LEVEL] = new LevelScreen();
 	}
 
@@ -50,6 +52,7 @@ public class ScreenManager {
 		/** Create all scenes */
 		screens[Screen.MENU].init();
 		screens[Screen.CHOISE].init();
+		screens[Screen.LOAD].init();
 		screens[Screen.LEVEL].init();
 	}
 
@@ -58,6 +61,7 @@ public class ScreenManager {
 	// ===========================================================
 
 	public void set(final int pScreen) {
+		screens[pScreen].onDetached();
 		screens[pScreen].setScene(Game.engine);
 		screens[pScreen].onAttached();
 		Screen.screen = pScreen;

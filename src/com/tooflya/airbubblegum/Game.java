@@ -5,20 +5,22 @@ import java.util.Random;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.FixedStepEngine;
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.util.FPSCounter;
+import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.FontFactory;
+import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -57,13 +59,16 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static boolean isGameLoaded = false;
 
 	/**  */
-	public static float fps;
-
-	/**  */
 	public static ScreenManager screens;
 
 	/** */
 	public static World world;
+
+	/**  */
+	public static Font font;
+
+	/**  */
+	private final static BitmapTextureAtlas fontTexture = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -112,7 +117,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
-		Options.constHeight = Options.cameraHeight / 10; // TODO: Maybe need correct value.
+		Options.constHeight = Options.cameraHeight / 3;
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
@@ -128,7 +133,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine */
-		engine = new FixedStepEngine(options, Options.fps);
+		engine = new FixedStepEngine(options, 80);
 
 		/**  */
 		instance = this;
@@ -145,6 +150,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		FontFactory.setAssetBasePath("font/");
+
+		font = FontFactory.createFromAsset(fontTexture, getApplicationContext(), "casual.ttf", 50, true, Color.WHITE);
+
+		this.getEngine().getFontManager().loadFonts(font);
+		this.getEngine().getTextureManager().loadTextures(fontTexture);
 	}
 
 	/*
@@ -203,15 +213,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
-		FPSCounter fpsCounter = new FPSCounter() {
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				super.onUpdate(pSecondsElapsed);
-
-				fps = getFPS();
-			}
-		};
-		this.getEngine().registerUpdateHandler(fpsCounter);
 
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);

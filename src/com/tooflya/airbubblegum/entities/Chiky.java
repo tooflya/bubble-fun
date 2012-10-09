@@ -229,7 +229,7 @@ public class Chiky extends Entity {
 				}
 
 				this.state = 2;
-				this.fallStepX = 10f / Game.fps; // TODO: (R) Correct magic number.
+				this.fallStepX = 10f; // TODO: (R) Correct magic number.
 				this.fallStepY = Game.random.nextFloat() * 5 + 1; // TODO: (R) Correct magic number.
 				this.fallSign = 1; // TODO: (R) Some strange code.
 				if (Game.random.nextInt(2) != 0) {

@@ -20,8 +20,6 @@ public class Options {
 	public final static float cameraOriginRatioX = 580.0f;
 	public final static float cameraOriginRatioY = 1024.0f;
 
-	public static final int fps = 80;
-
 	public static int levelNumber = 1;
 
 	public static int constHeight;

@@ -7,12 +7,8 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.airbubblegum.Game;
-import com.tooflya.airbubblegum.Options;
 import com.tooflya.airbubblegum.Screen;
-import com.tooflya.airbubblegum.entities.Cloud;
-import com.tooflya.airbubblegum.entities.Entity;
 import com.tooflya.airbubblegum.entities.LevelIcon;
-import com.tooflya.airbubblegum.managers.CloudsManager;
 import com.tooflya.airbubblegum.managers.LevelsManager;
 
 /**
@@ -25,20 +21,7 @@ public class LevelChoiseScreen extends Screen {
 	// Constants
 	// ===========================================================
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bg_level.png", 0, 0, 1, 1), false) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(128, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -49,10 +32,6 @@ public class LevelChoiseScreen extends Screen {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public LevelChoiseScreen() {
-		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-	}
 
 	// ===========================================================
 	// Virtual methods
@@ -65,9 +44,9 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public void init() {
-		this.setBackground(new SpriteBackground(mBackground));
+		this.setBackground(new SpriteBackground(PreloaderScreen.mBackground));
 
-		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level_button_2star.png", 580, 0, 1, 1), Screen.CHOISE));
+		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl_btn.png", 0, 0, 1, 6), Screen.CHOISE));
 		this.levels.generate();
 	}
 

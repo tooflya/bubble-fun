@@ -2,6 +2,9 @@ package com.tooflya.airbubblegum.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.content.Context;
+import android.os.Vibrator;
+
 import com.tooflya.airbubblegum.Game;
 import com.tooflya.airbubblegum.Options;
 import com.tooflya.airbubblegum.Screen;
@@ -79,6 +82,7 @@ public class BigBird extends Entity {
 	}
 
 	public void particles() {
+		((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
 		Particle particle;
 		for (int i = 0; i < Options.particlesCount; i++) {
 			particle = ((Particle) this.mFeathersManager.create());

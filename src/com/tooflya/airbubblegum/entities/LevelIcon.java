@@ -1,5 +1,6 @@
 package com.tooflya.airbubblegum.entities;
 
+import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
@@ -11,6 +12,10 @@ public class LevelIcon extends Entity {
 
 	public int id;
 
+	public boolean blocked = false;
+
+	private ChangeableText number;
+
 	private int mAddToScreen;
 
 	public LevelIcon(TiledTextureRegion pTiledTextureRegion, final int pScreen) {
@@ -20,6 +25,14 @@ public class LevelIcon extends Entity {
 
 		Game.screens.get(pScreen).attachChild(this);
 		Game.screens.get(pScreen).registerTouchArea(this);
+
+		this.number = new ChangeableText(0, 0, Game.font, "xx");
+		this.attachChild(this.number);
+	}
+
+	public void writeNumber() {
+		this.number.setText(this.id + "");
+		this.number.setPosition(this.getCenterX() - this.number.getWidthScaled() / 2, this.getCenterY() - this.number.getHeightScaled() / 2);
 	}
 
 	/*
@@ -33,7 +46,7 @@ public class LevelIcon extends Entity {
 		case TouchEvent.ACTION_UP:
 			Options.levelNumber = this.id;
 			Game.world.init();
-			Game.screens.set(Screen.LEVEL);
+			Game.screens.set(Screen.LOAD);
 			break;
 		}
 

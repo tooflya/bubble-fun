@@ -30,8 +30,35 @@ public class MenuScreen extends Screen {
 
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_menu_bg.png", 0, 0, 1, 1), false) {
+	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_par1.png", 0, 0, 1, 1), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mBackground2 = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "main_par2.png", 0, 0, 1, 1), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mBackground3 = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "main-name.png", 0, 505, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -263,6 +290,8 @@ public class MenuScreen extends Screen {
 		this.loadResources();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mBackground2.create().setPosition(0, Options.cameraHeight - mBackground2.getHeightScaled());
+		mBackground3.create().setCenterPosition(Options.cameraCenterX, 130 * Options.CAMERA_RATIO_FACTOR);
 		mTwitterIcon.create().setPosition(0 + ICONS_PADDING, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 		mFacebookIcon.create().setPosition(0 + ICONS_PADDING + ICONS_PADDING_BETWEEN + ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 
@@ -290,6 +319,8 @@ public class MenuScreen extends Screen {
 		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.MENU));
 		this.clouds.generateStartClouds();
 
+		this.attachChild(mBackground2);
+
 		this.attachChild(mTwitterIcon);
 		this.attachChild(mFacebookIcon);
 		this.attachChild(mPlayIcon);
@@ -301,6 +332,8 @@ public class MenuScreen extends Screen {
 		this.registerTouchArea(mPlayIcon);
 		this.registerTouchArea(mMoreIcon);
 		this.registerTouchArea(mSoundIcon);
+
+		this.attachChild(mBackground3);
 	}
 
 	/*
@@ -321,6 +354,18 @@ public class MenuScreen extends Screen {
 	 * @see com.tooflya.bouncekid.Screen#onDetached()
 	 */
 	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		PreloaderScreen.isTheGame = true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.bouncekid.Screen#onDetached()
+	 */
+	@Override
 	public void onDetached() {
 		super.onDetached();
 	}
@@ -332,7 +377,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2, mBackgroundTextureAtlas3);
 	}
 
 	/*
@@ -342,7 +387,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2, mBackgroundTextureAtlas3);
 	}
 
 	/*
