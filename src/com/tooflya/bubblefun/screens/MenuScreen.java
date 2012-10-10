@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
+import android.content.Intent;
+import android.net.Uri;
+
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
@@ -32,20 +35,7 @@ public class MenuScreen extends Screen {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_par1.png", 0, 0, 1, 1), false) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final static Entity mBackground2 = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "main_par2.png", 0, 0, 1, 1), false) {
+	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_bg.png", 0, 0, 1, 1), false) {
 
 		/*
 		 * (non-Javadoc)
@@ -82,6 +72,15 @@ public class MenuScreen extends Screen {
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 			switch (pAreaTouchEvent.getAction()) {
 			case TouchEvent.ACTION_UP:
+				try {
+					Intent intent = new Intent(Intent.ACTION_VIEW,
+							Uri.parse("twitter://user?screen_name=tooflya"));
+					Game.instance.startActivity(intent);
+
+				} catch (Exception e) {
+					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW,
+							Uri.parse("https://twitter.com/#!/tooflya")));
+				}
 				break;
 			}
 
@@ -290,7 +289,6 @@ public class MenuScreen extends Screen {
 		this.loadResources();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		mBackground2.create().setPosition(0, Options.cameraHeight - mBackground2.getHeightScaled());
 		mBackground3.create().setCenterPosition(Options.cameraCenterX, 130 * Options.CAMERA_RATIO_FACTOR);
 		mTwitterIcon.create().setPosition(0 + ICONS_PADDING, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 		mFacebookIcon.create().setPosition(0 + ICONS_PADDING + ICONS_PADDING_BETWEEN + ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
@@ -318,8 +316,6 @@ public class MenuScreen extends Screen {
 
 		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.MENU));
 		this.clouds.generateStartClouds();
-
-		this.attachChild(mBackground2);
 
 		this.attachChild(mTwitterIcon);
 		this.attachChild(mFacebookIcon);

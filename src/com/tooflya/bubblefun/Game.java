@@ -65,10 +65,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static World world;
 
 	/**  */
-	public static Font font;
+	public static Font mBigFont, mSmallFont;
 
 	/**  */
-	private final static BitmapTextureAtlas fontTexture = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBigFontTexture = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mSmallFontTexture = new BitmapTextureAtlas(128, 128, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -151,10 +152,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		FontFactory.setAssetBasePath("font/");
 
-		font = FontFactory.createFromAsset(fontTexture, getApplicationContext(), "casual.ttf", 50, true, Color.WHITE);
+		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50, true, Color.WHITE);
+		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 16, true, Color.WHITE);
 
-		this.getEngine().getFontManager().loadFonts(font);
-		this.getEngine().getTextureManager().loadTextures(fontTexture);
+		this.getEngine().getFontManager().loadFonts(mBigFont, mSmallFont);
+		this.getEngine().getTextureManager().loadTextures(mBigFontTexture, mSmallFontTexture);
 	}
 
 	/*

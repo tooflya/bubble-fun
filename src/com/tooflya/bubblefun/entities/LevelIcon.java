@@ -26,7 +26,7 @@ public class LevelIcon extends Entity {
 		Game.screens.get(pScreen).attachChild(this);
 		Game.screens.get(pScreen).registerTouchArea(this);
 
-		this.number = new ChangeableText(0, 0, Game.font, "xx");
+		this.number = new ChangeableText(0, 0, Game.mBigFont, "xx");
 		this.attachChild(this.number);
 	}
 

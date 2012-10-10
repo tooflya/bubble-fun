@@ -17,7 +17,7 @@ public class BigBird extends Entity {
 	private float mSleepTime = 0f;
 	public boolean mIsSleep = true;
 
-	private EntityManager mFeathersManager;
+	public EntityManager mFeathersManager;
 
 	public BigBird(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent, final EntityManager pFeathersManager) {
 		super(pTiledTextureRegion, false);
@@ -37,8 +37,8 @@ public class BigBird extends Entity {
 	@Override
 	public Entity create() {
 		final int i = Game.random.nextInt(2);
-		this.mX = i * Options.cameraWidth + this.getWidthScaled() * i;
-		this.mY = Game.random.nextInt(Options.cameraHeight / 3 * 2);
+		this.mX = i == 0 ? 0 - this.getWidthScaled() : Options.cameraWidth + this.getWidthScaled();
+		this.mY = Game.random.nextInt(Options.cameraHeight / 3 * 2) - this.getHeightScaled();
 
 		return super.create();
 	}

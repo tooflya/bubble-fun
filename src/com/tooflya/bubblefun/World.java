@@ -23,7 +23,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 	public EntityManager chikies;
 	public EntityManager airgums;
 	public EntityManager feathers;
-	public EntityManager particles;
+	public EntityManager stars;
 
 	private BigBird mBigBird;
 
@@ -39,7 +39,7 @@ public class World extends org.anddev.andengine.entity.Entity {
 		this.chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "chiky.png", 1, 1, 1, 4)));
 		this.airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
 		this.feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2)));
-		this.particles = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1)));
+		this.stars = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1)));
 
 		this.mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 60, 200, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2))));
 
@@ -48,8 +48,10 @@ public class World extends org.anddev.andengine.entity.Entity {
 
 	public void init() {
 		this.mBigBird.create();
+		this.mBigBird.mFeathersManager.clear();
 		this.airgums.clear();
 		this.chikies.clear();
+		this.stars.clear();
 		this.generateChikies(30); // TODO: Change count depending to level number.
 
 		this.feathers.clear();

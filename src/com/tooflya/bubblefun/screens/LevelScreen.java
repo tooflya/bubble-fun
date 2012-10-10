@@ -2,6 +2,7 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -57,6 +58,114 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
+	private final static Entity mResetButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "reset.png", 0, 950, 1, 1), false) {
+
+		@Override
+		public Entity create() {
+			if (!this.hasParent()) {
+				Game.screens.get(Screen.LEVEL).attachChild(this);
+			}
+
+			return super.create();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		 */
+		@Override
+		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_UP:
+				Game.world.init();
+				break;
+			}
+
+			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mBirdsCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-bird.png", 0, 850, 1, 1), false) {
+
+		@Override
+		public Entity create() {
+			if (!this.hasParent()) {
+				Game.screens.get(Screen.LEVEL).attachChild(this);
+			}
+
+			return super.create();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mAirCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon.png", 100, 850, 1, 1), false) {
+
+		@Override
+		public Entity create() {
+			if (!this.hasParent()) {
+				Game.screens.get(Screen.LEVEL).attachChild(this);
+			}
+
+			return super.create();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static Entity mAirCounterBackgroundFill = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon-fill.png", 200, 850, 1, 1), false) {
+
+		@Override
+		public Entity create() {
+			if (!this.hasParent()) {
+				Game.screens.get(Screen.LEVEL).attachChild(this);
+			}
+
+			return super.create();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final static ChangeableText mScoreText = new ChangeableText(0, 0, Game.mSmallFont, "Score: xxxxx");
+	private final static ChangeableText mBirdsCountText = new ChangeableText(65 * Options.CAMERA_RATIO_FACTOR, 31 * Options.CAMERA_RATIO_FACTOR, Game.mSmallFont, "31");
+	private final static ChangeableText mTapHelpText = new ChangeableText(Options.cameraCenterX - 200 * Options.CAMERA_RATIO_FACTOR, Options.cameraHeight / 3 * 2 + 120 * Options.CAMERA_RATIO_FACTOR, Game.mSmallFont, "Tap here to pop chicks!!!");
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -86,6 +195,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public void init() {
 		this.attachChild(mBackground);
 
+		mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
+
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
 
@@ -93,6 +204,20 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.clouds.generateStartClouds();
 
 		this.attachChild(mDottedLine);
+
+		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
+		mAirCounterBackgroundFill.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 85 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
+		mAirCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 85 * Options.CAMERA_RATIO_FACTOR);
+
+		mBirdsCountText.setColor(0f, 0f, 0f);
+		this.attachChild(mBirdsCountText);
+		// this.attachChild(mScoreText);
+		this.attachChild(mTapHelpText);
+
+		mTapHelpText.setRotationCenter(mTapHelpText.getWidthScaled() / 2, mTapHelpText.getHeightScaled() / 2);
+		mTapHelpText.setRotation(-15);
+
+		this.registerTouchArea(mResetButton);
 	}
 
 	/*
@@ -125,6 +250,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.clouds.update();
+
+		mBirdsCountText.setText(Game.world.chikies.getCount() + "");
 	}
 
 	/*
@@ -184,7 +311,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 					Particle particle;
 					for (int i = 0; i < Options.particlesCount / 2; i++) {
-						particle = ((Particle) Game.world.particles.create());
+						particle = ((Particle) Game.world.stars.create());
 						if (particle != null) {
 							particle.Init().setCenterPosition(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY());
 						}
