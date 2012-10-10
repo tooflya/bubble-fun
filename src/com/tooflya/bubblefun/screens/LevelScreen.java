@@ -206,8 +206,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.attachChild(mDottedLine);
 
 		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
-		mAirCounterBackgroundFill.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 85 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
-		mAirCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 85 * Options.CAMERA_RATIO_FACTOR);
+		// mAirCounterBackgroundFill.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 85 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
+		mAirCounterBackground.create().setPosition((20 * Options.CAMERA_RATIO_FACTOR) * 2 + mAirCounterBackground.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR);
 
 		mBirdsCountText.setColor(0f, 0f, 0f);
 		this.attachChild(mBirdsCountText);
