@@ -195,7 +195,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public void init() {
 		this.attachChild(mBackground);
 
-		mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
+		// mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
@@ -207,7 +207,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		// mAirCounterBackgroundFill.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 85 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
-		mAirCounterBackground.create().setPosition((20 * Options.CAMERA_RATIO_FACTOR) * 2 + mAirCounterBackground.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR);
+		mAirCounterBackground.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackground.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR);
 
 		mBirdsCountText.setColor(0f, 0f, 0f);
 		this.attachChild(mBirdsCountText);
