@@ -33,6 +33,10 @@ public class LevelChoiseScreen extends Screen {
 	// Constructors
 	// ===========================================================
 
+	public LevelChoiseScreen() {
+		this.loadResources();
+	}
+
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
@@ -47,6 +51,19 @@ public class LevelChoiseScreen extends Screen {
 		this.setBackground(new SpriteBackground(PreloaderScreen.mBackground));
 
 		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl_btn.png", 0, 0, 1, 5), Screen.CHOISE));
+		this.levels.generate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.bouncekid.Screen#onDetached()
+	 */
+	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		this.levels.clear();
 		this.levels.generate();
 	}
 

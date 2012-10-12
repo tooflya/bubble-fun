@@ -23,7 +23,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	// Constants
 	// ===========================================================
 
-	public static boolean isTheGame;
+	public static boolean isTheGame = true;
 
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -137,6 +137,8 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	// ===========================================================
 
 	public PreloaderScreen() {
+		this.loadResources();
+
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 	}
 
@@ -204,7 +206,11 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		if (isTheGame) {
 			Game.screens.get(Screen.MENU).unloadResources();
 			Game.screens.get(Screen.CHOISE).unloadResources();
+			Game.screens.get(Screen.LEVEL).loadResources();
+			Game.screens.get(Screen.LEVELEND).loadResources();
 		} else {
+			Game.screens.get(Screen.LEVEL).unloadResources();
+			Game.screens.get(Screen.LEVELEND).unloadResources();
 			Game.screens.get(Screen.MENU).loadResources();
 			Game.screens.get(Screen.CHOISE).loadResources();
 		}

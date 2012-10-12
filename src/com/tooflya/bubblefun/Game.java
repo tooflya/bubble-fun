@@ -21,12 +21,15 @@ import org.anddev.andengine.ui.activity.BaseGameActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.Window;
 
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
+import com.tooflya.bubblefun.database.LevelsStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.LoadingScreen;
 
@@ -55,21 +58,21 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	/** Camera of the game */
 	public static Camera camera;
 
+	/** */
+	public static LevelsStorage db;
+
 	/**  */
 	public static boolean isGameLoaded = false;
 
 	/**  */
 	public static ScreenManager screens;
 
-	/** */
-	public static World world;
-
 	/**  */
 	public static Font mBigFont, mSmallFont;
 
 	/**  */
-	private final static BitmapTextureAtlas mBigFontTexture = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mSmallFontTexture = new BitmapTextureAtlas(128, 128, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBigFontTexture = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mSmallFontTexture = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -136,6 +139,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Try to init our engine */
 		engine = new FixedStepEngine(options, 80);
 
+		/** */
+		db = new LevelsStorage();
+
 		/**  */
 		instance = this;
 
@@ -152,8 +158,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		FontFactory.setAssetBasePath("font/");
 
-		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50, true, Color.WHITE);
-		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 16, true, Color.WHITE);
+		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50 * Options.CAMERA_RATIO_FACTOR, true, Color.WHITE);
+		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 32 * Options.CAMERA_RATIO_FACTOR, true, Color.WHITE);
 
 		this.getEngine().getFontManager().loadFonts(mBigFont, mSmallFont);
 		this.getEngine().getTextureManager().loadTextures(mBigFontTexture, mSmallFontTexture);
@@ -169,9 +175,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** Create screen manager */
 		(screens = new ScreenManager()).init();
-
-		/** */
-		world = new World();
 
 		/** White while progressbar is running */
 		while (!isGameLoaded) {
@@ -264,6 +267,18 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		super.onPauseGame();
 
 		// TODO: Stop all music, update handlers and other active things
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onAttachedToWindow()
+	 */
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		Window window = getWindow();
+		window.setFormat(PixelFormat.RGBA_8888);
 	}
 
 	/*

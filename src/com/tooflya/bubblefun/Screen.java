@@ -13,12 +13,13 @@ public abstract class Screen extends Scene {
 	// Constants
 	// ===========================================================
 
-	public static final int SCREENS_COUNT = 5;
+	public static final int SCREENS_COUNT = 6;
 
 	public static final int MENU = 0;
 	public static final int CHOISE = 1;
 	public static final int LOAD = 2;
 	public static final int LEVEL = 3;
+	public static final int LEVELEND = 4;
 
 	// ===========================================================
 	// Fields
@@ -29,10 +30,6 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public Screen() {
-		this.loadResources();
-	}
 
 	// ===========================================================
 	// Virtual methods

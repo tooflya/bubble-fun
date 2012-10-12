@@ -17,7 +17,7 @@ public class BigBird extends Entity {
 	private float mSleepTime = 0f;
 	public boolean mIsSleep = true;
 
-	public EntityManager mFeathersManager;
+	public static EntityManager mFeathersManager;
 
 	public BigBird(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent, final EntityManager pFeathersManager) {
 		super(pTiledTextureRegion, false);
@@ -26,7 +26,7 @@ public class BigBird extends Entity {
 
 		this.animate(500);
 
-		this.mFeathersManager = pFeathersManager;
+		mFeathersManager = pFeathersManager;
 	}
 
 	/*
@@ -82,10 +82,10 @@ public class BigBird extends Entity {
 	}
 
 	public void particles() {
-		((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
+		//((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
 		Particle particle;
 		for (int i = 0; i < Options.particlesCount; i++) {
-			particle = ((Particle) this.mFeathersManager.create());
+			particle = ((Particle) mFeathersManager.create());
 			if (particle != null) {
 				particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 			}
@@ -99,6 +99,6 @@ public class BigBird extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new BigBird(getTextureRegion(), false, this.mFeathersManager);
+		return new BigBird(getTextureRegion(), false, mFeathersManager);
 	}
 }

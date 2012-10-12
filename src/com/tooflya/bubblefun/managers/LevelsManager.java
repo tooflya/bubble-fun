@@ -1,6 +1,8 @@
 package com.tooflya.bubblefun.managers;
 
+import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 
@@ -19,6 +21,23 @@ public class LevelsManager extends EntityManager {
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.bubblefun.managers.EntityManager#clear()
+	 */
+	@Override
+	public void clear() {
+		super.clear();
+
+		PADDING = 116f * Options.CAMERA_RATIO_FACTOR;
+		PADDING_B = 23.2f * Options.CAMERA_RATIO_FACTOR;
+
+		X = PADDING_B;
+		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
+
+	}
+
 	public void generate() {
 		for (int i = 0; i < this.getCapacity(); i++) {
 
@@ -34,11 +53,16 @@ public class LevelsManager extends EntityManager {
 			}
 
 			LevelIcon icon = ((LevelIcon) this.create());
-			icon.setCurrentTileIndex(1);
+
 			icon.setPosition(X, Y);
 			icon.id = i + 1;
 
-			if (icon.id != 1) {
+			Level level = Game.db.getLevel(icon.id);
+
+			if (icon.id == 1 || level.isOpen()) {
+				icon.blocked = false;
+				icon.setCurrentTileIndex(level.getStarsCount() + 1);
+			} else {
 				icon.setCurrentTileIndex(0);
 				icon.blocked = true;
 			}

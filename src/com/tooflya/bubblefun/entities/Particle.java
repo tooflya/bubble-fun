@@ -21,6 +21,8 @@ public class Particle extends Entity {
 	// Fields
 	// ===========================================================
 
+	private int mAddToScreen;
+
 	private float stepX = 0;
 	private float stepY = 0;
 	private float stepRotation = 0;
@@ -36,8 +38,12 @@ public class Particle extends Entity {
 	/**
 	 * @param pTiledTextureRegion
 	 */
-	public Particle(TiledTextureRegion pTiledTextureRegion) {
-		super(pTiledTextureRegion);
+	public Particle(TiledTextureRegion pTiledTextureRegion, final int pScreenToAdd) {
+		super(pTiledTextureRegion, false);
+
+		this.mAddToScreen = pScreenToAdd;
+
+		Game.screens.get(this.mAddToScreen).attachChild(this);
 	}
 
 	// ===========================================================
@@ -124,7 +130,7 @@ public class Particle extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Particle(getTextureRegion());
+		return new Particle(getTextureRegion(), mAddToScreen);
 	}
 
 }

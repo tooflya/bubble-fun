@@ -7,6 +7,7 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class Bubble extends Entity implements IAnimationListener {
 
@@ -157,6 +158,7 @@ public class Bubble extends Entity implements IAnimationListener {
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 
+		this.stopAnimation();
 		this.setCurrentTileIndex(0);
 
 		return super.create();
@@ -177,12 +179,14 @@ public class Bubble extends Entity implements IAnimationListener {
 				this.mSpeedDecrement += 0.05f;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
+				LevelScreen.AIR--;
 			}
 		}
 		else {
 			this.mDeathTime--;
 			if (this.mDeathTime <= 0 && this.isFlyAction) {
 				if (!this.isAnimationRunning()) {
+					System.out.println("EVENT");
 					this.animate(40, 0, this);
 				}
 			}

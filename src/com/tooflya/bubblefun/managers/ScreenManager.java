@@ -5,6 +5,7 @@ import org.anddev.andengine.engine.camera.hud.HUD;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
+import com.tooflya.bubblefun.screens.LevelEndScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.MenuScreen;
 import com.tooflya.bubblefun.screens.PreloaderScreen;
@@ -46,6 +47,7 @@ public class ScreenManager {
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
 		screens[Screen.LOAD] = new PreloaderScreen();
 		screens[Screen.LEVEL] = new LevelScreen();
+		screens[Screen.LEVELEND] = new LevelEndScreen();
 	}
 
 	public void init() {
@@ -54,6 +56,7 @@ public class ScreenManager {
 		screens[Screen.CHOISE].init();
 		screens[Screen.LOAD].init();
 		screens[Screen.LEVEL].init();
+		screens[Screen.LEVELEND].init();
 	}
 
 	// ===========================================================
@@ -61,7 +64,7 @@ public class ScreenManager {
 	// ===========================================================
 
 	public void set(final int pScreen) {
-		screens[pScreen].onDetached();
+		Game.engine.getScene().onDetached();
 		screens[pScreen].setScene(Game.engine);
 		screens[pScreen].onAttached();
 		Screen.screen = pScreen;

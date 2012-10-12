@@ -88,6 +88,8 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 
 	public LoadingScreen() {
+		this.loadResources();
+
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
@@ -129,6 +131,8 @@ public class LoadingScreen extends Screen {
 
 		this.clearUpdateHandlers();
 		this.unloadResources();
+
+		System.out.println("CALLED!!!");
 	}
 
 	/*

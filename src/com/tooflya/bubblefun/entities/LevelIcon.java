@@ -7,6 +7,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class LevelIcon extends Entity {
 
@@ -14,7 +15,7 @@ public class LevelIcon extends Entity {
 
 	public boolean blocked = false;
 
-	private ChangeableText number;
+	private Text number;
 
 	private int mAddToScreen;
 
@@ -26,26 +27,28 @@ public class LevelIcon extends Entity {
 		Game.screens.get(pScreen).attachChild(this);
 		Game.screens.get(pScreen).registerTouchArea(this);
 
-		this.number = new ChangeableText(0, 0, Game.mBigFont, "xx");
-		this.attachChild(this.number);
+		this.number = new Text(0, 0, Game.mBigFont, "xx");
+		this.getParent().attachChild(this.number);
 	}
 
 	public void writeNumber() {
 		if (this.blocked) {
 			this.number.setVisible(false);
 		} else {
+			this.number.setVisible(true);
 			this.number.setText(this.id + "");
 			float x = 0;
 			if (this.id < 2) {
-				x = 90 * Options.CAMERA_RATIO_FACTOR;
+				x = 40 * Options.CAMERA_RATIO_FACTOR;
 			} else if (this.id < 10) {
-				x = 80 * Options.CAMERA_RATIO_FACTOR;
+				x = 30 * Options.CAMERA_RATIO_FACTOR;
 			} else if (this.id < 20) {
-				x = 70 * Options.CAMERA_RATIO_FACTOR;
+				x = 20 * Options.CAMERA_RATIO_FACTOR;
 			} else {
-				x = 60 * Options.CAMERA_RATIO_FACTOR;
+				x = 10 * Options.CAMERA_RATIO_FACTOR;
 			}
-			this.number.setPosition(x, 30 * Options.CAMERA_RATIO_FACTOR);
+			// this.number.setPosition(x, 5 * Options.CAMERA_RATIO_FACTOR);
+			this.number.setPosition(this.getCenterX(), this.getCenterY());
 		}
 	}
 
@@ -60,7 +63,7 @@ public class LevelIcon extends Entity {
 		case TouchEvent.ACTION_UP:
 			if (!this.blocked) {
 				Options.levelNumber = this.id;
-				Game.world.init();
+				LevelScreen.reInit();
 				Game.screens.set(Screen.LOAD);
 			}
 			break;
