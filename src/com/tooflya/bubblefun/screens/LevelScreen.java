@@ -17,6 +17,7 @@ import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Particle;
+import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -238,7 +239,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		// mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		// this.registerTouchArea(mResetButton);
-		stars = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1), Screen.LEVEL));
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1), Screen.LEVEL));
 	}
 
 	public static void reInit() {
@@ -564,11 +565,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef);
 					this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 5));
 
-					Particle particle;
-					for (int i = 0; i < Options.particlesCount / 2; i++) {
-						particle = ((Particle) stars.create());
+					Star particle;
+					for (int i = 0; i < 5; i++) {
+						particle = ((Star) stars.create());
 						if (particle != null) {
-							particle.Init().setCenterPosition(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY());
+							particle.Init(i).setCenterPosition(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY());
 						}
 					}
 				}
