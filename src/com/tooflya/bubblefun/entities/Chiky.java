@@ -87,28 +87,31 @@ public class Chiky extends Entity {
 		case 0: // Normal.
 			this.x = this.startX;
 			this.y = this.startY;
-
 			return;
 		case 1: // Various speed.
 			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-
 			this.x = this.startX;
 			this.y = this.startY;
-
 			return;
 		case 2: // Jumped speed.
 			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-
 			this.x = this.startX;
 			this.y = this.startY;
-
 			return;
-		case 3: // Various speed.
+		case 3: // Ellipse way.
 			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-
 			this.x = this.startX;
 			this.y = this.startY;
-
+			return;
+		case 4: // Hidden in time.
+			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
+			this.x = this.startX;
+			this.y = this.startY;
+			return;
+		case 5: // Hidden in time with jumped speed.
+			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
+			this.x = this.startX;
+			this.y = this.startY;
 			return;
 		}
 	}
@@ -138,17 +141,28 @@ public class Chiky extends Entity {
 
 	private float getCalculatedX() {
 		this.x += this.stepX;
-		if (this.type == 2 && this.normalStepTime < this.time) {
+		if ((this.type == 2 || this.type == 5) && this.normalStepTime < this.time) {
 			this.x += 3 * this.stepX;
 		}
 
-		if (this.x - this.getWidthScaled() / 2 < 0) {
-			this.x = -(this.x - this.getWidthScaled() / 2) + this.getWidthScaled() / 2;
-			this.stepX = +Math.abs(this.stepX);
+		float offsetX = 0;
+		if (this.type == 4 || this.type == 5) {
+			offsetX = Options.cameraWidth / 5;
 		}
-		if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-			this.x = Options.cameraWidth - ((this.x + this.getWidthScaled() / 2) - Options.cameraWidth) - this.getWidthScaled() / 2;
+
+		if (this.x - this.getWidthScaled() / 2 + offsetX < 0) {
+			this.x = -(this.x - this.getWidthScaled() / 2 + offsetX) + this.getWidthScaled() / 2;
+			this.stepX = +Math.abs(this.stepX);
+			if (this.type == 4) {
+				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikySize);
+			}
+		}
+		if (this.x + this.getWidthScaled() / 2 - offsetX > Options.cameraWidth) {
+			this.x = Options.cameraWidth - ((this.x + this.getWidthScaled() / 2 - offsetX) - Options.cameraWidth) - this.getWidthScaled() / 2;
 			this.stepX = -Math.abs(this.stepX);
+			if (this.type == 4) {
+				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikySize);
+			}
 		}
 		return this.x;
 	}
@@ -180,7 +194,7 @@ public class Chiky extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.time += this.timeStep;
-		if (this.type == 2 && this.time >= this.normalStepTime + this.doubleStepTime) {
+		if ((this.type == 2 || this.type == 5) && this.time >= this.normalStepTime + this.doubleStepTime) {
 			this.time -= this.normalStepTime + this.doubleStepTime;
 		}
 
