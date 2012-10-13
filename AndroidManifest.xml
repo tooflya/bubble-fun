@@ -25,7 +25,6 @@
         <activity
             android:name="com.tooflya.bubblefun.Game"
             android:configChanges="keyboardHidden|orientation"
-            android:parentActivityName="com.tooflya.bubblefun.Game"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.NoBackground" >
             <intent-filter>
