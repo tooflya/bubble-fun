@@ -22,12 +22,10 @@ public class Chiky extends Entity {
 	// Fields
 	// ===========================================================
 
-	private float time = 0;
-	private float timeStep = Options.PI / 180 / 10; // TODO: (R) Find right step.
-	private float offsetTime = 0;
-
-	private float koefX = 0;
-	private float koefY = 0;
+	private float time = 0f;
+	private float timeStep = 1f;
+	private final float normalStepTime = 200f; // TODO: Find correct number.
+	private final float doubleStepTime = 50f; // TODO: Find correct number.
 
 	private float lastX = 0;
 	private float lastY = 0;
@@ -50,12 +48,12 @@ public class Chiky extends Entity {
 
 	private float stepX = 0;
 
-	private float sizeY = 0;
+	private float sizeY = Options.cameraHeight / 10;
 
 	private Chiky leftNeighbour = null;
 	private Chiky rightNeighbour = null;
 
-	private int type = Game.random.nextInt(3);
+	private int type = 0;
 
 	// ===========================================================
 	// Constructors
@@ -88,35 +86,33 @@ public class Chiky extends Entity {
 		this.sizeY = 0;
 
 		switch (this.type) {
-		case 0:
-			this.startX = Options.cameraWidth / 2;
-			this.startY = (Options.cameraHeight - Options.constHeight) / 2;
+		case 0: // Normal.
+			this.x = this.startX;
+			this.y = this.startY;
+
+			return;
+		case 1: // Various speed.
+			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
 
 			this.x = this.startX;
 			this.y = this.startY;
 
 			return;
-		case 1:
-			this.startX = Options.cameraWidth / 2;
-			this.startY = (Options.cameraHeight - Options.constHeight) / 2;
+		case 2: // Jumped speed.
+			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
 
-			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f);
+			this.x = this.startX;
+			this.y = this.startY;
+
+			return;
+		case 3: // Various speed.
+			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
 
 			this.x = this.startX;
 			this.y = this.startY;
 
 			return;
 		}
-
-		this.startX = Game.random.nextFloat() * (Options.cameraWidth - this.getWidthScaled()) + this.getWidthScaled() / 2; // From this.getWidthScaled() / 2 to Options.cameraWidth - this.getWidthScaled() / 2.
-		this.startY = Game.random.nextFloat() * (Options.cameraHeight - this.getHeightScaled() - Options.constHeight) + this.getHeightScaled() / 2; // From this.getHeightScaled() / 2 to Options.cameraHeight - Options.constHeight - this.getHeightScaled() / 2.
-
-		this.stepX = Game.random.nextFloat() * 6f - 3f;
-
-		this.sizeY = Game.random.nextFloat() * Options.cameraHeight / 10;
-
-		this.x = this.startX;
-		this.y = this.startY;
 	}
 
 	// ===========================================================
@@ -124,10 +120,10 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	public void setOffsetTime(final float offsetTime) {
-		this.offsetTime = offsetTime;
-		this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
-		this.koefX = Game.random.nextInt(Options.levelNumber) + 1;
-		this.koefY = Game.random.nextInt(Options.levelNumber) + 1;
+		// this.offsetTime = offsetTime;
+		// this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
+		// this.koefX = Game.random.nextInt(Options.levelNumber) + 1;
+		// this.koefY = Game.random.nextInt(Options.levelNumber) + 1;
 	}
 
 	public void setIsNeedToFlyAway(final float airgumScale) {
@@ -144,89 +140,28 @@ public class Chiky extends Entity {
 
 	private float getCalculatedX() {
 		this.x += this.stepX;
+		if (this.type == 2 && this.normalStepTime < this.time) {
+			this.x += 3 * this.stepX;
+		}
+
 		if (this.x - this.getWidthScaled() / 2 < 0) {
+			this.x = -(this.x - this.getWidthScaled() / 2) + this.getWidthScaled() / 2;
 			this.stepX = +Math.abs(this.stepX);
 		}
 		if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
+			this.x = Options.cameraWidth - ((this.x + this.getWidthScaled() / 2) - Options.cameraWidth) - this.getWidthScaled() / 2;
 			this.stepX = -Math.abs(this.stepX);
 		}
 		return this.x;
-
-		// switch (this.type) {
-		// case 0:
-		// this.x += this.stepX;
-		// if (this.x - this.getWidthScaled() / 2 < 0) {
-		// this.stepX = +Math.abs(this.stepX);
-		// }
-		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-		// this.stepX = -Math.abs(this.stepX);
-		// }
-		// return this.x;
-		// case 1:
-		// this.x += this.stepX;
-		// if (this.x - this.getWidthScaled() / 2 < 0) {
-		// this.stepX = +Math.abs(this.stepX);
-		// }
-		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-		// this.stepX = -Math.abs(this.stepX);
-		// }
-		// return this.x;
-		// case 2:
-		// this.x += this.stepX;
-		// if (this.x + this.getWidthScaled() / 2 < 0) {
-		// this.x = Options.cameraWidth + this.getWidthScaled() / 2;
-		// }
-		// if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
-		// this.x = -this.getWidthScaled() / 2;
-		// }
-		// return this.x;
-		// case 3:
-		// this.x += this.stepX;
-		// if (this.x - this.getWidthScaled() / 2 < 0) {
-		// this.stepX = +Math.abs(this.stepX);
-		// }
-		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-		// this.stepX = -Math.abs(this.stepX);
-		// }
-		// return this.x;
-		// case 4:
-		// this.x += this.stepX;
-		// if (this.x + this.getWidthScaled() / 2 < 0) {
-		// this.x = Options.cameraWidth + this.getWidthScaled() / 2;
-		// }
-		// if (this.x - this.getWidthScaled() / 2 > Options.cameraWidth) {
-		// this.x = -this.getWidthScaled() / 2;
-		// }
-		// return this.x;
-		// case 5:
-		// this.x += this.stepX;
-		// if (this.x - this.getWidthScaled() / 2 < 0) {
-		// this.stepX = +Math.abs(this.stepX);
-		// }
-		// if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth) {
-		// this.stepX = -Math.abs(this.stepX);
-		// }
-		// return this.startX + FloatMath.cos(Options.PI / 180 * this.x) * (Math.min(this.startX, Options.cameraWidth - this.getWidthScaled() - this.startX)) / 2;
-		// }
-		//
-		// return Options.cameraCenterX + FloatMath.sin(this.koefX * this.time + this.offsetTime) * (Options.cameraCenterX - this.getWidth()); // Variant 0.
 	}
 
 	private float getCalculatedY() {
-		switch (this.type) {
-		case 1:
+		if (this.type != 3) {
 			return this.y;
-		case 2:
-			return this.y;
-		case 3:
-			return this.startY + FloatMath.sin(Options.PI / 180 * this.x) * this.sizeY;
-		case 4:
-			return this.startY + FloatMath.sin(Options.PI / 180 * this.x) * this.sizeY;
-		case 5:
-			return this.startY + FloatMath.sin(Options.PI / 180 * this.x) * this.sizeY;
 		}
-
-		return Options.cameraCenterY + FloatMath.cos(this.koefY * this.time + this.offsetTime) * (Options.cameraCenterY - this.getHeight() - Options.constHeight) - Options.constHeight; // Variant 0.
+		else {
+			return this.startY + FloatMath.sin(this.time * Options.PI / this.stepX) * this.sizeY;
+		}
 	}
 
 	public boolean getIsFly() {
@@ -247,6 +182,9 @@ public class Chiky extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.time += this.timeStep;
+		if (this.type == 2 && this.time >= this.normalStepTime + this.doubleStepTime) {
+			this.time -= this.normalStepTime + this.doubleStepTime;
+		}
 
 		this.lastX = this.getCenterX();
 
