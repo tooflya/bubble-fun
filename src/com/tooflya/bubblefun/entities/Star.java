@@ -21,8 +21,8 @@ public class Star extends Entity {
 
 	private int mAddToScreen;
 
-	private float mStepX = 0;
-	private float mStepY = 0;
+	private float mStepX;
+	private float mStepY;
 
 	private boolean isParticle;
 
