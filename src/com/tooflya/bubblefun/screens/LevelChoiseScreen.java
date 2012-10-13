@@ -63,6 +63,8 @@ public class LevelChoiseScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 
+		PreloaderScreen.mChangeAction = 0;
+
 		this.levels.clear();
 		this.levels.generate();
 	}

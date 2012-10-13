@@ -3,6 +3,7 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -46,6 +47,28 @@ public class LevelEndScreen extends Screen {
 		/*
 		 * (non-Javadoc)
 		 * 
+		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		 */
+		@Override
+		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_DOWN:
+				this.setCurrentTileIndex(1);
+				break;
+			case TouchEvent.ACTION_UP:
+				this.setCurrentTileIndex(0);
+
+				PreloaderScreen.mChangeAction = 2;
+				Game.screens.set(Screen.LOAD);
+				break;
+			}
+
+			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
 		 */
 		@Override
@@ -59,6 +82,28 @@ public class LevelEndScreen extends Screen {
 		/*
 		 * (non-Javadoc)
 		 * 
+		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		 */
+		@Override
+		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_DOWN:
+				this.setCurrentTileIndex(1);
+				break;
+			case TouchEvent.ACTION_UP:
+				this.setCurrentTileIndex(0);
+
+				LevelScreen.reInit();
+				Game.screens.set(Screen.LEVEL);
+				break;
+			}
+
+			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
 		 */
 		@Override
@@ -68,6 +113,30 @@ public class LevelEndScreen extends Screen {
 	};
 
 	public final static Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "next_hd.png", 400, 0, 1, 2), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		 */
+		@Override
+		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_DOWN:
+				this.setCurrentTileIndex(1);
+				break;
+			case TouchEvent.ACTION_UP:
+				this.setCurrentTileIndex(0);
+
+				Options.levelNumber++;
+				LevelScreen.reInit();
+				Game.screens.set(Screen.LEVEL);
+
+				break;
+			}
+
+			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		}
 
 		/*
 		 * (non-Javadoc)
@@ -113,13 +182,13 @@ public class LevelEndScreen extends Screen {
 	public LevelEndScreen() {
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		mMenu.create().setPosition(120f, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mMenu.create().setPosition(105f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
 		mMenu.hide();
 
-		mRePlay.create().setPosition(320f, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mRePlay.create().setPosition(253f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
 		mRePlay.hide();
 
-		mPlayNext.create().setPosition(520f, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mPlayNext.create().setPosition(405f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
 		mPlayNext.hide();
 
 		this.attachChild(mMenu);
@@ -156,8 +225,8 @@ public class LevelEndScreen extends Screen {
 			}
 		}
 
-		Game.db.updateLevel(Options.levelNumber - 1, 1, mStarsCount);
-		Game.db.updateLevel(Options.levelNumber, 1, 0);
+		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount);
+		Game.db.updateLevel(Options.levelNumber + 1, 1, 0); // TODO: Remove stars reset
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
@@ -191,9 +260,6 @@ public class LevelEndScreen extends Screen {
 
 	@Override
 	public boolean onBackPressed() {
-		LevelScreen.reInit();
-		Game.screens.set(Screen.LEVEL);
-
 		return false;
 	}
 

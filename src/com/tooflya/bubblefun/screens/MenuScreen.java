@@ -353,7 +353,7 @@ public class MenuScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 
-		PreloaderScreen.isTheGame = true;
+		PreloaderScreen.mChangeAction = 0;
 	}
 
 	/*

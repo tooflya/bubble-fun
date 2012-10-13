@@ -359,7 +359,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.checkCollision();
 
 		if (chikies.getCount() == 0) {
-			Options.levelNumber++;
 			Game.screens.set(Screen.LEVELEND);
 		}
 
@@ -396,7 +395,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public boolean onBackPressed() {
-		PreloaderScreen.isTheGame = false;
+		PreloaderScreen.mChangeAction = 1;
 		Game.screens.set(Screen.LOAD);
 
 		return true;

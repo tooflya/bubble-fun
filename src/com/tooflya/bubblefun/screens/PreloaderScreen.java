@@ -23,7 +23,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	// Constants
 	// ===========================================================
 
-	public static boolean isTheGame = true;
+	public static int mChangeAction = 0;
 
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -116,10 +116,13 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 				mBalonFull.setPosition(mBalonFull.getX(), mBalon.getY() + mBalon.getHeightScaled() - mBalonFull.getHeightScaled() - 3 * Options.CAMERA_RATIO_FACTOR);
 			} else {
 				if (true) {
-					if (isTheGame) {
+					if (mChangeAction == 0) {
 						Game.screens.set(Screen.LEVEL);
-					} else {
+					} else if (mChangeAction == 1) {
 						Game.screens.set(Screen.MENU);
+					}
+					else {
+						Game.screens.set(Screen.CHOISE);
 					}
 				}
 			}
@@ -203,7 +206,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 	@Override
 	public void workToDo() {
-		if (isTheGame) {
+		if (mChangeAction == 0) {
 			Game.screens.get(Screen.MENU).unloadResources();
 			Game.screens.get(Screen.CHOISE).unloadResources();
 			Game.screens.get(Screen.LEVEL).loadResources();
