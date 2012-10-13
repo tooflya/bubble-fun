@@ -157,13 +157,13 @@ public class LevelEndScreen extends Screen {
 				if (mStarsAnimationCount < mStarsCount) {
 					mStarsAnimationCount++;
 
-					mLevelStars.create().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+					mLevelStars.create().setCenterPosition(((106f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 629 * Options.CAMERA_RATIO_FACTOR);
 
 					Star particle;
-					for (int i = 0; i < 5; i++) {
+					for (int i = 0; i < 7; i++) {
 						particle = ((Star) stars.create());
 						if (particle != null) {
-							particle.Init(i).setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+							particle.Init(i).setCenterPosition(((86f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 610 * Options.CAMERA_RATIO_FACTOR);
 						}
 					}
 				} else {
@@ -226,7 +226,7 @@ public class LevelEndScreen extends Screen {
 		}
 
 		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount);
-		Game.db.updateLevel(Options.levelNumber + 1, 1, 0); // TODO: Remove stars reset
+		Game.db.updateLevel(Options.levelNumber + 1, 1); // TODO: Remove stars reset
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
