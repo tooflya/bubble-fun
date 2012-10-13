@@ -264,169 +264,183 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private static void generateChikies(final int count) {
 		Chiky chiky;
-		final float stepX = 2f; // Normal speed.
+		
 		final float minHeight = Options.chikySize / 2 + Options.ellipseHeight;
 		final float sizeHeight2 = (Options.cameraHeight - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
+		
+		final int stepSign = 1;
 		switch (Options.levelNumber) {
 		case 1:
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, 0, minHeight + sizeHeight2, stepX);
+			chiky.init(0, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 2:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			return;
 		case 3:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			return;
 		case 4:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 5:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 6:
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, 0, minHeight + sizeHeight2, stepX);
+			chiky.init(2, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 7:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, 0, minHeight + sizeHeight2, stepX);
+			chiky.init(2, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 8:
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepX);
+			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, 0, minHeight + sizeHeight2, stepX);
+			chiky.init(2, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 9:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 10:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 11:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, 0, minHeight + sizeHeight2, stepX);
+			chiky.init(3, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 12:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			return;
 		case 13:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 14:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 15:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 16:
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, 0, minHeight + sizeHeight2, stepX);
+			chiky.init(4, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 17:
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 18:
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 19:
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2, stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepX);
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			return;
+		case 20:
+			chiky = (Chiky) chikies.create();
+			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky = (Chiky) chikies.create();
+			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky = (Chiky) chikies.create();
+			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky = (Chiky) chikies.create();
+			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky = (Chiky) chikies.create();
+			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		}
 	}

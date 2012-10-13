@@ -73,59 +73,28 @@ public class Chiky extends Entity {
 	// Methods
 	// ===========================================================
 
-	public void init(final int type, final float startX, final float startY, final float stepX) {
+	public void init(final int type, final float startX, final float startY, final int stepSign) {
 		this.type = type;
 
 		this.startX = startX;
 		this.startY = startY;
 
-		this.stepX = stepX;
-
-		// this.sizeY = 0; // TODO: Parameter?
-
-		switch (this.type) {
-		case 0: // Normal.
-			this.x = this.startX;
-			this.y = this.startY;
-			return;
-		case 1: // Various speed.
-			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-			this.x = this.startX;
-			this.y = this.startY;
-			return;
-		case 2: // Jumped speed.
-			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-			this.x = this.startX;
-			this.y = this.startY;
-			return;
-		case 3: // Ellipse way.
-			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-			this.x = this.startX;
-			this.y = this.startY;
-			return;
-		case 4: // Hidden in time.
-			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-			this.x = this.startX;
-			this.y = this.startY;
-			return;
-		case 5: // Hidden in time with jumped speed.
-			this.stepX = (float) (stepX / Math.abs(stepX)) * (Game.random.nextFloat() * stepX + 1f); // TODO: Delete magic numbers.
-			this.x = this.startX;
-			this.y = this.startY;
-			return;
+		final float minStepX = 2f; // TODO:
+		final float maxStepX = 4f; // TODO:
+		if (this.type == 0) {
+			this.stepX = (minStepX + maxStepX) / 2;
 		}
+		else {
+			this.stepX = Math.signum(stepSign) * (Game.random.nextFloat() * (maxStepX - minStepX) + minStepX);
+		}
+
+		this.x = this.startX;
+		this.y = this.startY;
 	}
 
 	// ===========================================================
 	// Setters
 	// ===========================================================
-
-	public void setOffsetTime(final float offsetTime) {
-		// this.offsetTime = offsetTime;
-		// this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
-		// this.koefX = Game.random.nextInt(Options.levelNumber) + 1;
-		// this.koefY = Game.random.nextInt(Options.levelNumber) + 1;
-	}
 
 	public void setIsNeedToFlyAway(final float airgumScale) {
 		this.state = 1;
@@ -147,18 +116,18 @@ public class Chiky extends Entity {
 
 		float offsetX = 0;
 		if (this.type == 4 || this.type == 5) {
-			offsetX = Options.cameraWidth / 5;
+			offsetX = 3 * Options.chikySize;
 		}
 
-		if (this.x - this.getWidthScaled() / 2 + offsetX < 0) {
-			this.x = -(this.x - this.getWidthScaled() / 2 + offsetX) + this.getWidthScaled() / 2;
+		if (this.x - this.getWidthScaled() / 2 < -offsetX) {
+			this.x = -offsetX + (-offsetX - (this.x - this.getWidthScaled() / 2)) + this.getWidthScaled() / 2;
 			this.stepX = +Math.abs(this.stepX);
 			if (this.type == 4) {
 				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikySize);
 			}
 		}
-		if (this.x + this.getWidthScaled() / 2 - offsetX > Options.cameraWidth) {
-			this.x = Options.cameraWidth - ((this.x + this.getWidthScaled() / 2 - offsetX) - Options.cameraWidth) - this.getWidthScaled() / 2;
+		if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth + offsetX) {
+			this.x = Options.cameraWidth + offsetX - ((this.x + this.getWidthScaled() / 2) - (Options.cameraWidth + offsetX)) - this.getWidthScaled() / 2;
 			this.stepX = -Math.abs(this.stepX);
 			if (this.type == 4) {
 				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikySize);
