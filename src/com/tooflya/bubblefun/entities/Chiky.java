@@ -48,8 +48,6 @@ public class Chiky extends Entity {
 
 	private float stepX = 0;
 
-	private float sizeY = Options.cameraHeight / 10;
-
 	private Chiky leftNeighbour = null;
 	private Chiky rightNeighbour = null;
 
@@ -83,7 +81,7 @@ public class Chiky extends Entity {
 
 		this.stepX = stepX;
 
-		this.sizeY = 0;
+		// this.sizeY = 0; // TODO: Parameter?
 
 		switch (this.type) {
 		case 0: // Normal.
@@ -160,7 +158,7 @@ public class Chiky extends Entity {
 			return this.y;
 		}
 		else {
-			return this.startY + FloatMath.sin(this.time * Options.PI / this.stepX) * this.sizeY;
+			return this.startY + FloatMath.sin(this.time * Options.PI * Math.abs(this.stepX) / Options.cameraWidth) * Options.ellipseHeight;
 		}
 	}
 
