@@ -22,7 +22,8 @@ public class Options {
 
 	public static int levelNumber = 1;
 
-	public static int constHeight;
+	public static int touchHeight;
+	public static int ellipseHeight;
 
 	public static float scalePower;
 
