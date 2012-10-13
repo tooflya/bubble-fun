@@ -19,7 +19,7 @@ import com.tooflya.bubblefun.managers.EntityManager;
 public class LevelEndScreen extends Screen {
 
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(128, 128, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public static EntityManager stars;
 	public static EntityManager mLevelStars;
@@ -41,20 +41,66 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
+	public final static Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu_hd.png", 200, 0, 1, 2), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	public final static Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "replay_hd.png", 300, 0, 1, 2), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	public final static Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "next_hd.png", 400, 0, 1, 2), false) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
 	private final static TimerHandler mTimer = new TimerHandler(1f, true, new ITimerCallback() {
+
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			if (mStarsAnimationCount < mStarsCount) {
-				mStarsAnimationCount++;
+			if (mStarsAnimationCount < mStarsCount + 1) {
+				if (mStarsAnimationCount < mStarsCount) {
+					mStarsAnimationCount++;
 
-				mLevelStars.create().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+					mLevelStars.create().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
 
-				Particle particle;
-				for (int i = 0; i < Options.particlesCount * 2; i++) {
-					particle = ((Particle) stars.create());
-					if (particle != null) {
-						particle.Init().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+					Particle particle;
+					for (int i = 0; i < Options.particlesCount * 2; i++) {
+						particle = ((Particle) stars.create());
+						if (particle != null) {
+							particle.Init().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+						}
 					}
+				} else {
+					mMenu.show();
+					mRePlay.show();
+					mPlayNext.show();
 				}
 			}
 		}
@@ -66,6 +112,23 @@ public class LevelEndScreen extends Screen {
 
 	public LevelEndScreen() {
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+
+		mMenu.create().setPosition(120f, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mMenu.hide();
+
+		mRePlay.create().setPosition(320f, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mRePlay.hide();
+
+		mPlayNext.create().setPosition(520f, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mPlayNext.hide();
+
+		this.attachChild(mMenu);
+		this.attachChild(mRePlay);
+		this.attachChild(mPlayNext);
+
+		this.registerTouchArea(mMenu);
+		this.registerTouchArea(mRePlay);
+		this.registerTouchArea(mPlayNext);
 	}
 
 	@Override
@@ -98,6 +161,7 @@ public class LevelEndScreen extends Screen {
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
+
 	}
 
 	@Override
@@ -109,6 +173,10 @@ public class LevelEndScreen extends Screen {
 
 		stars.clear();
 		mLevelStars.clear();
+
+		mMenu.hide();
+		mRePlay.hide();
+		mPlayNext.hide();
 	}
 
 	@Override

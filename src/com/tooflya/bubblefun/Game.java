@@ -16,6 +16,7 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.app.Activity;
@@ -267,18 +268,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		super.onPauseGame();
 
 		// TODO: Stop all music, update handlers and other active things
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onAttachedToWindow()
-	 */
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		Window window = getWindow();
-		window.setFormat(PixelFormat.RGBA_8888);
 	}
 
 	/*
