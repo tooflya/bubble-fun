@@ -16,6 +16,7 @@ import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.entities.Text;
@@ -185,7 +186,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public static EntityManager chikies;
 	public static EntityManager airgums;
 	public static EntityManager feathers;
-	public static EntityManager stars;
+	public static EntityManager glints;
 
 	private static BigBird mBigBird;
 
@@ -217,11 +218,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.attachChild(mDottedLine);
 
-		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "chiky.png", 1, 1, 1, 4)));
+		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "chiky.png", 35, 0, 1, 4)));
 		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
 		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), Screen.LEVEL));
 
-		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 60, 200, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), Screen.LEVEL)));
+		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), Screen.LEVEL)));
 
 		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
@@ -239,7 +240,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		// mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		// this.registerTouchArea(mResetButton);
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1), Screen.LEVEL));
+		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "glint_hd.png", 100, 0, 1, 3), Screen.LEVEL));
 	}
 
 	public static void reInit() {
@@ -247,7 +248,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mBigBird.mFeathersManager.clear();
 		airgums.clear();
 		chikies.clear();
-		stars.clear();
+		glints.clear();
 		generateChikies(30); // TODO: Change count depending to level number.
 
 		feathers.clear();
@@ -565,11 +566,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef);
 					this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 5));
 
-					Star particle;
-					for (int i = 0; i < 5; i++) {
-						particle = ((Star) stars.create());
+					Glint particle;
+					for (int i = 0; i < 30; i++) {
+						particle = ((Glint) glints.create());
 						if (particle != null) {
-							particle.Init(i).setCenterPosition(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY());
+							particle.Init(i, this.lastAirgum);
 						}
 					}
 				}
