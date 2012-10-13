@@ -41,6 +41,8 @@ public class Particle extends Entity {
 	public Particle(TiledTextureRegion pTiledTextureRegion, final int pScreenToAdd) {
 		super(pTiledTextureRegion, false);
 
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
 		this.mAddToScreen = pScreenToAdd;
 
 		Game.screens.get(this.mAddToScreen).attachChild(this);
@@ -51,7 +53,6 @@ public class Particle extends Entity {
 	// ===========================================================
 
 	public Particle Init() {
-		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		stepX = Game.random.nextFloat() * 2 - 1;
 		stepY = Game.random.nextFloat() * 2 - 1;

@@ -7,7 +7,7 @@ package com.tooflya.bubblefun;
 public class Options {
 	public static final boolean DEBUG = true;
 
-	public static float PI = (float) Math.asin(1);
+	public static float PI = (float) (2 * Math.asin(1));
 
 	/** Camera parameters */
 	public static int cameraWidth;

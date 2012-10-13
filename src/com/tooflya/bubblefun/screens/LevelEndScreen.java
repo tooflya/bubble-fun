@@ -159,11 +159,11 @@ public class LevelEndScreen extends Screen {
 
 					mLevelStars.create().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
 
-					Particle particle;
-					for (int i = 0; i < Options.particlesCount * 2; i++) {
-						particle = ((Particle) stars.create());
+					Star particle;
+					for (int i = 0; i < 5; i++) {
+						particle = ((Star) stars.create());
 						if (particle != null) {
-							particle.Init().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+							particle.Init(i).setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
 						}
 					}
 				} else {
@@ -206,7 +206,7 @@ public class LevelEndScreen extends Screen {
 
 		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), Screen.LEVELEND));
 
-		stars = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1), Screen.LEVELEND));
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 900, 900, 1, 1), Screen.LEVELEND));
 
 	}
 
