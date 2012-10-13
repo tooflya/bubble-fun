@@ -180,7 +180,7 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mBackground.create();
 
 		mMenu.create().setPosition(105f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
 		mMenu.hide();
@@ -202,7 +202,7 @@ public class LevelEndScreen extends Screen {
 
 	@Override
 	public void init() {
-		this.attachChild(mBackground);
+		this.setBackground(new SpriteBackground(mBackground));
 
 		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), Screen.LEVELEND));
 
