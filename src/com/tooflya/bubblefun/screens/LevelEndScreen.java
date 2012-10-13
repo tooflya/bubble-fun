@@ -157,8 +157,7 @@ public class LevelEndScreen extends Screen {
 				if (mStarsAnimationCount < mStarsCount) {
 					mStarsAnimationCount++;
 
-					//mLevelStars.create().setCenterPosition(((106f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 629 * Options.CAMERA_RATIO_FACTOR);
-					mLevelStars.create().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+					mLevelStars.create().setCenterPosition(((106f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 629 * Options.CAMERA_RATIO_FACTOR);
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -203,7 +202,7 @@ public class LevelEndScreen extends Screen {
 
 	@Override
 	public void init() {
-		this.setBackground(new SpriteBackground(mBackground));
+		this.attachChild(mBackground);
 
 		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), Screen.LEVELEND));
 
