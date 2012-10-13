@@ -157,7 +157,8 @@ public class LevelEndScreen extends Screen {
 				if (mStarsAnimationCount < mStarsCount) {
 					mStarsAnimationCount++;
 
-					mLevelStars.create().setCenterPosition(((106f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 629 * Options.CAMERA_RATIO_FACTOR);
+					//mLevelStars.create().setCenterPosition(((106f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 629 * Options.CAMERA_RATIO_FACTOR);
+					mLevelStars.create().setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
