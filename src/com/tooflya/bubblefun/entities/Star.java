@@ -1,5 +1,7 @@
 package com.tooflya.bubblefun.entities;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
@@ -19,8 +21,10 @@ public class Star extends Entity {
 
 	private int mAddToScreen;
 
-	private float stepX = 0;
-	private float stepY = 0;
+	private float mStepX = 0;
+	private float mStepY = 0;
+
+	private boolean isParticle;
 
 	// ===========================================================
 	// Constructors
@@ -33,9 +37,13 @@ public class Star extends Entity {
 	public Star(TiledTextureRegion pTiledTextureRegion, final int pScreen) {
 		super(pTiledTextureRegion, false);
 
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
 		Game.screens.get(pScreen).attachChild(this);
 
 		this.mAddToScreen = pScreen;
+
+		this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 	}
 
 	@Override
@@ -43,13 +51,29 @@ public class Star extends Entity {
 		return new Star(getTextureRegion(), this.mAddToScreen);
 	}
 
+	@Override
+	public Entity create() {
+		this.isParticle = false;
+
+		return super.create();
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
 	public Star Init(final int i) {
-		stepX = 5f * FloatMath.sin(i * 2 * Options.PI / 5);
-		stepY = 5f * FloatMath.cos(i * 2*Options.PI / 5);
+		this.mStepX = 3f * FloatMath.sin(i * 2 * Options.PI / 7);
+		this.mStepY = 3f * FloatMath.cos(i * 2 * Options.PI / 7);
+
+		this.mRotation = (float) (Math.atan2(this.mStepY, this.mStepX) * 180 / Math.PI);
+
+		this.mScaleX = 0.1f;
+		this.mScaleY = 0.1f;
+
+		this.mAlpha = 1f;
+
+		this.isParticle = true;
 
 		return this;
 	}
@@ -63,7 +87,18 @@ public class Star extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.setPosition(this.getX() + this.stepX, this.getY() + this.stepY);
-	}
+		if (this.isParticle) {
+			this.mX += this.mStepX;
+			this.mY += this.mStepY;
 
+			this.mScaleX += 0.03f;
+			this.mScaleY += 0.03f;
+
+			this.mAlpha -= 0.01f;
+
+			if (this.mAlpha < 0) {
+				this.destroy();
+			}
+		}
+	}
 }

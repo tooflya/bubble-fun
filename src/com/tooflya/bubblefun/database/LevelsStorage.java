@@ -78,4 +78,13 @@ public class LevelsStorage extends SQLiteOpenHelper {
 
 		return db.update(TABLE, values, ID + " = ?", new String[] { String.valueOf(id) });
 	}
+
+	public int updateLevel(final int id, final int pOpen) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(STATE, pOpen);
+
+		return db.update(TABLE, values, ID + " = ?", new String[] { String.valueOf(id) });
+	}
 }
