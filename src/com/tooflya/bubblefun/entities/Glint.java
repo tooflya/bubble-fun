@@ -8,6 +8,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
 public class Glint extends Entity {
 
@@ -18,8 +19,6 @@ public class Glint extends Entity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private int mAddToScreen;
 
 	private float mRotationAngle;
 
@@ -33,25 +32,17 @@ public class Glint extends Entity {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pScreen
-	 */
-	public Glint(TiledTextureRegion pTiledTextureRegion, final int pScreen) {
-		super(pTiledTextureRegion, false);
+	public Glint(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-		Game.screens.get(pScreen).attachChild(this);
-
-		this.mAddToScreen = pScreen;
 
 		this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 	}
 
 	@Override
 	public Entity deepCopy() {
-		return new Glint(getTextureRegion(), this.mAddToScreen);
+		return new Glint(getTextureRegion(), this.mParentScreen);
 	}
 
 	@Override

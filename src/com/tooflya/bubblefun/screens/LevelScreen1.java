@@ -18,7 +18,6 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Particle;
-import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -40,7 +39,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_par1.png", 0, 0, 1, 1), false) {
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_par1.png", 0, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -53,7 +52,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Entity mDottedLine = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "line.png", 0, 1016, 1, 1), false) {
+	private CloudsManager clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), this));
+
+	private final Entity mDottedLine = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "line.png", 0, 1016, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -66,7 +67,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Entity mResetButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "reset.png", 0, 950, 1, 1), false) {
+	private final Entity mResetButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "reset.png", 0, 950, 1, 1), this) {
 
 		@Override
 		public Entity create() {
@@ -104,7 +105,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Entity mBirdsCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-bird.png", 0, 850, 1, 1), false) {
+	private final Entity mBirdsCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-bird.png", 0, 850, 1, 1), this) {
 
 		@Override
 		public Entity create() {
@@ -126,7 +127,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Entity mAirCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon.png", 105, 850, 1, 1), false) {
+	private final Entity mAirCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon.png", 105, 850, 1, 1), this) {
 
 		@Override
 		public Entity create() {
@@ -148,7 +149,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Entity mAirCounterBackgroundFill = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon-fill.png", 230, 850, 1, 1), false) {
+	private final Entity mAirCounterBackgroundFill = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon-fill.png", 230, 850, 1, 1), this) {
 
 		@Override
 		public Entity create() {
@@ -181,8 +182,6 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
-	private CloudsManager clouds;
-
 	public static EntityManager chikies;
 	public static EntityManager airgums;
 	public static EntityManager feathers;
@@ -196,33 +195,17 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	public LevelScreen1() {
 		this.setOnSceneTouchListener(this);
-	}
 
-	// ===========================================================
-	// Virtual methods
-	// ===========================================================
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#init()
-	 */
-	@Override
-	public void init() {
-		this.attachChild(mBackground);
-
-		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.LEVEL));
-		this.clouds.generateStartClouds();
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+
+		this.clouds.generateStartClouds();
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
 
-		this.attachChild(mDottedLine);
+		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "chiky.png", 35, 0, 1, 4), this));
+		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6), this));
+		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), this));
 
-		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "chiky.png", 35, 0, 1, 4)));
-		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
-		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), Screen.LEVEL));
-
-		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), Screen.LEVEL)));
+		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), this)));
 
 		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
@@ -240,8 +223,12 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		// mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		// this.registerTouchArea(mResetButton);
-		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "glint_hd.png", 100, 0, 1, 3), Screen.LEVEL));
+		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "glint_hd.png", 100, 0, 1, 3), this));
 	}
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
 
 	public static void reInit() {
 		mBigBird.create();
@@ -266,10 +253,10 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	private static void generateChikies(final int count) {
 		Chiky chiky;
-		
+
 		final float minHeight = Options.chikySize / 2 + Options.ellipseHeight;
 		final float sizeHeight2 = (Options.cameraHeight - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
-		
+
 		final int stepSign = 1;
 		switch (Options.levelNumber) {
 		case 1:

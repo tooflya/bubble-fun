@@ -15,6 +15,8 @@ public abstract class Screen extends Scene {
 
 	public static final int SCREENS_COUNT = 6;
 
+	public static final int NO_SCREEN = -1;
+
 	public static final int MENU = 0;
 	public static final int CHOISE = 1;
 	public static final int LOAD = 2;
@@ -72,8 +74,6 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 	// Abstract methods
 	// ===========================================================
-
-	public abstract void init();
 
 	public abstract void loadResources();
 

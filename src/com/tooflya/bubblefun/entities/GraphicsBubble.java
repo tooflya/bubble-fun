@@ -8,10 +8,8 @@ import com.tooflya.bubblefun.Screen;
 
 public class GraphicsBubble extends Bubble {
 
-	public GraphicsBubble(TiledTextureRegion pTiledTextureRegion, boolean pNeedParent) {
-		super(pTiledTextureRegion, pNeedParent, false);
-
-		Game.screens.get(Screen.LOAD).attachChild(this);
+	public GraphicsBubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen, false);
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class GraphicsBubble extends Bubble {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new GraphicsBubble(getTextureRegion(), false);
+		return new GraphicsBubble(getTextureRegion(), this.mParentScreen);
 	}
 
 }

@@ -35,7 +35,11 @@ public class MenuScreen extends Screen {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR);
 
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_bg.png", 0, 0, 1, 1), false) {
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_bg.png", 0, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -48,7 +52,9 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Entity mBackground3 = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "main-name2.png", 0, 505, 1, 1), false) {
+	private final CloudsManager mClouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), this));
+
+	private final Entity mBackground3 = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "main-name2.png", 0, 505, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -61,7 +67,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Entity mTwitterIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "twitter-icon.png", 580, 0, 1, 1), false) {
+	private final Entity mTwitterIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "twitter-icon.png", 580, 0, 1, 1), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -98,7 +104,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Entity mFacebookIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "facebook-icon.png", 660, 0, 1, 1), false) {
+	private final Entity mFacebookIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "facebook-icon.png", 660, 0, 1, 1), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -126,7 +132,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mPlayIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-play-animation.png", 581, 100, 1, 1), false) {
+	private final Bubble mPlayIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-play-animation.png", 581, 100, 1, 1), this, false, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -183,7 +189,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mMoreIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-more-animation.png", 581, 400, 1, 1), false) {
+	private final Bubble mMoreIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bubble-more-animation.png", 581, 400, 1, 1), this, false, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -229,7 +235,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final static Bubble mSoundIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "sound-icon.png", 581, 600, 1, 1), false) {
+	private final Bubble mSoundIcon = new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "sound-icon.png", 581, 600, 1, 1), this, false, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -276,17 +282,13 @@ public class MenuScreen extends Screen {
 	};
 
 	// ===========================================================
-	// Fields
-	// ===========================================================
-
-	private CloudsManager clouds;
-
-	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public MenuScreen() {
 		this.loadResources();
+
+		this.mClouds.generateStartClouds();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mBackground3.create().setCenterPosition(Options.cameraCenterX, 130 * Options.CAMERA_RATIO_FACTOR);
@@ -308,40 +310,13 @@ public class MenuScreen extends Screen {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tooflya.airbubblegum.Screen#init()
-	 */
-	@Override
-	public void init() {
-		this.attachChild(mBackground);
-
-		this.clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "clouds.png", 0, 0, 1, 4), Screen.MENU));
-		this.clouds.generateStartClouds();
-
-		this.attachChild(mTwitterIcon);
-		this.attachChild(mFacebookIcon);
-		this.attachChild(mPlayIcon);
-		this.attachChild(mMoreIcon);
-		this.attachChild(mSoundIcon);
-
-		this.registerTouchArea(mTwitterIcon);
-		this.registerTouchArea(mFacebookIcon);
-		this.registerTouchArea(mPlayIcon);
-		this.registerTouchArea(mMoreIcon);
-		this.registerTouchArea(mSoundIcon);
-
-		this.attachChild(mBackground3);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.clouds.update();
+		this.mClouds.update();
 	}
 
 	/*

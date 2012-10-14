@@ -6,6 +6,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
 /**
  * @author Tooflya.com
@@ -21,8 +22,6 @@ public class Particle extends Entity {
 	// Fields
 	// ===========================================================
 
-	private int mAddToScreen;
-
 	private float stepRotation = 0;
 	private float stepScale = 0;
 	private float stepAlpha = 0;
@@ -33,17 +32,10 @@ public class Particle extends Entity {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 */
-	public Particle(TiledTextureRegion pTiledTextureRegion, final int pScreenToAdd) {
-		super(pTiledTextureRegion, false);
+	public Particle(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-		this.mAddToScreen = pScreenToAdd;
-
-		Game.screens.get(this.mAddToScreen).attachChild(this);
 	}
 
 	// ===========================================================
@@ -130,7 +122,7 @@ public class Particle extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Particle(getTextureRegion(), mAddToScreen);
+		return new Particle(getTextureRegion(), this.mParentScreen);
 	}
 
 }

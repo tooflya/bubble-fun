@@ -23,65 +23,51 @@ public class LoadingScreen extends Screen {
 	// Constants
 	// ===========================================================
 
+	/** Declare the necessary canvas in graphics memory, which then will be used to download images. */
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	private final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_screen.png", 0, 0, 1, 1), false) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final static Entity mPreloadBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-bar.png", 0, 580, 1, 1), false) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final static Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_line.png", 0, 660, 1, 1), false) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final static TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
-		@Override
-		public void onTimePassed(TimerHandler pTimerHandler) {
-
-			/** Changing size of progressbar */
-			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.CAMERA_RATIO_FACTOR) {
-				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 10));
-				mProgressBar.setWidth(mProgressBar.getWidth() + 10);
-			} else {
-				/** If progressbar is full */
-				Game.isGameLoaded = true;
-			}
-		}
-	});
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	/** Declare the entity that acts as a background image of the screen. */
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_screen.png", 0, 0, 1, 1), this) {
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	/** Declare the entity that acts as a background image of the loading bar. */
+	private final Entity mPreloadBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-bar.png", 0, 580, 1, 1), this) {
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	/** Declare the entity that acts as a loading bar. */
+	private final Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_line.png", 0, 660, 1, 1), this) {
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
+	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
+		@Override
+		public void onTimePassed(TimerHandler pTimerHandler) {
+			/** Changing size of progressbar. */
+			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.CAMERA_RATIO_FACTOR) {
+				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 10));
+				mProgressBar.setWidth(mProgressBar.getWidth() + 10);
+			} else {
+				/** If progressbar is full. */
+				Game.isGameLoaded = true;
+			}
+		}
+	});
 
 	// ===========================================================
 	// Constructors
@@ -93,15 +79,12 @@ public class LoadingScreen extends Screen {
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		this.attachChild(mBackground);
 
 		mPreloadBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 766f * Options.CAMERA_RATIO_FACTOR);
-		this.attachChild(mPreloadBar);
 
 		mProgressBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 800f * Options.CAMERA_RATIO_FACTOR);
 		mProgressBar.setWidth(1);
 		mProgressBar.getTextureRegion().setWidth(1);
-		this.attachChild(mProgressBar);
 
 		/** Register timer of loading progressbar changes */
 		registerUpdateHandler(mTimer);
@@ -114,15 +97,6 @@ public class LoadingScreen extends Screen {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tooflya.airbubblegum.Screen#init()
-	 */
-	@Override
-	public void init() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.tooflya.bouncekid.Screen#onDetached()
 	 */
 	@Override
@@ -131,8 +105,6 @@ public class LoadingScreen extends Screen {
 
 		this.clearUpdateHandlers();
 		this.unloadResources();
-
-		System.out.println("CALLED!!!");
 	}
 
 	/*

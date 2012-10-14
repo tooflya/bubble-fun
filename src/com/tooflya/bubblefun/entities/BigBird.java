@@ -16,10 +16,8 @@ public class BigBird extends Entity {
 
 	public static EntityManager mFeathersManager;
 
-	public BigBird(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent, final EntityManager pFeathersManager) {
-		super(pTiledTextureRegion, false);
-
-		Game.screens.get(Screen.LEVEL).attachChild(this);
+	public BigBird(TiledTextureRegion pTiledTextureRegion, final EntityManager pFeathersManager) {
+		super(pTiledTextureRegion);
 
 		this.animate(500);
 
@@ -98,6 +96,6 @@ public class BigBird extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new BigBird(getTextureRegion(), false, mFeathersManager);
+		return new BigBird(getTextureRegion(), mFeathersManager);
 	}
 }

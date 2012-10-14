@@ -28,7 +28,7 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "end_lvl_bg.png", 0, 0, 1, 1), false) {
+	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "end_lvl_bg.png", 0, 0, 1, 1)) {
 
 		/*
 		 * (non-Javadoc)
@@ -41,7 +41,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final static Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu_hd.png", 200, 0, 1, 2), false) {
+	public final Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu_hd.png", 200, 0, 1, 2), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -76,7 +76,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final static Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "replay_hd.png", 300, 0, 1, 2), false) {
+	public final Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "replay_hd.png", 300, 0, 1, 2), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -111,7 +111,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final static Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "next_hd.png", 400, 0, 1, 2), false) {
+	public final Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "next_hd.png", 400, 0, 1, 2), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -148,7 +148,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	private final static TimerHandler mTimer = new TimerHandler(1f, true, new ITimerCallback() {
+	private final TimerHandler mTimer = new TimerHandler(1f, true, new ITimerCallback() {
 
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
@@ -191,23 +191,14 @@ public class LevelEndScreen extends Screen {
 		mPlayNext.create().setPosition(405f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
 		mPlayNext.hide();
 
-		this.attachChild(mMenu);
-		this.attachChild(mRePlay);
-		this.attachChild(mPlayNext);
-
 		this.registerTouchArea(mMenu);
 		this.registerTouchArea(mRePlay);
 		this.registerTouchArea(mPlayNext);
-	}
-
-	@Override
-	public void init() {
 		this.setBackground(new SpriteBackground(mBackground));
 
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), Screen.LEVELEND));
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), Screen.LEVELEND));
-
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), this));
 	}
 
 	@Override

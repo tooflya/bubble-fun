@@ -6,8 +6,8 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
 public class Star extends Entity {
 
@@ -19,31 +19,21 @@ public class Star extends Entity {
 	// Fields
 	// ===========================================================
 
-	private int mAddToScreen;
-
 	private boolean isParticle;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pScreen
-	 */
-	public Star(TiledTextureRegion pTiledTextureRegion, final int pScreen) {
-		super(pTiledTextureRegion, false);
+	public Star(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-		Game.screens.get(pScreen).attachChild(this);
-
-		this.mAddToScreen = pScreen;
 	}
 
 	@Override
 	public Entity deepCopy() {
-		return new Star(getTextureRegion(), this.mAddToScreen);
+		return new Star(getTextureRegion(), this.mParentScreen);
 	}
 
 	@Override

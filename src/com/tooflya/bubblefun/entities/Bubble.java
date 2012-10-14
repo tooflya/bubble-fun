@@ -1,12 +1,11 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
 public class Bubble extends Entity implements IAnimationListener {
@@ -58,39 +57,29 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pNeedParent
-	 */
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent, final boolean pNeedAlpha) {
-		super(pTiledTextureRegion, pNeedParent);
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pNeedAlpha, final boolean pRegisterTouchArea) {
+		super(pTiledTextureRegion, pParentScreen, pRegisterTouchArea);
 
 		if (pNeedAlpha) {
-			this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		}
-
-		if (pNeedParent) {
 			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 			this.setAlpha(0.8f);
-		} else {
-			this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 		}
 	}
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pNeedParent
-	 */
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
-		this(pTiledTextureRegion, pNeedParent, true);
+
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pNeedAlpha) {
+		this(pTiledTextureRegion, pParentScreen, pNeedAlpha, false);
 	}
 
-	/**
-	 * @param pTiledTextureRegion
-	 */
+
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		this(pTiledTextureRegion, pParentScreen, true);
+	}
+
+
 	public Bubble(TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true, true);
+		this(pTiledTextureRegion, null, true);
 	}
 
 	// ===========================================================
@@ -238,7 +227,7 @@ public class Bubble extends Entity implements IAnimationListener {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Bubble(getTextureRegion());
+		return new Bubble(getTextureRegion(), this.mParentScreen);
 	}
 
 	/*

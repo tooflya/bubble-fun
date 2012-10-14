@@ -6,6 +6,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
 /**
@@ -60,8 +61,8 @@ public class Chiky extends Entity {
 	/**
 	 * @param pTiledTextureRegion
 	 */
-	public Chiky(TiledTextureRegion pTiledTextureRegion) {
-		super(pTiledTextureRegion);
+	public Chiky(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
@@ -245,6 +246,6 @@ public class Chiky extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Chiky(getTextureRegion());
+		return new Chiky(getTextureRegion(), this.mParentScreen);
 	}
 }

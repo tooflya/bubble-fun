@@ -50,15 +50,6 @@ public class ScreenManager {
 		screens[Screen.LEVELEND] = new LevelEndScreen();
 	}
 
-	public void init() {
-		/** Create all scenes */
-		screens[Screen.MENU].init();
-		screens[Screen.CHOISE].init();
-		screens[Screen.LOAD].init();
-		screens[Screen.LEVEL].init();
-		screens[Screen.LEVELEND].init();
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

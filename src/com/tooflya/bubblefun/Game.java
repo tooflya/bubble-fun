@@ -16,17 +16,14 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.Window;
 
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
@@ -176,7 +173,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void workToDo() {
 
 		/** Create screen manager */
-		(screens = new ScreenManager()).init();
+		screens = new ScreenManager();
 
 		/** White while progressbar is running */
 		while (!isGameLoaded) {

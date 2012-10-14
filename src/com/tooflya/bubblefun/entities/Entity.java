@@ -6,7 +6,6 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -30,17 +29,15 @@ public abstract class Entity extends AnimatedSprite {
 	private float mSpeedX;
 	private float mSpeedY;
 
+	protected Screen mParentScreen;
+
 	private EntityManager mEntityManager;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pNeedParent
-	 */
-	public Entity(final TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
+	public Entity(final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
 
 		this.hide();
@@ -50,39 +47,34 @@ public abstract class Entity extends AnimatedSprite {
 
 		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
 
-		if (pNeedParent) {
-			Game.screens.get(Screen.LEVEL).attachChild(this);
+		if (pParentScreen != null) {
+			this.mParentScreen = pParentScreen;
+			this.mParentScreen.attachChild(this);
+
+			if (pRegisterTouchArea) {
+				this.mParentScreen.registerTouchArea(this);
+			}
 		}
 	}
 
-	/**
-	 * @param pX
-	 * @param pY
-	 * @param pTiledTextureRegion
-	 */
+	public Entity(final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		this(pTiledTextureRegion.deepCopy(), pParentScreen, false);
+	}
+
 	public Entity(final int pX, final int pY, final TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true);
+		this(pTiledTextureRegion, null);
 
 		this.setCenterPosition(pX, pY);
 	}
 
-	/**
-	 * @param pX
-	 * @param pY
-	 * @param pTiledTextureRegion
-	 * @param pNeedParent
-	 */
-	public Entity(final int pX, final int pY, final TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
-		this(pTiledTextureRegion, pNeedParent);
+	public Entity(final int pX, final int pY, final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		this(pTiledTextureRegion, pParentScreen);
 
 		this.setCenterPosition(pX, pY);
 	}
 
-	/**
-	 * @param pTiledTextureRegion
-	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true);
+		this(pTiledTextureRegion, null);
 	}
 
 	// ===========================================================

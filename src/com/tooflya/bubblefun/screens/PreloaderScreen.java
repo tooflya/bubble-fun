@@ -28,7 +28,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bg_level.png", 0, 0, 1, 1), false) {
+	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bg_level.png", 0, 0, 1, 1)) {
 
 		/*
 		 * (non-Javadoc)
@@ -41,27 +41,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		}
 	};
 
-	public final static Entity mBalon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_air_balon.png", 0, 0, 1, 1), false) {
-
-		@Override
-		public Entity create() {
-			Game.screens.get(Screen.LOAD).attachChild(this);
-
-			return super.create();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	public final static Entity mBalonFull = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_air_fill.png", 85, 0, 1, 1), false) {
+	public final Entity mBalonFull = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_air_fill.png", 85, 0, 1, 1), this) {
 
 		@Override
 		public Entity create() {
@@ -85,14 +65,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		}
 	};
 
-	public final static Entity mLoadingText = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_loading_text.png", 170, 0, 1, 1), false) {
-
-		@Override
-		public Entity create() {
-			Game.screens.get(Screen.LOAD).attachChild(this);
-
-			return super.create();
-		}
+	public final Entity mBalon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_air_balon.png", 0, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -105,7 +78,20 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		}
 	};
 
-	private final static TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
+	public final Entity mLoadingText = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_loading_text.png", 170, 0, 1, 1), this) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
 
@@ -143,17 +129,13 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		this.loadResources();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-	}
-
-	@Override
-	public void init() {
 		this.setBackground(new SpriteBackground(mBackground));
 
 		mBalonFull.create().setPosition(375 * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 292 * Options.CAMERA_RATIO_FACTOR + mBalon.getHeightScaled());
 		mBalon.create().setPosition(375 * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 292 * Options.CAMERA_RATIO_FACTOR);
 		mLoadingText.create().setPosition(175 * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 292 * Options.CAMERA_RATIO_FACTOR);
 
-		this.bubbles = new BubblesManager(10, new GraphicsBubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "lvl_bubble.png", 170, 60, 1, 3), false));
+		this.bubbles = new BubblesManager(10, new GraphicsBubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "lvl_bubble.png", 170, 60, 1, 3), this));
 	}
 
 	/*
