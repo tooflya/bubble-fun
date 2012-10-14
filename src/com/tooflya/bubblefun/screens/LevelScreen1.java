@@ -27,7 +27,7 @@ import com.tooflya.bubblefun.managers.EntityManager;
  * @author Tooflya.com
  * @since
  */
-public class LevelScreen extends Screen implements IOnSceneTouchListener {
+public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	// ===========================================================
 	// Constants
@@ -86,7 +86,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 			switch (pAreaTouchEvent.getAction()) {
 			case TouchEvent.ACTION_UP:
-				LevelScreen.reInit();
+				LevelScreen1.reInit();
 				break;
 			}
 
@@ -194,7 +194,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Constructors
 	// ===========================================================
 
-	public LevelScreen() {
+	public LevelScreen1() {
 		this.setOnSceneTouchListener(this);
 	}
 
@@ -218,11 +218,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.attachChild(mDottedLine);
 
-		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "chiky.png", 35, 0, 1, 4)));
-		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
-		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), Screen.LEVEL));
+		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "chiky.png", 35, 0, 1, 4)));
+		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6)));
+		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), Screen.LEVEL));
 
-		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), Screen.LEVEL)));
+		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), false, new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), Screen.LEVEL)));
 
 		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
@@ -240,7 +240,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		// mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		// this.registerTouchArea(mResetButton);
-		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "glint_hd.png", 100, 0, 1, 3), Screen.LEVEL));
+		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "glint_hd.png", 100, 0, 1, 3), Screen.LEVEL));
 	}
 
 	public static void reInit() {

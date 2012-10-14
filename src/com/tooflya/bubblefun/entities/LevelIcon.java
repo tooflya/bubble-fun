@@ -7,7 +7,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.LevelScreen1;
 
 public class LevelIcon extends Entity {
 
@@ -63,7 +63,7 @@ public class LevelIcon extends Entity {
 		case TouchEvent.ACTION_UP:
 			if (!this.blocked) {
 				Options.levelNumber = this.id;
-				LevelScreen.reInit();
+				LevelScreen1.reInit();
 				Game.screens.set(Screen.LOAD);
 			}
 			break;

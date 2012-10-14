@@ -42,8 +42,6 @@ public class Star extends Entity {
 		Game.screens.get(pScreen).attachChild(this);
 
 		this.mAddToScreen = pScreen;
-
-		this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 	}
 
 	@Override

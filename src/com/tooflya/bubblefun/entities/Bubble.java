@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.LevelScreen1;
 
 public class Bubble extends Entity implements IAnimationListener {
 
@@ -179,7 +179,7 @@ public class Bubble extends Entity implements IAnimationListener {
 				this.mSpeedDecrement += 0.05f;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
-				LevelScreen.AIR--;
+				LevelScreen1.AIR--;
 			}
 		}
 		else {

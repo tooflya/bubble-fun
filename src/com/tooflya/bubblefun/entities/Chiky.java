@@ -6,7 +6,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.LevelScreen1;
 
 /**
  * @author Tooflya.com
@@ -180,7 +180,7 @@ public class Chiky extends Entity {
 			this.timeToFall--;
 			if (this.timeToFall <= 0) {
 				if (this.airgumScale > Bubble.minScale) {
-					Bubble airgum = (Bubble) LevelScreen.airgums.create();
+					Bubble airgum = (Bubble) LevelScreen1.airgums.create();
 					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 					airgum.setScale(this.airgumScale);
 					airgum.setIsScale(false);
@@ -188,7 +188,7 @@ public class Chiky extends Entity {
 
 				Particle particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((Particle) LevelScreen.feathers.create());
+					particle = ((Particle) LevelScreen1.feathers.create());
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}

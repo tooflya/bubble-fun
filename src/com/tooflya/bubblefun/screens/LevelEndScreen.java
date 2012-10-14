@@ -13,7 +13,6 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
 
@@ -93,7 +92,7 @@ public class LevelEndScreen extends Screen {
 			case TouchEvent.ACTION_UP:
 				this.setCurrentTileIndex(0);
 
-				LevelScreen.reInit();
+				LevelScreen1.reInit();
 				Game.screens.set(Screen.LEVEL);
 				break;
 			}
@@ -129,7 +128,7 @@ public class LevelEndScreen extends Screen {
 				this.setCurrentTileIndex(0);
 
 				Options.levelNumber++;
-				LevelScreen.reInit();
+				LevelScreen1.reInit();
 				Game.screens.set(Screen.LEVEL);
 
 				break;
@@ -157,13 +156,14 @@ public class LevelEndScreen extends Screen {
 				if (mStarsAnimationCount < mStarsCount) {
 					mStarsAnimationCount++;
 
-					mLevelStars.create().setCenterPosition(((106f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 629 * Options.CAMERA_RATIO_FACTOR);
+					Star star;
+					(star = (Star) mLevelStars.create()).setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
 						particle = ((Star) stars.create());
 						if (particle != null) {
-							particle.Init(i).setCenterPosition(((86f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 610 * Options.CAMERA_RATIO_FACTOR);
+							particle.Init(i).setCenterPosition(star.getCenterX() - 10f, star.getCenterY() - 10f);
 						}
 					}
 				} else {
@@ -180,7 +180,7 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		mBackground.create();
+		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		mMenu.create().setPosition(105f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
 		mMenu.hide();
@@ -204,9 +204,9 @@ public class LevelEndScreen extends Screen {
 	public void init() {
 		this.setBackground(new SpriteBackground(mBackground));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), Screen.LEVELEND));
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), Screen.LEVELEND));
 
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), Screen.LEVELEND));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), Screen.LEVELEND));
 
 	}
 
@@ -216,11 +216,11 @@ public class LevelEndScreen extends Screen {
 
 		mStarsAnimationCount = 0;
 
-		if (LevelScreen.mBubblesCount <= 2) {
-			mStarsCount = 4 - LevelScreen.mBubblesCount;
+		if (LevelScreen1.mBubblesCount <= 2) {
+			mStarsCount = 4 - LevelScreen1.mBubblesCount;
 		} else {
 			mStarsCount = 1;
-			if (LevelScreen.AIR < 0) {
+			if (LevelScreen1.AIR < 0) {
 				mStarsCount = 0;
 			}
 		}
