@@ -2,9 +2,6 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import android.content.Context;
-import android.os.Vibrator;
-
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
@@ -12,7 +9,7 @@ import com.tooflya.bubblefun.managers.EntityManager;
 
 public class BigBird extends Entity {
 
-	private final static float mSpeed = 2f;
+	private final static float SPEED = 2f;
 
 	private float mSleepTime = 0f;
 	public boolean mIsSleep = true;
@@ -36,6 +33,8 @@ public class BigBird extends Entity {
 	 */
 	@Override
 	public Entity create() {
+		this.setSpeedX(SPEED);
+
 		final int i = Game.random.nextInt(2);
 		this.mX = i == 0 ? 0 - this.getWidthScaled() : Options.cameraWidth + this.getWidthScaled();
 		this.mY = Game.random.nextInt(Options.cameraHeight / 3 * 2) - this.getHeightScaled();
@@ -67,7 +66,7 @@ public class BigBird extends Entity {
 					mSleepTime = 300f;
 					this.mY = Game.random.nextInt(Options.cameraHeight / 3 * 2);
 				} else {
-					this.mX -= mSpeed;
+					this.mX -= this.getSpeedX();
 				}
 			} else {
 				if (this.mX > Options.cameraWidth) {
@@ -75,14 +74,14 @@ public class BigBird extends Entity {
 					mSleepTime = 300f;
 					this.mY = Game.random.nextInt(Options.cameraHeight / 3 * 2);
 				} else {
-					this.mX += mSpeed;
+					this.mX += this.getSpeedX();
 				}
 			}
 		}
 	}
 
 	public void particles() {
-		//((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
+		// ((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
 		Particle particle;
 		for (int i = 0; i < Options.particlesCount; i++) {
 			particle = ((Particle) mFeathersManager.create());

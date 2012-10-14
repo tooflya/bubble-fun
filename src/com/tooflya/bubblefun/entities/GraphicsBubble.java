@@ -17,8 +17,10 @@ public class GraphicsBubble extends Bubble {
 	@Override
 	public Entity create() {
 		this.setPosition((Options.cameraWidth / 3) * 2 + Game.random.nextInt(Options.cameraWidth / 3) - this.getHeightScaled(), Options.cameraHeight);
-		this.mSpeedX = 0f;
-		this.mSpeedY = Game.random.nextInt(10);
+
+		this.setSpeedX(0f);
+		this.setSpeedY(Game.random.nextInt(10));
+
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 

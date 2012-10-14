@@ -27,6 +27,9 @@ public abstract class Entity extends AnimatedSprite {
 
 	private int mId;
 
+	private float mSpeedX;
+	private float mSpeedY;
+
 	private EntityManager mEntityManager;
 
 	// ===========================================================
@@ -156,6 +159,29 @@ public abstract class Entity extends AnimatedSprite {
 	}
 
 	/**
+	 * @param pSpeedX
+	 */
+	public void setSpeedX(final float pSpeedX) {
+		this.mSpeedX = pSpeedX * Options.CAMERA_RATIO_FACTOR;
+	}
+
+	/**
+	 * @param pSpeedY
+	 */
+	public void setSpeedY(final float pSpeedY) {
+		this.mSpeedY = pSpeedY * Options.CAMERA_RATIO_FACTOR;
+	}
+
+	/**
+	 * @param pSpeedX
+	 * @param pSpeedY
+	 */
+	public void setSpeed(final float pSpeedX, final float pSpeedY) {
+		this.mSpeedX = pSpeedX * Options.CAMERA_RATIO_FACTOR;
+		this.mSpeedY = pSpeedY * Options.CAMERA_RATIO_FACTOR;
+	}
+
+	/**
 	 * @param centerX
 	 */
 	public void setCenterX(final float pCenterX) {
@@ -194,6 +220,20 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public int getID() {
 		return mId;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getSpeedX() {
+		return this.mSpeedX;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getSpeedY() {
+		return this.mSpeedY;
 	}
 
 	/**

@@ -21,8 +21,6 @@ public class Cloud extends Entity {
 	// Fields
 	// ===========================================================
 
-	private float mSpeed;
-
 	private int mAddToScreen;
 
 	// ===========================================================
@@ -56,10 +54,6 @@ public class Cloud extends Entity {
 	// Methods
 	// ===========================================================
 
-	public void setSpeed(final float pSpeed) {
-		this.mSpeed = pSpeed;
-	}
-
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
@@ -83,7 +77,7 @@ public class Cloud extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mX -= this.mSpeed;
+		this.mX -= this.getSpeedX();
 		if (this.mX + this.getWidthScaled() < 0) {
 			this.destroy();
 		}

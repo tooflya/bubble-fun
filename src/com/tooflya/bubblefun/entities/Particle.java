@@ -23,8 +23,6 @@ public class Particle extends Entity {
 
 	private int mAddToScreen;
 
-	private float stepX = 0;
-	private float stepY = 0;
 	private float stepRotation = 0;
 	private float stepScale = 0;
 	private float stepAlpha = 0;
@@ -54,8 +52,8 @@ public class Particle extends Entity {
 
 	public Particle Init() {
 
-		stepX = Game.random.nextFloat() * 2 - 1;
-		stepY = Game.random.nextFloat() * 2 - 1;
+		this.setSpeedX(Game.random.nextFloat() * 2 - 1);
+		this.setSpeedY(Game.random.nextFloat() * 2 - 1);
 
 		stepRotation = Game.random.nextFloat() * 10;
 
@@ -101,7 +99,8 @@ public class Particle extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.setPosition(this.getX() + this.stepX, this.getY() + this.stepY);
+		this.mX += this.getSpeedX();
+		this.mY += this.getSpeedY();
 
 		if (this.getScaleX() + this.stepScale < 0) {
 			this.destroy();

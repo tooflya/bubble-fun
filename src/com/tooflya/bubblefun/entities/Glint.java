@@ -21,9 +21,6 @@ public class Glint extends Entity {
 
 	private int mAddToScreen;
 
-	private float mStepX;
-	private float mStepY;
-
 	private float mRotationAngle;
 
 	private int mSleep;
@@ -73,8 +70,8 @@ public class Glint extends Entity {
 	public Glint Init(final int i, final Entity pFollowObject) {
 		this.mFollowObject = pFollowObject;
 
-		this.mStepX = 3f * FloatMath.sin(i * 2 * Options.PI / 10);
-		this.mStepY = 3f * FloatMath.cos(i * 2 * Options.PI / 10);
+		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 10));
+		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 10));
 
 		final float scale = Game.random.nextFloat();
 		this.mScaleX = scale;
@@ -89,7 +86,7 @@ public class Glint extends Entity {
 		this.isParticle = true;
 
 		this.setVisible(false);
-		//this.setIgnoreUpdate(false);
+		this.setIgnoreUpdate(false);
 
 		return this;
 	}
@@ -109,8 +106,8 @@ public class Glint extends Entity {
 				System.out.println(this.getWidthScaled());
 				this.show();
 			}
-			this.mX += this.mStepX;
-			this.mY += this.mStepY;
+			this.mX += this.getSpeedX();
+			this.mY += this.getSpeedY();
 
 			this.mAlpha -= 0.01f;
 			this.mRotation -= this.mRotationAngle;

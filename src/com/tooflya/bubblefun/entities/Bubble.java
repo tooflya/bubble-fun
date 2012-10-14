@@ -51,8 +51,6 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected boolean isFlyAction = true;
 	protected boolean isScaleDefined = false;
 
-	protected float mSpeedY;
-	protected float mSpeedX;
 	protected float mSpeedDecrement;
 	protected float mDeathTime;
 
@@ -117,31 +115,9 @@ public class Bubble extends Entity implements IAnimationListener {
 		this.isScaleDefined = true;
 	}
 
-	public void setSpeedX(final float pSpeed) {
-		this.mSpeedX = -pSpeed;
-	}
-
-	public void setSpeedY(final float pSpeed) {
-		this.mSpeedY = pSpeed > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
-	}
-
 	// ===========================================================
 	// Getters
 	// ===========================================================
-
-	/**
-	 * @return
-	 */
-	public float getSpeedY() {
-		return this.mSpeedY;
-	}
-
-	/**
-	 * @return
-	 */
-	public float getSpeedX() {
-		return this.mSpeedX;
-	}
 
 	// ===========================================================
 	// Methods
@@ -152,9 +128,20 @@ public class Bubble extends Entity implements IAnimationListener {
 	// ===========================================================
 
 	@Override
+	public void setSpeedX(final float pSpeedX) {
+		super.setSpeedX(this.getSpeedX() - pSpeedX * Options.CAMERA_RATIO_FACTOR);
+	}
+
+	@Override
+	public void setSpeedY(final float pSpeedY) {
+		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeedY - this.mSpeedDecrement);
+	}
+
+	@Override
 	public Entity create() {
-		this.mSpeedX = 0f;
-		this.mSpeedY = 2f;
+		this.setSpeedX(0f);
+		this.setSpeedY(2f);
+
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 
@@ -175,7 +162,7 @@ public class Bubble extends Entity implements IAnimationListener {
 
 		if (this.isScaleAction) {
 			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
-				this.mSpeedY -= 0.05f;
+				this.setSpeedY(this.getSpeedY() - 0.05f);
 				this.mSpeedDecrement += 0.05f;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
@@ -192,8 +179,8 @@ public class Bubble extends Entity implements IAnimationListener {
 			}
 
 			if (this.isFlyAction) {
-				this.mY -= this.mSpeedY;
-				this.mX -= this.mSpeedX;
+				this.mY -= this.getSpeedY();
+				this.mX -= this.getSpeedX();
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}

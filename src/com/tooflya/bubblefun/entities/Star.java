@@ -21,9 +21,6 @@ public class Star extends Entity {
 
 	private int mAddToScreen;
 
-	private float mStepX;
-	private float mStepY;
-
 	private boolean isParticle;
 
 	// ===========================================================
@@ -61,10 +58,10 @@ public class Star extends Entity {
 	// ===========================================================
 
 	public Star Init(final int i) {
-		this.mStepX = 3f * FloatMath.sin(i * 2 * Options.PI / 7);
-		this.mStepY = 3f * FloatMath.cos(i * 2 * Options.PI / 7);
+		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 7));
+		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 7));
 
-		this.mRotation = (float) (Math.atan2(this.mStepY, this.mStepX) * 180 / Math.PI);
+		this.mRotation = (float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI);
 
 		this.mScaleX = 0.1f;
 		this.mScaleY = 0.1f;
@@ -86,8 +83,8 @@ public class Star extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		if (this.isParticle) {
-			this.mX += this.mStepX;
-			this.mY += this.mStepY;
+			this.mX += this.getSpeedX();
+			this.mY += this.getSpeedY();
 
 			this.mScaleX += 0.03f;
 			this.mScaleY += 0.03f;

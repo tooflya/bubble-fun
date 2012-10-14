@@ -88,6 +88,8 @@ public class Chiky extends Entity {
 			this.stepX = Math.signum(stepSign) * (Game.random.nextFloat() * (maxStepX - minStepX) + minStepX);
 		}
 
+		this.stepX *= Options.CAMERA_RATIO_FACTOR;
+
 		this.x = this.startX;
 		this.y = this.startY;
 	}
