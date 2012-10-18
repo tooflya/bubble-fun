@@ -78,16 +78,16 @@ public class LoadingScreen extends Screen {
 
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
-		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		mPreloadBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 766f * Options.CAMERA_RATIO_FACTOR);
+		this.mPreloadBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 766f * Options.CAMERA_RATIO_FACTOR);
 
-		mProgressBar.create().setPosition(Options.cameraCenterX - mProgressBar.getWidthScaled() / 2, 800f * Options.CAMERA_RATIO_FACTOR);
-		mProgressBar.setWidth(1);
-		mProgressBar.getTextureRegion().setWidth(1);
+		this.mProgressBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 800f * Options.CAMERA_RATIO_FACTOR);
+		this.mProgressBar.setWidth(1);
+		this.mProgressBar.getTextureRegion().setWidth(1);
 
 		/** Register timer of loading progressbar changes */
-		registerUpdateHandler(mTimer);
+		this.registerUpdateHandler(mTimer);
 	}
 
 	// ===========================================================

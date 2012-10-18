@@ -217,7 +217,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
-
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
 
