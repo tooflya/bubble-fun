@@ -1,5 +1,9 @@
 package com.tooflya.bubblefun.background;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public interface IAsyncCallback {
 
 	// ===========================================================
