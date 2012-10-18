@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.entities.BigBird;
+import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Cloud;
@@ -187,7 +187,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	public static EntityManager feathers;
 	public static EntityManager glints;
 
-	private static BigBird mBigBird;
+	private static BlueBird mBigBird;
 
 	// ===========================================================
 	// Constructors
@@ -205,7 +205,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6), this));
 		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), this));
 
-		mBigBird = new BigBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), this)));
+		mBigBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), this)));
 
 		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
 		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
@@ -232,7 +232,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	public static void reInit() {
 		mBigBird.create();
-		mBigBird.mFeathersManager.clear();
+		mBigBird.clear();
 		airgums.clear();
 		chikies.clear();
 		glints.clear();
@@ -453,7 +453,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		for (int j = this.airgums.getCount() - 1; j >= 0; --j) {
 			airgum = (Bubble) this.airgums.getByIndex(j);
 			if (this.isCollide(this.mBigBird, airgum)) {
-				if (!this.mBigBird.mIsSleep) {
+				if (!this.mBigBird.isSleep()) {
 					this.mBigBird.particles();
 					if (!airgum.isAnimationRunning()) {
 						airgum.animate(40, 0, airgum);
