@@ -47,8 +47,8 @@ public class Cloud extends Entity {
 
 	@Override
 	public Entity create() {
-		this.setScaleY(Options.CAMERA_RATIO_FACTOR);
-		this.setScaleX(Options.CAMERA_RATIO_FACTOR);
+		this.setScaleY(Options.cameraRatioFactor);
+		this.setScaleX(Options.cameraRatioFactor);
 
 		this.setAlpha(1f);
 

@@ -59,7 +59,7 @@ public class LoadingScreen extends Screen {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
 			/** Changing size of progressbar. */
-			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.CAMERA_RATIO_FACTOR) {
+			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.cameraRatioFactor) {
 				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 10));
 				mProgressBar.setWidth(mProgressBar.getWidth() + 10);
 			} else {
@@ -80,9 +80,9 @@ public class LoadingScreen extends Screen {
 
 		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		this.mPreloadBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 766f * Options.CAMERA_RATIO_FACTOR);
+		this.mPreloadBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 766f * Options.cameraRatioFactor);
 
-		this.mProgressBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 800f * Options.CAMERA_RATIO_FACTOR);
+		this.mProgressBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 800f * Options.cameraRatioFactor);
 		this.mProgressBar.setWidth(1);
 		this.mProgressBar.getTextureRegion().setWidth(1);
 

@@ -75,12 +75,11 @@ public abstract class Entity extends AnimatedSprite {
 
 		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
 		this.setScaleCenter(0, 0);
-		this.setScale(Options.CAMERA_RATIO_FACTOR);
+		this.setScale(Options.cameraRatioFactor);
 
 		/** After scale action we need to find center of entityposition. */
 		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
-
-		/* TODO: Maybe we need to find this center also by Y-axis? */
+		this.mY = (Options.cameraHeight- this.getHeightScaled()) / 2;
 
 		/** Also attach this entity to the <b>Screen</b> if <i>pParentScreen</i> defined. */
 		if (pParentScreen != null) {
@@ -220,14 +219,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedX
 	 */
 	public void setSpeedX(final float pSpeedX) {
-		this.mSpeedX = pSpeedX * Options.CAMERA_RATIO_FACTOR;
+		this.mSpeedX = pSpeedX * Options.cameraRatioFactor;
 	}
 
 	/**
 	 * @param pSpeedY
 	 */
 	public void setSpeedY(final float pSpeedY) {
-		this.mSpeedY = pSpeedY * Options.CAMERA_RATIO_FACTOR;
+		this.mSpeedY = pSpeedY * Options.cameraRatioFactor;
 	}
 
 	/**
@@ -235,8 +234,8 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedY
 	 */
 	public void setSpeed(final float pSpeedX, final float pSpeedY) {
-		this.mSpeedX = pSpeedX * Options.CAMERA_RATIO_FACTOR;
-		this.mSpeedY = pSpeedY * Options.CAMERA_RATIO_FACTOR;
+		this.mSpeedX = pSpeedX * Options.cameraRatioFactor;
+		this.mSpeedY = pSpeedY * Options.cameraRatioFactor;
 	}
 
 	/**
@@ -291,7 +290,7 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedY() {
-		return this.mSpeedY;
+		return this.mSpeedY / Options.cameraRatioFactor;
 	}
 
 	/**

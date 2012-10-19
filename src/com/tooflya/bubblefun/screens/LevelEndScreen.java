@@ -28,7 +28,7 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "end_lvl_bg.png", 0, 0, 1, 1)) {
+	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1)) {
 
 		/*
 		 * (non-Javadoc)
@@ -157,7 +157,7 @@ public class LevelEndScreen extends Screen {
 					mStarsAnimationCount++;
 
 					Star star;
-					(star = (Star) mLevelStars.create()).setCenterPosition(((96f + 96f * mStarsAnimationCount) * Options.CAMERA_RATIO_FACTOR), mBackground.getY() + 620 * Options.CAMERA_RATIO_FACTOR);
+					(star = (Star) mLevelStars.create()).setCenterPosition(Game.reduceCoordinates(120f) + Game.reduceCoordinates(95f * mStarsAnimationCount), mBackground.getY() + Game.reduceCoordinates(620));
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -180,25 +180,24 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.setBackground(new SpriteBackground(mBackground.create()));
 
-		mMenu.create().setPosition(105f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mMenu.create().setPosition(Game.reduceCoordinates(105f), mBackground.getY() + Game.reduceCoordinates(720));
 		mMenu.hide();
 
-		mRePlay.create().setPosition(253f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mRePlay.create().setPosition(Game.reduceCoordinates(253f), mBackground.getY() + Game.reduceCoordinates(720));
 		mRePlay.hide();
 
-		mPlayNext.create().setPosition(405f * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 720 * Options.CAMERA_RATIO_FACTOR);
+		mPlayNext.create().setPosition(Game.reduceCoordinates(405f), mBackground.getY() + Game.reduceCoordinates(720));
 		mPlayNext.hide();
 
 		this.registerTouchArea(mMenu);
 		this.registerTouchArea(mRePlay);
 		this.registerTouchArea(mPlayNext);
-		this.setBackground(new SpriteBackground(mBackground));
 
 		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "star-lvl-01.png", 0, 35, 1, 1), this));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end-star.png", 0, 35, 1, 1), this));
 	}
 
 	@Override

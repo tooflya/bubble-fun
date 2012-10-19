@@ -23,16 +23,16 @@ public class CloudsManager extends EntityManager {
 
 		switch (frame) {
 		case 0:
-			cloud.setScale(0.5f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(0.5f * Options.cameraRatioFactor);
 			break;
 		case 1:
-			cloud.setScale(0.75f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(0.75f * Options.cameraRatioFactor);
 			break;
 		case 2:
-			cloud.setScale(1f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(1f * Options.cameraRatioFactor);
 			break;
 		case 3:
-			cloud.setScale(1.25f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(1.25f * Options.cameraRatioFactor);
 			break;
 		}
 

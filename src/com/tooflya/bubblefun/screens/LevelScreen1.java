@@ -172,9 +172,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	};
 
 	private final static Text mScoreText = new Text(0, 0, Game.mSmallFont, "Score: xxxxx");
-	private final static Text mBirdsCountText = new Text(68 * Options.CAMERA_RATIO_FACTOR, 30 * Options.CAMERA_RATIO_FACTOR, Game.mSmallFont, "31");
-	private final static Text mAirCountText = new Text(Options.cameraWidth - 125 * Options.CAMERA_RATIO_FACTOR, 61 * Options.CAMERA_RATIO_FACTOR, Game.mSmallFont, "1234567890-");
-	private final static Text mTapHelpText = new Text(Options.cameraCenterX - 210 * Options.CAMERA_RATIO_FACTOR, Options.cameraHeight / 3 * 2 + 130 * Options.CAMERA_RATIO_FACTOR, Game.mSmallFont, "Tap here to pop chicks!!!");
+	private final static Text mBirdsCountText = new Text(68 * Options.cameraRatioFactor, 30 * Options.cameraRatioFactor, Game.mSmallFont, "31");
+	private final static Text mAirCountText = new Text(Options.cameraWidth - 125 * Options.cameraRatioFactor, 61 * Options.cameraRatioFactor, Game.mSmallFont, "1234567890-");
+	private final static Text mTapHelpText = new Text(Options.cameraCenterX - 210 * Options.cameraRatioFactor, Options.cameraHeight / 3 * 2 + 130 * Options.cameraRatioFactor, Game.mSmallFont, "Tap here to pop chicks!!!");
 
 	// ===========================================================
 	// Fields
@@ -187,7 +187,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	public static EntityManager feathers;
 	public static EntityManager glints;
 
-	private static BlueBird mBigBird;
+	private static BlueBird mBlueBird;
 
 	// ===========================================================
 	// Constructors
@@ -205,11 +205,11 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bubble_blow.png", 900, 0, 1, 6), this));
 		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather.png", 530, 0, 1, 2), this));
 
-		mBigBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), this)));
+		mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), this)), this);
 
-		mBirdsCounterBackground.create().setPosition(20 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
-		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
-		mAirCounterBackground.create().setPosition(Options.cameraWidth - 20 * Options.CAMERA_RATIO_FACTOR - mAirCounterBackground.getWidthScaled(), 20 * Options.CAMERA_RATIO_FACTOR);
+		mBirdsCounterBackground.create().setPosition(20 * Options.cameraRatioFactor, 20 * Options.cameraRatioFactor);
+		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.cameraRatioFactor - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.cameraRatioFactor + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
+		mAirCounterBackground.create().setPosition(Options.cameraWidth - 20 * Options.cameraRatioFactor - mAirCounterBackground.getWidthScaled(), 20 * Options.cameraRatioFactor);
 
 		mBirdsCountText.setColor(0f, 0f, 0f);
 		mAirCountText.setColor(0f, 0f, 0f);
@@ -231,8 +231,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public static void reInit() {
-		mBigBird.create();
-		mBigBird.clear();
+		mBlueBird.create();
+		mBlueBird.clear();
 		airgums.clear();
 		chikies.clear();
 		glints.clear();
@@ -452,9 +452,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		for (int j = this.airgums.getCount() - 1; j >= 0; --j) {
 			airgum = (Bubble) this.airgums.getByIndex(j);
-			if (this.isCollide(this.mBigBird, airgum)) {
-				if (!this.mBigBird.isSleep()) {
-					this.mBigBird.particles();
+			if (this.isCollide(this.mBlueBird, airgum)) {
+				if (!this.mBlueBird.isSleep()) {
+					this.mBlueBird.particles();
 					if (!airgum.isAnimationRunning()) {
 						airgum.animate(40, 0, airgum);
 					}
@@ -562,10 +562,11 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
-				final float koef = 10f;
-				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 10f) {
+				final float koef = 20f * Options.cameraRatioFactor;
+				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 100f * Options.cameraRatioFactor) {
+
 					this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef);
-					this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 5));
+					//this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef));
 
 					Glint particle;
 					for (int i = 0; i < 30; i++) {

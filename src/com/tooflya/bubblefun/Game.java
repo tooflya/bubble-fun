@@ -114,13 +114,27 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.cameraCenterX = Options.cameraWidth / 2;
 		Options.cameraCenterY = Options.cameraHeight / 2;
 
-		Options.CAMERA_RATIO_FACTOR = Options.cameraWidth / Options.cameraOriginRatioX;
+		/** */
+		if (Options.cameraWidth > Options.cameraRatioCenter) {
+			Options.cameraOriginRatioX = 640.0f;
+			Options.cameraOriginRatioY = 1024.0f;
+
+			Options.CR = "HD";
+		} else {
+			Options.cameraOriginRatioX = 380.0f;
+			Options.cameraOriginRatioY = 610.0f;
+
+			Options.CR = "SD";
+		}
+
+		Options.cameraCoordinatesFactor = Options.cameraHeight / 1024f;
+		Options.cameraRatioFactor = Options.cameraHeight / Options.cameraOriginRatioY;
 
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
-		Options.touchHeight = Options.cameraHeight / 3;
-		Options.ellipseHeight = Options.cameraHeight / 10;
+		Options.touchHeight = Options.cameraHeight / 3; // TODO: WTF?
+		Options.ellipseHeight = Options.cameraHeight / 10; // TODO: WTF?
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
@@ -157,8 +171,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		FontFactory.setAssetBasePath("font/");
 
-		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50 * Options.CAMERA_RATIO_FACTOR, true, Color.WHITE);
-		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 32 * Options.CAMERA_RATIO_FACTOR, true, Color.WHITE);
+		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50 * Options.cameraRatioFactor, true, Color.WHITE);
+		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 32 * Options.cameraRatioFactor, true, Color.WHITE);
 
 		this.getEngine().getFontManager().loadFonts(mBigFont, mSmallFont);
 		this.getEngine().getTextureManager().loadTextures(mBigFontTexture, mSmallFontTexture);
@@ -294,6 +308,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static float reduceCoordinates(final float pCoordinate) {
+		return pCoordinate * Options.cameraCoordinatesFactor;
+	}
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
 		engine.getTextureManager().loadTextures(textures);

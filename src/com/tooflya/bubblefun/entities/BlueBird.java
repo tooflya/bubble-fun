@@ -7,6 +7,7 @@ import android.os.Vibrator;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 /**
@@ -31,7 +32,7 @@ public class BlueBird extends Entity {
 	private float mSleepTime = 0f;
 	private float mSleepTimeOrigin = 300f;
 
-	private boolean mIsSleep = true;
+	private boolean mIsSleep;
 
 	private EntityManager mFeathersManager;
 
@@ -42,9 +43,10 @@ public class BlueBird extends Entity {
 	/**
 	 * @param pTiledTextureRegion
 	 * @param pFeathersManager
+	 * @param pParentScreen
 	 */
-	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager pFeathersManager) {
-		super(pTiledTextureRegion);
+	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager pFeathersManager, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.mFeathersManager = pFeathersManager;
 
@@ -155,6 +157,6 @@ public class BlueBird extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new BlueBird(getTextureRegion(), this.mFeathersManager);
+		return new BlueBird(getTextureRegion(), this.mFeathersManager, this.mParentScreen);
 	}
 }

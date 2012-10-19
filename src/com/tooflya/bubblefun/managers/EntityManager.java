@@ -25,6 +25,10 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param capacity
+	 * @param element
+	 */
 	public EntityManager(final int capacity, Entity element) {
 		this.lastElementNumber = -1;
 
@@ -47,14 +51,24 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @return
+	 */
 	public int getCount() {
 		return this.lastElementNumber + 1;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/**
+	 * @param index
+	 * @return
+	 */
 	public Entity getByIndex(final int index) {
 		return elements[index];
 	}
@@ -71,6 +85,9 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 		return null;
 	}
 
+	/**
+	 * @param i
+	 */
 	public void destroy(final int i) {
 		try {
 			Entity temp_element = elements[i];
@@ -86,6 +103,9 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void clear() {
 		for (int i = lastElementNumber; i >= 0; --i) {
 			elements[i].destroy();

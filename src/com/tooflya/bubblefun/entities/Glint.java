@@ -10,6 +10,10 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class Glint extends Entity {
 
 	// ===========================================================
@@ -94,7 +98,6 @@ public class Glint extends Entity {
 		if (this.isParticle && --this.mSleep <= 0) {
 			if (this.mSleep == 0) {
 				this.setCenterPosition(this.mFollowObject.getCenterX(), this.mFollowObject.getCenterY());
-				System.out.println(this.getWidthScaled());
 				this.show();
 			}
 			this.mX += this.getSpeedX();

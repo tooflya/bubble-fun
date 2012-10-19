@@ -96,10 +96,10 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		public void onTimePassed(TimerHandler pTimerHandler) {
 
 			/** Changing size of progressbar */
-			if (mBalonFull.getHeightScaled() < mBalonFull.getBaseHeight() * Options.CAMERA_RATIO_FACTOR) {
+			if (mBalonFull.getHeightScaled() < mBalonFull.getBaseHeight() * Options.cameraRatioFactor) {
 				mBalonFull.getTextureRegion().setHeight((int) (mBalonFull.getTextureRegion().getHeight() + 3));
 				mBalonFull.setHeight(mBalonFull.getHeight() + 3);
-				mBalonFull.setPosition(mBalonFull.getX(), mBalon.getY() + mBalon.getHeightScaled() - mBalonFull.getHeightScaled() - 3 * Options.CAMERA_RATIO_FACTOR);
+				mBalonFull.setPosition(mBalonFull.getX(), mBalon.getY() + mBalon.getHeightScaled() - mBalonFull.getHeightScaled() - 3 * Options.cameraRatioFactor);
 			} else {
 				if (true) {
 					if (mChangeAction == 0) {
@@ -131,9 +131,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.setBackground(new SpriteBackground(mBackground));
 
-		mBalonFull.create().setPosition(375 * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 292 * Options.CAMERA_RATIO_FACTOR + mBalon.getHeightScaled());
-		mBalon.create().setPosition(375 * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 292 * Options.CAMERA_RATIO_FACTOR);
-		mLoadingText.create().setPosition(175 * Options.CAMERA_RATIO_FACTOR, mBackground.getY() + 292 * Options.CAMERA_RATIO_FACTOR);
+		mBalonFull.create().setPosition(375 * Options.cameraRatioFactor, mBackground.getY() + 292 * Options.cameraRatioFactor + mBalon.getHeightScaled());
+		mBalon.create().setPosition(375 * Options.cameraRatioFactor, mBackground.getY() + 292 * Options.cameraRatioFactor);
+		mLoadingText.create().setPosition(175 * Options.cameraRatioFactor, mBackground.getY() + 292 * Options.cameraRatioFactor);
 
 		this.bubbles = new BubblesManager(10, new GraphicsBubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "lvl_bubble.png", 170, 60, 1, 3), this));
 	}

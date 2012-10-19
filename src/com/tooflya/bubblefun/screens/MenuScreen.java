@@ -27,9 +27,9 @@ public class MenuScreen extends Screen {
 	// Constants
 	// ===========================================================
 
-	private static final float ICONS_SIZE = 71 * Options.CAMERA_RATIO_FACTOR;
-	private static final float ICONS_PADDING = 16 * Options.CAMERA_RATIO_FACTOR;
-	private static final float ICONS_PADDING_BETWEEN = 16 * Options.CAMERA_RATIO_FACTOR;
+	private static final float ICONS_SIZE = 71 * Options.cameraRatioFactor;
+	private static final float ICONS_PADDING = 16 * Options.cameraRatioFactor;
+	private static final float ICONS_PADDING_BETWEEN = 16 * Options.cameraRatioFactor;
 
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -146,16 +146,16 @@ public class MenuScreen extends Screen {
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
-			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
-			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+			this.mMinScaleX = 0.8f * Options.cameraRatioFactor;
+			this.mMaxScaleX = 1f * Options.cameraRatioFactor;
+			this.mSpeedScaleX = 0.003f * Options.cameraRatioFactor;
 
-			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
-			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+			this.mMinScaleY = 1f * Options.cameraRatioFactor;
+			this.mMaxScaleY = 1.2f * Options.cameraRatioFactor;
+			this.mSpeedScaleY = 0.003f * Options.cameraRatioFactor;
 
-			this.mScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleY = 1f * Options.cameraRatioFactor;
+			this.mScaleX = 1f * Options.cameraRatioFactor;
 
 			this.isScaleDefined = true;
 
@@ -203,16 +203,16 @@ public class MenuScreen extends Screen {
 			this.mIsYReverse = true;
 			this.mIsXReverse = false;
 
-			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
-			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+			this.mMinScaleX = 0.8f * Options.cameraRatioFactor;
+			this.mMaxScaleX = 1f * Options.cameraRatioFactor;
+			this.mSpeedScaleX = 0.003f * Options.cameraRatioFactor;
 
-			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
-			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+			this.mMinScaleY = 1f * Options.cameraRatioFactor;
+			this.mMaxScaleY = 1.2f * Options.cameraRatioFactor;
+			this.mSpeedScaleY = 0.003f * Options.cameraRatioFactor;
 
-			this.mScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
-			this.mScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleY = 1.2f * Options.cameraRatioFactor;
+			this.mScaleX = 0.8f * Options.cameraRatioFactor;
 
 			this.isScaleDefined = true;
 
@@ -249,16 +249,16 @@ public class MenuScreen extends Screen {
 			this.mIsYReverse = false;
 			this.mIsXReverse = true;
 
-			this.mMinScaleX = 0.8f * Options.CAMERA_RATIO_FACTOR;
-			this.mMaxScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+			this.mMinScaleX = 0.8f * Options.cameraRatioFactor;
+			this.mMaxScaleX = 1f * Options.cameraRatioFactor;
+			this.mSpeedScaleX = 0.003f * Options.cameraRatioFactor;
 
-			this.mMinScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mMaxScaleY = 1.2f * Options.CAMERA_RATIO_FACTOR;
-			this.mSpeedScaleY = 0.003f * Options.CAMERA_RATIO_FACTOR;
+			this.mMinScaleY = 1f * Options.cameraRatioFactor;
+			this.mMaxScaleY = 1.2f * Options.cameraRatioFactor;
+			this.mSpeedScaleY = 0.003f * Options.cameraRatioFactor;
 
-			this.mScaleY = 1f * Options.CAMERA_RATIO_FACTOR;
-			this.mScaleX = 1f * Options.CAMERA_RATIO_FACTOR;
+			this.mScaleY = 1f * Options.cameraRatioFactor;
+			this.mScaleX = 1f * Options.cameraRatioFactor;
 
 			this.isScaleDefined = true;
 
@@ -291,16 +291,16 @@ public class MenuScreen extends Screen {
 		this.mClouds.generateStartClouds();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		mBackground3.create().setCenterPosition(Options.cameraCenterX, 130 * Options.CAMERA_RATIO_FACTOR);
+		mBackground3.create().setCenterPosition(Options.cameraCenterX, 130 * Options.cameraRatioFactor);
 		mTwitterIcon.create().setPosition(0 + ICONS_PADDING, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 		mFacebookIcon.create().setPosition(0 + ICONS_PADDING + ICONS_PADDING_BETWEEN + ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 
-		mPlayIcon.create().setCenterPosition(Options.cameraCenterX - 170 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY - 90 * Options.CAMERA_RATIO_FACTOR);
-		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 130 * Options.CAMERA_RATIO_FACTOR);
-		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 300 * Options.CAMERA_RATIO_FACTOR);
+		mPlayIcon.create().setCenterPosition(Options.cameraCenterX - 170 * Options.cameraRatioFactor, Options.cameraCenterY - 90 * Options.cameraRatioFactor);
+		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.cameraRatioFactor, Options.cameraCenterY + 130 * Options.cameraRatioFactor);
+		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.cameraRatioFactor, Options.cameraCenterY + 300 * Options.cameraRatioFactor);
 
-		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 130 * Options.CAMERA_RATIO_FACTOR);
-		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.CAMERA_RATIO_FACTOR, Options.cameraCenterY + 300 * Options.CAMERA_RATIO_FACTOR);
+		mMoreIcon.create().setCenterPosition(Options.cameraCenterX + 40 * Options.cameraRatioFactor, Options.cameraCenterY + 130 * Options.cameraRatioFactor);
+		mSoundIcon.create().setCenterPosition(Options.cameraCenterX + 150 * Options.cameraRatioFactor, Options.cameraCenterY + 300 * Options.cameraRatioFactor);
 	}
 
 	// ===========================================================

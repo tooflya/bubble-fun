@@ -2,30 +2,41 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.opengl.font.Font;
-import org.anddev.andengine.util.HorizontalAlign;
 
-import com.tooflya.bubblefun.Options;
-
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class Text extends ChangeableText {
 
-	private float mCenterX;
-	private float mCenterY;
+	// ===========================================================
+	// Constants
+	// ===========================================================
 
-	public Text(float pX, float pY, Font pFont, String pText) {
-		super(pX, pY, pFont, pText);
+	// ===========================================================
+	// Fields
+	// ===========================================================
 
-		this.mCenterX = pX;
-		this.mCenterY = pY;
-
-		// this.setScaleCenter(0, 0);
-		// this.setScale(Options.CAMERA_RATIO_FACTOR);
-
-		// this.mX = this.mCenterX - this.getWidthScaled() / 2;
-		// this.mY = this.mCenterY - this.getHeightScaled() / 2;
-	}
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	/**
-	 * @see org.anddev.andengine.entity.text.ChangeableText#setText(java.lang.String)
+	 * @param pX
+	 * @param pY
+	 * @param pFont
+	 * @param pText
+	 */
+	public Text(float pX, float pY, Font pFont, String pText) {
+		super(pX, pY, pFont, pText);
+	}
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.Entity#setPosition(float, float)
 	 */
 	@Override
 	public void setPosition(final float pX, final float pY) {
