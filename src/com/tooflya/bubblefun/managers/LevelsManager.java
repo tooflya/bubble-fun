@@ -14,8 +14,8 @@ public class LevelsManager extends EntityManager {
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
 
-		PADDING = 116f * Options.cameraRatioFactor;
-		PADDING_B = 23.2f * Options.cameraRatioFactor;
+		PADDING = 59f * Options.cameraRatioFactor;
+		PADDING_B = 14f * Options.cameraRatioFactor;
 
 		X = PADDING_B;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
@@ -30,8 +30,8 @@ public class LevelsManager extends EntityManager {
 	public void clear() {
 		super.clear();
 
-		PADDING = 116f * Options.cameraRatioFactor;
-		PADDING_B = 23.2f * Options.cameraRatioFactor;
+		PADDING = 59f * Options.cameraRatioFactor;
+		PADDING_B = 14f * Options.cameraRatioFactor;
 
 		X = PADDING_B;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
@@ -41,13 +41,13 @@ public class LevelsManager extends EntityManager {
 	public void generate() {
 		for (int i = 0; i < this.getCapacity(); i++) {
 
-			if (i % 4 == 0) {
+			if (i % 5 == 0) {
 				X += 0;
 			} else {
 				X += PADDING + PADDING_B;
 			}
 
-			if (i % 4 == 0 && i != 0) {
+			if (i % 5 == 0 && i != 0) {
 				Y += PADDING + PADDING_B;
 				X = PADDING_B;
 			}
@@ -61,9 +61,9 @@ public class LevelsManager extends EntityManager {
 
 			if (icon.id == 1 || level.isOpen()) {
 				icon.blocked = false;
-				icon.setCurrentTileIndex(level.getStarsCount() + 1);
+				icon.setCurrentTileIndex(level.getStarsCount());
 			} else {
-				icon.setCurrentTileIndex(0);
+				icon.setCurrentTileIndex(4);
 				icon.blocked = true;
 			}
 

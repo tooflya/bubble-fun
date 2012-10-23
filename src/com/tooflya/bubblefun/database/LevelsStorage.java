@@ -116,7 +116,7 @@ public class LevelsStorage extends SQLiteOpenHelper {
 		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE + "(" + ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + STARS + " INTEGER DEFAULT 0,  " + STATE + " INTEGER DEFAULT 0" + ")";
 		db.execSQL(CREATE_CONTACTS_TABLE);
 
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= 25; i++) {
 			this.addLevel(db);
 		}
 	}

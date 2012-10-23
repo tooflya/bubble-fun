@@ -2,7 +2,6 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -14,7 +13,6 @@ import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.GraphicsBubble;
 import com.tooflya.bubblefun.managers.BubblesManager;
 
 public class PreloaderScreen extends Screen implements IAsyncCallback {
@@ -25,10 +23,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 	public static int mChangeAction = 0;
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "bg_level.png", 0, 0, 1, 1)) {
+	public final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bg.png", 0, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -41,44 +38,18 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		}
 	};
 
-	public final Entity mBalonFull = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_air_fill.png", 85, 0, 1, 1), this) {
+	public final Entity mBalon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bg-fill.png", 0, 612, 1, 1), this) {
 
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.Entity#create()
+		 */
 		@Override
 		public Entity create() {
-			if (!this.hasParent())
-				Game.screens.get(Screen.LOAD).attachChild(this);
-
-			this.getTextureRegion().setHeight(0);
-			this.setHeight(0);
+			this.setHeight(1);
+			this.getTextureRegion().setHeight(1);
 
 			return super.create();
 		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	public final Entity mBalon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_air_balon.png", 0, 0, 1, 1), this) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	public final Entity mLoadingText = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "preload_loading_text.png", 170, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -96,10 +67,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		public void onTimePassed(TimerHandler pTimerHandler) {
 
 			/** Changing size of progressbar */
-			if (mBalonFull.getHeightScaled() < mBalonFull.getBaseHeight() * Options.cameraRatioFactor) {
-				mBalonFull.getTextureRegion().setHeight((int) (mBalonFull.getTextureRegion().getHeight() + 3));
-				mBalonFull.setHeight(mBalonFull.getHeight() + 3);
-				mBalonFull.setPosition(mBalonFull.getX(), mBalon.getY() + mBalon.getHeightScaled() - mBalonFull.getHeightScaled() - 3 * Options.cameraRatioFactor);
+			if (mBalon.getHeightScaled() < mBalon.getBaseHeight() * Options.cameraRatioFactor) {
+				mBalon.getTextureRegion().setHeight((int) (mBalon.getTextureRegion().getHeight() + 3));
+				mBalon.setHeight(mBalon.getHeight() + 3);
 			} else {
 				if (true) {
 					if (mChangeAction == 0) {
@@ -119,8 +89,6 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	// Fields
 	// ===========================================================
 
-	private BubblesManager bubbles;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -129,25 +97,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		this.loadResources();
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		this.setBackground(new SpriteBackground(mBackground));
-
-		mBalonFull.create().setPosition(375 * Options.cameraRatioFactor, mBackground.getY() + 292 * Options.cameraRatioFactor + mBalon.getHeightScaled());
-		mBalon.create().setPosition(375 * Options.cameraRatioFactor, mBackground.getY() + 292 * Options.cameraRatioFactor);
-		mLoadingText.create().setPosition(175 * Options.cameraRatioFactor, mBackground.getY() + 292 * Options.cameraRatioFactor);
-
-		this.bubbles = new BubblesManager(10, new GraphicsBubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "lvl_bubble.png", 170, 60, 1, 3), this));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
-	 */
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		this.bubbles.update();
+		mBalon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - (mBalon.getBaseHeight() * Options.cameraRatioFactor) / 2);
 	}
 
 	@Override
@@ -157,7 +107,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
 
-		mBalonFull.create();
+		mBalon.create();
 
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
@@ -173,12 +123,12 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundTextureAtlas);
 	}
 
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundTextureAtlas);
 	}
 
 	@Override

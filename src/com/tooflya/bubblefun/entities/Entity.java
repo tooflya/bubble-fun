@@ -77,7 +77,7 @@ public abstract class Entity extends AnimatedSprite {
 		this.setScaleCenter(0, 0);
 		this.setScale(Options.cameraRatioFactor);
 
-		/** After scale action we need to find center of entityposition. */
+		/** After scale action we need to find center of entity position. */
 		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
 		this.mY = (Options.cameraHeight- this.getHeightScaled()) / 2;
 

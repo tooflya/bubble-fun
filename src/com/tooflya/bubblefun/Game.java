@@ -115,7 +115,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.cameraCenterY = Options.cameraHeight / 2;
 
 		/** */
-		if (Options.cameraWidth > Options.cameraRatioCenter) {
+		if (Options.cameraWidth > Options.cameraRatioCenter && false) {
 			Options.cameraOriginRatioX = 640.0f;
 			Options.cameraOriginRatioY = 1024.0f;
 
@@ -128,7 +128,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		}
 
 		Options.cameraCoordinatesFactor = Options.cameraHeight / 1024f;
-		Options.cameraRatioFactor = Options.cameraHeight / Options.cameraOriginRatioY;
+		Options.cameraRatioFactor = Options.cameraWidth / Options.cameraOriginRatioX;
 
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);

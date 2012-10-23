@@ -67,7 +67,7 @@ public class Chiky extends Entity {
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 
-		this.animate(new long[] { 300, 300 }, 0, 1, true);
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
 	}
 
 	// ===========================================================
@@ -80,8 +80,8 @@ public class Chiky extends Entity {
 		this.startX = startX;
 		this.startY = startY;
 
-		final float minStepX = 2f; // TODO:
-		final float maxStepX = 4f; // TODO:
+		final float minStepX = 1f; // TODO:
+		final float maxStepX = 2f; // TODO:
 		if (this.type == 0) {
 			this.stepX = (minStepX + maxStepX) / 2;
 		}
@@ -104,7 +104,7 @@ public class Chiky extends Entity {
 		this.timeToFall = 40; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
 
-		this.animate(new long[] { 300, 300 }, 2, 3, true);
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 6, 11, true);
 	}
 
 	// ===========================================================
@@ -222,7 +222,7 @@ public class Chiky extends Entity {
 
 			if (this.getY() > Options.cameraHeight) {
 				this.state = 0;
-				this.animate(new long[] { 300, 300 }, 0, 1, true);
+				this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
 				this.setRotation(0);
 				this.lastY = 0;
 				this.destroy();

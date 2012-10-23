@@ -1,14 +1,19 @@
 package com.tooflya.bubblefun.screens;
 
-import org.anddev.andengine.entity.scene.background.SpriteBackground;
+import org.anddev.andengine.entity.modifier.ScaleModifier;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.entities.Cloud;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
+import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
 
 /**
@@ -21,7 +26,9 @@ public class LevelChoiseScreen extends Screen {
 	// Constants
 	// ===========================================================
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(128, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private static final float ICONS_PADDING = 10 * Options.cameraRatioFactor;
+
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -29,21 +36,138 @@ public class LevelChoiseScreen extends Screen {
 
 	private LevelsManager levels;
 
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/main-bg.png", 0, 0, 1, 1), this) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	private final CloudsManager mClouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/cloud.png", 382, 0, 1, 3), this));
+
+	private final Entity mBackButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/back-btn.png", 100, 900, 1, 2), this, true) {
+
+		private ScaleModifier mScaleModifier;
+
+		private boolean mModifierAttached = false;
+
+		private int mWaitBeforeAction = 20;
+		private boolean mDoAction = false;
+
+		private float mBaseScale;
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.Entity#create()
+		 */
+		@Override
+		public Entity create() {
+			this.mBaseScale = this.getScaleX();
+
+			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.3f * Options.cameraRatioFactor);
+			this.mScaleModifier.setRemoveWhenFinished(false);
+
+			this.setScaleCenter(this.getBaseWidth() / 2, this.getBaseHeight() / 2);
+
+			return super.create();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		 */
+		@Override
+		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_DOWN:
+				//this.setCurrentTileIndex(1);
+				break;
+			case TouchEvent.ACTION_UP:
+				//this.setCurrentTileIndex(0);
+
+				if (this.mModifierAttached) {
+					this.mScaleModifier.reset();
+				} else {
+					this.registerEntityModifier(this.mScaleModifier);
+					this.mModifierAttached = true;
+				}
+
+				this.mDoAction = true;
+				break;
+			}
+
+			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+		 */
+		@Override
+		protected void onManagedUpdate(final float pSecondsElapsed) {
+			super.onManagedUpdate(pSecondsElapsed);
+
+			if (this.mDoAction) {
+				if (this.mWaitBeforeAction-- <= 0) {
+					this.mDoAction = false;
+					this.mWaitBeforeAction = 20;
+					this.setScale(this.mBaseScale);
+
+					Game.screens.set(Screen.MENU);
+				}
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LevelChoiseScreen() {
 		this.loadResources();
-		this.setBackground(new SpriteBackground(PreloaderScreen.mBackground));
 
-		this.levels = new LevelsManager(20, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl_btn.png", 0, 0, 1, 5), this));
+		this.mClouds.generateStartClouds();
+
+		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+
+		this.mBackButton.create().setPosition(ICONS_PADDING + (this.mBackButton.getWidthScaled() - this.mBackButton.getBaseWidth()) / 2, Options.cameraHeight - ICONS_PADDING * 2 - this.mBackButton.getHeightScaled() + (this.mBackButton.getHeightScaled() - this.mBackButton.getBaseHeight()) / 2);
+
+		this.levels = new LevelsManager(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/level-btn.png", 0, 612, 1, 5), this));
 		this.levels.generate();
 	}
 
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 */
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		this.mClouds.update();
+	}
 
 	/*
 	 * (non-Javadoc)

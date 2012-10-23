@@ -4,6 +4,7 @@ import org.anddev.andengine.engine.camera.hud.HUD;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.ExitScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
 import com.tooflya.bubblefun.screens.LevelScreen1;
@@ -48,6 +49,7 @@ public class ScreenManager {
 		screens[Screen.LOAD] = new PreloaderScreen();
 		screens[Screen.LEVEL] = new LevelScreen1();
 		screens[Screen.LEVELEND] = new LevelEndScreen();
+		screens[Screen.EXIT] = new ExitScreen();
 	}
 
 	// ===========================================================
