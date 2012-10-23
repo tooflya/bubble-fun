@@ -10,17 +10,12 @@ import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.opengl.font.Font;
-import org.anddev.andengine.opengl.font.FontFactory;
-import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -64,13 +59,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	/**  */
 	public static ScreenManager screens;
-
-	/**  */
-	public static Font mBigFont, mSmallFont;
-
-	/**  */
-	private final static BitmapTextureAtlas mBigFontTexture = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mSmallFontTexture = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -169,13 +157,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@Override
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		FontFactory.setAssetBasePath("font/");
-
-		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50 * Options.cameraRatioFactor, true, Color.WHITE);
-		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 32 * Options.cameraRatioFactor, true, Color.WHITE);
-
-		this.getEngine().getFontManager().loadFonts(mBigFont, mSmallFont);
-		this.getEngine().getTextureManager().loadTextures(mBigFontTexture, mSmallFontTexture);
 	}
 
 	/*

@@ -13,7 +13,6 @@ import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.managers.BubblesManager;
 
 public class PreloaderScreen extends Screen implements IAsyncCallback {
 
@@ -38,7 +37,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		}
 	};
 
-	public final Entity mBalon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bg-fill.png", 0, 612, 1, 1), this) {
+	public final Entity mBalon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-fill.png", 0, 612, 1, 1), this) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Entity#create()
@@ -62,14 +61,50 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		}
 	};
 
+	public final Entity mBar = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bar.png", 100, 612, 1, 1), this) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	public final Entity mTextBar = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-text.png", 0, 712, 1, 1), this) {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+		 */
+		@Override
+		public Entity deepCopy() {
+			return null;
+		}
+	};
+
+	public int updates = 0;
 	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
+
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
+
+			updates++;
 
 			/** Changing size of progressbar */
 			if (mBalon.getHeightScaled() < mBalon.getBaseHeight() * Options.cameraRatioFactor) {
 				mBalon.getTextureRegion().setHeight((int) (mBalon.getTextureRegion().getHeight() + 3));
 				mBalon.setHeight(mBalon.getHeight() + 3);
+
+				if (updates == 15) {
+					/** Start background loader */
+					new AsyncTaskLoader().execute(PreloaderScreen.this);
+				}
+
 			} else {
 				if (true) {
 					if (mChangeAction == 0) {
@@ -81,6 +116,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 						Game.screens.set(Screen.CHOISE);
 					}
 				}
+
+				/** Register timer of loading progressbar changes */
+				PreloaderScreen.this.unregisterUpdateHandler(mTimer);
 			}
 		}
 	});
@@ -98,6 +136,8 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mBalon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - (mBalon.getBaseHeight() * Options.cameraRatioFactor) / 2);
+		mBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 100 * Options.cameraRatioFactor);
 	}
 
 	@Override
@@ -106,11 +146,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
+		updates = 0;
 
 		mBalon.create();
-
-		/** Start background loader */
-		new AsyncTaskLoader().execute(this);
 	}
 
 	@Override
@@ -119,6 +157,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 		/** Register timer of loading progressbar changes */
 		this.unregisterUpdateHandler(mTimer);
+		updates = 0;
 	}
 
 	@Override
@@ -139,15 +178,19 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	@Override
 	public void workToDo() {
 		if (mChangeAction == 0) {
+			Game.screens.get(Screen.EXIT).unloadResources();
 			Game.screens.get(Screen.MENU).unloadResources();
 			Game.screens.get(Screen.CHOISE).unloadResources();
 			Game.screens.get(Screen.LEVEL).loadResources();
 			Game.screens.get(Screen.LEVELEND).loadResources();
+			Game.screens.get(Screen.PAUSE).loadResources();
 		} else {
+			Game.screens.get(Screen.PAUSE).unloadResources();
 			Game.screens.get(Screen.LEVEL).unloadResources();
 			Game.screens.get(Screen.LEVELEND).unloadResources();
 			Game.screens.get(Screen.MENU).loadResources();
 			Game.screens.get(Screen.CHOISE).loadResources();
+			Game.screens.get(Screen.EXIT).loadResources();
 		}
 	}
 

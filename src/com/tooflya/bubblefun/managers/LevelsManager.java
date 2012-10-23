@@ -11,6 +11,8 @@ public class LevelsManager extends EntityManager {
 	private float PADDING, PADDING_B;
 	private float X, Y;
 
+	private EntityManager mNumbers;
+
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
 
@@ -38,7 +40,15 @@ public class LevelsManager extends EntityManager {
 
 	}
 
+	public void generate(final EntityManager pNumbers) {
+		this.mNumbers = pNumbers;
+
+		this.generate();
+	}
+
 	public void generate() {
+		this.mNumbers.clear();
+
 		for (int i = 0; i < this.getCapacity(); i++) {
 
 			if (i % 5 == 0) {
@@ -62,12 +72,22 @@ public class LevelsManager extends EntityManager {
 			if (icon.id == 1 || level.isOpen()) {
 				icon.blocked = false;
 				icon.setCurrentTileIndex(level.getStarsCount());
+				if (icon.id < 10) {
+					final Entity text = this.mNumbers.create();
+					text.setCurrentTileIndex(icon.id);
+					text.setCenterPosition(icon.getCenterX(), icon.getCenterY());
+				} else {
+					Entity text = this.mNumbers.create();
+					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
+					text.setCenterPosition(icon.getCenterX() - text.getWidthScaled() / 4, icon.getCenterY());
+					text = this.mNumbers.create();
+					text.setCurrentTileIndex(icon.id % 10);
+					text.setCenterPosition(icon.getCenterX() + text.getWidthScaled() / 4, icon.getCenterY());
+				}
 			} else {
 				icon.setCurrentTileIndex(4);
 				icon.blocked = true;
 			}
-
-			icon.writeNumber();
 		}
 	}
 }

@@ -13,7 +13,9 @@ import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
+import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
+import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
 
 /**
@@ -33,8 +35,6 @@ public class LevelChoiseScreen extends Screen {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private LevelsManager levels;
 
 	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/main-bg.png", 0, 0, 1, 1), this) {
 
@@ -86,10 +86,8 @@ public class LevelChoiseScreen extends Screen {
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 			switch (pAreaTouchEvent.getAction()) {
 			case TouchEvent.ACTION_DOWN:
-				//this.setCurrentTileIndex(1);
 				break;
 			case TouchEvent.ACTION_UP:
-				//this.setCurrentTileIndex(0);
 
 				if (this.mModifierAttached) {
 					this.mScaleModifier.reset();
@@ -136,6 +134,9 @@ public class LevelChoiseScreen extends Screen {
 		}
 	};
 
+	private final LevelsManager levels = new LevelsManager(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/level-btn.png", 0, 612, 1, 5), this));
+	private final EntityManager numbers = new EntityManager(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/numbers.png", 370, 650, 1, 10), this));
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -149,8 +150,8 @@ public class LevelChoiseScreen extends Screen {
 
 		this.mBackButton.create().setPosition(ICONS_PADDING + (this.mBackButton.getWidthScaled() - this.mBackButton.getBaseWidth()) / 2, Options.cameraHeight - ICONS_PADDING * 2 - this.mBackButton.getHeightScaled() + (this.mBackButton.getHeightScaled() - this.mBackButton.getBaseHeight()) / 2);
 
-		this.levels = new LevelsManager(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/level-btn.png", 0, 612, 1, 5), this));
-		this.levels.generate();
+		this.levels.generate(this.numbers);
+
 	}
 
 	// ===========================================================

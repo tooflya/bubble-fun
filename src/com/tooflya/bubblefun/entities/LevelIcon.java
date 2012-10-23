@@ -14,24 +14,8 @@ public class LevelIcon extends Entity {
 
 	public boolean blocked = false;
 
-	private Text number;
-
 	public LevelIcon(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen, true);
-
-		this.number = new Text(0, 0, Game.mBigFont, "xx");
-		this.getParent().attachChild(this.number);
-	}
-
-	public void writeNumber() {
-		if (this.blocked) {
-			this.number.setVisible(false);
-		} else {
-			this.number.setVisible(true);
-			this.number.setText(this.id + "");
-
-			this.number.setPosition(this.getCenterX(), this.getCenterY());
-		}
 	}
 
 	/*

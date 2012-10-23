@@ -18,7 +18,6 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Particle;
-import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 
@@ -38,6 +37,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	public final static BitmapTextureAtlas mBackgroundTextureAtlas0 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas4 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main_par1.png", 0, 0, 1, 1), this) {
 
@@ -67,16 +68,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final Entity mResetButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "reset.png", 0, 950, 1, 1), this) {
-
-		@Override
-		public Entity create() {
-			if (!this.hasParent()) {
-				Game.screens.get(Screen.LEVEL).attachChild(this);
-			}
-
-			return super.create();
-		}
+	private final Entity mMenuButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/menu-btn.png", 0, 0, 1, 2), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -86,8 +78,13 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		@Override
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_DOWN:
+				this.setCurrentTileIndex(1);
+				break;
 			case TouchEvent.ACTION_UP:
-				LevelScreen1.reInit();
+				this.setCurrentTileIndex(0);
+
+				LevelScreen1.this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
 				break;
 			}
 
@@ -105,15 +102,27 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final Entity mBirdsCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-bird.png", 0, 850, 1, 1), this) {
+	private final Entity mResetButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/replay-btn.png", 80, 0, 1, 2), this, true) {
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		 */
 		@Override
-		public Entity create() {
-			if (!this.hasParent()) {
-				Game.screens.get(Screen.LEVEL).attachChild(this);
+		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+			switch (pAreaTouchEvent.getAction()) {
+			case TouchEvent.ACTION_DOWN:
+				this.setCurrentTileIndex(1);
+				break;
+			case TouchEvent.ACTION_UP:
+				this.setCurrentTileIndex(0);
+
+				reInit();
+				break;
 			}
 
-			return super.create();
+			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 		}
 
 		/*
@@ -126,55 +135,6 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			return null;
 		}
 	};
-
-	private final Entity mAirCounterBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon.png", 105, 850, 1, 1), this) {
-
-		@Override
-		public Entity create() {
-			if (!this.hasParent()) {
-				Game.screens.get(Screen.LEVEL).attachChild(this);
-			}
-
-			return super.create();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final Entity mAirCounterBackgroundFill = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "counter-balon-fill.png", 230, 850, 1, 1), this) {
-
-		@Override
-		public Entity create() {
-			if (!this.hasParent()) {
-				Game.screens.get(Screen.LEVEL).attachChild(this);
-			}
-
-			return super.create();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final static Text mScoreText = new Text(0, 0, Game.mSmallFont, "Score: xxxxx");
-	private final static Text mBirdsCountText = new Text(68 * Options.cameraRatioFactor, 30 * Options.cameraRatioFactor, Game.mSmallFont, "31");
-	private final static Text mAirCountText = new Text(Options.cameraWidth - 125 * Options.cameraRatioFactor, 61 * Options.cameraRatioFactor, Game.mSmallFont, "1234567890-");
-	private final static Text mTapHelpText = new Text(Options.cameraCenterX - 210 * Options.cameraRatioFactor, Options.cameraHeight / 3 * 2 + 130 * Options.cameraRatioFactor, Game.mSmallFont, "Tap here to pop chicks!!!");
 
 	// ===========================================================
 	// Fields
@@ -207,23 +167,10 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "bird_big_animation.png", 250, 0, 1, 2), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "feather_new_blue.png", 530, 300, 1, 2), this)), this);
 
-		mBirdsCounterBackground.create().setPosition(20 * Options.cameraRatioFactor, 20 * Options.cameraRatioFactor);
-		mAirCounterBackgroundFill.create().setPosition(Options.cameraWidth - 20 * Options.cameraRatioFactor - mAirCounterBackgroundFill.getWidthScaled(), 20 * Options.cameraRatioFactor + mAirCounterBackground.getHeightScaled() - mAirCounterBackgroundFill.getHeightScaled());
-		mAirCounterBackground.create().setPosition(Options.cameraWidth - 20 * Options.cameraRatioFactor - mAirCounterBackground.getWidthScaled(), 20 * Options.cameraRatioFactor);
-
-		mBirdsCountText.setColor(0f, 0f, 0f);
-		mAirCountText.setColor(0f, 0f, 0f);
-		this.attachChild(mBirdsCountText);
-		this.attachChild(mAirCountText);
-		// this.attachChild(mScoreText);
-		this.attachChild(mTapHelpText);
-
-		mTapHelpText.setRotationCenter(mTapHelpText.getWidthScaled() / 2, mTapHelpText.getHeightScaled() / 2);
-		mTapHelpText.setRotation(-15);
-
-		// mResetButton.create().setPosition(Options.cameraWidth - mResetButton.getWidthScaled() - 100 * Options.CAMERA_RATIO_FACTOR, 20 * Options.CAMERA_RATIO_FACTOR);
-		// this.registerTouchArea(mResetButton);
 		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "glint_hd.png", 100, 0, 1, 3), this));
+
+		this.mMenuButton.create().setPosition(Options.cameraWidth - (10 * Options.cameraRatioFactor + this.mMenuButton.getWidthScaled()), 10 * Options.cameraRatioFactor);
+		this.mResetButton.create().setPosition(Options.cameraWidth - (15 * Options.cameraRatioFactor + this.mMenuButton.getWidthScaled() + this.mResetButton.getWidthScaled()), 10 * Options.cameraRatioFactor);
 	}
 
 	// ===========================================================
@@ -489,6 +436,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	@Override
 	public void onDetached() {
 		super.onDetached();
+
+		Game.screens.get(Screen.LEVEL).clearChildScene();
 	}
 
 	/*
@@ -507,8 +456,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		this.clouds.update();
 
-		mBirdsCountText.setText(chikies.getCount() + "");
-		mAirCountText.setText(AIR + "");
+		//mBirdsCountText.setText(chikies.getCount() + "");
+		//mAirCountText.setText(AIR + "");
 	}
 
 	/*
@@ -518,7 +467,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2, mBackgroundTextureAtlas4);
 	}
 
 	/*
@@ -528,7 +477,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2, mBackgroundTextureAtlas4);
 	}
 
 	/*
@@ -538,8 +487,13 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public boolean onBackPressed() {
-		PreloaderScreen.mChangeAction = 1;
-		Game.screens.set(Screen.LOAD);
+		PreloaderScreen.mChangeAction = 1; // TODO: WTF? LOL d:
+
+		if (this.hasChildScene()) {
+			this.clearChildScene();
+		} else {
+			this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
+		}
 
 		return true;
 	}

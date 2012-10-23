@@ -24,13 +24,16 @@ public class ExitScreen extends Screen {
 	// Constants
 	// ===========================================================
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final Entity mPanel = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/popup-win.png", 0, 0, 1, 1), this) {
+	@SuppressWarnings("unused")
+	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
+
+	private final Entity mPanel = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/popup-exit.png", 0, 0, 1, 1), this) {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -42,7 +45,7 @@ public class ExitScreen extends Screen {
 		}
 	};
 
-	private final Entity mYIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/accept-btn.png", 0, 110, 1, 2), this, true) {
+	private final Entity mYIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/accept-btn.png", 0, 150, 1, 2), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -76,7 +79,7 @@ public class ExitScreen extends Screen {
 			return null;
 		}
 	};
-	private final Entity mNIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/decline-btn.png", 40, 110, 1, 2), this, true) {
+	private final Entity mNIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/decline-btn.png", 55, 150, 1, 2), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -93,7 +96,7 @@ public class ExitScreen extends Screen {
 			case TouchEvent.ACTION_UP:
 				this.setCurrentTileIndex(0);
 
-				ExitScreen.this.detachSelf();
+				Game.screens.get(Screen.MENU).clearChildScene();
 				break;
 			}
 
@@ -120,12 +123,10 @@ public class ExitScreen extends Screen {
 
 		this.setBackgroundEnabled(false);
 
-		this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
-
 		this.mPanel.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		this.mYIcon.create().setCenterPosition(Options.cameraCenterX - 70 * Options.cameraRatioFactor, Options.cameraCenterY + 50 * Options.cameraRatioFactor);
-		this.mNIcon.create().setCenterPosition(Options.cameraCenterX + 70 * Options.cameraRatioFactor, Options.cameraCenterY + 50 * Options.cameraRatioFactor);
+		this.mYIcon.create().setCenterPosition(Options.cameraCenterX - 70 * Options.cameraRatioFactor, Options.cameraCenterY + 70 * Options.cameraRatioFactor);
+		this.mNIcon.create().setCenterPosition(Options.cameraCenterX + 70 * Options.cameraRatioFactor, Options.cameraCenterY + 70 * Options.cameraRatioFactor);
 	}
 
 	// ===========================================================
