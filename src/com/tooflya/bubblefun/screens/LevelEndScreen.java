@@ -2,7 +2,6 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -156,8 +155,8 @@ public class LevelEndScreen extends Screen {
 				if (mStarsAnimationCount < mStarsCount) {
 					mStarsAnimationCount++;
 
-					Star star;
-					(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(97f) + Game.reduceCoordinates(46f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(367));
+					Star star = (Star) mLevelStars.getByIndex(mStarsAnimationCount - 1);
+					star.setCurrentTileIndex(0);
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -197,7 +196,15 @@ public class LevelEndScreen extends Screen {
 
 		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end-star.png", 0, 35, 1, 1), this));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end_lvl_bg_star.png", 0, 35, 1, 2), this));
+
+		Star star;
+
+		for (int i = 0; i < 3; i++) {
+			(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(97f) + Game.reduceCoordinates(46f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(367));
+			star.setCurrentTileIndex(1);
+		}
+
 	}
 
 	@Override
@@ -205,6 +212,11 @@ public class LevelEndScreen extends Screen {
 		super.onAttached();
 
 		mStarsAnimationCount = 0;
+
+		for (int i = 0; i < 3; i++) {
+			Star star = (Star) mLevelStars.getByIndex(i);
+			star.setCurrentTileIndex(1);
+		}
 
 		if (LevelScreen1.mBubblesCount <= 2) {
 			mStarsCount = 4 - LevelScreen1.mBubblesCount;
