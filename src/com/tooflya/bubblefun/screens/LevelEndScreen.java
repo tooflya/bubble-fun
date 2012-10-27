@@ -20,8 +20,8 @@ public class LevelEndScreen extends Screen {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public static EntityManager stars;
-	public static EntityManager mLevelStars;
+	public EntityManager stars;
+	public EntityManager mLevelStars;
 
 	private static int mStarsCount;
 
@@ -196,12 +196,11 @@ public class LevelEndScreen extends Screen {
 
 		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end_lvl_bg_star.png", 0, 35, 1, 2), this));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end_lvl_bg_star.png", 900, 805, 1, 2), this));
 
 		Star star;
-
 		for (int i = 0; i < 3; i++) {
-			(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(97f) + Game.reduceCoordinates(46f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(367));
+			(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getCenterX() + Game.reduceCoordinates(50f) * (i - 1), mBackground.getY() + Game.reduceCoordinates(380));
 			star.setCurrentTileIndex(1);
 		}
 
@@ -212,11 +211,6 @@ public class LevelEndScreen extends Screen {
 		super.onAttached();
 
 		mStarsAnimationCount = 0;
-
-		for (int i = 0; i < 3; i++) {
-			Star star = (Star) mLevelStars.getByIndex(i);
-			star.setCurrentTileIndex(1);
-		}
 
 		if (LevelScreen1.mBubblesCount <= 2) {
 			mStarsCount = 4 - LevelScreen1.mBubblesCount;
@@ -243,7 +237,11 @@ public class LevelEndScreen extends Screen {
 		this.unregisterUpdateHandler(mTimer);
 
 		stars.clear();
-		mLevelStars.clear();
+
+		for (int i = 0; i < 3; i++) {
+			Star star = (Star) mLevelStars.getByIndex(i);
+			star.setCurrentTileIndex(1);
+		}
 
 		mMenu.hide();
 		mRePlay.hide();

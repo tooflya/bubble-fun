@@ -26,8 +26,6 @@ public class Star extends Entity {
 
 	public Star(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
-
-		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class Star extends Entity {
 	@Override
 	public Entity create() {
 		this.isParticle = false;
-		
+
 		return super.create();
 	}
 
@@ -47,6 +45,8 @@ public class Star extends Entity {
 	// ===========================================================
 
 	public Star Init(final int i) {
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
 		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 7));
 		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 7));
 

@@ -184,7 +184,7 @@ public class PauseScreen extends Screen {
 
 	@Override
 	public void unloadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas);
+		Game.unloadTextures(mBackgroundTextureAtlas);
 
 	}
 

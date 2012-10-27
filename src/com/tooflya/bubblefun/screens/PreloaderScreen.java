@@ -39,9 +39,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 			return super.create();
 		}
 	};
-	public final Sprite mBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bar.png", 100, 612, 1, 1), this);	
+	public final Sprite mBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bar.png", 100, 612, 1, 1), this);
 	public final Sprite mTextBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-text.png", 0, 712, 1, 1), this);
-	
+
 	public int updates = 0;
 	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
 
@@ -61,7 +61,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 				}
 
 			} else {
-				switch(mChangeAction){
+				switch (mChangeAction) {
 				case 0:
 					Game.screens.set(Screen.LEVEL);
 					break;
@@ -87,14 +87,14 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 	public PreloaderScreen() {
 		this.loadResources();
-		
+
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		mBalon.setRotationCenter(mBalon.getWidthScaled() / 2, mBalon.getHeightScaled() / 2);
 		mBalon.setRotation(180);
 		mBalon.setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mBalon.create();
-		
+
 		mBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 100 * Options.cameraRatioFactor); // TODO: (R) Magic number.
 	}

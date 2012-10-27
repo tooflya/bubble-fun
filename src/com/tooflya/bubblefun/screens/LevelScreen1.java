@@ -528,22 +528,18 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
 				final float koef = 20f * Options.cameraRatioFactor;
-				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 100f * Options.cameraRatioFactor) {
+				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 40f * Options.cameraRatioFactor) {
+
+					this.lastAirgum.setIsScale(false);
 
 					float angle = (float) Math.atan2(pTouchEvent.getY() - this.lastAirgum.getCenterY(), pTouchEvent.getX() - this.lastAirgum.getCenterX());
 
 					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchEvent.getX(), pTouchEvent.getY());
 
-					distance = distance > 1 ? 1 : distance;
+					distance = distance > 5 ? 5 : distance;
 
-					this.lastAirgum.setSpeedX((distance) * FloatMath.cos(angle));
-					this.lastAirgum.setSpeedY((distance + this.lastAirgum.getSpeedY()) * FloatMath.sin(angle));
-
-					//this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef/10);
-
-					//this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 10f));
-
-					//this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef));
+					this.lastAirgum.setSpeedX(-((distance) * FloatMath.cos(angle)));
+					this.lastAirgum.setSpeedYB((this.lastAirgum.getSpeedY() - distance * FloatMath.sin(angle)) * 1.5f);
 
 					Glint particle;
 					for (int i = 0; i < 15; i++) {
@@ -552,8 +548,10 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 							particle.Init(i, this.lastAirgum);
 						}
 					}
+				} else {
+
+					this.lastAirgum.setIsScale(false);
 				}
-				this.lastAirgum.setIsScale(false);
 				this.lastAirgum = null;
 
 				mBubblesCount++;

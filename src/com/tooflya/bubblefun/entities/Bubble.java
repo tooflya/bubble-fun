@@ -4,8 +4,6 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import android.util.FloatMath;
-
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
@@ -15,14 +13,14 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constants
 	// ===========================================================
 
-	public final static float mMaxSpeedY = 10f * Options.cameraRatioFactor;
+	public final static float mMaxSpeedY = 2f * Options.cameraRatioFactor;
 	public final static float mMaxSpeedX = 10f * Options.cameraRatioFactor;
 
 	public final static float minScale = 0.3f * Options.cameraRatioFactor; // TODO: (R) Find right minimal scale.
 	public final static float maxScale = 1.7f * Options.cameraRatioFactor; // TODO: (R) Find right maximal scale.
-	public final static float scaleStep = 0.05f * Options.cameraRatioFactor;; // TODO: (R) Find right step of scale.
+	public final static float scaleStep = 0.05f * Options.cameraRatioFactor; // TODO: (R) Find right step of scale.
 
-	private final static float mDecrementStep = 0.04f * Options.cameraRatioFactor;
+	private final static float mDecrementStep = 0.013f * Options.cameraRatioFactor;
 
 	// ===========================================================
 	// Fields
@@ -96,7 +94,7 @@ public class Bubble extends Entity implements IAnimationListener {
 
 		this.isScaleDefined = true;
 
-		this.setSpeedY(-this.getSpeedY() + this.mSpeedDecrement);
+		this.setSpeedYA(this.getSpeedY() - this.mSpeedDecrement);
 	}
 
 	// ===========================================================
@@ -111,14 +109,18 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Virtual Methods
 	// ===========================================================
 
+	public void setSpeedYA(final float pSpeedY) {
+		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeedY - this.mSpeedDecrement);
+	}
 
-
-	
+	public void setSpeedYB(final float pSpeedY) {
+		super.setSpeedY(pSpeedY - this.mSpeedDecrement);
+	}
 
 	@Override
 	public Entity create() {
 		this.setSpeedX(0f);
-		this.setSpeedY(4f * Options.cameraRatioFactor);
+		this.setSpeedYA(mMaxSpeedY * Options.cameraRatioFactor);
 
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
@@ -155,15 +157,13 @@ public class Bubble extends Entity implements IAnimationListener {
 			}
 
 			if (this.isFlyAction) {
-				this.mY += this.getSpeedY();
-				this.mX += this.getSpeedX();
+				this.mY -= this.getSpeedY();
+				this.mX -= this.getSpeedX();
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}
 			}
 
-			float angle = (float)Math.atan2(this.getSpeedY(), this.getSpeedX());
-			
 			if (this.isScaleDefined) {
 				if (this.mIsYReverse) {
 					this.mScaleY -= mSpeedScaleY;
@@ -189,8 +189,8 @@ public class Bubble extends Entity implements IAnimationListener {
 					}
 				}
 
-				this.setScaleY(this.mScaleY * FloatMath.sin(angle));
-				this.setScaleX(this.mScaleX * FloatMath.cos(angle));
+				this.setScaleY(this.mScaleY);
+				this.setScaleX(this.mScaleX);
 			}
 		}
 	}
