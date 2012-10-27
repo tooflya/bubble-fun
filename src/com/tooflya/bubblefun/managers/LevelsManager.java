@@ -64,8 +64,7 @@ public class LevelsManager extends EntityManager {
 
 			LevelIcon icon = ((LevelIcon) this.create());
 
-			icon.setPosition(X, Y);
-			icon.setPosition(icon.getX() + (icon.getWidthScaled() - icon.getBaseWidth()) / 2, icon.getY() + (icon.getHeightScaled() - icon.getBaseHeight()) / 2);
+			icon.setCenterPosition(25f * Options.cameraRatioFactor + X, 25f * Options.cameraRatioFactor + Y);
 			icon.id = i + 1;
 
 			Level level = Game.db.getLevel(icon.id);

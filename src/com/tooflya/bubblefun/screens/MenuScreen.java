@@ -372,7 +372,7 @@ public class MenuScreen extends Screen {
 		this.mTwitterIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_SIZE, Options.cameraHeight - ICONS_PADDING * 2 - ICONS_SIZE);
 		this.mFacebookIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_PADDING_BETWEEN - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING * 2 - ICONS_SIZE);
 
-		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX + (this.mPlayIcon.getWidthScaled() - this.mPlayIcon.getBaseWidth()) / 2, Options.cameraCenterY + (this.mPlayIcon.getHeightScaled() - this.mPlayIcon.getBaseHeight()) / 2);
+		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		this.mSettingsIcon.create().setPosition(0 + ICONS_PADDING, Options.cameraHeight - ICONS_PADDING * 2 - mSettingsIcon.getHeightScaled());
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - ICONS_PADDING * 3 - mMoreIcon.getHeightScaled());

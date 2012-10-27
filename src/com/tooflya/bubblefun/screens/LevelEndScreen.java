@@ -28,7 +28,7 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1)) {
+	public final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -41,7 +41,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu_hd.png", 200, 0, 1, 2), this) {
+	public final Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-menu.png", 200, 0, 1, 2), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -76,7 +76,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "replay_hd.png", 300, 0, 1, 2), this) {
+	public final Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-replay.png", 300, 0, 1, 2), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -111,7 +111,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "next_hd.png", 400, 0, 1, 2), this) {
+	public final Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-next.png", 400, 0, 1, 2), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -157,7 +157,7 @@ public class LevelEndScreen extends Screen {
 					mStarsAnimationCount++;
 
 					Star star;
-					(star = (Star) mLevelStars.create()).setCenterPosition(Game.reduceCoordinates(120f) + Game.reduceCoordinates(95f * mStarsAnimationCount), mBackground.getY() + Game.reduceCoordinates(620));
+					(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(300f) + Game.reduceCoordinates(20f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(615));
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -180,7 +180,7 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		this.setBackground(new SpriteBackground(mBackground.create()));
+		mBackground.create();
 
 		mMenu.create().setPosition(Game.reduceCoordinates(105f), mBackground.getY() + Game.reduceCoordinates(720));
 		mMenu.hide();
