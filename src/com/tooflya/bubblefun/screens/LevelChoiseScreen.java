@@ -135,7 +135,7 @@ public class LevelChoiseScreen extends Screen {
 	};
 
 	private final LevelsManager levels = new LevelsManager(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/level-btn.png", 0, 612, 1, 5), this));
-	private final EntityManager numbers = new EntityManager(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/numbers-sprite.png", 370, 650, 1, 10), this));
+	private final EntityManager numbers = new EntityManager(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/numbers-sprite.png", 370, 650, 1, 10)));
 
 	// ===========================================================
 	// Constructors
@@ -149,6 +149,19 @@ public class LevelChoiseScreen extends Screen {
 		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		this.mBackButton.create().setPosition(ICONS_PADDING + (this.mBackButton.getWidthScaled() - this.mBackButton.getBaseWidth()) / 2, Options.cameraHeight - ICONS_PADDING * 2 - this.mBackButton.getHeightScaled() + (this.mBackButton.getHeightScaled() - this.mBackButton.getBaseHeight()) / 2);
+
+		int g = 0;
+		for (int i = 0; i < this.levels.getCapacity(); i++) {
+			if (i < 10) {
+				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(i));
+			}
+			else {
+				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(i));
+				i++;
+				g++;
+				this.levels.getByIndex(i - g).attachChild(this.numbers.getByIndex(i));
+			}
+		}
 
 		this.levels.generate(this.numbers);
 

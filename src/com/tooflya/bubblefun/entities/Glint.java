@@ -8,7 +8,6 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 
 /**
  * @author Tooflya.com
@@ -36,7 +35,7 @@ public class Glint extends Entity {
 	// Constructors
 	// ===========================================================
 
-	public Glint(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Glint(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);

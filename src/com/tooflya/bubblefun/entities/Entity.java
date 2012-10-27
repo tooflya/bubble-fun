@@ -48,7 +48,7 @@ public abstract class Entity extends AnimatedSprite {
 	private float mSpeedY;
 
 	/** <b>Screen</b> which is the essence of the place rendering. */
-	protected Screen mParentScreen;
+	protected org.anddev.andengine.entity.Entity mParentScreen;
 
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object may be <b>null</b>. */
 	private EntityManager mEntityManager;
@@ -63,11 +63,11 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pTiledTextureRegion
 	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
 	 * @param pParentScreen
-	 *            instance of <b>Screen</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 * @param pRegisterTouchArea
 	 *            boolean value for know if you are want to register this entity as clickable.
 	 */
-	public Entity(final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pRegisterTouchArea) {
+	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
 
 		/** As some entities may be elements of a manager we need to hide them here. They will appers to ther screen after call <i>create()</i> method. */
@@ -79,7 +79,7 @@ public abstract class Entity extends AnimatedSprite {
 
 		/** After scale action we need to find center of entity position. */
 		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
-		this.mY = (Options.cameraHeight- this.getHeightScaled()) / 2;
+		this.mY = (Options.cameraHeight - this.getHeightScaled()) / 2;
 
 		/** Also attach this entity to the <b>Screen</b> if <i>pParentScreen</i> defined. */
 		if (pParentScreen != null) {
@@ -88,7 +88,7 @@ public abstract class Entity extends AnimatedSprite {
 
 			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
 			if (pRegisterTouchArea) {
-				this.mParentScreen.registerTouchArea(this);
+				((Screen) this.mParentScreen).registerTouchArea(this);
 			}
 		}
 	}
@@ -99,9 +99,9 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pTiledTextureRegion
 	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
 	 * @param pParentScreen
-	 *            instance of <b>Screen</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
-	public Entity(final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion.deepCopy(), pParentScreen, false);
 	}
 
@@ -131,9 +131,9 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pTiledTextureRegion
 	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
 	 * @param pParentScreen
-	 *            instance of <b>Screen</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
-	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion, pParentScreen);
 
 		this.setCenterPosition(pX, pY);

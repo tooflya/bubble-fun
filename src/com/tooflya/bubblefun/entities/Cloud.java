@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 
 /**
  * @author Tooflya.com
@@ -31,7 +30,7 @@ public class Cloud extends Entity {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	public Cloud(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Cloud(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);

@@ -4,7 +4,6 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 
 /**
  * @author Tooflya.com
@@ -28,7 +27,7 @@ public class GraphicsBubble extends Bubble {
 	 * @param pTiledTextureRegion
 	 * @param pParentScreen
 	 */
-	public GraphicsBubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public GraphicsBubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen, false);
 	}
 

@@ -6,7 +6,6 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
 /**
@@ -49,9 +48,6 @@ public class Chiky extends Entity {
 
 	private float stepX = 0;
 
-	private Chiky leftNeighbour = null;
-	private Chiky rightNeighbour = null;
-
 	private int type = 0;
 
 	// ===========================================================
@@ -61,7 +57,7 @@ public class Chiky extends Entity {
 	/**
 	 * @param pTiledTextureRegion
 	 */
-	public Chiky(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Chiky(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
