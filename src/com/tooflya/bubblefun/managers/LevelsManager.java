@@ -65,6 +65,7 @@ public class LevelsManager extends EntityManager {
 			LevelIcon icon = ((LevelIcon) this.create());
 
 			icon.setPosition(X, Y);
+			icon.setPosition(icon.getX() + (icon.getWidthScaled() - icon.getBaseWidth()) / 2, icon.getY() + (icon.getHeightScaled() - icon.getBaseHeight()) / 2);
 			icon.id = i + 1;
 
 			Level level = Game.db.getLevel(icon.id);
@@ -76,13 +77,19 @@ public class LevelsManager extends EntityManager {
 					final Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id);
 					text.setCenterPosition(icon.getCenterX(), icon.getCenterY());
+					this.setScaleCenter(0, 0);
+					this.setScale(Options.cameraRatioFactor);
 				} else {
 					Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
 					text.setCenterPosition(icon.getCenterX() - text.getWidthScaled() / 4, icon.getCenterY());
+					this.setScaleCenter(0, 0);
+					this.setScale(Options.cameraRatioFactor);
 					text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id % 10);
 					text.setCenterPosition(icon.getCenterX() + text.getWidthScaled() / 4, icon.getCenterY());
+					this.setScaleCenter(0, 0);
+					this.setScale(Options.cameraRatioFactor);
 				}
 			} else {
 				icon.setCurrentTileIndex(4);

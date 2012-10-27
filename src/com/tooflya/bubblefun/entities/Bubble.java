@@ -5,7 +5,6 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
 public class Bubble extends Entity implements IAnimationListener {
@@ -52,7 +51,7 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constructors
 	// ===========================================================
 
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pNeedAlpha, final boolean pRegisterTouchArea) {
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pNeedAlpha, final boolean pRegisterTouchArea) {
 		super(pTiledTextureRegion, pParentScreen, pRegisterTouchArea);
 
 		if (pNeedAlpha) {
@@ -62,11 +61,11 @@ public class Bubble extends Entity implements IAnimationListener {
 		}
 	}
 
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pNeedAlpha) {
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pNeedAlpha) {
 		this(pTiledTextureRegion, pParentScreen, pNeedAlpha, false);
 	}
 
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion, pParentScreen, true);
 	}
 

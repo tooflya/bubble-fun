@@ -1,5 +1,6 @@
 package com.tooflya.bubblefun.entities;
 
+import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
@@ -14,8 +15,32 @@ public class LevelIcon extends Entity {
 
 	public boolean blocked = false;
 
-	public LevelIcon(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public LevelIcon(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen, true);
+	}
+
+	private ScaleModifier mScaleModifier;
+
+	private boolean mModifierAttached = false;
+
+	private int mWaitBeforeAction = 20;
+	private boolean mDoAction = false;
+
+	private float mBaseScale;
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Entity#create()
+	 */
+	@Override
+	public Entity create() {
+		this.mBaseScale = this.getScaleX();
+
+		this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.3f * Options.cameraRatioFactor);
+		this.mScaleModifier.setRemoveWhenFinished(false);
+
+		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+
+		return super.create();
 	}
 
 	/*
@@ -26,16 +51,46 @@ public class LevelIcon extends Entity {
 	@Override
 	public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		switch (pAreaTouchEvent.getAction()) {
+		case TouchEvent.ACTION_DOWN:
+			break;
 		case TouchEvent.ACTION_UP:
-			if (!this.blocked) {
-				Options.levelNumber = this.id;
-				LevelScreen1.reInit();
-				Game.screens.set(Screen.LOAD);
+			if (this.mModifierAttached) {
+				this.mScaleModifier.reset();
+			} else {
+				this.registerEntityModifier(this.mScaleModifier);
+				this.mModifierAttached = true;
 			}
+
+			this.mDoAction = true;
+
 			break;
 		}
 
 		return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 */
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		if (this.mDoAction) {
+			if (this.mWaitBeforeAction-- <= 0) {
+				this.mDoAction = false;
+				this.mWaitBeforeAction = 20;
+				this.setScale(this.mBaseScale);
+
+				if (!this.blocked) {
+					Options.levelNumber = this.id;
+					LevelScreen1.reInit();
+					Game.screens.set(Screen.LOAD);
+				}
+			}
+		}
 	}
 
 	/*

@@ -7,7 +7,6 @@ import android.os.Vibrator;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 /**
@@ -45,7 +44,7 @@ public class BlueBird extends Entity {
 	 * @param pFeathersManager
 	 * @param pParentScreen
 	 */
-	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager pFeathersManager, final Screen pParentScreen) {
+	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager pFeathersManager, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.mFeathersManager = pFeathersManager;

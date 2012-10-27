@@ -7,7 +7,6 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 
 public class Star extends Entity {
 
@@ -25,7 +24,7 @@ public class Star extends Entity {
 	// Constructors
 	// ===========================================================
 
-	public Star(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+	public Star(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
