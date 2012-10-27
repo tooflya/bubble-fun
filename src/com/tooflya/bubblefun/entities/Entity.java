@@ -179,6 +179,29 @@ public abstract class Entity extends AnimatedSprite {
 	}
 
 	/**
+	 * @param centerXAfterScale
+	 */
+	public void setCenterXAfterScale(final float pCenterX) {
+		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+	}
+
+	/**
+	 * @param pCenterYAfterScale
+	 */
+	public void setCenterYAfterScale(final float pCenterY) {
+		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+	}
+
+	/**
+	 * @param pCenterX
+	 * @param pCenterY
+	 */
+	public void setCenterPositionAfterScale(final float pCenterX, final float pCenterY) {
+		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+	}
+
+	/**
 	 * @param pEntityManager
 	 */
 	public void setManager(final EntityManager pEntityManager) {
@@ -208,6 +231,20 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public float getCenterY() {
 		return this.mY + this.getHeightScaled() / 2;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getCenterXAfterScale() {
+		return this.mX + this.mScaleCenterX + (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getCenterYAfterScale() {
+		return this.mY + this.mScaleCenterY + (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
 
 	// ===========================================================
