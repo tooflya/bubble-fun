@@ -210,17 +210,16 @@ public class MenuScreen extends Screen {
 				//this.setCurrentTileIndex(1);
 				break;
 			case TouchEvent.ACTION_UP:
-				//this.setCurrentTileIndex(0);
+				if (this.mWaitBeforeAction == 20) {
+					if (this.mModifierAttached) {
+						this.mScaleModifier.reset();
+					} else {
+						this.registerEntityModifier(this.mScaleModifier);
+						this.mModifierAttached = true;
+					}
 
-				if (this.mModifierAttached) {
-					this.mScaleModifier.reset();
-				} else {
-					this.registerEntityModifier(this.mScaleModifier);
-					this.mModifierAttached = true;
+					this.mDoAction = true;
 				}
-
-				this.mDoAction = true;
-
 				break;
 			}
 

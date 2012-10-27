@@ -88,15 +88,16 @@ public class LevelChoiseScreen extends Screen {
 			case TouchEvent.ACTION_DOWN:
 				break;
 			case TouchEvent.ACTION_UP:
+				if (this.mWaitBeforeAction == 20) {
+					if (this.mModifierAttached) {
+						this.mScaleModifier.reset();
+					} else {
+						this.registerEntityModifier(this.mScaleModifier);
+						this.mModifierAttached = true;
+					}
 
-				if (this.mModifierAttached) {
-					this.mScaleModifier.reset();
-				} else {
-					this.registerEntityModifier(this.mScaleModifier);
-					this.mModifierAttached = true;
+					this.mDoAction = true;
 				}
-
-				this.mDoAction = true;
 				break;
 			}
 
@@ -150,16 +151,13 @@ public class LevelChoiseScreen extends Screen {
 
 		this.mBackButton.create().setPosition(ICONS_PADDING + (this.mBackButton.getWidthScaled() - this.mBackButton.getBaseWidth()) / 2, Options.cameraHeight - ICONS_PADDING * 2 - this.mBackButton.getHeightScaled() + (this.mBackButton.getHeightScaled() - this.mBackButton.getBaseHeight()) / 2);
 
-		int g = 0;
+		int g = -1;
 		for (int i = 0; i < this.levels.getCapacity(); i++) {
-			if (i < 10) {
-				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(i));
-			}
-			else {
-				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(i));
-				i++;
-				g++;
-				this.levels.getByIndex(i - g).attachChild(this.numbers.getByIndex(i));
+			if (i < 9) {
+				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(++g));
+			} else {
+				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(++g));
+				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(++g));
 			}
 		}
 

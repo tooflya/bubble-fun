@@ -21,7 +21,7 @@ public class BlueBird extends Entity {
 
 	private final static float mSpeed = 2f;
 
-	private final static int mAnimationTime = 500;
+	private final static int mAnimationTime = 50;
 	private final static int mParticlesCount = 10;
 
 	// ===========================================================

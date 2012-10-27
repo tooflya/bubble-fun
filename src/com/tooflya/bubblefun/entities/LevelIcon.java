@@ -26,19 +26,21 @@ public class LevelIcon extends Entity {
 	private int mWaitBeforeAction = 20;
 	private boolean mDoAction = false;
 
-	private float mBaseScale;
+	private float mBaseScale = -1;
 
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.entities.Entity#create()
 	 */
 	@Override
 	public Entity create() {
-		this.mBaseScale = this.getScaleX();
+		if (this.mBaseScale == -1) {
+			this.mBaseScale = this.getScaleX();
 
-		this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.3f * Options.cameraRatioFactor);
-		this.mScaleModifier.setRemoveWhenFinished(false);
+			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.3f * Options.cameraRatioFactor);
+			this.mScaleModifier.setRemoveWhenFinished(false);
 
-		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+		}
 
 		return super.create();
 	}
@@ -54,15 +56,16 @@ public class LevelIcon extends Entity {
 		case TouchEvent.ACTION_DOWN:
 			break;
 		case TouchEvent.ACTION_UP:
-			if (this.mModifierAttached) {
-				this.mScaleModifier.reset();
-			} else {
-				this.registerEntityModifier(this.mScaleModifier);
-				this.mModifierAttached = true;
+			if (this.mWaitBeforeAction == 20) {
+				if (this.mModifierAttached) {
+					this.mScaleModifier.reset();
+				} else {
+					this.registerEntityModifier(this.mScaleModifier);
+					this.mModifierAttached = true;
+				}
+
+				this.mDoAction = true;
 			}
-
-			this.mDoAction = true;
-
 			break;
 		}
 
