@@ -129,15 +129,6 @@ public class BlueBird extends Entity {
 		if (this.mIsSleep) {
 			this.mSleepTime--;
 		} else {
-			Particle particle;
-			for (int i = 0; i < 30; i++) {
-				particle = ((Particle) mFeathersManager.create());
-				if (particle != null) {
-					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-					particle.setScale(0.5f);
-				}
-			}
-
 			if (this.getTextureRegion().isFlippedHorizontal()) {
 				if (this.mX + this.getWidthScaled() < 0) {
 					this.getTextureRegion().setFlippedHorizontal(false);
