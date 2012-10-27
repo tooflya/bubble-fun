@@ -87,7 +87,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 	public PreloaderScreen() {
 		this.loadResources();
-
+		
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		mBalon.setRotationCenter(mBalon.getWidthScaled() / 2, mBalon.getHeightScaled() / 2);
