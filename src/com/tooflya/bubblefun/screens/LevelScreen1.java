@@ -536,9 +536,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 					distance = distance > 1 ? 1 : distance;
 
-					this.lastAirgum.setSpeedX(distance * FloatMath.cos(angle));
-					this.lastAirgum.setSpeedY(distance * FloatMath.sin(angle));
-System.out.println(this.lastAirgum.getCenterX() + " / " + this.lastAirgum.getCenterY() + " / " + pTouchEvent.getX() + " / " + pTouchEvent.getY() + " // " + angle);
+					this.lastAirgum.setSpeedX((distance) * FloatMath.cos(angle));
+					this.lastAirgum.setSpeedY((distance + this.lastAirgum.getSpeedY()) * FloatMath.sin(angle));
+
 					//this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef/10);
 
 					//this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 10f));

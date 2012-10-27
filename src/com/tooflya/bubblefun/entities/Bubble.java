@@ -94,7 +94,7 @@ public class Bubble extends Entity implements IAnimationListener {
 
 		this.isScaleDefined = true;
 
-		this.setSpeedY(this.getSpeedY() - this.mSpeedDecrement);
+		this.setSpeedY(-this.getSpeedY() + this.mSpeedDecrement);
 	}
 
 	// ===========================================================
