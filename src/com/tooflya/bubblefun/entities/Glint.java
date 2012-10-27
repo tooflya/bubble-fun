@@ -67,7 +67,7 @@ public class Glint extends Entity {
 		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 10));
 		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 10));
 
-		final float scale = Game.random.nextFloat();
+		final float scale = Game.random.nextFloat() * (0.7f * Options.cameraRatioFactor - 0.1f * Options.cameraRatioFactor) + 0.1f * Options.cameraRatioFactor;
 		this.mScaleX = scale;
 		this.mScaleY = scale;
 

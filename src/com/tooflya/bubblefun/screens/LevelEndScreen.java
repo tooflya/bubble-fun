@@ -157,7 +157,7 @@ public class LevelEndScreen extends Screen {
 					mStarsAnimationCount++;
 
 					Star star;
-					(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(95f) + Game.reduceCoordinates(47f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(367));
+					(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(97f) + Game.reduceCoordinates(46f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(367));
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {

@@ -7,6 +7,9 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.util.MathUtils;
+
+import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
@@ -527,11 +530,23 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 				final float koef = 20f * Options.cameraRatioFactor;
 				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 100f * Options.cameraRatioFactor) {
 
-					this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef);
+					float angle = (float) Math.atan2(pTouchEvent.getY() - this.lastAirgum.getCenterY(), pTouchEvent.getX() - this.lastAirgum.getCenterX());
+
+					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchEvent.getX(), pTouchEvent.getY());
+
+					distance = distance > 1 ? 1 : distance;
+
+					this.lastAirgum.setSpeedX(distance * FloatMath.cos(angle));
+					this.lastAirgum.setSpeedY(distance * FloatMath.sin(angle));
+System.out.println(this.lastAirgum.getCenterX() + " / " + this.lastAirgum.getCenterY() + " / " + pTouchEvent.getX() + " / " + pTouchEvent.getY() + " // " + angle);
+					//this.lastAirgum.setSpeedY(this.lastAirgum.getSpeedY() + (this.lastAirgum.getCenterY() - pTouchEvent.getY()) / koef/10);
+
+					//this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef * 10f));
+
 					//this.lastAirgum.setSpeedX((pTouchEvent.getX() - this.lastAirgum.getCenterX()) / (koef));
 
 					Glint particle;
-					for (int i = 0; i < 30; i++) {
+					for (int i = 0; i < 15; i++) {
 						particle = ((Glint) glints.create());
 						if (particle != null) {
 							particle.Init(i, this.lastAirgum);

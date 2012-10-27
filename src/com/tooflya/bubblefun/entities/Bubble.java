@@ -109,15 +109,9 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Virtual Methods
 	// ===========================================================
 
-	@Override
-	public void setSpeedX(final float pSpeedX) {
-		super.setSpeedX(this.getSpeedX() - pSpeedX * Options.cameraRatioFactor);
-	}
 
-	@Override
-	public void setSpeedY(final float pSpeedY) {
-		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeedY - this.mSpeedDecrement);
-	}
+
+	
 
 	@Override
 	public Entity create() {
@@ -159,8 +153,8 @@ public class Bubble extends Entity implements IAnimationListener {
 			}
 
 			if (this.isFlyAction) {
-				this.mY -= this.getSpeedY();
-				this.mX -= this.getSpeedX();
+				this.mY += this.getSpeedY();
+				this.mX += this.getSpeedX();
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}
