@@ -4,6 +4,8 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.util.FloatMath;
+
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
@@ -160,26 +162,28 @@ public class Bubble extends Entity implements IAnimationListener {
 				}
 			}
 
+			float angle = (float)Math.atan2(this.getSpeedY(), this.getSpeedX());
+			
 			if (this.isScaleDefined) {
 				if (this.mIsYReverse) {
-					this.mScaleY -= mSpeedScaleY;
+					this.mScaleY -= mSpeedScaleY * FloatMath.cos(angle);
 					if (this.mScaleY < mMinScaleY) {
 						this.mIsYReverse = !this.mIsYReverse;
 					}
 				} else {
-					this.mScaleY += mSpeedScaleY;
+					this.mScaleY += mSpeedScaleY * FloatMath.cos(angle);
 					if (this.mScaleY > mMaxScaleY) {
 						this.mIsYReverse = !this.mIsYReverse;
 					}
 				}
 
 				if (this.mIsXReverse) {
-					this.mScaleX -= mSpeedScaleX;
+					this.mScaleX -= mSpeedScaleX * FloatMath.sin(angle);
 					if (this.mScaleX < mMinScaleX) {
 						this.mIsXReverse = !this.mIsXReverse;
 					}
 				} else {
-					this.mScaleX += mSpeedScaleX;
+					this.mScaleX += mSpeedScaleX * FloatMath.sin(angle);
 					if (this.mScaleX > mMaxScaleX) {
 						this.mIsXReverse = !this.mIsXReverse;
 					}
