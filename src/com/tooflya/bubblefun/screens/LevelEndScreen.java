@@ -28,7 +28,7 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final static Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1)) {
+	public final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1), this) {
 
 		/*
 		 * (non-Javadoc)
@@ -157,7 +157,7 @@ public class LevelEndScreen extends Screen {
 					mStarsAnimationCount++;
 
 					Star star;
-					(star = (Star) mLevelStars.create()).setCenterPosition(Game.reduceCoordinates(120f) + Game.reduceCoordinates(95f * mStarsAnimationCount), mBackground.getY() + Game.reduceCoordinates(620));
+					(star = (Star) mLevelStars.create()).setCenterPosition(LevelEndScreen.this.mBackground.getX() + 120f * Options.cameraRatioFactor, mBackground.getY() + Game.reduceCoordinates(620));
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -180,7 +180,7 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		this.setBackground(new SpriteBackground(mBackground.create()));
+		mBackground.create();
 
 		mMenu.create().setPosition(Game.reduceCoordinates(105f), mBackground.getY() + Game.reduceCoordinates(720));
 		mMenu.hide();
@@ -195,9 +195,9 @@ public class LevelEndScreen extends Screen {
 		this.registerTouchArea(mRePlay);
 		this.registerTouchArea(mPlayNext);
 
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this.mBackground));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end-star.png", 0, 35, 1, 1), this));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end-star.png", 0, 35, 1, 1), this.mBackground));
 	}
 
 	@Override

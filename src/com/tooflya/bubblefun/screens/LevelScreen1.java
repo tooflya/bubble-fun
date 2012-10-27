@@ -18,6 +18,7 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Particle;
+import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 
@@ -136,6 +137,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
+	private final Sprite mTextTapHere = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-tap.png", 140, 980, 1, 1), this);
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -159,6 +162,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.clouds.generateStartClouds();
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
+
+		mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2);
+		mTextTapHere.setRotation(-15f);
 
 		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/small-bird.png", 0, 780, 6, 2), this));
 		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/gum-animation.png", 900, 0, 1, 6), this));

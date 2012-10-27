@@ -38,7 +38,7 @@ public class Star extends Entity {
 	@Override
 	public Entity create() {
 		this.isParticle = false;
-
+		
 		return super.create();
 	}
 
