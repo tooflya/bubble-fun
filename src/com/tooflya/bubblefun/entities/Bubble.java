@@ -172,31 +172,31 @@ public class Bubble extends Entity implements IAnimationListener {
 			
 			if (this.isScaleDefined) {
 				if (this.mIsYReverse) {
-					this.mScaleY -= mSpeedScaleY * FloatMath.cos(angle);
+					this.mScaleY -= mSpeedScaleY;
 					if (this.mScaleY < mMinScaleY) {
 						this.mIsYReverse = !this.mIsYReverse;
 					}
 				} else {
-					this.mScaleY += mSpeedScaleY * FloatMath.cos(angle);
+					this.mScaleY += mSpeedScaleY;
 					if (this.mScaleY > mMaxScaleY) {
 						this.mIsYReverse = !this.mIsYReverse;
 					}
 				}
 
 				if (this.mIsXReverse) {
-					this.mScaleX -= mSpeedScaleX * FloatMath.sin(angle);
+					this.mScaleX -= mSpeedScaleX;
 					if (this.mScaleX < mMinScaleX) {
 						this.mIsXReverse = !this.mIsXReverse;
 					}
 				} else {
-					this.mScaleX += mSpeedScaleX * FloatMath.sin(angle);
+					this.mScaleX += mSpeedScaleX;
 					if (this.mScaleX > mMaxScaleX) {
 						this.mIsXReverse = !this.mIsXReverse;
 					}
 				}
 
-				this.setScaleY(this.mScaleY);
-				this.setScaleX(this.mScaleX);
+				this.setScaleY(this.mScaleY * FloatMath.sin(angle));
+				this.setScaleX(this.mScaleX * FloatMath.cos(angle));
 			}
 		}
 	}
