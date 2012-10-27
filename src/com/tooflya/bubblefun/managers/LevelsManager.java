@@ -76,20 +76,20 @@ public class LevelsManager extends EntityManager {
 				if (icon.id < 10) {
 					final Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id);
-					text.setCenterPosition(icon.getWidthScaled() / 2 + text.getWidthScaled() / 2, icon.getHeightScaled() / 2 + text.getHeightScaled() / 2);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
+					text.setCenterPosition(icon.getWidth() / 2, icon.getHeight() / 2);
 				} else {
 					Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
-					text.setCenterPosition(icon.getWidthScaled() / 2 - text.getWidthScaled() / 4, icon.getHeightScaled() / 2);
-					text.setScaleCenter(0, 0);
-					text.setScale(Options.cameraRatioFactor);
-					text = this.mNumbers.create();
-					text.setCurrentTileIndex(icon.id % 10);
-					text.setCenterPosition(icon.getWidthScaled() / 2 - text.getWidthScaled() / 4, icon.getHeightScaled() / 2);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
+					text.setCenterPosition(icon.getWidth() / 2 - text.getWidth() / 4, icon.getHeight() / 2);
+					text = this.mNumbers.create();
+					text.setCurrentTileIndex(icon.id % 10);
+					text.setScaleCenter(0, 0);
+					text.setScale(1f);
+					text.setCenterPosition(icon.getWidth() / 2 + text.getWidth() / 4, icon.getHeight() / 2);
 				}
 			} else {
 				icon.setCurrentTileIndex(4);
