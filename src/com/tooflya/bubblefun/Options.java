@@ -12,7 +12,6 @@ public class Options {
 	/** Camera parameters */
 	public final static float cameraRatioCenter = 520f;
 	public static float cameraRatioFactor;
-	public static float cameraCoordinatesFactor;
 
 	public static int cameraWidth;
 	public static int cameraHeight;

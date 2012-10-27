@@ -115,7 +115,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			Options.CR = "SD";
 		}
 
-		Options.cameraCoordinatesFactor = Options.cameraHeight / 1024f;
 		Options.cameraRatioFactor = Options.cameraWidth / Options.cameraOriginRatioX > Options.cameraHeight / Options.cameraOriginRatioY ? Options.cameraWidth / Options.cameraOriginRatioX : Options.cameraHeight / Options.cameraOriginRatioY;
 
 		/** Initialize camera instance */
@@ -291,7 +290,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 
 	public static float reduceCoordinates(final float pCoordinate) {
-		return pCoordinate * Options.cameraCoordinatesFactor;
+		return pCoordinate * Options.cameraRatioFactor;
 	}
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {

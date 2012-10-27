@@ -157,7 +157,7 @@ public class LevelEndScreen extends Screen {
 					mStarsAnimationCount++;
 
 					Star star;
-					(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(300f) + Game.reduceCoordinates(20f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(615));
+					(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getX() + Game.reduceCoordinates(95f) + Game.reduceCoordinates(47f) * mStarsAnimationCount, mBackground.getY() + Game.reduceCoordinates(367));
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -182,13 +182,13 @@ public class LevelEndScreen extends Screen {
 	public LevelEndScreen() {
 		mBackground.create();
 
-		mMenu.create().setPosition(Game.reduceCoordinates(105f), mBackground.getY() + Game.reduceCoordinates(720));
+		mMenu.create().setCenterPosition(Options.cameraCenterX - Game.reduceCoordinates(100f), mBackground.getY() + Game.reduceCoordinates(470));
 		mMenu.hide();
 
-		mRePlay.create().setPosition(Game.reduceCoordinates(253f), mBackground.getY() + Game.reduceCoordinates(720));
+		mRePlay.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + Game.reduceCoordinates(470));
 		mRePlay.hide();
 
-		mPlayNext.create().setPosition(Game.reduceCoordinates(405f), mBackground.getY() + Game.reduceCoordinates(720));
+		mPlayNext.create().setCenterPosition(Options.cameraCenterX + Game.reduceCoordinates(100f), mBackground.getY() + Game.reduceCoordinates(470));
 		mPlayNext.hide();
 
 		this.registerTouchArea(mMenu);
