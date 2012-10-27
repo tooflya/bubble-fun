@@ -6,12 +6,26 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 /**
+ * The basic essence of the project, inherited from <b>AnimatedSprite</b> base class. May have a few frames or just one, depending on the type of <b>TextureRegion</b>.
+ * 
+ * Example of instantinate:
+ * 
+ * <pre>
+ * private final Entity mEntityExample = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, &quot;sprite.png&quot;, 0, 660, 1, 1), this) {
+ * 	&#064;Override
+ * 	public Entity deepCopy() {
+ * 		return null;
+ * 	}
+ * };
+ * </pre>
+ * 
+ * Base this class is abstract class we necessarily need to override <i>deepCopy()</i> method.
+ * 
  * @author Tooflya.com
  * @since
  */
@@ -25,8 +39,18 @@ public abstract class Entity extends AnimatedSprite {
 	// Fields
 	// ===========================================================
 
+	/** ID of this instance in the <b>EntityManager</b>. Used to <i>destroy()</i> method like <i>destroySelf()</i> from her entity manager. */
 	private int mId;
 
+	/** Entity speed on axis X. The private identifier is used to adjust the speed depending on the screen resolution in the method <i>setSpeedX()</i>. */
+	private float mSpeedX;
+	/** Entity speed on axis Y. The private identifier is used to adjust the speed depending on the screen resolution in the method <i>setSpeedY()</i>. */
+	private float mSpeedY;
+
+	/** <b>Screen</b> which is the essence of the place rendering. */
+	protected Screen mParentScreen;
+
+	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object may be <b>null</b>. */
 	private EntityManager mEntityManager;
 
 	// ===========================================================
@@ -34,52 +58,95 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 
 	/**
+	 * Base contructor for instantinate this Entity class.
+	 * 
 	 * @param pTiledTextureRegion
-	 * @param pNeedParent
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen
+	 *            instance of <b>Screen</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pRegisterTouchArea
+	 *            boolean value for know if you are want to register this entity as clickable.
 	 */
-	public Entity(final TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
+	public Entity(final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
 
+		/** As some entities may be elements of a manager we need to hide them here. They will appers to ther screen after call <i>create()</i> method. */
 		this.hide();
 
+		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
 		this.setScaleCenter(0, 0);
-		this.setScale(Options.CAMERA_RATIO_FACTOR);
+		this.setScale(Options.cameraRatioFactor);
 
+		/** After scale action we need to find center of entity position. */
 		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
+		this.mY = (Options.cameraHeight- this.getHeightScaled()) / 2;
 
-		if (pNeedParent) {
-			Game.screens.get(Screen.LEVEL).attachChild(this);
+		/** Also attach this entity to the <b>Screen</b> if <i>pParentScreen</i> defined. */
+		if (pParentScreen != null) {
+			this.mParentScreen = pParentScreen;
+			this.mParentScreen.attachChild(this);
+
+			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
+			if (pRegisterTouchArea) {
+				this.mParentScreen.registerTouchArea(this);
+			}
 		}
 	}
 
 	/**
-	 * @param pX
-	 * @param pY
+	 * Constructor that allows you to not specify the need to register this entity as clickable.
+	 * 
 	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen
+	 *            instance of <b>Screen</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
-	public Entity(final int pX, final int pY, final TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true);
+	public Entity(final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		this(pTiledTextureRegion.deepCopy(), pParentScreen, false);
+	}
+
+	/**
+	 * Constructor that takes a value on the screen location of this entity. Do not attach an entity to the screen and does not register her as clickable.
+	 * 
+	 * @param pX
+	 *            Coordinate of this entity on the X-axis
+	 * @param pY
+	 *            Coordinate of this entity on the Y-axis
+	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 */
+	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
+		this(pTiledTextureRegion, null);
 
 		this.setCenterPosition(pX, pY);
 	}
 
 	/**
+	 * Constructor that takes a value on the screen location of this entity. Do not register entity as clickable.
+	 * 
 	 * @param pX
+	 *            Coordinate of this entity on the X-axis
 	 * @param pY
+	 *            Coordinate of this entity on the Y-axis
 	 * @param pTiledTextureRegion
-	 * @param pNeedParent
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen
+	 *            instance of <b>Screen</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
-	public Entity(final int pX, final int pY, final TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
-		this(pTiledTextureRegion, pNeedParent);
+	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		this(pTiledTextureRegion, pParentScreen);
 
 		this.setCenterPosition(pX, pY);
 	}
 
 	/**
+	 * Simple contructor which takes only one parameter.
+	 * 
 	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true);
+		this(pTiledTextureRegion, null);
 	}
 
 	// ===========================================================
@@ -87,7 +154,9 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 
 	/**
-	 * @return
+	 * The method, which is similar to the method <i>init()</i>. Shows the entity and indicates the need for rendering.
+	 * 
+	 * @return <b>Entity</b> Instance of this class.
 	 */
 	public Entity create() {
 		this.show();
@@ -95,38 +164,27 @@ public abstract class Entity extends AnimatedSprite {
 		return this;
 	}
 
-	/**
-	 * 
-	 */
+	/** The method, which is similar to the method <i>destroySelf()</i>. If <i>mEntityManager</i> is defined call them to destroy element with ID <i>mId</i>. Else do nothing. */
 	public void destroy() {
 		if (this.isManagerExist()) {
 			this.mEntityManager.destroy(this.mId);
 		}
 
+		/** Let's hide this entity. */
 		this.hide();
 	}
 
-	/**
-	 * 
-	 */
-	public void update() {
-	}
-
-	/**
-	 * 
-	 */
+	/** Method wich used only for apper (setting visible to true) this entity and set ignore to false. */
 	public void show() {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
 	}
 
-	/**
-	 * 
-	 */
+	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
 	public void hide() {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
-		// this.setCullingEnabled(true);
+		/* TODO: Check is culling needed! >>  this.setCullingEnabled(true); */
 	}
 
 	// ===========================================================
@@ -134,7 +192,9 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 
 	/**
-	 * @return
+	 * Method which checking if this entity is parent of some manager.
+	 * 
+	 * @return boolean Result of of inspection.
 	 */
 	public boolean isManagerExist() {
 		if (this.mEntityManager != null) {
@@ -153,6 +213,29 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public void setID(final int id) {
 		this.mId = id;
+	}
+
+	/**
+	 * @param pSpeedX
+	 */
+	public void setSpeedX(final float pSpeedX) {
+		this.mSpeedX = pSpeedX * Options.cameraRatioFactor;
+	}
+
+	/**
+	 * @param pSpeedY
+	 */
+	public void setSpeedY(final float pSpeedY) {
+		this.mSpeedY = pSpeedY * Options.cameraRatioFactor;
+	}
+
+	/**
+	 * @param pSpeedX
+	 * @param pSpeedY
+	 */
+	public void setSpeed(final float pSpeedX, final float pSpeedY) {
+		this.mSpeedX = pSpeedX * Options.cameraRatioFactor;
+		this.mSpeedY = pSpeedY * Options.cameraRatioFactor;
 	}
 
 	/**
@@ -217,6 +300,20 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public int getID() {
 		return mId;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getSpeedX() {
+		return this.mSpeedX;
+	}
+
+	/**
+	 * @return
+	 */
+	public float getSpeedY() {
+		return this.mSpeedY / Options.cameraRatioFactor;
 	}
 
 	/**

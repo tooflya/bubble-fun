@@ -11,11 +11,13 @@ public class LevelsManager extends EntityManager {
 	private float PADDING, PADDING_B;
 	private float X, Y;
 
+	private EntityManager mNumbers;
+
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
 
-		PADDING = 116f * Options.CAMERA_RATIO_FACTOR;
-		PADDING_B = 23.2f * Options.CAMERA_RATIO_FACTOR;
+		PADDING = 59f * Options.cameraRatioFactor;
+		PADDING_B = 14f * Options.cameraRatioFactor;
 
 		X = PADDING_B;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
@@ -30,24 +32,32 @@ public class LevelsManager extends EntityManager {
 	public void clear() {
 		super.clear();
 
-		PADDING = 116f * Options.CAMERA_RATIO_FACTOR;
-		PADDING_B = 23.2f * Options.CAMERA_RATIO_FACTOR;
+		PADDING = 59f * Options.cameraRatioFactor;
+		PADDING_B = 14f * Options.cameraRatioFactor;
 
 		X = PADDING_B;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
 
 	}
 
+	public void generate(final EntityManager pNumbers) {
+		this.mNumbers = pNumbers;
+
+		this.generate();
+	}
+
 	public void generate() {
+		this.mNumbers.clear();
+
 		for (int i = 0; i < this.getCapacity(); i++) {
 
-			if (i % 4 == 0) {
+			if (i % 5 == 0) {
 				X += 0;
 			} else {
 				X += PADDING + PADDING_B;
 			}
 
-			if (i % 4 == 0 && i != 0) {
+			if (i % 5 == 0 && i != 0) {
 				Y += PADDING + PADDING_B;
 				X = PADDING_B;
 			}
@@ -61,13 +71,23 @@ public class LevelsManager extends EntityManager {
 
 			if (icon.id == 1 || level.isOpen()) {
 				icon.blocked = false;
-				icon.setCurrentTileIndex(level.getStarsCount() + 1);
+				icon.setCurrentTileIndex(level.getStarsCount());
+				if (icon.id < 10) {
+					final Entity text = this.mNumbers.create();
+					text.setCurrentTileIndex(icon.id);
+					text.setCenterPosition(icon.getCenterX(), icon.getCenterY());
+				} else {
+					Entity text = this.mNumbers.create();
+					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
+					text.setCenterPosition(icon.getCenterX() - text.getWidthScaled() / 4, icon.getCenterY());
+					text = this.mNumbers.create();
+					text.setCurrentTileIndex(icon.id % 10);
+					text.setCenterPosition(icon.getCenterX() + text.getWidthScaled() / 4, icon.getCenterY());
+				}
 			} else {
-				icon.setCurrentTileIndex(0);
+				icon.setCurrentTileIndex(4);
 				icon.blocked = true;
 			}
-
-			icon.writeNumber();
 		}
 	}
 }

@@ -6,6 +6,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
 /**
  * @author Tooflya.com
@@ -21,10 +22,6 @@ public class Particle extends Entity {
 	// Fields
 	// ===========================================================
 
-	private int mAddToScreen;
-
-	private float stepX = 0;
-	private float stepY = 0;
 	private float stepRotation = 0;
 	private float stepScale = 0;
 	private float stepAlpha = 0;
@@ -35,17 +32,10 @@ public class Particle extends Entity {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 */
-	public Particle(TiledTextureRegion pTiledTextureRegion, final int pScreenToAdd) {
-		super(pTiledTextureRegion, false);
+	public Particle(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-		this.mAddToScreen = pScreenToAdd;
-
-		Game.screens.get(this.mAddToScreen).attachChild(this);
 	}
 
 	// ===========================================================
@@ -54,15 +44,15 @@ public class Particle extends Entity {
 
 	public Particle Init() {
 
-		stepX = Game.random.nextFloat() * 2 - 1;
-		stepY = Game.random.nextFloat() * 2 - 1;
+		this.setSpeedX(Game.random.nextFloat() * 2 - 1);
+		this.setSpeedY(Game.random.nextFloat() * 2 - 1);
 
 		stepRotation = Game.random.nextFloat() * 10;
 
 		time = 0;
 		maxTime = Game.random.nextInt(400);
 
-		this.setScale(1.8f * Options.CAMERA_RATIO_FACTOR);
+		this.setScale(1.8f * Options.cameraRatioFactor);
 		stepScale = -Game.random.nextFloat() / maxTime;
 
 		this.setAlpha(1);
@@ -101,7 +91,8 @@ public class Particle extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.setPosition(this.getX() + this.stepX, this.getY() + this.stepY);
+		this.mX += this.getSpeedX();
+		this.mY += this.getSpeedY();
 
 		if (this.getScaleX() + this.stepScale < 0) {
 			this.destroy();
@@ -131,7 +122,7 @@ public class Particle extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Particle(getTextureRegion(), mAddToScreen);
+		return new Particle(getTextureRegion(), this.mParentScreen);
 	}
 
 }

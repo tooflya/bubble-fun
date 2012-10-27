@@ -6,27 +6,52 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class GraphicsBubble extends Bubble {
 
-	public GraphicsBubble(TiledTextureRegion pTiledTextureRegion, boolean pNeedParent) {
-		super(pTiledTextureRegion, pNeedParent, false);
+	// ===========================================================
+	// Constants
+	// ===========================================================
 
-		Game.screens.get(Screen.LOAD).attachChild(this);
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	/**
+	 * @param pTiledTextureRegion
+	 * @param pParentScreen
+	 */
+	public GraphicsBubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen, false);
 	}
 
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Bubble#create()
+	 */
 	@Override
 	public Entity create() {
 		this.setPosition((Options.cameraWidth / 3) * 2 + Game.random.nextInt(Options.cameraWidth / 3) - this.getHeightScaled(), Options.cameraHeight);
-		this.mSpeedX = 0f;
-		this.mSpeedY = Game.random.nextInt(10);
+
+		this.setSpeedX(0f);
+		this.setSpeedY(Game.random.nextInt(10));
+
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 
 		this.isScaleAction = false;
 
-		this.show();
-
-		return this;
+		return super.create();
 	}
 
 	/*
@@ -36,7 +61,6 @@ public class GraphicsBubble extends Bubble {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new GraphicsBubble(getTextureRegion(), false);
+		return new GraphicsBubble(getTextureRegion(), this.mParentScreen);
 	}
-
 }

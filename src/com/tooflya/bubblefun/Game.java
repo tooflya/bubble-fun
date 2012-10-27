@@ -10,23 +10,15 @@ import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.opengl.font.Font;
-import org.anddev.andengine.opengl.font.FontFactory;
-import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.Window;
 
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
@@ -67,13 +59,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	/**  */
 	public static ScreenManager screens;
-
-	/**  */
-	public static Font mBigFont, mSmallFont;
-
-	/**  */
-	private final static BitmapTextureAtlas mBigFontTexture = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mSmallFontTexture = new BitmapTextureAtlas(512, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -117,13 +102,27 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.cameraCenterX = Options.cameraWidth / 2;
 		Options.cameraCenterY = Options.cameraHeight / 2;
 
-		Options.CAMERA_RATIO_FACTOR = Options.cameraWidth / Options.cameraOriginRatioX;
+		/** */
+		if (Options.cameraWidth > Options.cameraRatioCenter && false) {
+			Options.cameraOriginRatioX = 640.0f;
+			Options.cameraOriginRatioY = 1024.0f;
+
+			Options.CR = "HD";
+		} else {
+			Options.cameraOriginRatioX = 380.0f;
+			Options.cameraOriginRatioY = 610.0f;
+
+			Options.CR = "SD";
+		}
+
+		Options.cameraCoordinatesFactor = Options.cameraHeight / 1024f;
+		Options.cameraRatioFactor = Options.cameraWidth > Options.cameraHeight ? Options.cameraWidth / Options.cameraOriginRatioX : Options.cameraHeight / Options.cameraOriginRatioY;
 
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
-		Options.touchHeight = Options.cameraHeight / 3;
-		Options.ellipseHeight = Options.cameraHeight / 10;
+		Options.touchHeight = Options.cameraHeight / 3; // TODO: WTF?
+		Options.ellipseHeight = Options.cameraHeight / 10; // TODO: WTF?
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
@@ -158,13 +157,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@Override
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		FontFactory.setAssetBasePath("font/");
-
-		mBigFont = FontFactory.createFromAsset(mBigFontTexture, getApplicationContext(), "casual.ttf", 50 * Options.CAMERA_RATIO_FACTOR, true, Color.WHITE);
-		mSmallFont = FontFactory.createFromAsset(mSmallFontTexture, getApplicationContext(), "casual.ttf", 32 * Options.CAMERA_RATIO_FACTOR, true, Color.WHITE);
-
-		this.getEngine().getFontManager().loadFonts(mBigFont, mSmallFont);
-		this.getEngine().getTextureManager().loadTextures(mBigFontTexture, mSmallFontTexture);
 	}
 
 	/*
@@ -176,7 +168,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void workToDo() {
 
 		/** Create screen manager */
-		(screens = new ScreenManager()).init();
+		screens = new ScreenManager();
 
 		/** White while progressbar is running */
 		while (!isGameLoaded) {
@@ -220,7 +212,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
-
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
 
@@ -298,6 +289,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static float reduceCoordinates(final float pCoordinate) {
+		return pCoordinate * Options.cameraCoordinatesFactor;
+	}
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
 		engine.getTextureManager().loadTextures(textures);

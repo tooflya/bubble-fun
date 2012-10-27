@@ -6,7 +6,8 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.LevelScreen1;
 
 /**
  * @author Tooflya.com
@@ -60,13 +61,13 @@ public class Chiky extends Entity {
 	/**
 	 * @param pTiledTextureRegion
 	 */
-	public Chiky(TiledTextureRegion pTiledTextureRegion) {
-		super(pTiledTextureRegion);
+	public Chiky(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 
-		this.animate(new long[] { 300, 300 }, 0, 1, true);
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
 	}
 
 	// ===========================================================
@@ -79,14 +80,16 @@ public class Chiky extends Entity {
 		this.startX = startX;
 		this.startY = startY;
 
-		final float minStepX = 2f; // TODO:
-		final float maxStepX = 4f; // TODO:
+		final float minStepX = 1f; // TODO:
+		final float maxStepX = 2f; // TODO:
 		if (this.type == 0) {
 			this.stepX = (minStepX + maxStepX) / 2;
 		}
 		else {
 			this.stepX = Math.signum(stepSign) * (Game.random.nextFloat() * (maxStepX - minStepX) + minStepX);
 		}
+
+		this.stepX *= Options.cameraRatioFactor;
 
 		this.x = this.startX;
 		this.y = this.startY;
@@ -101,7 +104,7 @@ public class Chiky extends Entity {
 		this.timeToFall = 40; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
 
-		this.animate(new long[] { 300, 300 }, 2, 3, true);
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 6, 11, true);
 	}
 
 	// ===========================================================
@@ -180,7 +183,7 @@ public class Chiky extends Entity {
 			this.timeToFall--;
 			if (this.timeToFall <= 0) {
 				if (this.airgumScale > Bubble.minScale) {
-					Bubble airgum = (Bubble) LevelScreen.airgums.create();
+					Bubble airgum = (Bubble) LevelScreen1.airgums.create();
 					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 					airgum.setScale(this.airgumScale);
 					airgum.setIsScale(false);
@@ -188,7 +191,7 @@ public class Chiky extends Entity {
 
 				Particle particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((Particle) LevelScreen.feathers.create());
+					particle = ((Particle) LevelScreen1.feathers.create());
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
@@ -219,7 +222,7 @@ public class Chiky extends Entity {
 
 			if (this.getY() > Options.cameraHeight) {
 				this.state = 0;
-				this.animate(new long[] { 300, 300 }, 0, 1, true);
+				this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
 				this.setRotation(0);
 				this.lastY = 0;
 				this.destroy();
@@ -243,6 +246,6 @@ public class Chiky extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Chiky(getTextureRegion());
+		return new Chiky(getTextureRegion(), this.mParentScreen);
 	}
 }

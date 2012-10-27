@@ -4,8 +4,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
 /**
  * @author Tooflya.com
@@ -21,33 +21,18 @@ public class Cloud extends Entity {
 	// Fields
 	// ===========================================================
 
-	private float mSpeed;
-
-	private int mAddToScreen;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 */
 	public Cloud(TiledTextureRegion pTiledTextureRegion) {
-		super(pTiledTextureRegion, false);
+		super(pTiledTextureRegion);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pScreen
-	 */
-	public Cloud(TiledTextureRegion pTiledTextureRegion, final int pScreen) {
-		super(pTiledTextureRegion, false);
-
-		Game.screens.get(pScreen).attachChild(this);
-
-		this.mAddToScreen = pScreen;
+	public Cloud(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -56,18 +41,14 @@ public class Cloud extends Entity {
 	// Methods
 	// ===========================================================
 
-	public void setSpeed(final float pSpeed) {
-		this.mSpeed = pSpeed;
-	}
-
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
 
 	@Override
 	public Entity create() {
-		this.setScaleY(Options.CAMERA_RATIO_FACTOR);
-		this.setScaleX(Options.CAMERA_RATIO_FACTOR);
+		this.setScaleY(Options.cameraRatioFactor);
+		this.setScaleX(Options.cameraRatioFactor);
 
 		this.setAlpha(1f);
 
@@ -83,7 +64,7 @@ public class Cloud extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mX -= this.mSpeed;
+		this.mX -= this.getSpeedX();
 		if (this.mX + this.getWidthScaled() < 0) {
 			this.destroy();
 		}
@@ -96,6 +77,6 @@ public class Cloud extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Cloud(getTextureRegion(), this.mAddToScreen);
+		return new Cloud(getTextureRegion(), this.mParentScreen);
 	}
 }

@@ -8,7 +8,12 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class Glint extends Entity {
 
 	// ===========================================================
@@ -18,11 +23,6 @@ public class Glint extends Entity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private int mAddToScreen;
-
-	private float mStepX;
-	private float mStepY;
 
 	private float mRotationAngle;
 
@@ -36,25 +36,17 @@ public class Glint extends Entity {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pScreen
-	 */
-	public Glint(TiledTextureRegion pTiledTextureRegion, final int pScreen) {
-		super(pTiledTextureRegion, false);
+	public Glint(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-		Game.screens.get(pScreen).attachChild(this);
-
-		this.mAddToScreen = pScreen;
 
 		this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 	}
 
 	@Override
 	public Entity deepCopy() {
-		return new Glint(getTextureRegion(), this.mAddToScreen);
+		return new Glint(getTextureRegion(), this.mParentScreen);
 	}
 
 	@Override
@@ -73,8 +65,8 @@ public class Glint extends Entity {
 	public Glint Init(final int i, final Entity pFollowObject) {
 		this.mFollowObject = pFollowObject;
 
-		this.mStepX = 3f * FloatMath.sin(i * 2 * Options.PI / 10);
-		this.mStepY = 3f * FloatMath.cos(i * 2 * Options.PI / 10);
+		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 10));
+		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 10));
 
 		final float scale = Game.random.nextFloat();
 		this.mScaleX = scale;
@@ -89,7 +81,7 @@ public class Glint extends Entity {
 		this.isParticle = true;
 
 		this.setVisible(false);
-		//this.setIgnoreUpdate(false);
+		this.setIgnoreUpdate(false);
 
 		return this;
 	}
@@ -106,11 +98,10 @@ public class Glint extends Entity {
 		if (this.isParticle && --this.mSleep <= 0) {
 			if (this.mSleep == 0) {
 				this.setCenterPosition(this.mFollowObject.getCenterX(), this.mFollowObject.getCenterY());
-				System.out.println(this.getWidthScaled());
 				this.show();
 			}
-			this.mX += this.mStepX;
-			this.mY += this.mStepY;
+			this.mX += this.getSpeedX();
+			this.mY += this.getSpeedY();
 
 			this.mAlpha -= 0.01f;
 			this.mRotation -= this.mRotationAngle;

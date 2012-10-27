@@ -23,22 +23,22 @@ public class CloudsManager extends EntityManager {
 
 		switch (frame) {
 		case 0:
-			cloud.setScale(0.5f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(0.5f * Options.cameraRatioFactor);
 			break;
 		case 1:
-			cloud.setScale(0.75f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(0.75f * Options.cameraRatioFactor);
 			break;
 		case 2:
-			cloud.setScale(1f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(1f * Options.cameraRatioFactor);
 			break;
 		case 3:
-			cloud.setScale(1.25f * Options.CAMERA_RATIO_FACTOR);
+			cloud.setScale(1.25f * Options.cameraRatioFactor);
 			break;
 		}
 
-		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraWidth + cloud.getWidthScaled())) - cloud.getWidthScaled() : Options.cameraWidth, Game.random.nextInt((int) (Options.cameraHeight / 3 *2 - cloud.getHeightScaled())));
+		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraWidth + cloud.getWidthScaled())) - cloud.getWidthScaled() : Options.cameraWidth, Game.random.nextInt((int) (Options.cameraHeight / 3 * 2 - cloud.getHeightScaled())));
 		cloud.setAlpha(0.4f + Game.random.nextFloat() * (1f - 0.4f));
-		cloud.setSpeed(0.2f + Game.random.nextFloat() * (2f - 0.2f));
+		cloud.setSpeedX(0.2f + Game.random.nextFloat() * (2f - 0.2f));
 		cloud.setCurrentTileIndex(frame);
 	}
 

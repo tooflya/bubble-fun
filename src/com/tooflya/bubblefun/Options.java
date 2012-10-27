@@ -10,15 +10,19 @@ public class Options {
 	public static float PI = (float) (2 * Math.asin(1));
 
 	/** Camera parameters */
+	public final static float cameraRatioCenter = 520f;
+	public static float cameraRatioFactor;
+	public static float cameraCoordinatesFactor;
+
 	public static int cameraWidth;
 	public static int cameraHeight;
 	public static int cameraCenterX;
 	public static int cameraCenterY;
 
-	public static float CAMERA_RATIO_FACTOR;
+	public static String CR;
 
-	public final static float cameraOriginRatioX = 580.0f;
-	public final static float cameraOriginRatioY = 1024.0f;
+	public static float cameraOriginRatioX;
+	public static float cameraOriginRatioY;
 
 	public static int levelNumber = 1;
 

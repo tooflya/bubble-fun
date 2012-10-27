@@ -1,13 +1,12 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.LevelScreen1;
 
 public class Bubble extends Entity implements IAnimationListener {
 
@@ -15,16 +14,14 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constants
 	// ===========================================================
 
-	private final static float TIME_TO_ANIMATION = 0.02f;
+	public final static float mMaxSpeedY = 10f * Options.cameraRatioFactor;
+	public final static float mMaxSpeedX = 10f * Options.cameraRatioFactor;
 
-	public final static float mMaxSpeedY = 10f;
-	public final static float mMaxSpeedX = 10f;
+	public final static float minScale = 0.3f * Options.cameraRatioFactor; // TODO: (R) Find right minimal scale.
+	public final static float maxScale = 1.7f * Options.cameraRatioFactor; // TODO: (R) Find right maximal scale.
+	public final static float scaleStep = 0.05f * Options.cameraRatioFactor;; // TODO: (R) Find right step of scale.
 
-	public final static float minScale = 0.3f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right minimal scale.
-	public final static float maxScale = 1.7f * Options.CAMERA_RATIO_FACTOR; // TODO: (R) Find right maximal scale.
-	public final static float scaleStep = 0.05f * Options.CAMERA_RATIO_FACTOR;; // TODO: (R) Find right step of scale.
-
-	private final static float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
+	private final static float mDecrementStep = 0.04f * Options.cameraRatioFactor;
 
 	// ===========================================================
 	// Fields
@@ -32,11 +29,11 @@ public class Bubble extends Entity implements IAnimationListener {
 
 	protected float mMinScaleX;
 	protected float mMaxScaleX;
-	protected float mSpeedScaleX = 0.003f * Options.CAMERA_RATIO_FACTOR;
+	protected float mSpeedScaleX = 0.003f * Options.cameraRatioFactor;
 
 	protected float mMinScaleY;
 	protected float mMaxScaleY;
-	protected float mSpeedScaleY = 0.006f * Options.CAMERA_RATIO_FACTOR;
+	protected float mSpeedScaleY = 0.006f * Options.cameraRatioFactor;
 
 	protected boolean mIsYReverse = false;
 	protected boolean mIsXReverse = true;
@@ -44,15 +41,10 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected float mScaleY = mMinScaleY;
 	protected float mScaleX = mMaxScaleX;
 
-	private boolean mIsAnimationReverse;
-	private float mOffsetY;
-
 	protected boolean isScaleAction = false;
 	protected boolean isFlyAction = true;
 	protected boolean isScaleDefined = false;
 
-	protected float mSpeedY;
-	protected float mSpeedX;
 	protected float mSpeedDecrement;
 	protected float mDeathTime;
 
@@ -60,39 +52,26 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pNeedParent
-	 */
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent, final boolean pNeedAlpha) {
-		super(pTiledTextureRegion, pNeedParent);
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pNeedAlpha, final boolean pRegisterTouchArea) {
+		super(pTiledTextureRegion, pParentScreen, pRegisterTouchArea);
 
 		if (pNeedAlpha) {
-			this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		}
-
-		if (pNeedParent) {
 			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 			this.setAlpha(0.8f);
-		} else {
-			this.setScaleCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
 		}
 	}
 
-	/**
-	 * @param pTiledTextureRegion
-	 * @param pNeedParent
-	 */
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final boolean pNeedParent) {
-		this(pTiledTextureRegion, pNeedParent, true);
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen, final boolean pNeedAlpha) {
+		this(pTiledTextureRegion, pParentScreen, pNeedAlpha, false);
 	}
 
-	/**
-	 * @param pTiledTextureRegion
-	 */
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final Screen pParentScreen) {
+		this(pTiledTextureRegion, pParentScreen, true);
+	}
+
 	public Bubble(TiledTextureRegion pTiledTextureRegion) {
-		this(pTiledTextureRegion, true, true);
+		this(pTiledTextureRegion, null, true);
 	}
 
 	// ===========================================================
@@ -105,43 +84,23 @@ public class Bubble extends Entity implements IAnimationListener {
 		}
 		this.isScaleAction = isScale;
 
-		this.mMinScaleX = this.getScaleX() - (0.2f * Options.CAMERA_RATIO_FACTOR);
-		this.mMinScaleY = this.getScaleY() - (0.2f * Options.CAMERA_RATIO_FACTOR);
+		this.mMinScaleX = this.getScaleX() - (0.2f * Options.cameraRatioFactor);
+		this.mMinScaleY = this.getScaleY() - (0.2f * Options.cameraRatioFactor);
 
 		this.mMaxScaleX = this.getScaleX();
-		this.mMaxScaleY = this.getScaleY() + (0.2f * Options.CAMERA_RATIO_FACTOR);
+		this.mMaxScaleY = this.getScaleY() + (0.2f * Options.cameraRatioFactor);
 
 		this.mScaleY = this.mMinScaleY;
 		this.mScaleX = this.mMaxScaleX;
 
 		this.isScaleDefined = true;
-	}
 
-	public void setSpeedX(final float pSpeed) {
-		this.mSpeedX = -pSpeed;
-	}
-
-	public void setSpeedY(final float pSpeed) {
-		this.mSpeedY = pSpeed > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeed - this.mSpeedDecrement;
+		this.setSpeedY(this.getSpeedY() - this.mSpeedDecrement);
 	}
 
 	// ===========================================================
 	// Getters
 	// ===========================================================
-
-	/**
-	 * @return
-	 */
-	public float getSpeedY() {
-		return this.mSpeedY;
-	}
-
-	/**
-	 * @return
-	 */
-	public float getSpeedX() {
-		return this.mSpeedX;
-	}
 
 	// ===========================================================
 	// Methods
@@ -152,9 +111,20 @@ public class Bubble extends Entity implements IAnimationListener {
 	// ===========================================================
 
 	@Override
+	public void setSpeedX(final float pSpeedX) {
+		super.setSpeedX(this.getSpeedX() - pSpeedX * Options.cameraRatioFactor);
+	}
+
+	@Override
+	public void setSpeedY(final float pSpeedY) {
+		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeedY - this.mSpeedDecrement);
+	}
+
+	@Override
 	public Entity create() {
-		this.mSpeedX = 0f;
-		this.mSpeedY = 2f;
+		this.setSpeedX(0f);
+		this.setSpeedY(4f * Options.cameraRatioFactor);
+
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
 
@@ -175,25 +145,23 @@ public class Bubble extends Entity implements IAnimationListener {
 
 		if (this.isScaleAction) {
 			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
-				this.mSpeedY -= 0.05f;
-				this.mSpeedDecrement += 0.05f;
+				this.mSpeedDecrement += mDecrementStep;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
-				LevelScreen.AIR--;
+				LevelScreen1.AIR--;
 			}
 		}
 		else {
 			this.mDeathTime--;
 			if (this.mDeathTime <= 0 && this.isFlyAction) {
 				if (!this.isAnimationRunning()) {
-					System.out.println("EVENT");
 					this.animate(40, 0, this);
 				}
 			}
 
 			if (this.isFlyAction) {
-				this.mY -= this.mSpeedY;
-				this.mX -= this.mSpeedX;
+				this.mY -= this.getSpeedY();
+				this.mX -= this.getSpeedX();
 				if (this.getCenterY() + this.getHeightScaled() < 0) {
 					this.destroy();
 				}
@@ -226,32 +194,8 @@ public class Bubble extends Entity implements IAnimationListener {
 
 				this.setScaleY(this.mScaleY);
 				this.setScaleX(this.mScaleX);
-
-				if (this.mIsAnimationReverse) {
-					this.mOffsetY += TIME_TO_ANIMATION;
-					if (this.mOffsetY > mMaxOffsetY) {
-						this.mIsAnimationReverse = false;
-					}
-				} else {
-					this.mOffsetY -= TIME_TO_ANIMATION;
-					if (this.mOffsetY < mMinOffsetY) {
-						this.mIsAnimationReverse = true;
-					}
-				}
-
-				this.mY += mOffsetY;
 			}
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.entities.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new Bubble(getTextureRegion());
 	}
 
 	/*
@@ -262,6 +206,16 @@ public class Bubble extends Entity implements IAnimationListener {
 	@Override
 	public void onAnimationEnd(AnimatedSprite arg0) {
 		this.destroy();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.airbubblegum.entities.Entity#deepCopy()
+	 */
+	@Override
+	public Entity deepCopy() {
+		return new Bubble(getTextureRegion(), this.mParentScreen);
 	}
 
 }

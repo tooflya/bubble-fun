@@ -2,6 +2,10 @@ package com.tooflya.bubblefun.background;
 
 import android.os.AsyncTask;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class AsyncTaskLoader extends AsyncTask<IAsyncCallback, Integer, Boolean> {
 
 	// ===========================================================
@@ -14,6 +18,9 @@ public class AsyncTaskLoader extends AsyncTask<IAsyncCallback, Integer, Boolean>
 	// Inherited Methods
 	// ===========================================================
 
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#doInBackground(Params[])
+	 */
 	@Override
 	protected Boolean doInBackground(IAsyncCallback... params) {
 		this._params = params;
@@ -24,6 +31,9 @@ public class AsyncTaskLoader extends AsyncTask<IAsyncCallback, Integer, Boolean>
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+	 */
 	@Override
 	protected void onPostExecute(Boolean result) {
 		int count = this._params.length;
