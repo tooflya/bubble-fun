@@ -31,15 +31,7 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 
 	/** Declare the entity that acts as a background image of the screen. */
-	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_screen.png", 0, 0, 1, 1), this) {
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	/** Declare the entity that acts as a background image of the loading bar. */
-	private final Entity mPreloadBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-bar.png", 0, 580, 1, 1), this) {
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-screen.png", 0, 0, 1, 1), this) {
 		@Override
 		public Entity deepCopy() {
 			return null;
@@ -47,7 +39,7 @@ public class LoadingScreen extends Screen {
 	};
 
 	/** Declare the entity that acts as a loading bar. */
-	private final Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload_line.png", 0, 660, 1, 1), this) {
+	private final Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-screen-fill.png", 0, 660, 1, 1), this) {
 		@Override
 		public Entity deepCopy() {
 			return null;
@@ -60,8 +52,8 @@ public class LoadingScreen extends Screen {
 		public void onTimePassed(TimerHandler pTimerHandler) {
 			/** Changing size of progressbar. */
 			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.cameraRatioFactor) {
-				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 10));
-				mProgressBar.setWidth(mProgressBar.getWidth() + 10);
+				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 3));
+				mProgressBar.setWidth(mProgressBar.getWidth() + 3);
 			} else {
 				/** If progressbar is full. */
 				Game.isGameLoaded = true;
@@ -80,9 +72,7 @@ public class LoadingScreen extends Screen {
 
 		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		this.mPreloadBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 766f * Options.cameraRatioFactor);
-
-		this.mProgressBar.create().setPosition(Options.cameraCenterX - this.mProgressBar.getWidthScaled() / 2, 800f * Options.cameraRatioFactor);
+		this.mProgressBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 257f * Options.cameraRatioFactor);
 		this.mProgressBar.setWidth(1);
 		this.mProgressBar.getTextureRegion().setWidth(1);
 
