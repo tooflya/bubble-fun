@@ -242,36 +242,13 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param centerX
 	 */
 	public void setCenterX(final float pCenterX) {
-		this.mX = pCenterX - this.getWidthScaled() / 2;
+		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
 	}
 
 	/**
 	 * @param pCenterY
 	 */
 	public void setCenterY(final float pCenterY) {
-		this.mY = pCenterY - this.getHeightScaled() / 2;
-	}
-
-	/**
-	 * @param pCenterX
-	 * @param pCenterY
-	 */
-	public void setCenterPosition(final float pCenterX, final float pCenterY) {
-		this.mX = pCenterX - this.getWidthScaled() / 2;
-		this.mY = pCenterY - this.getHeightScaled() / 2;
-	}
-
-	/**
-	 * @param centerXAfterScale
-	 */
-	public void setCenterXAfterScale(final float pCenterX) {
-		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
-	}
-
-	/**
-	 * @param pCenterYAfterScale
-	 */
-	public void setCenterYAfterScale(final float pCenterY) {
 		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
 
@@ -279,7 +256,7 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pCenterX
 	 * @param pCenterY
 	 */
-	public void setCenterPositionAfterScale(final float pCenterX, final float pCenterY) {
+	public void setCenterPosition(final float pCenterX, final float pCenterY) {
 		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
 		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
@@ -306,41 +283,27 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedX() {
-		return this.mSpeedX;
+		return this.mSpeedX; // TODO: (R) Something wrong!
 	}
 
 	/**
 	 * @return
 	 */
 	public float getSpeedY() {
-		return this.mSpeedY / Options.cameraRatioFactor;
+		return this.mSpeedY / Options.cameraRatioFactor; // TODO: (R) Something wrong!
 	}
 
 	/**
 	 * @return
 	 */
 	public float getCenterX() {
-		return this.mX + this.getWidthScaled() / 2;
+		return this.mX + this.mScaleCenterX + (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;		
 	}
 
 	/**
 	 * @return
 	 */
 	public float getCenterY() {
-		return this.mY + this.getHeightScaled() / 2;
-	}
-
-	/**
-	 * @return
-	 */
-	public float getCenterXAfterScale() {
-		return this.mX + this.mScaleCenterX + (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
-	}
-
-	/**
-	 * @return
-	 */
-	public float getCenterYAfterScale() {
 		return this.mY + this.mScaleCenterY + (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
 
