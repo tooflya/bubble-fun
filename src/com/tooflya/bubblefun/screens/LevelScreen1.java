@@ -671,7 +671,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 					}
 					for (int a = thorns.getCount() - 1; a >= 0; --a) {
 						if (this.isCollide(airgum, thorns.getByIndex(a))) {
-							airgum.animate(40, 0, airgum);
+							if (!airgum.isAnimationRunning()) {
+								airgum.animate(40, 0, airgum);
+							}
 						}
 					}
 				}
