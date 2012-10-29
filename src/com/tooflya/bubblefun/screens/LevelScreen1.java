@@ -1,13 +1,20 @@
 package com.tooflya.bubblefun.screens;
 
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.modifier.IModifier;
 
 import android.util.FloatMath;
 
@@ -24,6 +31,7 @@ import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.modifiers.MoveModifier;
 
 /**
  * @author Tooflya.com
@@ -37,6 +45,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	public static int mBubblesCount;
 	public static int AIR;
+	public static boolean running;
+	public static int deadBirds;
+	private static boolean isResetAnimationRunning;
 
 	public final static BitmapTextureAtlas mBackgroundTextureAtlas0 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -140,7 +151,204 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final Sprite mTextTapHere = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-tap.png", 140, 980, 1, 1), this);
+	private final static Sprite mTextTapHere = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-tap.png", 140, 980, 1, 1)) {
+		public boolean shake = false;
+		private float minS = -15, maxS = 15;
+		private boolean reverse = false;
+		private float step = 5f;
+		private int mi = 100, i = 0;
+
+		@Override
+		public Entity create() {
+			this.setRotationCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
+
+			return super.create();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+		 */
+		@Override
+		protected void onManagedUpdate(final float pSecondsElapsed) {
+			super.onManagedUpdate(pSecondsElapsed);
+
+			if (shake) {
+				i++;
+				if (reverse) {
+					this.mRotation += step;
+					if (this.mRotation >= maxS) {
+						this.reverse = false;
+					}
+				}
+				else {
+					this.mRotation -= step;
+					if (this.mRotation <= minS) {
+						this.reverse = true;
+					}
+				}
+				if (i >= mi) {
+					this.i = 0;
+					this.shake = false;
+					this.reverse = false;
+					this.mRotation = -15;
+				}
+			}
+		}
+
+		@Override
+		public void reset() {
+			this.shake = true;
+		}
+	};
+
+	private final static Rectangle shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
+
+		private float s = 0.005f;
+
+		private boolean modifier = false;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+		 */
+		@Override
+		protected void onManagedUpdate(final float pSecondsElapsed) {
+			super.onManagedUpdate(pSecondsElapsed);
+
+			boolean update = false;
+			for (int i = 0; i < this.getChildCount(); i++) {
+				if (this.getChild(i).getAlpha() > 0) {
+					this.getChild(i).setAlpha(this.getChild(i).getAlpha() - s);
+					update = true;
+				}
+			}
+
+			if (!update && !modifier) {
+				modifier = true;
+			}
+		}
+
+		public void reset() {
+			move.reset();
+
+			for (int i = 0; i < this.getChildCount(); i++) {
+				this.getChild(i).setAlpha(1f);
+			}
+			modifier = false;
+		}
+	};
+
+	private final static Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-level.png", 700, 0, 1, 1));
+	private final static EntityManager numbers = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/numbers-sprite.png", 815, 0, 1, 11)));
+
+	private final static MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2, new IEntityModifierListener() {
+
+		/**
+		 * @param pEntityModifier
+		 * @param pEntity
+		 */
+		@Override
+		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+			mTextTapHere.reset();
+		}
+
+		/**
+		 * @param arg0
+		 * @param arg1
+		 */
+		@Override
+		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+
+		}
+	});
+
+	private final static MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3, new IEntityModifierListener() {
+
+		/**
+		 * @param pEntityModifier
+		 * @param pEntity
+		 */
+		@Override
+		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+		}
+
+		/**
+		 * @param arg0
+		 * @param arg1
+		 */
+		@Override
+		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+
+		}
+	});
+
+	private final static Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-restart.png", 440, 980, 1, 1));
+
+	private final static MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidthScaled(), Options.cameraWidth / 6, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
+
+		/**
+		 * @param pEntityModifier
+		 * @param pEntity
+		 */
+		@Override
+		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+			restartMove2.reset();
+		}
+
+		/**
+		 * @param arg0
+		 * @param arg1
+		 */
+		@Override
+		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+
+		}
+	});
+
+	private final static MoveModifier restartMove2 = new MoveModifier(1.5f, Options.cameraWidth / 6, Options.cameraWidth / 6 * 2, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
+
+		/**
+		 * @param pEntityModifier
+		 * @param pEntity
+		 */
+		@Override
+		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+			restartMove3.reset();
+		}
+
+		/**
+		 * @param arg0
+		 * @param arg1
+		 */
+		@Override
+		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+
+		}
+	});
+
+	private final static MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraCenterX + Options.cameraCenterX / 2, Options.cameraWidth, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
+
+		/**
+		 * @param pEntityModifier
+		 * @param pEntity
+		 */
+		@Override
+		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+			reInit();
+		}
+
+		/**
+		 * @param arg0
+		 * @param arg1
+		 */
+		@Override
+		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+
+		}
+	});
 
 	// ===========================================================
 	// Fields
@@ -166,8 +374,34 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		this.clouds.generateStartClouds();
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
 
-		mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2);
+		this.attachChild(shape);
+		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.shape.setAlpha(0f);
+
+		mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f * Options.cameraRatioFactor);
+
+		numbers.create().setCenterPosition(Options.cameraCenterX - 30f * Options.cameraRatioFactor, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX - 10f * Options.cameraRatioFactor, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX + 10f * Options.cameraRatioFactor, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX + 30f * Options.cameraRatioFactor, Options.cameraCenterY);
+
+		shape.attachChild(mLevelWord);
+		this.shape.attachChild(numbers.getByIndex(0));
+		this.shape.attachChild(numbers.getByIndex(1));
+		this.shape.attachChild(numbers.getByIndex(2));
+		this.shape.attachChild(numbers.getByIndex(3));
+
+		for (int i = 0; i < shape.getChildCount(); i++) {
+			((Shape) shape.getChild(i)).setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		numbers.getByIndex(0).setCurrentTileIndex(1);
+		numbers.getByIndex(1).setCurrentTileIndex(10);
+
+		this.attachChild(mTextTapHere); //mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2);
 		mTextTapHere.setRotation(-15f);
+		mTextTapHere.registerEntityModifier(move);
+		mTextTapHere.registerEntityModifier(moveDown);
 
 		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/small-bird.png", 0, 780, 6, 2), this));
 		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/gum-animation.png", 900, 0, 1, 6), this));
@@ -179,6 +413,12 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		this.mMenuButton.create().setPosition(Options.cameraWidth - (10 * Options.cameraRatioFactor + this.mMenuButton.getWidthScaled()), 10 * Options.cameraRatioFactor);
 		this.mResetButton.create().setPosition(Options.cameraWidth - (15 * Options.cameraRatioFactor + this.mMenuButton.getWidthScaled() + this.mResetButton.getWidthScaled()), 10 * Options.cameraRatioFactor);
+
+		mResetText.create().setCenterPosition(-Options.cameraWidth, Options.cameraCenterY);
+		this.attachChild(mResetText);
+		mResetText.registerEntityModifier(restartMove1);
+		mResetText.registerEntityModifier(restartMove2);
+		mResetText.registerEntityModifier(restartMove3);
 	}
 
 	// ===========================================================
@@ -186,6 +426,10 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public static void reInit() {
+		running = true;
+		deadBirds = 0;
+		isResetAnimationRunning = false;
+
 		mBlueBird.create();
 		mBlueBird.clear();
 		airgums.clear();
@@ -197,9 +441,27 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		Options.scalePower = 20; // TODO: Change count of scale power.
 
-		AIR = 100;
+		AIR = 10;//100;
 
 		mBubblesCount = 0;
+
+		mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3);
+
+		shape.reset();
+
+		if (Options.levelNumber < 10) {
+			mLevelWord.setCenterPosition(Options.cameraCenterX - 10 * Options.cameraRatioFactor, Options.cameraCenterY - 40f * Options.cameraRatioFactor);
+			numbers.getByIndex(3).setVisible(false);
+
+			numbers.getByIndex(2).setCurrentTileIndex(Options.levelNumber);
+		} else {
+			mLevelWord.setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f * Options.cameraRatioFactor);
+			numbers.getByIndex(3).setVisible(true);
+
+			numbers.getByIndex(2).setCurrentTileIndex((int) Math.floor(Options.levelNumber / 10));
+			numbers.getByIndex(3).setCurrentTileIndex(Options.levelNumber % 10);
+		}
+
 	}
 
 	// ===========================================================
@@ -423,9 +685,6 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		final float x = entity2.getCenterX() - entity1.getCenterX();
 		final float y = entity2.getCenterY() - entity1.getCenterY();
 		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
-		//		final float x = (entity2.getX() + entity2.getWidth() / 2) - (entity1.getX() + entity1.getWidth() / 2);
-		//		final float y = (entity2.getY() + entity2.getHeight() / 2) - (entity1.getY() + entity1.getHeight() / 2);
-		//		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
 		return x * x + y * y < d * d;
 	}
 
@@ -459,16 +718,25 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		this.checkCollision();
 
-		if (chikies.getCount() == 0) {
-			Game.screens.set(Screen.LEVELEND);
-		}
+		this.checkCollision();
 
 		this.clouds.update();
 
-		//mBirdsCountText.setText(chikies.getCount() + "");
-		//mAirCountText.setText(AIR + "");
+		if (chikies.getCount() == 0) {
+			Game.screens.set(Screen.LEVELEND);
+		} else {
+
+			if (AIR <= 0 && running) {
+				moveDown.reset();
+				running = false;
+			}
+
+			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning) {
+				restartMove1.reset();
+				isResetAnimationRunning = true;
+			}
+		}
 	}
 
 	/*

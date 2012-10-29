@@ -136,7 +136,7 @@ public class LevelChoiseScreen extends Screen {
 	};
 
 	private final LevelsManager levels = new LevelsManager(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/level-btn.png", 0, 612, 1, 5), this));
-	private final EntityManager numbers = new EntityManager(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/numbers-sprite.png", 370, 650, 1, 10)));
+	private final EntityManager numbers = new EntityManager(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/numbers-sprite.png", 400, 600, 1, 11)));
 
 	// ===========================================================
 	// Constructors

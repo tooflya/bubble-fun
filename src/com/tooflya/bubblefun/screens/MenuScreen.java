@@ -467,9 +467,10 @@ public class MenuScreen extends Screen {
 	@Override
 	public boolean onBackPressed() {
 		if (this.hasChildScene()) {
-			this.clearChildScene();
+			Game.screens.get(Screen.EXIT).onDetached();
 		} else {
 			this.setChildScene(Game.screens.get(Screen.EXIT), false, false, true);
+			Game.screens.get(Screen.EXIT).onAttached();
 		}
 
 		return true;

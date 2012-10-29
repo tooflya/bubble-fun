@@ -77,18 +77,26 @@ public class LevelsManager extends EntityManager {
 					text.setCurrentTileIndex(icon.id);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
-					text.setCenterPosition(icon.getWidth() / 2, icon.getHeight() / 2);
+					text.setCenterPosition(icon.getWidth() / 2, icon.getHeight() / 2 - 2 * Options.cameraRatioFactor);
 				} else {
+
+					float a;
+					if ((int) Math.floor(icon.id / 10) == 1) {
+						a = 1 * Options.cameraRatioFactor;
+					} else {
+						a = 0;
+					}
+					
 					Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
-					text.setCenterPosition(icon.getWidth() / 2 - text.getWidth() / 4, icon.getHeight() / 2);
+					text.setCenterPosition(icon.getWidth() / 2 - text.getWidth() / 4 + a, icon.getHeight() / 2 - 2 * Options.cameraRatioFactor);
 					text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id % 10);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
-					text.setCenterPosition(icon.getWidth() / 2 + text.getWidth() / 4, icon.getHeight() / 2);
+					text.setCenterPosition(icon.getWidth() / 2 + text.getWidth() / 4 - a, icon.getHeight() / 2 - 2 * Options.cameraRatioFactor);
 				}
 			} else {
 				icon.setCurrentTileIndex(4);

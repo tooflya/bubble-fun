@@ -53,6 +53,8 @@ public abstract class Entity extends AnimatedSprite {
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object may be <b>null</b>. */
 	private EntityManager mEntityManager;
 
+	private boolean isRegisterAsTouchable = false;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -89,6 +91,8 @@ public abstract class Entity extends AnimatedSprite {
 			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
 			if (pRegisterTouchArea) {
 				((Screen) this.mParentScreen).registerTouchArea(this);
+
+				this.isRegisterAsTouchable = true;
 			}
 		}
 	}
@@ -178,6 +182,12 @@ public abstract class Entity extends AnimatedSprite {
 	public void show() {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
+
+		if (this.isRegisterAsTouchable) {
+			if (this.hasParent()) {
+				((Screen) this.mParentScreen).registerTouchArea(this);
+			}
+		}
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
@@ -185,6 +195,12 @@ public abstract class Entity extends AnimatedSprite {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
 		/* TODO: Check is culling needed! >>  this.setCullingEnabled(true); */
+
+		if (this.isRegisterAsTouchable) {
+			if (this.hasParent()) {
+				((Screen) this.mParentScreen).unregisterTouchArea(this);
+			}
+		}
 	}
 
 	// ===========================================================
@@ -297,7 +313,7 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getCenterX() {
-		return this.mX + this.mScaleCenterX + (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;		
+		return this.mX + this.mScaleCenterX + (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
 	}
 
 	/**

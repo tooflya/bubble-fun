@@ -18,6 +18,9 @@ public class Star extends Entity {
 	// Fields
 	// ===========================================================
 
+	private float mStepX = 0;
+	private float mStepY = 0;
+
 	private boolean isParticle;
 
 	// ===========================================================
@@ -46,14 +49,15 @@ public class Star extends Entity {
 
 	public Star Init(final int i) {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 7));
-		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 7));
+		this.setScaleCenter(this.getWidth()/2, this.getHeight()/2);
+		
+		this.mStepX = 5f * FloatMath.sin(i * 2 * Options.PI / 7);
+		this.mStepY = 5f * FloatMath.cos(i * 2 * Options.PI / 7);
 
 		this.mRotation = (float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI);
 
-		this.mScaleX = 0.1f;
-		this.mScaleY = 0.1f;
+		this.mScaleX = 0.02f * Options.cameraRatioFactor;
+		this.mScaleY = 0.02f * Options.cameraRatioFactor;
 
 		this.mAlpha = 1f;
 
@@ -72,11 +76,11 @@ public class Star extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		if (this.isParticle) {
-			this.mX += this.getSpeedX();
-			this.mY += this.getSpeedY();
+			this.mX += this.mStepX;
+			this.mY += this.mStepY;
 
-			this.mScaleX += 0.03f;
-			this.mScaleY += 0.03f;
+			this.mScaleX += 0.03f * Options.cameraRatioFactor;
+			this.mScaleY += 0.03f * Options.cameraRatioFactor;
 
 			this.mAlpha -= 0.01f;
 

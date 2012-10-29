@@ -40,7 +40,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-menu.png", 200, 0, 1, 2), this) {
+	public final Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-menu.png", 200, 0, 1, 2), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -75,7 +75,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-replay.png", 300, 0, 1, 2), this) {
+	public final Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-replay.png", 300, 0, 1, 2), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -110,7 +110,7 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-next.png", 400, 0, 1, 2), this) {
+	public final Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-next.png", 400, 0, 1, 2), this, true) {
 
 		/*
 		 * (non-Javadoc)
@@ -162,7 +162,7 @@ public class LevelEndScreen extends Screen {
 					for (int i = 0; i < 7; i++) {
 						particle = ((Star) stars.create());
 						if (particle != null) {
-							particle.Init(i).setCenterPosition(star.getCenterX() - 10f, star.getCenterY() - 10f);
+							particle.Init(i).setCenterPosition(star.getCenterX(), star.getCenterY());
 						}
 					}
 				} else {
@@ -189,10 +189,6 @@ public class LevelEndScreen extends Screen {
 
 		mPlayNext.create().setCenterPosition(Options.cameraCenterX + Game.reduceCoordinates(100f), mBackground.getY() + Game.reduceCoordinates(470));
 		mPlayNext.hide();
-
-		this.registerTouchArea(mMenu);
-		this.registerTouchArea(mRePlay);
-		this.registerTouchArea(mPlayNext);
 
 		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
 

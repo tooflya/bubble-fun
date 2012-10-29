@@ -96,8 +96,9 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	public void setIsNeedToFlyAway(final float airgumScale) {
+		LevelScreen1.deadBirds++;
 		this.state = 1;
-		this.timeToFall = 40; // TODO: (R) Change number later.
+		this.timeToFall = 100; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
 
 		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 6, 11, true);
@@ -208,7 +209,7 @@ public class Chiky extends Entity {
 
 			this.time -= this.timeStep; // TODO: (R) Some strange code.
 			this.time += this.fallStepX; // TODO: (R) Some strange code.
-			this.fallStepX = 0.1f;
+			this.fallStepX = 0.1f * Options.cameraRatioFactor;
 			this.setCenterPosition(this.getCenterX() + this.fallSign * this.fallStepX * 5, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY - this.lastY); // TODO: (R) Some strange code.
 			this.lastY = (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY;
 
@@ -217,10 +218,7 @@ public class Chiky extends Entity {
 			}
 
 			if (this.getY() > Options.cameraHeight) {
-				this.state = 0;
-				this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
-				this.setRotation(0);
-				this.lastY = 0;
+				LevelScreen1.deadBirds--;
 				this.destroy();
 			}
 			break;
@@ -233,6 +231,16 @@ public class Chiky extends Entity {
 			this.getTextureRegion().setFlippedHorizontal(true);
 		}
 
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+
+		this.state = 0;
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
+		this.setRotation(0);
+		this.lastY = 0;
 	}
 
 	/*

@@ -69,6 +69,11 @@ public class PauseScreen extends Screen {
 				break;
 			case TouchEvent.ACTION_UP:
 				this.setCurrentTileIndex(0);
+
+				Options.levelNumber++;
+
+				LevelScreen1.reInit();
+				Game.screens.get(Screen.LEVEL).clearChildScene();
 				break;
 			}
 

@@ -52,8 +52,8 @@ public class LoadingScreen extends Screen {
 		public void onTimePassed(TimerHandler pTimerHandler) {
 			/** Changing size of progressbar. */
 			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.cameraRatioFactor) {
-				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 3));
-				mProgressBar.setWidth(mProgressBar.getWidth() + 3);
+				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 10));
+				mProgressBar.setWidth(mProgressBar.getWidth() + 10);
 			} else {
 				/** If progressbar is full. */
 				Game.isGameLoaded = true;
