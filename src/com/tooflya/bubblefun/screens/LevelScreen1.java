@@ -350,6 +350,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	});
 
+	private final static EntityManager thorns = new EntityManager(3, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/thorn.png", 740, 980, 1, 1)));
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -491,6 +493,10 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
 			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+
+			Entity s = thorns.create();
+			Game.screens.get(Screen.LEVEL).attachChild(s);
+			s.setCenterPosition(80 * Options.cameraRatioFactor, Options.cameraCenterY);
 			return;
 		case 4:
 			chiky = (Chiky) chikies.create();
@@ -662,6 +668,11 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
+					}
+					for (int a = thorns.getCount() - 1; a >= 0; --a) {
+						if (this.isCollide(airgum, thorns.getByIndex(a))) {
+							airgum.animate(40, 0, airgum);
+						}
 					}
 				}
 			}
