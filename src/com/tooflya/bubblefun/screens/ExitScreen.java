@@ -275,8 +275,8 @@ public class ExitScreen extends Screen {
 
 		this.mPanel.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		this.mYIcon.create().setCenterPosition(30 * Options.cameraRatioFactor, this.mPanel.getHeight());
-		this.mNIcon.create().setCenterPosition(this.mPanel.getWidth() - 30 * Options.cameraRatioFactor, this.mPanel.getHeight());
+		this.mYIcon.create().setCenterPosition(50, this.mPanel.getHeight());
+		this.mNIcon.create().setCenterPosition(this.mPanel.getWidth() - 50, this.mPanel.getHeight());
 
 		this.registerTouchArea(this.mYIcon);
 		this.registerTouchArea(this.mNIcon);

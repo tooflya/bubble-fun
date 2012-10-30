@@ -3,6 +3,7 @@ package com.tooflya.bubblefun.entities;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
@@ -91,7 +92,6 @@ public abstract class Entity extends AnimatedSprite {
 			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
 			if (pRegisterTouchArea) {
 				((Screen) this.mParentScreen).registerTouchArea(this);
-
 				this.isRegisterAsTouchable = true;
 			}
 		}
@@ -183,11 +183,7 @@ public abstract class Entity extends AnimatedSprite {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
 
-		if (this.isRegisterAsTouchable) {
-			if (this.hasParent()) {
-				((Screen) this.mParentScreen).registerTouchArea(this);
-			}
-		}
+		this.isRegisterAsTouchable = true;
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
@@ -196,11 +192,7 @@ public abstract class Entity extends AnimatedSprite {
 		this.setIgnoreUpdate(true);
 		/* TODO: Check is culling needed! >>  this.setCullingEnabled(true); */
 
-		if (this.isRegisterAsTouchable) {
-			if (this.hasParent()) {
-				((Screen) this.mParentScreen).unregisterTouchArea(this);
-			}
-		}
+		this.isRegisterAsTouchable = false;
 	}
 
 	// ===========================================================
@@ -235,14 +227,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedX
 	 */
 	public void setSpeedX(final float pSpeedX) {
-		this.mSpeedX = pSpeedX * Options.cameraRatioFactor;
+		this.mSpeedX = pSpeedX / Options.SPEED;
 	}
 
 	/**
 	 * @param pSpeedY
 	 */
 	public void setSpeedY(final float pSpeedY) {
-		this.mSpeedY = pSpeedY * Options.cameraRatioFactor;
+		this.mSpeedY = pSpeedY / Options.SPEED;
 	}
 
 	/**
@@ -250,8 +242,8 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedY
 	 */
 	public void setSpeed(final float pSpeedX, final float pSpeedY) {
-		this.mSpeedX = pSpeedX * Options.cameraRatioFactor;
-		this.mSpeedY = pSpeedY * Options.cameraRatioFactor;
+		this.mSpeedX = pSpeedX / Options.SPEED;
+		this.mSpeedY = pSpeedY / Options.SPEED;
 	}
 
 	/**
@@ -306,7 +298,8 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedY() {
-		return this.mSpeedY / Options.cameraRatioFactor; // TODO: (R) Something wrong!
+		//return this.mSpeedY / Options.cameraRatioFactor; // TODO: (R) Something wrong!
+		return this.mSpeedY;
 	}
 
 	/**
@@ -335,6 +328,16 @@ public abstract class Entity extends AnimatedSprite {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+	 */
+	@Override
+	public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		return this.isRegisterAsTouchable;
 	}
 
 	/*

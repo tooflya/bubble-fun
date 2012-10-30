@@ -99,6 +99,7 @@ public class Glint extends Entity {
 				this.setCenterPosition(this.mFollowObject.getCenterX(), this.mFollowObject.getCenterY());
 				this.show();
 			}
+			
 			this.mX += this.getSpeedX();
 			this.mY += this.getSpeedY();
 

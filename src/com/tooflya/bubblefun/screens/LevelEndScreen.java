@@ -1,5 +1,9 @@
 package com.tooflya.bubblefun.screens;
 
+import java.io.IOException;
+
+import org.anddev.andengine.audio.sound.Sound;
+import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -49,16 +53,18 @@ public class LevelEndScreen extends Screen {
 		 */
 		@Override
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
+			if (super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)) {
+				switch (pAreaTouchEvent.getAction()) {
+				case TouchEvent.ACTION_DOWN:
+					this.setCurrentTileIndex(1);
+					break;
+				case TouchEvent.ACTION_UP:
+					this.setCurrentTileIndex(0);
 
-				PreloaderScreen.mChangeAction = 2;
-				Game.screens.set(Screen.LOAD);
-				break;
+					PreloaderScreen.mChangeAction = 2;
+					Game.screens.set(Screen.LOAD);
+					break;
+				}
 			}
 
 			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -84,16 +90,18 @@ public class LevelEndScreen extends Screen {
 		 */
 		@Override
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
+			if (super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)) {
+				switch (pAreaTouchEvent.getAction()) {
+				case TouchEvent.ACTION_DOWN:
+					this.setCurrentTileIndex(1);
+					break;
+				case TouchEvent.ACTION_UP:
+					this.setCurrentTileIndex(0);
 
-				LevelScreen1.reInit();
-				Game.screens.set(Screen.LEVEL);
-				break;
+					LevelScreen1.reInit();
+					Game.screens.set(Screen.LEVEL);
+					break;
+				}
 			}
 
 			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -119,18 +127,20 @@ public class LevelEndScreen extends Screen {
 		 */
 		@Override
 		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
+			if (super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)) {
+				switch (pAreaTouchEvent.getAction()) {
+				case TouchEvent.ACTION_DOWN:
+					this.setCurrentTileIndex(1);
+					break;
+				case TouchEvent.ACTION_UP:
+					this.setCurrentTileIndex(0);
 
-				Options.levelNumber++;
-				LevelScreen1.reInit();
-				Game.screens.set(Screen.LEVEL);
+					Options.levelNumber++;
+					LevelScreen1.reInit();
+					Game.screens.set(Screen.LEVEL);
 
-				break;
+					break;
+				}
 			}
 
 			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -158,6 +168,8 @@ public class LevelEndScreen extends Screen {
 					Star star = (Star) mLevelStars.getByIndex(mStarsAnimationCount - 1);
 					star.setCurrentTileIndex(0);
 
+					LevelEndScreen.this.mBlampSound.play();
+
 					Star particle;
 					for (int i = 0; i < 7; i++) {
 						particle = ((Star) stars.create());
@@ -173,6 +185,8 @@ public class LevelEndScreen extends Screen {
 			}
 		}
 	});
+
+	private Sound mExplosionSound, mBlampSound;
 
 	// ===========================================================
 	// Constructors
@@ -200,11 +214,18 @@ public class LevelEndScreen extends Screen {
 			star.setCurrentTileIndex(1);
 		}
 
+		try {
+			this.mExplosionSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "cheers.mp3");
+			this.mBlampSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "blamp.mp3");
+		} catch (final IOException e) {
+		}
 	}
 
 	@Override
 	public void onAttached() {
 		super.onAttached();
+
+		//mExplosionSound.play();
 
 		mStarsAnimationCount = 0;
 
@@ -222,7 +243,6 @@ public class LevelEndScreen extends Screen {
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
-
 	}
 
 	@Override

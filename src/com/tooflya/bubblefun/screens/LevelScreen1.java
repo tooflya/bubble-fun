@@ -1,7 +1,11 @@
 package com.tooflya.bubblefun.screens;
 
+import java.io.IOException;
+
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.audio.sound.Sound;
+import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.anddev.andengine.entity.primitive.Rectangle;
@@ -29,6 +33,7 @@ import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Wind;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.modifiers.MoveModifier;
@@ -287,7 +292,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	private final static Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-restart.png", 440, 980, 1, 1));
 
-	private final static MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidthScaled(), Options.cameraWidth / 6, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
+	private final static MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidthScaled(), Options.cameraWidth / 8, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -308,7 +313,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	});
 
-	private final static MoveModifier restartMove2 = new MoveModifier(1.5f, Options.cameraWidth / 6, Options.cameraWidth / 6 * 2, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
+	private final static MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -329,7 +334,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	});
 
-	private final static MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraCenterX + Options.cameraCenterX / 2, Options.cameraWidth, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
+	private final static MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraWidth / 8 * 2, Options.cameraWidth, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -351,6 +356,10 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	});
 
 	private final static EntityManager thorns = new EntityManager(3, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/thorn.png", 740, 980, 1, 1)));
+
+	public final EntityManager winds = new EntityManager(3, new Wind(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/speed-wind.png", 800, 980, 6, 1), this));
+
+	private Sound mYeahSound;
 
 	// ===========================================================
 	// Fields
@@ -405,7 +414,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
 
-		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/small-bird.png", 0, 780, 6, 2), this));
+		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/small-bird.png", 0, 780, 6, 4), this));
 		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/gum-animation.png", 900, 0, 1, 6), this));
 		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/feather.png", 530, 500, 1, 2), this));
 
@@ -421,6 +430,11 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		mResetText.registerEntityModifier(restartMove1);
 		mResetText.registerEntityModifier(restartMove2);
 		mResetText.registerEntityModifier(restartMove3);
+
+		try {
+			this.mYeahSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "yeah.mp3");
+		} catch (final IOException e) {
+		}
 	}
 
 	// ===========================================================
@@ -437,6 +451,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		airgums.clear();
 		chikies.clear();
 		glints.clear();
+		thorns.clear();
 		generateChikies(30); // TODO: Change count depending to level number.
 
 		feathers.clear();
@@ -495,7 +510,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
 
 			Entity s = thorns.create();
-			Game.screens.get(Screen.LEVEL).attachChild(s);
+			if (!s.hasParent())
+				Game.screens.get(Screen.LEVEL).attachChild(s);
 			s.setCenterPosition(80 * Options.cameraRatioFactor, Options.cameraCenterY);
 			return;
 		case 4:
@@ -668,6 +684,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
+						this.mYeahSound.play();
 					}
 					for (int a = thorns.getCount() - 1; a >= 0; --a) {
 						if (this.isCollide(airgum, thorns.getByIndex(a))) {

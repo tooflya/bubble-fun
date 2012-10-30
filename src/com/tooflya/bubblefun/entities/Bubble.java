@@ -13,14 +13,14 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constants
 	// ===========================================================
 
-	public final static float mMaxSpeedY = 2f * Options.cameraRatioFactor;
-	public final static float mMaxSpeedX = 10f * Options.cameraRatioFactor;
+	public final static float mMaxSpeedY = 2f;
+	public final static float mMaxSpeedX = 10f;
 
 	public final static float minScale = 0.3f * Options.cameraRatioFactor; // TODO: (R) Find right minimal scale.
 	public final static float maxScale = 1.7f * Options.cameraRatioFactor; // TODO: (R) Find right maximal scale.
 	public final static float scaleStep = 0.05f * Options.cameraRatioFactor; // TODO: (R) Find right step of scale.
 
-	private final static float mDecrementStep = 0.013f * Options.cameraRatioFactor;
+	private final static float mDecrementStep = 0.003f;
 
 	// ===========================================================
 	// Fields
@@ -94,7 +94,7 @@ public class Bubble extends Entity implements IAnimationListener {
 
 		this.isScaleDefined = true;
 
-		this.setSpeedYA(this.getSpeedY() - this.mSpeedDecrement);
+		this.setSpeedYA(this.getSpeedY() * Options.SPEED - this.mSpeedDecrement);
 	}
 
 	// ===========================================================
@@ -110,7 +110,7 @@ public class Bubble extends Entity implements IAnimationListener {
 	// ===========================================================
 
 	public void setSpeedYA(final float pSpeedY) {
-		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement * 5 : pSpeedY - this.mSpeedDecrement);
+		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement : pSpeedY);
 	}
 
 	public void setSpeedYB(final float pSpeedY) {
@@ -120,7 +120,7 @@ public class Bubble extends Entity implements IAnimationListener {
 	@Override
 	public Entity create() {
 		this.setSpeedX(0f);
-		this.setSpeedYA(mMaxSpeedY * Options.cameraRatioFactor);
+		this.setSpeedYA(mMaxSpeedY);
 
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;

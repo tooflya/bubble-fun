@@ -49,10 +49,10 @@ public class Star extends Entity {
 
 	public Star Init(final int i) {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.setScaleCenter(this.getWidth()/2, this.getHeight()/2);
-		
-		this.mStepX = 5f * FloatMath.sin(i * 2 * Options.PI / 7);
-		this.mStepY = 5f * FloatMath.cos(i * 2 * Options.PI / 7);
+		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
+
+		this.mStepX = (5f * FloatMath.sin(i * 2 * Options.PI / 7)) / Options.SPEED;
+		this.mStepY = (5f * FloatMath.cos(i * 2 * Options.PI / 7)) / Options.SPEED;
 
 		this.mRotation = (float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI);
 

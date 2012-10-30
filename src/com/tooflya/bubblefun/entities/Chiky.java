@@ -6,6 +6,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen1;
 
 /**
@@ -50,6 +51,11 @@ public class Chiky extends Entity {
 
 	private int type = 0;
 
+	private boolean mAnimationOfSpeed;
+	private boolean mAnimationDefiad;
+
+	private Wind wind;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -63,7 +69,7 @@ public class Chiky extends Entity {
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 
-		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
 	}
 
 	// ===========================================================
@@ -71,6 +77,9 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	public void init(final int type, final float startX, final float startY, final int stepSign) {
+		this.mAnimationOfSpeed = false;
+		this.mAnimationDefiad = false;
+
 		this.type = type;
 
 		this.startX = startX;
@@ -101,7 +110,15 @@ public class Chiky extends Entity {
 		this.timeToFall = 100; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
 
-		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 6, 11, true);
+		if (!this.mAnimationDefiad) {
+			if (this.mAnimationOfSpeed) {
+				this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 }, 9999);
+			} else {
+				this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, 9999);
+			}
+
+			this.mAnimationDefiad = true;
+		}
 	}
 
 	// ===========================================================
@@ -111,7 +128,24 @@ public class Chiky extends Entity {
 	private float getCalculatedX() {
 		this.x += this.stepX;
 		if ((this.type == 2 || this.type == 5) && this.normalStepTime < this.time) {
-			this.x += 3 * this.stepX;
+			this.x += 1.3f * this.stepX;
+
+			if (!this.mAnimationOfSpeed) {
+				this.wind = ((Wind) ((LevelScreen1) Game.screens.get(Screen.LEVEL)).winds.create());
+				this.wind.mFollowEntity = this;
+			}
+
+			if (this.mAnimationDefiad) {
+				if (!this.mAnimationOfSpeed) {
+					this.mAnimationOfSpeed = true;
+					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 }, 9999);
+				}
+			} else {
+				if (!this.mAnimationOfSpeed) {
+					this.mAnimationOfSpeed = true;
+					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 }, 9999);
+				}
+			}
 		}
 
 		float offsetX = 0;
@@ -164,6 +198,16 @@ public class Chiky extends Entity {
 
 		this.time += this.timeStep;
 		if ((this.type == 2 || this.type == 5) && this.time >= this.normalStepTime + this.doubleStepTime) {
+			if (this.mAnimationOfSpeed) {
+				if (this.mAnimationDefiad) {
+					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, 9999);
+				} else {
+					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
+				}
+				this.mAnimationOfSpeed = false;
+				this.wind.destroy();
+				this.wind = null;
+			}
 			this.time -= this.normalStepTime + this.doubleStepTime;
 		}
 
@@ -238,7 +282,7 @@ public class Chiky extends Entity {
 		super.destroy();
 
 		this.state = 0;
-		this.animate(new long[] { 50, 50, 50, 50, 50, 50 }, 0, 5, true);
+		this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
 		this.setRotation(0);
 		this.lastY = 0;
 	}

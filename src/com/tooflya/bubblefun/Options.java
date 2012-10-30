@@ -18,6 +18,11 @@ public class Options {
 	public static int cameraCenterX;
 	public static int cameraCenterY;
 
+	public static float DPI;
+	public final static float targetDPI = 300f;
+
+	public static float SPEED;
+
 	public static String CR;
 
 	public static float cameraOriginRatioX;

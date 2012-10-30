@@ -2,6 +2,7 @@ package com.tooflya.bubblefun;
 
 import java.util.Random;
 
+import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.FixedStepEngine;
 import org.anddev.andengine.engine.camera.Camera;
@@ -95,6 +96,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		final DisplayMetrics displayMetrics = new DisplayMetrics();
 		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
+		Options.DPI = displayMetrics.densityDpi;
+		Options.SPEED = Options.targetDPI / Options.DPI;
+
 		/** Initialize camera parameters */
 		Options.cameraWidth = displayMetrics.widthPixels;
 		Options.cameraHeight = displayMetrics.heightPixels;
@@ -156,6 +160,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@Override
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		SoundFactory.setAssetBasePath("mfx/");
 	}
 
 	/*
