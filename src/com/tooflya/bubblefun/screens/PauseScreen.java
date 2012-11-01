@@ -13,125 +13,73 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 public class PauseScreen extends Screen {
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	@SuppressWarnings("unused")
-	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+	private final Rectangle mBackground = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
 
 	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/menu-big-btn.png", 0, 256, 1, 2);
 
-	private final Sprite b1 = new Sprite(mButtonsTextureRegion, this, true) {
+	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
-
-				Game.screens.get(Screen.LEVEL).clearChildScene();
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		public void onClick() {
+			Game.screens.get(Screen.LEVEL).clearChildScene();
 		}
 	};
 
-	private final Sprite b2 = new Sprite(mButtonsTextureRegion, this, true) {
+	private final ButtonScaleable b2 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
+		public void onClick() {
+			Options.levelNumber++;
 
-				Options.levelNumber++;
-
-				LevelScreen1.reInit();
-				Game.screens.get(Screen.LEVEL).clearChildScene();
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+			((LevelScreen1) Game.screens.get(Screen.LEVEL)).reInit();
+			Game.screens.get(Screen.LEVEL).clearChildScene();
 		}
 	};
 
-	private final Sprite b3 = new Sprite(mButtonsTextureRegion, this, true) {
+	private final ButtonScaleable b3 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
-
-				PreloaderScreen.mChangeAction = 2;
-				Game.screens.set(Screen.LOAD);
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		public void onClick() {
+			PreloaderScreen.mChangeAction = 2;
+			Game.screens.set(Screen.LOAD);
 		}
 	};
 
-	private final Sprite b4 = new Sprite(mButtonsTextureRegion, this, true) {
+	private final ButtonScaleable b4 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
-
-				PreloaderScreen.mChangeAction = 1;
-				Game.screens.set(Screen.LOAD);
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+		public void onClick() {
+			PreloaderScreen.mChangeAction = 1;
+			Game.screens.set(Screen.LOAD);
 		}
 	};
 
-	private final EntityManager mLables = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/text-big-btn.png", 0, 0, 1, 4), this));
+	private final EntityManager mLables = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/text-big-btn.png", 0, 0, 1, 4)));
 
 	// ===========================================================
 	// Constructors
@@ -142,28 +90,32 @@ public class PauseScreen extends Screen {
 
 		this.setBackgroundEnabled(false);
 
-		this.b1.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 120 * Options.cameraRatioFactor);
-		this.b2.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40 * Options.cameraRatioFactor);
-		this.b3.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 40 * Options.cameraRatioFactor);
-		this.b4.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 120 * Options.cameraRatioFactor);
+		this.b1.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY - 120f);
+		this.b2.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY - 40f);
+		this.b3.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 40f);
+		this.b4.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 120f);
 
 		Entity sprite;
 
 		sprite = mLables.create();
-		sprite.setCenterPosition(this.b1.getCenterX(), this.b1.getCenterY());
+		sprite.setCenterPosition(this.b1.getWidth() / 2, this.b1.getHeight() / 2);
 		sprite.setCurrentTileIndex(0);
+		this.b1.attachChild(sprite);
 
 		sprite = mLables.create();
-		sprite.setCenterPosition(this.b2.getCenterX(), this.b2.getCenterY());
+		sprite.setCenterPosition(this.b2.getWidth() / 2, this.b2.getHeight() / 2);
 		sprite.setCurrentTileIndex(1);
+		this.b2.attachChild(sprite);
 
 		sprite = mLables.create();
-		sprite.setCenterPosition(this.b3.getCenterX(), this.b3.getCenterY());
+		sprite.setCenterPosition(this.b3.getWidth() / 2, this.b3.getHeight() / 2);
 		sprite.setCurrentTileIndex(2);
+		this.b3.attachChild(sprite);
 
 		sprite = mLables.create();
-		sprite.setCenterPosition(this.b4.getCenterX(), this.b4.getCenterY());
+		sprite.setCenterPosition(this.b4.getWidth() / 2, this.b4.getHeight() / 2);
 		sprite.setCurrentTileIndex(3);
+		this.b4.attachChild(sprite);
 	}
 
 	// ===========================================================
@@ -171,7 +123,7 @@ public class PauseScreen extends Screen {
 	// ===========================================================
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
+		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraOriginRatioX, Options.cameraOriginRatioY);
 		coloredRect.setColor(pRed, pGreen, pBlue);
 		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		coloredRect.setAlpha(0.7f);
@@ -183,13 +135,13 @@ public class PauseScreen extends Screen {
 
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas);
+		Game.loadTextures(this.mBackgroundTextureAtlas);
 
 	}
 
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas);
+		Game.unloadTextures(this.mBackgroundTextureAtlas);
 
 	}
 

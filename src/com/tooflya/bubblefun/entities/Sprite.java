@@ -8,6 +8,10 @@ public class Sprite extends Entity {
 		super(pTiledTextureRegion, pParentScreen);
 	}
 
+	public Sprite(TiledTextureRegion pTiledTextureRegion, final Sprite pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
+	}
+
 	public Sprite(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pTouchArea) {
 		super(pTiledTextureRegion, pParentScreen, pTouchArea);
 	}

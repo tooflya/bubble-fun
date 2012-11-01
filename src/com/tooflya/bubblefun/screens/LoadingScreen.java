@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Sprite;
 
 /**
  * @author Tooflya.com
@@ -23,37 +23,27 @@ public class LoadingScreen extends Screen {
 	// Constants
 	// ===========================================================
 
-	/** Declare the necessary canvas in graphics memory, which then will be used to download images. */
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	/** Declare the necessary canvas in graphics memory, which then will be used to download images. */
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
 	/** Declare the entity that acts as a background image of the screen. */
-	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-screen.png", 0, 0, 1, 1), this) {
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
+	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-screen.png", 0, 0, 1, 1), this);
 
 	/** Declare the entity that acts as a loading bar. */
-	private final Entity mProgressBar = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-screen-fill.png", 0, 660, 1, 1), this) {
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
+	private final Sprite mProgressBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-screen-fill.png", 0, 660, 1, 1), this.mBackground);
 
 	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
 	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
 			/** Changing size of progressbar. */
-			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth() * Options.cameraRatioFactor) {
-				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 5));
-				mProgressBar.setWidth(mProgressBar.getWidth() + 5);
+			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth()) {
+				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 5f));
+				mProgressBar.setWidth(mProgressBar.getWidth() + 5f);
 			} else {
 				/** If progressbar is full. */
 				Game.isGameLoaded = true;
@@ -72,7 +62,7 @@ public class LoadingScreen extends Screen {
 
 		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		this.mProgressBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 257f * Options.cameraRatioFactor);
+		this.mProgressBar.create().setCenterPosition(192f, 562f);
 		this.mProgressBar.setWidth(1);
 		this.mProgressBar.getTextureRegion().setWidth(1);
 
@@ -104,7 +94,7 @@ public class LoadingScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas);
+		Game.loadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -114,7 +104,7 @@ public class LoadingScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas);
+		Game.unloadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*

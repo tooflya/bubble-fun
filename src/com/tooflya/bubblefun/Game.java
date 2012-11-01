@@ -115,6 +115,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		} else {
 			Options.cameraOriginRatioX = 380.0f;
 			Options.cameraOriginRatioY = 610.0f;
+			
+			Options.cameraOriginRatioCenterX = Options.cameraOriginRatioX /2;
+			Options.cameraOriginRatioCenterY = Options.cameraOriginRatioY / 2;
 
 			Options.CR = "SD";
 		}
@@ -124,8 +127,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
-		Options.touchHeight = Options.cameraHeight / 3; // TODO: WTF?
-		Options.ellipseHeight = Options.cameraHeight / 10; // TODO: WTF?
+		Options.touchHeight = Options.cameraOriginRatioY / 3; // TODO: WTF?
+		Options.ellipseHeight = Options.cameraOriginRatioY / 10; // TODO: WTF?
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
@@ -293,10 +296,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public static float reduceCoordinates(final float pCoordinate) {
-		return pCoordinate * Options.cameraRatioFactor;
-	}
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
 		engine.getTextureManager().loadTextures(textures);

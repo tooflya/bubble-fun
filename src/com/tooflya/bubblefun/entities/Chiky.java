@@ -94,8 +94,6 @@ public class Chiky extends Entity {
 			this.stepX = Math.signum(stepSign) * (Game.random.nextFloat() * (maxStepX - minStepX) + minStepX);
 		}
 
-		this.stepX *= Options.cameraRatioFactor;
-
 		this.x = this.startX;
 		this.y = this.startY;
 	}
@@ -153,18 +151,18 @@ public class Chiky extends Entity {
 			offsetX = 3 * Options.chikySize;
 		}
 
-		if (this.x - this.getWidthScaled() / 2 < -offsetX) {
-			this.x = -offsetX + (-offsetX - (this.x - this.getWidthScaled() / 2)) + this.getWidthScaled() / 2;
+		if (this.x - this.getWidth() / 2 < -offsetX) {
+			this.x = -offsetX + (-offsetX - (this.x - this.getWidth() / 2)) + this.getWidth() / 2;
 			this.stepX = +Math.abs(this.stepX);
 			if (this.type == 4) {
-				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikySize);
+				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
 			}
 		}
-		if (this.x + this.getWidthScaled() / 2 > Options.cameraWidth + offsetX) {
-			this.x = Options.cameraWidth + offsetX - ((this.x + this.getWidthScaled() / 2) - (Options.cameraWidth + offsetX)) - this.getWidthScaled() / 2;
+		if (this.x + this.getWidth() / 2 > Options.cameraOriginRatioX + offsetX) {
+			this.x = Options.cameraOriginRatioX + offsetX - ((this.x + this.getWidth() / 2) - (Options.cameraOriginRatioX+ offsetX)) - this.getWidth() / 2;
 			this.stepX = -Math.abs(this.stepX);
 			if (this.type == 4) {
-				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikySize);
+				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
 			}
 		}
 		return this.x;
@@ -175,7 +173,7 @@ public class Chiky extends Entity {
 			return this.y;
 		}
 		else {
-			return this.startY + FloatMath.sin(this.time * Options.PI * Math.abs(this.stepX) / Options.cameraWidth) * Options.ellipseHeight;
+			return this.startY + FloatMath.sin(this.time * Options.PI * Math.abs(this.stepX) / Options.cameraOriginRatioX) * Options.ellipseHeight;
 		}
 	}
 
@@ -253,7 +251,7 @@ public class Chiky extends Entity {
 
 			this.time -= this.timeStep; // TODO: (R) Some strange code.
 			this.time += this.fallStepX; // TODO: (R) Some strange code.
-			this.fallStepX = 0.1f * Options.cameraRatioFactor;
+			this.fallStepX = 0.1f;
 			this.setCenterPosition(this.getCenterX() + this.fallSign * this.fallStepX * 5, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY - this.lastY); // TODO: (R) Some strange code.
 			this.lastY = (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY;
 
@@ -261,7 +259,7 @@ public class Chiky extends Entity {
 				this.setRotation(this.getRotation() + 10);
 			}
 
-			if (this.getY() > Options.cameraHeight) {
+			if (this.getY() > Options.cameraOriginRatioY) {
 				LevelScreen1.deadBirds--;
 				this.destroy();
 			}

@@ -27,10 +27,10 @@ public class Wind extends Entity {
 				position = mFollowEntity.getWidth();
 				this.getTextureRegion().setFlippedHorizontal(true);
 			} else {
-				position = -this.getWidthScaled();
+				position = -this.getWidth();
 				this.getTextureRegion().setFlippedHorizontal(false);
 			}
-			this.setPosition(mFollowEntity.getX() + position, mFollowEntity.getY() - mFollowEntity.getWidth() / 2);
+			this.setPosition(mFollowEntity.getX() + position, mFollowEntity.getY());
 		}
 	}
 

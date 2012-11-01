@@ -26,7 +26,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	private final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bg.png", 0, 0, 1, 1), this);
-	public final Sprite mBalon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-fill.png", 0, 612, 1, 1), this) {
+	public final Sprite mBalon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-fill.png", 0, 612, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Entity#create()
@@ -39,10 +39,11 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 			return super.create();
 		}
 	};
-	public final Sprite mBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bar.png", 100, 612, 1, 1), this);
-	public final Sprite mTextBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-text.png", 0, 712, 1, 1), this);
+	public final Sprite mBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-bar.png", 100, 612, 1, 1), this.mBackground);
+	public final Sprite mTextBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/preload-text.png", 0, 712, 1, 1), this.mBackground);
 
 	public int updates = 0;
+	private boolean loaded = false;
 	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
 
 		@Override
@@ -55,12 +56,13 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 				mBalon.getTextureRegion().setHeight(mBalon.getTextureRegion().getHeight() + 3);
 				mBalon.setHeight(mBalon.getTextureRegion().getHeight());
 
-				if (updates >= 15) {
+				if (updates == 5) {
 					/** Start background loader */
 					new AsyncTaskLoader().execute(PreloaderScreen.this);
 				}
 
 			} else {
+				if(loaded) {
 				switch (mChangeAction) {
 				case 0:
 					Game.screens.set(Screen.LEVEL);
@@ -72,7 +74,10 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 					Game.screens.set(Screen.CHOISE);
 				}
 				/** Register timer of loading progressbar changes */
-				PreloaderScreen.this.unregisterUpdateHandler(mTimer);
+				unregisterUpdateHandler(mTimer);
+				
+				loaded = false;
+				}
 			}
 		}
 	});
@@ -90,13 +95,13 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		mBalon.setRotationCenter(mBalon.getWidthScaled() / 2, mBalon.getHeightScaled() / 2);
+		mBalon.setRotationCenter(mBalon.getWidth() / 2, mBalon.getHeight() / 2);
 		mBalon.setRotation(180);
-		mBalon.setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mBalon.setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
 		mBalon.create();
 
-		mBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 100 * Options.cameraRatioFactor); // TODO: (R) Magic number.
+		mBar.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
+		mTextBar.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 100f);
 	}
 
 	@Override
@@ -154,6 +159,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 	@Override
 	public void onComplete() {
+		loaded = true;
 	}
 
 }

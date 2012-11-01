@@ -13,14 +13,15 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Constants
 	// ===========================================================
 
-	public final static float mMaxSpeedY = 2f;
-	public final static float mMaxSpeedX = 10f;
+	public final static float mMaxSpeed = 2f;
+	public final static float mMaxFastSpeed = 4f;
 
-	public final static float minScale = 0.3f * Options.cameraRatioFactor; // TODO: (R) Find right minimal scale.
-	public final static float maxScale = 1.7f * Options.cameraRatioFactor; // TODO: (R) Find right maximal scale.
-	public final static float scaleStep = 0.05f * Options.cameraRatioFactor; // TODO: (R) Find right step of scale.
+	public final static float minScale = 0.4f; // TODO: (R) Find right minimal scale.
+	public final static float maxScale = 1.7f; // TODO: (R) Find right maximal scale.
+	public final static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
 
-	private final static float mDecrementStep = 0.003f;
+	private final static float mDecrementStep = 0.05f;
+	private final static float mFastDecrementStep = 0.1f;
 
 	// ===========================================================
 	// Fields
@@ -28,11 +29,11 @@ public class Bubble extends Entity implements IAnimationListener {
 
 	protected float mMinScaleX;
 	protected float mMaxScaleX;
-	protected float mSpeedScaleX = 0.003f * Options.cameraRatioFactor;
+	protected float mSpeedScaleX = 0.003f;
 
 	protected float mMinScaleY;
 	protected float mMaxScaleY;
-	protected float mSpeedScaleY = 0.006f * Options.cameraRatioFactor;
+	protected float mSpeedScaleY = 0.006f;
 
 	protected boolean mIsYReverse = false;
 	protected boolean mIsXReverse = true;
@@ -45,6 +46,7 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected boolean isScaleDefined = false;
 
 	protected float mSpeedDecrement;
+	protected float mFastSpeedDecrement;
 	protected float mDeathTime;
 
 	// ===========================================================
@@ -83,11 +85,11 @@ public class Bubble extends Entity implements IAnimationListener {
 		}
 		this.isScaleAction = isScale;
 
-		this.mMinScaleX = this.getScaleX() - (0.2f * Options.cameraRatioFactor);
-		this.mMinScaleY = this.getScaleY() - (0.2f * Options.cameraRatioFactor);
+		this.mMinScaleX = this.getScaleX() - 0.2f;
+		this.mMinScaleY = this.getScaleY() - 0.2f;
 
 		this.mMaxScaleX = this.getScaleX();
-		this.mMaxScaleY = this.getScaleY() + (0.2f * Options.cameraRatioFactor);
+		this.mMaxScaleY = this.getScaleY() + 0.2f;
 
 		this.mScaleY = this.mMinScaleY;
 		this.mScaleX = this.mMaxScaleX;
@@ -110,20 +112,25 @@ public class Bubble extends Entity implements IAnimationListener {
 	// ===========================================================
 
 	public void setSpeedYA(final float pSpeedY) {
-		super.setSpeedY(pSpeedY > mMaxSpeedY ? mMaxSpeedY - this.mSpeedDecrement : pSpeedY);
+		super.setSpeedY(pSpeedY > mMaxSpeed ? mMaxSpeed - this.mSpeedDecrement : pSpeedY);
 	}
 
 	public void setSpeedYB(final float pSpeedY) {
-		super.setSpeedY(pSpeedY - this.mSpeedDecrement);
+		super.setSpeedY((pSpeedY > mMaxFastSpeed ? mMaxFastSpeed : pSpeedY) / this.mFastSpeedDecrement);
+	}
+
+	public void setSpeedXB(final float pSpeedX) {
+		super.setSpeedX((pSpeedX> mMaxFastSpeed ? mMaxFastSpeed : pSpeedX) / this.mFastSpeedDecrement);
 	}
 
 	@Override
 	public Entity create() {
 		this.setSpeedX(0f);
-		this.setSpeedYA(mMaxSpeedY);
+		this.setSpeedYA(mMaxSpeed);
 
 		this.mDeathTime = 200f;
 		this.mSpeedDecrement = 0f;
+		this.mFastSpeedDecrement = 0f;
 
 		this.stopAnimation();
 		this.setCurrentTileIndex(0);
@@ -143,6 +150,7 @@ public class Bubble extends Entity implements IAnimationListener {
 		if (this.isScaleAction) {
 			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
 				this.mSpeedDecrement += mDecrementStep;
+				this.mFastSpeedDecrement += mFastDecrementStep;
 				this.setScale(this.getScaleX() + scaleStep);
 				Options.scalePower -= scaleStep;
 				LevelScreen1.AIR--;

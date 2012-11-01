@@ -54,8 +54,6 @@ public abstract class Entity extends AnimatedSprite {
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object may be <b>null</b>. */
 	private EntityManager mEntityManager;
 
-	private boolean isRegisterAsTouchable = false;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -76,14 +74,6 @@ public abstract class Entity extends AnimatedSprite {
 		/** As some entities may be elements of a manager we need to hide them here. They will appers to ther screen after call <i>create()</i> method. */
 		this.hide();
 
-		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
-		this.setScaleCenter(0, 0);
-		this.setScale(Options.cameraRatioFactor);
-
-		/** After scale action we need to find center of entity position. */
-		this.mX = (Options.cameraWidth - this.getWidthScaled()) / 2;
-		this.mY = (Options.cameraHeight - this.getHeightScaled()) / 2;
-
 		/** Also attach this entity to the <b>Screen</b> if <i>pParentScreen</i> defined. */
 		if (pParentScreen != null) {
 			this.mParentScreen = pParentScreen;
@@ -91,8 +81,11 @@ public abstract class Entity extends AnimatedSprite {
 
 			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
 			if (pRegisterTouchArea) {
-				((Screen) this.mParentScreen).registerTouchArea(this);
-				this.isRegisterAsTouchable = true;
+				if(this.mParentScreen instanceof Screen) {
+					((Screen) this.mParentScreen).registerTouchArea(this);
+				} else {
+					((Screen) this.mParentScreen.getParent()).registerTouchArea(this);
+				}
 			}
 		}
 	}
@@ -182,8 +175,6 @@ public abstract class Entity extends AnimatedSprite {
 	public void show() {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
-
-		this.isRegisterAsTouchable = true;
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
@@ -191,8 +182,6 @@ public abstract class Entity extends AnimatedSprite {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
 		/* TODO: Check is culling needed! >>  this.setCullingEnabled(true); */
-
-		this.isRegisterAsTouchable = false;
 	}
 
 	// ===========================================================
@@ -291,14 +280,13 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedX() {
-		return this.mSpeedX; // TODO: (R) Something wrong!
+		return this.mSpeedX;
 	}
 
 	/**
 	 * @return
 	 */
 	public float getSpeedY() {
-		//return this.mSpeedY / Options.cameraRatioFactor; // TODO: (R) Something wrong!
 		return this.mSpeedY;
 	}
 
@@ -328,16 +316,6 @@ public abstract class Entity extends AnimatedSprite {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
-	 */
-	@Override
-	public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		return this.isRegisterAsTouchable;
 	}
 
 	/*

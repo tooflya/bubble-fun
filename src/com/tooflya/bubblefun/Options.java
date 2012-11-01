@@ -28,10 +28,13 @@ public class Options {
 	public static float cameraOriginRatioX;
 	public static float cameraOriginRatioY;
 
+	public static float cameraOriginRatioCenterX;
+	public static float cameraOriginRatioCenterY;
+
 	public static int levelNumber = 1;
 
-	public static int touchHeight;
-	public static int ellipseHeight;
+	public static float touchHeight;
+	public static float ellipseHeight;
 
 	public static float scalePower;
 

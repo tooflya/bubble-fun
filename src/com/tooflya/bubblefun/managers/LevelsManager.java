@@ -16,11 +16,11 @@ public class LevelsManager extends EntityManager {
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
 
-		PADDING = 59f * Options.cameraRatioFactor;
-		PADDING_B = 14f * Options.cameraRatioFactor;
+		PADDING = 59f;
+		PADDING_B = 14f;
 
-		X = PADDING_B;
-		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
+		X = PADDING_B + 5f;
+		Y = (Options.cameraOriginRatioY - PADDING * 5 - PADDING_B * 4) / 2;
 	}
 
 	/*
@@ -32,11 +32,11 @@ public class LevelsManager extends EntityManager {
 	public void clear() {
 		super.clear();
 
-		PADDING = 59f * Options.cameraRatioFactor;
-		PADDING_B = 14f * Options.cameraRatioFactor;
+		PADDING = 59f;
+		PADDING_B = 14f;
 
-		X = PADDING_B;
-		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
+		X = PADDING_B + 5f;
+		Y = (Options.cameraOriginRatioY - PADDING * 5 - PADDING_B * 4) / 2;
 
 	}
 
@@ -59,12 +59,12 @@ public class LevelsManager extends EntityManager {
 
 			if (i % 5 == 0 && i != 0) {
 				Y += PADDING + PADDING_B;
-				X = PADDING_B;
+				X = PADDING_B + 5f;
 			}
 
 			LevelIcon icon = ((LevelIcon) this.create());
 
-			icon.setCenterPosition(25f * Options.cameraRatioFactor + X, 25f * Options.cameraRatioFactor + Y);
+			icon.setCenterPosition(25f + X, 25f + Y);
 			icon.id = i + 1;
 
 			Level level = Game.db.getLevel(icon.id);
@@ -77,7 +77,7 @@ public class LevelsManager extends EntityManager {
 					text.setCurrentTileIndex(icon.id);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
-					text.setCenterPosition(icon.getWidth() / 2, icon.getHeight() / 2 - 2 * Options.cameraRatioFactor);
+					text.setCenterPosition(icon.getWidth() / 2, icon.getHeight() / 2 - 2f);
 				} else {
 
 					float a;
@@ -86,17 +86,17 @@ public class LevelsManager extends EntityManager {
 					} else {
 						a = 0;
 					}
-					
+
 					Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
-					text.setCenterPosition(icon.getWidth() / 2 - text.getWidth() / 4 + a, icon.getHeight() / 2 - 2 * Options.cameraRatioFactor);
+					text.setCenterPosition(icon.getWidth() / 2 - text.getWidth() / 4 + a, icon.getHeight() / 2 - 2f);
 					text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id % 10);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
-					text.setCenterPosition(icon.getWidth() / 2 + text.getWidth() / 4 - a, icon.getHeight() / 2 - 2 * Options.cameraRatioFactor);
+					text.setCenterPosition(icon.getWidth() / 2 + text.getWidth() / 4 - a, icon.getHeight() / 2 - 2f);
 				}
 			} else {
 				icon.setCurrentTileIndex(4);

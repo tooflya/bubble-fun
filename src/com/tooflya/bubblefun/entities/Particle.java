@@ -51,7 +51,7 @@ public class Particle extends Entity {
 		time = 0;
 		maxTime = Game.random.nextInt(400);
 
-		final float scale = Game.random.nextFloat() * (1f * Options.cameraRatioFactor - 0.6f * Options.cameraRatioFactor) + 0.6f * Options.cameraRatioFactor;
+		final float scale = Game.random.nextFloat() * (1f - 0.6f) + 0.6f;
 		this.setScale(scale);
 		stepScale = -Game.random.nextFloat() / maxTime;
 

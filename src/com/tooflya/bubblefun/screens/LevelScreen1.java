@@ -27,6 +27,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
@@ -54,109 +55,31 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	public static int deadBirds;
 	private static boolean isResetAnimationRunning;
 
-	public final static BitmapTextureAtlas mBackgroundTextureAtlas0 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas4 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/bg-game.png", 0, 0, 1, 1), this);
 
-	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/bg-game.png", 0, 0, 1, 1), this) {
+	private CloudsManager clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/cloud.png", 0, 615, 1, 3), this.mBackground));
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
+	private final Sprite mDottedLine = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/dash-line.png", 0, 1020, 1, 1), this.mBackground);
+
+	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/menu-btn.png", 0, 805, 1, 2), this.mBackground) {
+
 		@Override
-		public Entity deepCopy() {
-			return null;
+		public void onClick() {
+			LevelScreen1.this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
 		}
 	};
 
-	private CloudsManager clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/cloud.png", 0, 0, 1, 3), this));
+	private final ButtonScaleable mResetButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/replay-btn.png", 0, 880, 1, 2), this.mBackground) {
 
-	private final Entity mDottedLine = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/dash-line.png", 0, 1016, 1, 1), this) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
 		@Override
-		public Entity deepCopy() {
-			return null;
+		public void onClick() {
+			reInit();
 		}
 	};
 
-	private final Entity mMenuButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/menu-btn.png", 0, 0, 1, 2), this, true) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
-		 */
-		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
-
-				LevelScreen1.this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final Entity mResetButton = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/replay-btn.png", 80, 0, 1, 2), this, true) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
-		 */
-		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_DOWN:
-				this.setCurrentTileIndex(1);
-				break;
-			case TouchEvent.ACTION_UP:
-				this.setCurrentTileIndex(0);
-
-				reInit();
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	private final static Sprite mTextTapHere = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-tap.png", 140, 980, 1, 1)) {
+	private final Sprite mTextTapHere = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/text-tap.png", 0, 950, 1, 1), this.mBackground) {
 		public boolean shake = false;
 		private float minS = -15, maxS = 15;
 		private boolean reverse = false;
@@ -165,7 +88,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		@Override
 		public Entity create() {
-			this.setRotationCenter(this.getWidthScaled() / 2, this.getHeightScaled() / 2);
+			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 
 			return super.create();
 		}
@@ -173,7 +96,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+		 * @see
+		 * org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
+		 * (float)
 		 */
 		@Override
 		protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -208,7 +133,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Rectangle shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
+	private final Rectangle shape = new Rectangle(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY) {
 
 		private float s = 0.005f;
 
@@ -217,7 +142,9 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+		 * @see
+		 * org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
+		 * (float)
 		 */
 		@Override
 		protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -246,118 +173,52 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final static Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-level.png", 700, 0, 1, 1));
-	private final static EntityManager numbers = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/numbers-sprite.png", 815, 0, 1, 11)));
+	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/text-level.png", 0, 980, 1, 1), this.shape);
+	private final EntityManager numbers = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/numbers-sprite.png", 385, 0, 1, 11), this.shape));
 
-	private final static MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
+	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraOriginRatioCenterX - mTextTapHere.getWidth() / 2, Options.cameraOriginRatioCenterX
+			- mTextTapHere.getWidth() / 2, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3,
+			(Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2) {
 		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+		public void onFinished() {
 			mTextTapHere.reset();
 		}
+	};
 
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
+	private final MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraOriginRatioCenterX - mTextTapHere.getWidth() / 2, Options.cameraOriginRatioCenterX
+			- mTextTapHere.getWidth() / 2, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2, (Options.cameraOriginRatioY / 3 * 2)
+			+ Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3);
+
+	private final Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context,
+			Options.CR + "/text-restart.png", 430, 0, 1, 1), this.mBackground);
+
+	private final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraOriginRatioX / 8, Options.cameraOriginRatioCenterY,
+			Options.cameraOriginRatioCenterY) {
 		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-
-		}
-	});
-
-	private final static MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, Options.cameraCenterX - mTextTapHere.getWidthScaled() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
-		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
-		}
-
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
-		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-
-		}
-	});
-
-	private final static Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/text-restart.png", 440, 980, 1, 1));
-
-	private final static MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidthScaled(), Options.cameraWidth / 8, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
-		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+		public void onFinished() {
 			restartMove2.reset();
 		}
+	};
 
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
+	private final MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraOriginRatioX / 8, Options.cameraOriginRatioX / 8 * 2, Options.cameraOriginRatioCenterY,
+			Options.cameraOriginRatioCenterY) {
 		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-
-		}
-	});
-
-	private final static MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
-		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+		public void onFinished() {
 			restartMove3.reset();
 		}
+	};
 
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
+	private final MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraOriginRatioX / 8 * 2, Options.cameraOriginRatioX, Options.cameraOriginRatioCenterY,
+			Options.cameraOriginRatioCenterY) {
 		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-
-		}
-	});
-
-	private final static MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraWidth / 8 * 2, Options.cameraWidth, Options.cameraCenterY, Options.cameraCenterY, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
-		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+		public void onFinished() {
 			reInit();
 		}
+	};
 
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
-		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+	private final EntityManager thorns = new EntityManager(10, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/thorn.png", 430, 40, 1, 1), this.mBackground));
 
-		}
-	});
-
-	private final static EntityManager thorns = new EntityManager(3, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/thorn.png", 740, 980, 1, 1)));
-
-	public final EntityManager winds = new EntityManager(3, new Wind(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas4, Game.context, Options.CR + "/speed-wind.png", 800, 980, 6, 1), this));
+	public final EntityManager winds = new EntityManager(10, new Wind(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/speed-wind.png", 430, 65, 6, 1), this.mBackground));
 
 	private Sound mYeahSound;
 
@@ -381,26 +242,20 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	public LevelScreen1() {
 		this.setOnSceneTouchListener(this);
 
-		mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mBackground.create();
 		this.clouds.generateStartClouds();
-		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
+
+		mDottedLine.create().setPosition(0, Options.cameraOriginRatioY / 3 * 2);
 
 		this.attachChild(shape);
 		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.shape.setAlpha(0f);
 
-		mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f * Options.cameraRatioFactor);
-
-		numbers.create().setCenterPosition(Options.cameraCenterX - 30f * Options.cameraRatioFactor, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX - 10f * Options.cameraRatioFactor, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX + 10f * Options.cameraRatioFactor, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX + 30f * Options.cameraRatioFactor, Options.cameraCenterY);
-
-		shape.attachChild(mLevelWord);
-		this.shape.attachChild(numbers.getByIndex(0));
-		this.shape.attachChild(numbers.getByIndex(1));
-		this.shape.attachChild(numbers.getByIndex(2));
-		this.shape.attachChild(numbers.getByIndex(3));
+		mLevelWord.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
+		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX - 30f, Options.cameraOriginRatioCenterY);
+		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX - 10f, Options.cameraOriginRatioCenterY);
+		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX + 10f, Options.cameraOriginRatioCenterY);
+		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX + 30f, Options.cameraOriginRatioCenterY);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Shape) shape.getChild(i)).setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -409,24 +264,27 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
-		this.attachChild(mTextTapHere); //mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2);
 		mTextTapHere.setRotation(-15f);
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
 
-		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/small-bird.png", 0, 780, 6, 4), this));
-		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/gum-animation.png", 900, 0, 1, 6), this));
-		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/feather.png", 530, 500, 1, 2), this));
+		chikies = new EntityManager(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/small-bird.png", 430, 100, 6, 4), this.mBackground));
+		airgums = new EntityManager(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/gum-animation.png", 430, 280, 1, 6), this.mBackground));
+		feathers = new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/feather.png", 730, 585, 1, 2), this.mBackground));
 
-		mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/blue-bird.png", 250, 0, 6, 1), new EntityManager(1000, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/feather_new_blue.png", 530, 300, 1, 2), this)), this);
+		mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR
+				+ "/blue-bird.png", 430, 600, 6, 1), new EntityManager(100, new Particle(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
+				mBackgroundTextureAtlas, Game.context, Options.CR + "/feather_new_blue.png", 430, 890, 1, 2), this.mBackground)), this.mBackground);
 
-		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, Options.CR + "/blesk.png", 100, 0, 1, 3), this));
+		glints = new EntityManager(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas,
+				Game.context, Options.CR + "/blesk.png", 730, 900, 1, 3), this.mBackground));
 
-		this.mMenuButton.create().setPosition(Options.cameraWidth - (10 * Options.cameraRatioFactor + this.mMenuButton.getWidthScaled()), 10 * Options.cameraRatioFactor);
-		this.mResetButton.create().setPosition(Options.cameraWidth - (15 * Options.cameraRatioFactor + this.mMenuButton.getWidthScaled() + this.mResetButton.getWidthScaled()), 10 * Options.cameraRatioFactor);
+		this.mMenuButton.create().setPosition(Options.cameraOriginRatioX - (10 + this.mMenuButton.getWidth()), 10);
+		this.mResetButton.create().setPosition(
+				Options.cameraOriginRatioX - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()),
+				10);
 
-		mResetText.create().setCenterPosition(-Options.cameraWidth, Options.cameraCenterY);
-		this.attachChild(mResetText);
+		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraOriginRatioCenterY - mResetText.getHeight() / 2);
 		mResetText.registerEntityModifier(restartMove1);
 		mResetText.registerEntityModifier(restartMove2);
 		mResetText.registerEntityModifier(restartMove3);
@@ -441,7 +299,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	// Virtual methods
 	// ===========================================================
 
-	public static void reInit() {
+	public void reInit() {
 		running = true;
 		deadBirds = 0;
 		isResetAnimationRunning = false;
@@ -451,6 +309,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 		airgums.clear();
 		chikies.clear();
 		glints.clear();
+		winds.clear();
 		thorns.clear();
 		generateChikies(30); // TODO: Change count depending to level number.
 
@@ -458,21 +317,21 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 		Options.scalePower = 20; // TODO: Change count of scale power.
 
-		AIR = 10;//100;
+		AIR = 10;// 100;
 
 		mBubblesCount = 0;
 
-		mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3);
+		mTextTapHere.create().setCenterPosition(Options.cameraOriginRatioCenterX, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3);
 
 		shape.reset();
 
 		if (Options.levelNumber < 10) {
-			mLevelWord.setCenterPosition(Options.cameraCenterX - 10 * Options.cameraRatioFactor, Options.cameraCenterY - 40f * Options.cameraRatioFactor);
+			mLevelWord.setCenterPosition(Options.cameraOriginRatioCenterX - 10f, Options.cameraOriginRatioCenterY - 40f);
 			numbers.getByIndex(3).setVisible(false);
 
 			numbers.getByIndex(2).setCurrentTileIndex(Options.levelNumber);
 		} else {
-			mLevelWord.setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f * Options.cameraRatioFactor);
+			mLevelWord.setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY - 40f);
 			numbers.getByIndex(3).setVisible(true);
 
 			numbers.getByIndex(2).setCurrentTileIndex((int) Math.floor(Options.levelNumber / 10));
@@ -485,11 +344,11 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	// Methods
 	// ===========================================================
 
-	private static void generateChikies(final int count) {
+	private void generateChikies(final int count) {
 		Chiky chiky;
 
 		final float minHeight = Options.chikySize / 2 + Options.ellipseHeight;
-		final float sizeHeight2 = (Options.cameraHeight - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
+		final float sizeHeight2 = (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
 
 		final int stepSign = 1;
 		switch (Options.levelNumber) {
@@ -499,40 +358,37 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			return;
 		case 2:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			return;
 		case 3:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 
-			Entity s = thorns.create();
-			if (!s.hasParent())
-				Game.screens.get(Screen.LEVEL).attachChild(s);
-			s.setCenterPosition(80 * Options.cameraRatioFactor, Options.cameraCenterY);
+			thorns.create().setCenterPosition(80, Options.cameraCenterY);
 			return;
 		case 4:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 5:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 6:
 			chiky = (Chiky) chikies.create();
@@ -540,35 +396,35 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			return;
 		case 7:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
 			chiky.init(2, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 8:
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
+			chiky.init(2, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
 			chiky.init(2, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 9:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(2, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 10:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(2, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(0, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(2, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 11:
 			chiky = (Chiky) chikies.create();
@@ -576,99 +432,99 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			return;
 		case 12:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			return;
 		case 13:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 14:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 15:
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			return;
 		case 16:
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
 			chiky.init(4, 0, minHeight + sizeHeight2, stepSign);
 			return;
 		case 17:
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 18:
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 19:
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		case 20:
 			chiky = (Chiky) chikies.create();
-			chiky.init(1, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
+			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(2, Options.cameraWidth / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
+			chiky.init(2, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * Game.random.nextFloat(), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(3, Options.cameraWidth / 2, minHeight + sizeHeight2, stepSign);
+			chiky.init(3, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(4, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+			chiky.init(4, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
 			chiky = (Chiky) chikies.create();
-			chiky.init(5, Options.cameraWidth / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
+			chiky.init(5, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), stepSign);
 			return;
 		}
 	}
@@ -743,7 +599,8 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
+	 * (float)
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -776,7 +633,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2, mBackgroundTextureAtlas4);
+		Game.loadTextures(mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -786,7 +643,7 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas0, mBackgroundTextureAtlas1, mBackgroundTextureAtlas2, mBackgroundTextureAtlas4);
+		Game.unloadTextures(mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -809,13 +666,16 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 
 	@Override
 	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pTouchEvent) {
+		final float pTouchX = pTouchEvent.getX() / Options.cameraRatioFactor;
+		final float pTouchY = pTouchEvent.getY() / Options.cameraRatioFactor;
+
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
 			if (AIR > 0) {
-				if (this.lastAirgum == null && pTouchEvent.getY() > Options.cameraHeight - Options.cameraHeight / 3)
+				if (this.lastAirgum == null && pTouchY > Options.cameraOriginRatioY - Options.cameraOriginRatioY / 3)
 				{
 					this.lastAirgum = (Bubble) airgums.create();
-					this.lastAirgum.setCenterPosition(pTouchEvent.getX(), pTouchEvent.getY());
+					this.lastAirgum.setCenterPosition(pTouchX, pTouchY);
 					this.lastAirgum.setScaleCenterY(0);
 				}
 				if (this.lastAirgum != null) {
@@ -825,19 +685,18 @@ public class LevelScreen1 extends Screen implements IOnSceneTouchListener {
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
-				final float koef = 20f * Options.cameraRatioFactor;
-				if (this.lastAirgum.getCenterY() - pTouchEvent.getY() > 40f * Options.cameraRatioFactor) {
+				if (this.lastAirgum.getCenterY() - pTouchY > 40f) {
 
 					this.lastAirgum.setIsScale(false);
 
-					float angle = (float) Math.atan2(pTouchEvent.getY() - this.lastAirgum.getCenterY(), pTouchEvent.getX() - this.lastAirgum.getCenterX());
+					float angle = (float) Math.atan2(pTouchY - this.lastAirgum.getCenterY(), pTouchX - this.lastAirgum.getCenterX());
 
-					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchEvent.getX(), pTouchEvent.getY());
+					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchX, pTouchY) / Options.SPEED;
 
-					distance = distance > 5 ? 5 : distance;
+					distance = distance > 6 ? 6 : distance;
 
-					this.lastAirgum.setSpeedX(-((distance) * FloatMath.cos(angle)));
-					this.lastAirgum.setSpeedYB((this.lastAirgum.getSpeedY() - distance * FloatMath.sin(angle)) * 1.5f);
+					this.lastAirgum.setSpeedXB(-(distance * FloatMath.cos(angle)));
+					this.lastAirgum.setSpeedYB(-(distance * FloatMath.sin(angle)));
 
 					Glint particle;
 					for (int i = 0; i < 15; i++) {

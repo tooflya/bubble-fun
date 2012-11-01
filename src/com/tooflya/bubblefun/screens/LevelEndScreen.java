@@ -15,14 +15,15 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 public class LevelEndScreen extends Screen {
 
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final static BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public EntityManager stars;
 	public EntityManager mLevelStars;
@@ -31,129 +32,41 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1), this) {
+	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1), this);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
+	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/buttons-end-menu.png", 0, 615, 1, 2), this.mBackground) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
-		public Entity deepCopy() {
-			return null;
+		public void onClick() {
+			PreloaderScreen.mChangeAction = 2;
+			Game.screens.set(Screen.LOAD);
 		}
 	};
 
-	public final Entity mMenu = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-menu.png", 200, 0, 1, 2), this, true) {
+	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/buttons-end-replay.png", 65, 615, 1, 2), this.mBackground) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			if (super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)) {
-				switch (pAreaTouchEvent.getAction()) {
-				case TouchEvent.ACTION_DOWN:
-					this.setCurrentTileIndex(1);
-					break;
-				case TouchEvent.ACTION_UP:
-					this.setCurrentTileIndex(0);
-
-					PreloaderScreen.mChangeAction = 2;
-					Game.screens.set(Screen.LOAD);
-					break;
-				}
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
+		public void onClick() {
+			((LevelScreen1)Game.screens.get(Screen.LEVEL)).reInit();
+			Game.screens.set(Screen.LEVEL);
 		}
 	};
 
-	public final Entity mRePlay = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-replay.png", 300, 0, 1, 2), this, true) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/buttons-end-next.png", 130, 615, 1, 2), this.mBackground) {
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			if (super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)) {
-				switch (pAreaTouchEvent.getAction()) {
-				case TouchEvent.ACTION_DOWN:
-					this.setCurrentTileIndex(1);
-					break;
-				case TouchEvent.ACTION_UP:
-					this.setCurrentTileIndex(0);
-
-					LevelScreen1.reInit();
-					Game.screens.set(Screen.LEVEL);
-					break;
-				}
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
-		}
-	};
-
-	public final Entity mPlayNext = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/buttons-end-next.png", 400, 0, 1, 2), this, true) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
-		 */
-		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			if (super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)) {
-				switch (pAreaTouchEvent.getAction()) {
-				case TouchEvent.ACTION_DOWN:
-					this.setCurrentTileIndex(1);
-					break;
-				case TouchEvent.ACTION_UP:
-					this.setCurrentTileIndex(0);
-
-					Options.levelNumber++;
-					LevelScreen1.reInit();
-					Game.screens.set(Screen.LEVEL);
-
-					break;
-				}
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-		 */
-		@Override
-		public Entity deepCopy() {
-			return null;
+		public void onClick() {
+			Options.levelNumber++;
+			((LevelScreen1)Game.screens.get(Screen.LEVEL)).reInit();
+			Game.screens.set(Screen.LEVEL);
 		}
 	};
 
@@ -177,10 +90,6 @@ public class LevelEndScreen extends Screen {
 							particle.Init(i).setCenterPosition(star.getCenterX(), star.getCenterY());
 						}
 					}
-				} else {
-					mMenu.show();
-					mRePlay.show();
-					mPlayNext.show();
 				}
 			}
 		}
@@ -195,22 +104,17 @@ public class LevelEndScreen extends Screen {
 	public LevelEndScreen() {
 		mBackground.create();
 
-		mMenu.create().setCenterPosition(Options.cameraCenterX - Game.reduceCoordinates(100f), mBackground.getY() + Game.reduceCoordinates(470));
-		mMenu.hide();
+		mMenu.create().setCenterPosition(Options.cameraOriginRatioCenterX - 100f, Options.cameraOriginRatioCenterY + 170f);
+		mRePlay.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 170f);
+		mPlayNext.create().setCenterPosition(Options.cameraOriginRatioCenterX + 100f, Options.cameraOriginRatioCenterY + 170f);
 
-		mRePlay.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + Game.reduceCoordinates(470));
-		mRePlay.hide();
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/end-star.png", 230, 615, 1, 1), this.mBackground));
 
-		mPlayNext.create().setCenterPosition(Options.cameraCenterX + Game.reduceCoordinates(100f), mBackground.getY() + Game.reduceCoordinates(470));
-		mPlayNext.hide();
-
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelScreen1.mBackgroundTextureAtlas0, Game.context, "star.png", 0, 0, 1, 1), this));
-
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, Options.CR + "/end_lvl_bg_star.png", 900, 805, 1, 2), this));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/end_lvl_bg_star.png", 195, 615, 1, 2), this.mBackground));
 
 		Star star;
 		for (int i = 0; i < 3; i++) {
-			(star = (Star) mLevelStars.create()).setCenterPosition(mBackground.getCenterX() + Game.reduceCoordinates(50f) * (i - 1), mBackground.getY() + Game.reduceCoordinates(380));
+			(star = (Star) mLevelStars.create()).setCenterPosition(Options.cameraOriginRatioCenterX + 80f * (i - 1), Options.cameraOriginRatioCenterY + 80f);
 			star.setCurrentTileIndex(1);
 		}
 
@@ -258,20 +162,16 @@ public class LevelEndScreen extends Screen {
 			Star star = (Star) mLevelStars.getByIndex(i);
 			star.setCurrentTileIndex(1);
 		}
-
-		mMenu.hide();
-		mRePlay.hide();
-		mPlayNext.hide();
 	}
 
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundTextureAtlas);
 	}
 
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas1, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundTextureAtlas);
 	}
 
 	@Override
