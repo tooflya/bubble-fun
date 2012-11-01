@@ -36,6 +36,7 @@ import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.modifiers.AlphaModifier;
 import com.tooflya.bubblefun.modifiers.MoveModifier;
 
 /**
@@ -59,6 +60,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bg-game.png", 0, 0, 1, 1), this);
+
+	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
 	private CloudsManager clouds = new CloudsManager(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 0, 615, 1, 3), this.mBackground));
 
@@ -193,16 +196,24 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			+ Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3);
 
 	private final Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context,
-			"text-restart.png", 430, 0, 1, 1), this.mBackground);
+			"text-restart.png", 430, 0, 1, 1), this.mRectangle);
 
 	private final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraOriginRatioX / 8, Options.cameraOriginRatioCenterY,
 			Options.cameraOriginRatioCenterY) {
+		@Override
+		public void onStarted() {
+			rectangleAlphaModifierOn.reset();
+		}
+
 		@Override
 		public void onFinished() {
 			restartMove2.reset();
 		}
 	};
 
+	private final AlphaModifier rectangleAlphaModifierOn = new AlphaModifier(1f, 0f, 0.7f);
+	private final AlphaModifier rectangleAlphaModifierOff = new AlphaModifier(1f, 0.7f, 0f);
+	
 	private final MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraOriginRatioX / 8, Options.cameraOriginRatioX / 8 * 2, Options.cameraOriginRatioCenterY,
 			Options.cameraOriginRatioCenterY) {
 		@Override
@@ -297,6 +308,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mResetText.registerEntityModifier(restartMove2);
 		mResetText.registerEntityModifier(restartMove3);
 
+		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOn);
+		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOff);
+		
 		try {
 			this.mYeahSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "yeah.mp3");
 		} catch (final IOException e) {
@@ -308,6 +322,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public void reInit() {
+		rectangleAlphaModifierOff.reset();
+		
 		running = true;
 		deadBirds = 0;
 		isResetAnimationRunning = false;
@@ -714,7 +730,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
-				if (this.lastAirgum.getCenterY() - pTouchY > 20f) {
+				if (this.lastAirgum.getCenterY() - pTouchY > 2f) {
 
 					this.lastAirgum.setIsScale(false);
 
@@ -741,8 +757,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
 				while (x < Options.cameraOriginRatioX && y > 0 && x > 0) {
-					x -= this.lastAirgum.getSpeedX() * 5;
-					y -= this.lastAirgum.getSpeedY() * 5;
+					x -= this.lastAirgum.getSpeedX() * 15;
+					y -= this.lastAirgum.getSpeedY() * 15;
 					Entity w = wind.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
@@ -753,8 +769,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					Entity w = wind.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
-					x += this.lastAirgum.getSpeedX() * 5;
-					y += this.lastAirgum.getSpeedY() * 5;
+					x += this.lastAirgum.getSpeedX() * 15;
+					y += this.lastAirgum.getSpeedY() * 15;
 				}
 
 				this.lastAirgum = null;
@@ -770,4 +786,15 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
+		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraOriginRatioX, Options.cameraOriginRatioY);
+		coloredRect.setColor(pRed, pGreen, pBlue);
+		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		coloredRect.setAlpha(0f);
+
+		this.attachChild(coloredRect);
+
+		return coloredRect;
+	}
 }
