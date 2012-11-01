@@ -15,7 +15,7 @@ import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.ExitScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
-import com.tooflya.bubblefun.screens.LevelScreen1;
+import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.MenuScreen;
 import com.tooflya.bubblefun.screens.PauseScreen;
 import com.tooflya.bubblefun.screens.PreloaderScreen;
@@ -108,7 +108,7 @@ public class ScreenManager {
 		screens[Screen.MENU] = new MenuScreen();
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
 		screens[Screen.LOAD] = new PreloaderScreen();
-		screens[Screen.LEVEL] = new LevelScreen1();
+		screens[Screen.LEVEL] = new LevelScreen();
 		screens[Screen.LEVELEND] = new LevelEndScreen();
 		screens[Screen.EXIT] = new ExitScreen();
 		screens[Screen.PAUSE] = new PauseScreen();

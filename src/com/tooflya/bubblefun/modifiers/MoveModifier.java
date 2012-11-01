@@ -3,7 +3,24 @@ package com.tooflya.bubblefun.modifiers;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.IModifier;
 
+
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class MoveModifier extends org.anddev.andengine.entity.modifier.MoveModifier {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	public MoveModifier(float pDuration, float pFromX, float pToX, float pFromY, float pToY) {
 		super(pDuration, pFromX, pToX, pFromY, pToY);
@@ -26,6 +43,14 @@ public class MoveModifier extends org.anddev.andengine.entity.modifier.MoveModif
 
 		this.mFinished = true;
 	}
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	public void onStarted() {
 

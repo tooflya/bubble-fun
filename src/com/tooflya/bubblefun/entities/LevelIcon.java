@@ -5,7 +5,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.screens.LevelScreen1;
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class LevelIcon extends ButtonScaleable {
 
@@ -21,7 +21,7 @@ public class LevelIcon extends ButtonScaleable {
 	public void onClick() {
 		if (!this.blocked) {
 			Options.levelNumber = this.id;
-			((LevelScreen1)Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.LOAD);
 		}
 	}

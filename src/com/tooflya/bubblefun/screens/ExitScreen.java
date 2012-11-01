@@ -36,9 +36,9 @@ public class ExitScreen extends Screen {
 	@SuppressWarnings("unused")
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
 
-	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/popup-exit.png", 0, 0, 1, 1), this);
+	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-exit.png", 0, 0, 1, 1), this);
 
-	private final Button mYIcon = new Button(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/accept-btn.png", 0, 150, 1, 2), this.mPanel) {
+	private final Button mYIcon = new Button(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "accept-btn.png", 0, 150, 1, 2), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -49,7 +49,7 @@ public class ExitScreen extends Screen {
 		}
 	};
 
-	private final Button mNIcon = new Button(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/decline-btn.png", 55, 150, 1, 2), this.mPanel) {
+	private final Button mNIcon = new Button(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "decline-btn.png", 55, 150, 1, 2), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()

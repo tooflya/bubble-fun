@@ -7,7 +7,7 @@ import android.util.FloatMath;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.screens.LevelScreen1;
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 /**
  * @author Tooflya.com
@@ -54,7 +54,7 @@ public class Chiky extends Entity {
 	private boolean mAnimationOfSpeed;
 	private boolean mAnimationDefiad;
 
-	private Wind wind;
+	private Acceleration wind;
 
 	// ===========================================================
 	// Constructors
@@ -103,7 +103,7 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	public void setIsNeedToFlyAway(final float airgumScale) {
-		LevelScreen1.deadBirds++;
+		LevelScreen.deadBirds++;
 		this.state = 1;
 		this.timeToFall = 100; // TODO: (R) Change number later.
 		this.airgumScale = airgumScale;
@@ -129,7 +129,7 @@ public class Chiky extends Entity {
 			this.x += 1.3f * this.stepX;
 
 			if (!this.mAnimationOfSpeed) {
-				this.wind = ((Wind) ((LevelScreen1) Game.screens.get(Screen.LEVEL)).winds.create());
+				this.wind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
 				this.wind.mFollowEntity = this;
 			}
 
@@ -222,7 +222,7 @@ public class Chiky extends Entity {
 			this.timeToFall--;
 			if (this.timeToFall <= 0) {
 				if (this.airgumScale > Bubble.minScale) {
-					Bubble airgum = (Bubble) LevelScreen1.airgums.create();
+					Bubble airgum = (Bubble) LevelScreen.airgums.create();
 					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 					airgum.setScale(this.airgumScale);
 					airgum.setIsScale(false);
@@ -230,7 +230,7 @@ public class Chiky extends Entity {
 
 				Particle particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((Particle) LevelScreen1.feathers.create());
+					particle = ((Particle) LevelScreen.feathers.create());
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
@@ -260,7 +260,7 @@ public class Chiky extends Entity {
 			}
 
 			if (this.getY() > Options.cameraOriginRatioY) {
-				LevelScreen1.deadBirds--;
+				LevelScreen.deadBirds--;
 				this.destroy();
 			}
 			break;

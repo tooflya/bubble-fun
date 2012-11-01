@@ -32,9 +32,9 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/end_lvl_bg.png", 0, 0, 1, 1), this);
+	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg.png", 0, 0, 1, 1), this);
 
-	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/buttons-end-menu.png", 0, 615, 1, 2), this.mBackground) {
+	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 2), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -46,26 +46,26 @@ public class LevelEndScreen extends Screen {
 		}
 	};
 
-	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/buttons-end-replay.png", 65, 615, 1, 2), this.mBackground) {
+	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-replay.png", 65, 615, 1, 2), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
 		public void onClick() {
-			((LevelScreen1)Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.LEVEL);
 		}
 	};
 
-	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/buttons-end-next.png", 130, 615, 1, 2), this.mBackground) {
+	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-next.png", 130, 615, 1, 2), this.mBackground) {
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
 		public void onClick() {
 			Options.levelNumber++;
-			((LevelScreen1)Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.LEVEL);
 		}
 	};
@@ -108,9 +108,9 @@ public class LevelEndScreen extends Screen {
 		mRePlay.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 170f);
 		mPlayNext.create().setCenterPosition(Options.cameraOriginRatioCenterX + 100f, Options.cameraOriginRatioCenterY + 170f);
 
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/end-star.png", 230, 615, 1, 1), this.mBackground));
+		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-star.png", 230, 615, 1, 1), this.mBackground));
 
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/end_lvl_bg_star.png", 195, 615, 1, 2), this.mBackground));
+		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 195, 615, 1, 2), this.mBackground));
 
 		Star star;
 		for (int i = 0; i < 3; i++) {
@@ -133,11 +133,11 @@ public class LevelEndScreen extends Screen {
 
 		mStarsAnimationCount = 0;
 
-		if (LevelScreen1.mBubblesCount <= 2) {
-			mStarsCount = 4 - LevelScreen1.mBubblesCount;
+		if (LevelScreen.mBubblesCount <= 2) {
+			mStarsCount = 4 - LevelScreen.mBubblesCount;
 		} else {
 			mStarsCount = 1;
-			if (LevelScreen1.AIR < 0) {
+			if (LevelScreen.AIR < 0) {
 				mStarsCount = 0;
 			}
 		}

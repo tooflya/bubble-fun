@@ -3,7 +3,6 @@ package com.tooflya.bubblefun.entities;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
-import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 

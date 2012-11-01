@@ -28,7 +28,7 @@ public class PauseScreen extends Screen {
 
 	private final Rectangle mBackground = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
 
-	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/menu-big-btn.png", 0, 256, 1, 2);
+	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 0, 256, 1, 2);
 
 	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
 
@@ -50,7 +50,7 @@ public class PauseScreen extends Screen {
 		public void onClick() {
 			Options.levelNumber++;
 
-			((LevelScreen1) Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.get(Screen.LEVEL).clearChildScene();
 		}
 	};
@@ -79,7 +79,7 @@ public class PauseScreen extends Screen {
 		}
 	};
 
-	private final EntityManager mLables = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, Options.CR + "/text-big-btn.png", 0, 0, 1, 4)));
+	private final EntityManager mLables = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-big-btn.png", 0, 0, 1, 4)));
 
 	// ===========================================================
 	// Constructors

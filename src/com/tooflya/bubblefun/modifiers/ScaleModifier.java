@@ -3,7 +3,23 @@ package com.tooflya.bubblefun.modifiers;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.IModifier;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class ScaleModifier extends org.anddev.andengine.entity.modifier.ScaleModifier {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	public ScaleModifier(float pDuration, float pFromScale, float pToScale) {
 		super(pDuration, pFromScale, pToScale);
@@ -26,6 +42,14 @@ public class ScaleModifier extends org.anddev.andengine.entity.modifier.ScaleMod
 
 		this.mFinished = true;
 	}
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	public void onStarted() {
 

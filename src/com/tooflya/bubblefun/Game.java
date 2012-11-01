@@ -111,15 +111,15 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			Options.cameraOriginRatioX = 640.0f;
 			Options.cameraOriginRatioY = 1024.0f;
 
-			Options.CR = "HD";
+			Options.CR = "HD/";
 		} else {
 			Options.cameraOriginRatioX = 380.0f;
 			Options.cameraOriginRatioY = 610.0f;
-			
-			Options.cameraOriginRatioCenterX = Options.cameraOriginRatioX /2;
+
+			Options.cameraOriginRatioCenterX = Options.cameraOriginRatioX / 2;
 			Options.cameraOriginRatioCenterY = Options.cameraOriginRatioY / 2;
 
-			Options.CR = "SD";
+			Options.CR = "SD/";
 		}
 
 		Options.cameraRatioFactor = Options.cameraWidth / Options.cameraOriginRatioX > Options.cameraHeight / Options.cameraOriginRatioY ? Options.cameraWidth / Options.cameraOriginRatioX : Options.cameraHeight / Options.cameraOriginRatioY;
@@ -137,7 +137,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				.setNeedsMusic(true)
 				.setNeedsSound(true);
 
-		/** Disable extension vertex buffer objects. This extension usually has a problems with HTC phones */
+		/**
+		 * Disable extension vertex buffer objects. This extension usually has a
+		 * problems with HTC phones
+		 */
 		options.getRenderOptions().disableExtensionVertexBufferObjects();
 
 		/** Auto setRunOnUpdateThread for touch events */
@@ -162,7 +165,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onLoadResources() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/" + Options.CR);
 		SoundFactory.setAssetBasePath("mfx/");
 	}
 
@@ -222,7 +225,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
 
-		/** Create loading screen and return her scene for attaching to the activity */
+		/**
+		 * Create loading screen and return her scene for attaching to the
+		 * activity
+		 */
 		return new LoadingScreen();
 	}
 
@@ -238,10 +244,21 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		// TODO: Here we need to correctly shutdown our application and unload all resources
 		getTextureManager().unloadTextures();
 
-		/** Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed. */
+		/**
+		 * Notify the system to finalize and collect all objects of the
+		 * application on exit so that the process running the application can
+		 * be killed by the system without causing issues. NOTE: If this is set
+		 * to true then the process will not be killed until all of its threads
+		 * have closed.
+		 */
 		System.runFinalizersOnExit(true);
 
-		/** Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again. */
+		/**
+		 * Force the system to close the application down completely instead of
+		 * retaining it in the background. The process that runs the application
+		 * will be killed. The application will be completely created as a new
+		 * application in a new process if the user starts the application again.
+		 */
 		System.exit(0);
 	}
 

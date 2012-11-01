@@ -2,11 +2,11 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-public class Wind extends Entity {
+public class Acceleration extends Entity {
 
 	public Entity mFollowEntity = null;
 
-	public Wind(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+	public Acceleration(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.animate(50);
@@ -36,7 +36,7 @@ public class Wind extends Entity {
 
 	@Override
 	public Entity deepCopy() {
-		return new Wind(getTextureRegion(), this.mParentScreen);
+		return new Acceleration(getTextureRegion(), this.mParentScreen);
 	}
 
 }

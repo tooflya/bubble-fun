@@ -7,7 +7,7 @@ import org.anddev.andengine.util.modifier.IModifier;
  * @author Tooflya.com
  * @since
  */
-public class AlphaModifier extends org.anddev.andengine.entity.modifier.AlphaModifier {
+public class RotationModifier extends org.anddev.andengine.entity.modifier.RotationModifier {
 
 	// ===========================================================
 	// Constants
@@ -21,9 +21,8 @@ public class AlphaModifier extends org.anddev.andengine.entity.modifier.AlphaMod
 	// Constructors
 	// ===========================================================
 
-	public AlphaModifier(float pDuration, float pFromAlpha, float pToAlpha) {
-		super(pDuration, pFromAlpha, pToAlpha);
-
+	public RotationModifier(float pDuration, float pFromRotation, float pToRotation) {
+		super(pDuration, pFromRotation, pToRotation);
 		this.addModifierListener(new IEntityModifierListener() {
 
 			@Override
