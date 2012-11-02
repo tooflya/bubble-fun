@@ -14,9 +14,15 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.MathUtils;
 
+import android.graphics.Color;
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
@@ -32,6 +38,7 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Electrod;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Glint;
+import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Particle;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -60,9 +67,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int Score;
 
+	private final BitmapTextureAtlas mBackgroundGradientTexture = new BitmapTextureAtlas(2, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bg-game.png", 0, 0, 1, 1), this);
+	final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
+	final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap, new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
+
+	private final Gradient mBackground = new Gradient(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
@@ -184,7 +196,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-level.png", 0, 980, 1, 1), this.shape);
 	private final EntityManager numbers = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
-	private final EntityManager numbersSmall = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1), this.mBackground));
+	private final EntityManager numbersSmall = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 10, 1), this.mBackground));
 
 	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraOriginRatioCenterX - mTextTapHere.getWidth() / 2, Options.cameraOriginRatioCenterX
 			- mTextTapHere.getWidth() / 2, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3,
@@ -242,8 +254,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public static EntityManager wind;
 
 	private final Sprite mScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "score.png", 800, 770, 1, 1), this.mBackground);
-	private final AwesomeText mAwesomeKillText = new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground);
-	public static AwesomeText mDoubleKillText;
+
+	public static EntityManager mAwesomeKillText;
+	public static EntityManager mDoubleKillText;
+	public static EntityManager mTripleKillText;
 
 	private Sound mYeahSound;
 
@@ -267,8 +281,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public LevelScreen() {
 		this.setOnSceneTouchListener(this);
 
-		mBackground.create();
+		//mBackground.create();
 		this.clouds.generateStartClouds();
+
+		mAwesomeKillText = new EntityManager(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
+		mDoubleKillText = new EntityManager(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
+		mTripleKillText = new EntityManager(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
 
 		mDottedLine.create().setPosition(0, Options.cameraOriginRatioY / 3 * 2);
 
@@ -326,8 +344,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOff);
 
 		mScoreText.create().setPosition(10, 10);
-
-		mDoubleKillText = new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground);
 
 		try {
 			this.mYeahSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "yeah.mp3");
@@ -590,24 +606,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 						airgum.birdsKills++;
 						chiky.birdsKills = airgum.birdsKills;
-
-						if (this.chikies.getCount() <= 1) {
-							mAwesomeKillText.create().setCenterPosition(chiky.getCenterX(), chiky.getCenterY());
-						} else {
-
-							boolean hasTopChikies = false;
-
-							for (int n = this.chikies.getCount() - 1; n >= 0; --n) {
-								if (this.chikies.getByIndex(n).getY() < chiky.getY()) {
-									hasTopChikies = true;
-								}
-							}
-
-							if (airgum.birdsKills == 2 && !hasTopChikies) {
-								mDoubleKillText.create().setCenterPosition(chiky.getCenterX(), chiky.getCenterY());
-							}
-
-						}
+						airgum.mWasCollision = true;
 
 						this.mYeahSound.play();
 					}
@@ -704,18 +703,23 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		/* Score */
 		if (Score < 10) {
-			//numbersSmall.getByIndex(0).setCurrentTileIndex(9);
+			numbersSmall.getByIndex(0).setCurrentTileIndex(Score);
 			numbersSmall.getByIndex(0).setVisible(true);
 			numbersSmall.getByIndex(1).setVisible(false);
 			numbersSmall.getByIndex(2).setVisible(false);
 		} else if (Score < 100) {
+			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 10));
+			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
 			numbersSmall.getByIndex(0).setVisible(true);
 			numbersSmall.getByIndex(1).setVisible(true);
 			numbersSmall.getByIndex(2).setVisible(false);
 		} else {
+			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 100));
+			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
+			numbersSmall.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
 			numbersSmall.getByIndex(0).setVisible(true);
 			numbersSmall.getByIndex(1).setVisible(true);
-			numbersSmall.getByIndex(2).setVisible(false);
+			numbersSmall.getByIndex(2).setVisible(true);
 		}
 	}
 
@@ -726,7 +730,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundTextureAtlas);
+		Game.loadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -736,7 +740,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundTextureAtlas);
+		Game.unloadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -766,7 +770,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		final float pTouchY = pTouchEvent.getY() / Options.cameraRatioFactor;
 
 		switch (pTouchEvent.getAction()) {
-		case TouchEvent.ACTION_DOWN:
+		case TouchEvent.ACTION_DOWN:Score++;
 			if (AIR > 0) {
 				if (this.lastAirgum == null && pTouchY > Options.cameraOriginRatioY - Options.cameraOriginRatioY / 3)
 				{

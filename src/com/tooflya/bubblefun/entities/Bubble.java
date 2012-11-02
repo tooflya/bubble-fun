@@ -50,7 +50,9 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected float mDeathTime;
 
 	public int birdsKills;
+
 	private boolean mShowsLabel;
+	public boolean mWasCollision;
 
 	// ===========================================================
 	// Constructors
@@ -98,6 +100,7 @@ public class Bubble extends Entity implements IAnimationListener {
 		this.mScaleX = this.mMaxScaleX;
 
 		this.isScaleDefined = true;
+		this.mWasCollision = false;
 
 		this.setSpeedYA(this.getSpeedY() * Options.SPEED - this.mSpeedDecrement);
 	}
@@ -208,7 +211,7 @@ public class Bubble extends Entity implements IAnimationListener {
 			}
 		}
 
-		if (this.birdsKills > 1 && !this.mShowsLabel) {
+		if (this.birdsKills > 0 && !this.mShowsLabel && this.mWasCollision) {
 
 			boolean hasTopChiks = false;
 
@@ -220,7 +223,15 @@ public class Bubble extends Entity implements IAnimationListener {
 
 			if (!hasTopChiks) {
 				this.mShowsLabel = true;
-				LevelScreen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+
+				if (this.birdsKills == 1 && LevelScreen.chikies.getCount() <= 1) {
+					LevelScreen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
+				else if (this.birdsKills == 2) {
+					LevelScreen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+				} else if (this.birdsKills == 3) {
+					LevelScreen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
 			}
 		}
 	}
