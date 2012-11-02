@@ -56,6 +56,8 @@ public class Chiky extends Entity {
 
 	private Acceleration wind;
 
+	public int birdsKills;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -75,6 +77,13 @@ public class Chiky extends Entity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	@Override
+	public Entity create() {
+		this.birdsKills = 0;
+
+		return super.create();
+	}
 
 	public void init(final int type, final float startX, final float startY, final int stepSign) {
 		this.mAnimationOfSpeed = false;
@@ -159,7 +168,7 @@ public class Chiky extends Entity {
 			}
 		}
 		if (this.x + this.getWidth() / 2 > Options.cameraOriginRatioX + offsetX) {
-			this.x = Options.cameraOriginRatioX + offsetX - ((this.x + this.getWidth() / 2) - (Options.cameraOriginRatioX+ offsetX)) - this.getWidth() / 2;
+			this.x = Options.cameraOriginRatioX + offsetX - ((this.x + this.getWidth() / 2) - (Options.cameraOriginRatioX + offsetX)) - this.getWidth() / 2;
 			this.stepX = -Math.abs(this.stepX);
 			if (this.type == 4) {
 				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
@@ -221,12 +230,20 @@ public class Chiky extends Entity {
 
 			this.timeToFall--;
 			if (this.timeToFall <= 0) {
+				Bubble airgum;
 				if (this.airgumScale > Bubble.minScale) {
-					Bubble airgum = (Bubble) LevelScreen.airgums.create();
+					airgum = (Bubble) LevelScreen.airgums.create();
 					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
 					airgum.setScale(this.airgumScale);
 					airgum.setIsScale(false);
+				} else {
+					airgum = (Bubble) LevelScreen.airgums.create();
+					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
+					airgum.setScale(Bubble.minScale);
+					airgum.setIsScale(false);
 				}
+
+				airgum.birdsKills = this.birdsKills;
 
 				Particle particle;
 				for (int i = 0; i < Options.particlesCount; i++) {

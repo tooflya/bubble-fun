@@ -20,8 +20,8 @@ public class Bubble extends Entity implements IAnimationListener {
 	public final static float maxScale = 1.7f; // TODO: (R) Find right maximal scale.
 	public final static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
 
-	private final static float mDecrementStep = 0.05f;
-	private final static float mFastDecrementStep = 0.1f;
+	private final static float mDecrementStep = 0.05f / Options.SPEED;
+	private final static float mFastDecrementStep = 0.1f / Options.SPEED;
 
 	// ===========================================================
 	// Fields
@@ -48,6 +48,9 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected float mSpeedDecrement;
 	protected float mFastSpeedDecrement;
 	protected float mDeathTime;
+
+	public int birdsKills;
+	private boolean mShowsLabel;
 
 	// ===========================================================
 	// Constructors
@@ -120,7 +123,7 @@ public class Bubble extends Entity implements IAnimationListener {
 	}
 
 	public void setSpeedXB(final float pSpeedX) {
-		super.setSpeedX((pSpeedX> mMaxFastSpeed ? mMaxFastSpeed : pSpeedX) / this.mFastSpeedDecrement);
+		super.setSpeedX((pSpeedX > mMaxFastSpeed ? mMaxFastSpeed : pSpeedX) / this.mFastSpeedDecrement);
 	}
 
 	@Override
@@ -134,6 +137,9 @@ public class Bubble extends Entity implements IAnimationListener {
 
 		this.stopAnimation();
 		this.setCurrentTileIndex(0);
+
+		this.birdsKills = 0;
+		this.mShowsLabel = false;
 
 		return super.create();
 	}
@@ -199,6 +205,22 @@ public class Bubble extends Entity implements IAnimationListener {
 
 				this.setScaleY(this.mScaleY);
 				this.setScaleX(this.mScaleX);
+			}
+		}
+
+		if (this.birdsKills > 1 && !this.mShowsLabel) {
+
+			boolean hasTopChiks = false;
+
+			for (int n = LevelScreen.chikies.getCount() - 1; n >= 0; --n) {
+				if (LevelScreen.chikies.getByIndex(n).getY() < this.getY()) {
+					hasTopChiks = true;
+				}
+			}
+
+			if (!hasTopChiks) {
+				this.mShowsLabel = true;
+				LevelScreen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
 			}
 		}
 	}

@@ -23,6 +23,7 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.Acceleration;
+import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
@@ -56,6 +57,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public static boolean running;
 	public static int deadBirds;
 	private static boolean isResetAnimationRunning;
+
+	public static int Score;
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -181,6 +184,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-level.png", 0, 980, 1, 1), this.shape);
 	private final EntityManager numbers = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
+	private final EntityManager numbersSmall = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1), this.mBackground));
 
 	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraOriginRatioCenterX - mTextTapHere.getWidth() / 2, Options.cameraOriginRatioCenterX
 			- mTextTapHere.getWidth() / 2, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3,
@@ -213,7 +217,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final AlphaModifier rectangleAlphaModifierOn = new AlphaModifier(1f, 0f, 0.7f);
 	private final AlphaModifier rectangleAlphaModifierOff = new AlphaModifier(1f, 0.7f, 0f);
-	
+
 	private final MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraOriginRatioX / 8, Options.cameraOriginRatioX / 8 * 2, Options.cameraOriginRatioCenterY,
 			Options.cameraOriginRatioCenterY) {
 		@Override
@@ -237,6 +241,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static EntityManager wind;
 
+	private final Sprite mScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "score.png", 800, 770, 1, 1), this.mBackground);
+	private final AwesomeText mAwesomeKillText = new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground);
+	public static AwesomeText mDoubleKillText;
+
 	private Sound mYeahSound;
 
 	// ===========================================================
@@ -245,7 +253,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
-	public EntityManager chikies;
+	public static EntityManager chikies;
 	public static EntityManager airgums;
 	public static EntityManager feathers;
 	public EntityManager glints;
@@ -281,6 +289,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
+		numbersSmall.create().setPosition(65, 15);
+		numbersSmall.create().setPosition(75, 15);
+		numbersSmall.create().setPosition(85, 15);
+
+		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
+		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
+		numbersSmall.getByIndex(2).setCurrentTileIndex(0);
+
 		mTextTapHere.setRotation(-15f);
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
@@ -299,9 +315,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				Game.context, "blesk.png", 730, 900, 1, 3), this.mBackground));
 
 		this.mMenuButton.create().setPosition(Options.cameraOriginRatioX - (10 + this.mMenuButton.getWidth()), 10);
-		this.mResetButton.create().setPosition(
-				Options.cameraOriginRatioX - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()),
-				10);
+		this.mResetButton.create().setPosition(Options.cameraOriginRatioX - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
 
 		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraOriginRatioCenterY - mResetText.getHeight() / 2);
 		mResetText.registerEntityModifier(restartMove1);
@@ -310,7 +324,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOff);
-		
+
+		mScoreText.create().setPosition(10, 10);
+
+		mDoubleKillText = new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground);
+
 		try {
 			this.mYeahSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "yeah.mp3");
 		} catch (final IOException e) {
@@ -322,8 +340,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public void reInit() {
+		Score = 0;
 		rectangleAlphaModifierOff.reset();
-		
+
 		running = true;
 		deadBirds = 0;
 		isResetAnimationRunning = false;
@@ -383,7 +402,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			chiky.init(0, 0, minHeight + sizeHeight2, stepSign);
 
 			electrods.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
-
+			return;
 		case 2:
 			chiky = (Chiky) chikies.create();
 			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
@@ -568,6 +587,28 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					airgum = (Bubble) this.airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
+
+						airgum.birdsKills++;
+						chiky.birdsKills = airgum.birdsKills;
+
+						if (this.chikies.getCount() <= 1) {
+							mAwesomeKillText.create().setCenterPosition(chiky.getCenterX(), chiky.getCenterY());
+						} else {
+
+							boolean hasTopChikies = false;
+
+							for (int n = this.chikies.getCount() - 1; n >= 0; --n) {
+								if (this.chikies.getByIndex(n).getY() < chiky.getY()) {
+									hasTopChikies = true;
+								}
+							}
+
+							if (airgum.birdsKills == 2 && !hasTopChikies) {
+								mDoubleKillText.create().setCenterPosition(chiky.getCenterX(), chiky.getCenterY());
+							}
+
+						}
+
 						this.mYeahSound.play();
 					}
 					for (int a = thorns.getCount() - 1; a >= 0; --a) {
@@ -660,6 +701,22 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				isResetAnimationRunning = true;
 			}
 		}
+
+		/* Score */
+		if (Score < 10) {
+			//numbersSmall.getByIndex(0).setCurrentTileIndex(9);
+			numbersSmall.getByIndex(0).setVisible(true);
+			numbersSmall.getByIndex(1).setVisible(false);
+			numbersSmall.getByIndex(2).setVisible(false);
+		} else if (Score < 100) {
+			numbersSmall.getByIndex(0).setVisible(true);
+			numbersSmall.getByIndex(1).setVisible(true);
+			numbersSmall.getByIndex(2).setVisible(false);
+		} else {
+			numbersSmall.getByIndex(0).setVisible(true);
+			numbersSmall.getByIndex(1).setVisible(true);
+			numbersSmall.getByIndex(2).setVisible(false);
+		}
 	}
 
 	/*
@@ -700,12 +757,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		return true;
 	}
 
-	private int i = 0;
-	private boolean isDrawing = false;
-
-	Rectangle[] rec = new Rectangle[1250];
-	int[] A = new int[1500];
-
 	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener#onSceneTouchEvent(org.anddev.andengine.entity.scene.Scene, org.anddev.andengine.input.touch.TouchEvent)
 	 */
@@ -736,7 +787,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 					float angle = (float) Math.atan2(pTouchY - this.lastAirgum.getCenterY(), pTouchX - this.lastAirgum.getCenterX());
 
-					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchX, pTouchY) / Options.SPEED;
+					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchX, pTouchY);
 
 					distance = distance > 6 ? 6 : distance;
 
