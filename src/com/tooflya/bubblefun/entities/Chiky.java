@@ -278,11 +278,10 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
-		// For remember: y = y_2 - y_1, where y_n = y_ * (x_n - x_) ^ 2.
-		final float y_ = Options.ellipseHeight;
-		final float x_ = FloatMath.sqrt(y_);
+		// For remember: y = y_2 - y_1, where y_n = (x_n - x_) ^ 2.
+		final float x_ = FloatMath.sqrt(Options.ellipseHeight);
 		final float x = this.getCenterX() - this.pStartX + this.pStepX;
-		final float y = y_ * this.pStepX * (2 * (x - x_) - this.pStepX);		
+		final float y = this.pStepX * (2 * (x - x_) - this.pStepX);		
 		this.setCenterPosition(this.pStartX + x, this.pStartY + y);
 		// TODO: (R) Need to do easy? Can you understand this?
 
