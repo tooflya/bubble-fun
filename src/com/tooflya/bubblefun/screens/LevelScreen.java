@@ -15,7 +15,6 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
@@ -23,14 +22,17 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.LinearGradientFillBitmapTextureAtlasSourceDecorator;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.Acceleration;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
+import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
@@ -67,14 +69,17 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int Score;
 
-	private final BitmapTextureAtlas mBackgroundGradientTexture = new BitmapTextureAtlas(2, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+	public final static BitmapTextureAtlas mBackgroundGradientTexture = new BitmapTextureAtlas(2, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
-	final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap, new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
 
-	private final Gradient mBackground = new Gradient(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
+	final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap,
+			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
+
+	private Gradient mBackground = new Gradient(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
@@ -258,6 +263,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public static EntityManager mAwesomeKillText;
 	public static EntityManager mDoubleKillText;
 	public static EntityManager mTripleKillText;
+	public static EntityManager mBonusesText;
 
 	private Sound mYeahSound;
 
@@ -281,12 +287,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public LevelScreen() {
 		this.setOnSceneTouchListener(this);
 
-		//mBackground.create();
 		this.clouds.generateStartClouds();
 
 		mAwesomeKillText = new EntityManager(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
 		mDoubleKillText = new EntityManager(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
 		mTripleKillText = new EntityManager(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
+		mBonusesText = new EntityManager(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4), this.mBackground));
 
 		mDottedLine.create().setPosition(0, Options.cameraOriginRatioY / 3 * 2);
 
@@ -307,9 +313,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
-		numbersSmall.create().setPosition(65, 15);
-		numbersSmall.create().setPosition(75, 15);
-		numbersSmall.create().setPosition(85, 15);
+		numbersSmall.create().setPosition(67, 16);
+		numbersSmall.create().setPosition(81, 16);
+		numbersSmall.create().setPosition(95, 16);
 
 		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
@@ -362,6 +368,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		running = true;
 		deadBirds = 0;
 		isResetAnimationRunning = false;
+
+		mAwesomeKillText.clear();
+		mDoubleKillText.clear();
+		mTripleKillText.clear();
+		mBonusesText.clear();
 
 		mBlueBird.create();
 		mBlueBird.clear();
@@ -418,12 +429,15 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			chiky.init(0, 0, minHeight + sizeHeight2, stepSign);
 
 			electrods.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
+
 			return;
 		case 2:
 			chiky = (Chiky) chikies.create();
 			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * 0.5f, -stepSign);
 			chiky = (Chiky) chikies.create();
 			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
+
+			gradientSource.changeColors(bitmap, Color.rgb(3, 91, 200), Color.rgb(102, 211, 234));
 			return;
 		case 3:
 			chiky = (Chiky) chikies.create();
@@ -432,6 +446,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 
 			thorns.create().setCenterPosition(80, Options.cameraCenterY);
+			//
+			gradientSource.changeColors(bitmap, Color.rgb(200, 49, 3), Color.rgb(237, 225, 41));
 			return;
 		case 4:
 			chiky = (Chiky) chikies.create();
@@ -440,6 +456,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			chiky.init(0, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2, stepSign);
 			chiky = (Chiky) chikies.create();
 			chiky.init(1, Options.cameraOriginRatioX / 2, minHeight + sizeHeight2 * (Game.random.nextFloat() + 1), -stepSign);
+
+			gradientSource.changeColors(bitmap, Color.rgb(196, 11, 224), Color.rgb(238, 197, 244));
 			return;
 		case 5:
 			chiky = (Chiky) chikies.create();
@@ -770,7 +788,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		final float pTouchY = pTouchEvent.getY() / Options.cameraRatioFactor;
 
 		switch (pTouchEvent.getAction()) {
-		case TouchEvent.ACTION_DOWN:Score++;
+		case TouchEvent.ACTION_DOWN:
+
 			if (AIR > 0) {
 				if (this.lastAirgum == null && pTouchY > Options.cameraOriginRatioY - Options.cameraOriginRatioY / 3)
 				{

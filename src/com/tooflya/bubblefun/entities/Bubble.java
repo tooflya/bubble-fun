@@ -226,11 +226,23 @@ public class Bubble extends Entity implements IAnimationListener {
 
 				if (this.birdsKills == 1 && LevelScreen.chikies.getCount() <= 1) {
 					LevelScreen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+
+					final Entity bonus = LevelScreen.mBonusesText.create();
+					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+					bonus.setCurrentTileIndex(2);
 				}
 				else if (this.birdsKills == 2) {
 					LevelScreen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+
+					final Entity bonus = LevelScreen.mBonusesText.create();
+					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+					bonus.setCurrentTileIndex(0);
 				} else if (this.birdsKills == 3) {
 					LevelScreen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+
+					final Entity bonus = LevelScreen.mBonusesText.create();
+					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+					bonus.setCurrentTileIndex(3);
 				}
 			}
 		}

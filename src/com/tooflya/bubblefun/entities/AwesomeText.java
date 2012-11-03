@@ -10,7 +10,7 @@ import com.tooflya.bubblefun.Options;
 public class AwesomeText extends Entity {
 	private static float mScaleStep = 0.3f;
 
-	private boolean mIsAnimationScaleRunning;
+	protected boolean mIsAnimationScaleRunning;
 
 	public boolean shake = false;
 	private float minS = -5, maxS = 5;
@@ -26,6 +26,10 @@ public class AwesomeText extends Entity {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
+	}
+
+	protected void onAnimationFinished() {
+		this.mRotation = -5;
 	}
 
 	@Override
@@ -83,7 +87,7 @@ public class AwesomeText extends Entity {
 				this.shake = false;
 				this.mNeedDeath = true;
 				this.reverse = false;
-				this.mRotation = -5;
+				this.onAnimationFinished();
 			}
 		}
 
