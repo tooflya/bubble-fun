@@ -34,9 +34,4 @@ public class Acceleration extends Entity {
 		}
 	}
 
-	@Override
-	public Entity deepCopy() {
-		return new Acceleration(getTextureRegion(), this.mParentScreen);
-	}
-
 }

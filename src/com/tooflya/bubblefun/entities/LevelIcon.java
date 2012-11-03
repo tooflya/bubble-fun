@@ -25,14 +25,4 @@ public class LevelIcon extends ButtonScaleable {
 			Game.screens.set(Screen.LOAD);
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.entities.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new LevelIcon(getTextureRegion(), this.mParentScreen);
-	}
 }

@@ -6,7 +6,7 @@ import com.tooflya.bubblefun.entities.Entity;
  * @author Tooflya.com
  * @since
  */
-public class EntityManager<T extends Entity> extends org.anddev.andengine.entity.Entity {
+public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 
 	// ===========================================================
 	// Constants
@@ -29,7 +29,7 @@ public class EntityManager<T extends Entity> extends org.anddev.andengine.entity
 	 * @param capacity
 	 * @param element
 	 */
-	public EntityManager(final int capacity, final T element) {
+	public EntityManager(final int capacity, final Entity element) {
 		this.lastElementNumber = -1;
 
 		this.capacity = capacity;
@@ -37,7 +37,7 @@ public class EntityManager<T extends Entity> extends org.anddev.andengine.entity
 		elements = new Entity[capacity];
 
 		for (int i = elements.length - 1; i > 0; --i) {
-			elements[i] = element.deepCopy();
+			elements[i] =element.deepCopy();
 			elements[i].setManager(this);
 			elements[i].setID(i);
 		}
@@ -69,8 +69,9 @@ public class EntityManager<T extends Entity> extends org.anddev.andengine.entity
 	 * @param index
 	 * @return
 	 */
-	public Entity getByIndex(final int index) {
-		return elements[index];
+	@SuppressWarnings("unchecked")
+	public T getByIndex(final int index) {
+		return (T) elements[index];
 	}
 
 	@SuppressWarnings("unchecked")

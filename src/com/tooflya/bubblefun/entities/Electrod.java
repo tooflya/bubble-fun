@@ -48,9 +48,4 @@ public class Electrod extends Entity {
 			}
 		}
 	}
-
-	@Override
-	public Entity deepCopy() {
-		return new Electrod(getTextureRegion(), this.mParentScreen);
-	}
 }

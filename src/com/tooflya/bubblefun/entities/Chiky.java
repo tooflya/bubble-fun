@@ -325,14 +325,4 @@ public class Chiky extends Entity {
 			this.getTextureRegion().setFlippedHorizontal(true);
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new Chiky(getTextureRegion(), this.mParentScreen);
-	}
 }

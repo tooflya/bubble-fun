@@ -68,14 +68,4 @@ public class Cloud extends Entity {
 			this.destroy();
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new Cloud(getTextureRegion(), this.mParentScreen);
-	}
 }

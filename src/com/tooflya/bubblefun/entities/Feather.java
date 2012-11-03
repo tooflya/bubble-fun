@@ -114,14 +114,4 @@ public class Feather extends Entity {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.entity.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new Feather(getTextureRegion(), this.mParentScreen);
-	}
-
 }

@@ -107,9 +107,4 @@ public class AwesomeText extends Entity {
 		super.setCenterPosition(x, pY);
 	}
 
-	@Override
-	public Entity deepCopy() {
-		return new AwesomeText(getTextureRegion(), this.mParentScreen);
-	}
-
 }

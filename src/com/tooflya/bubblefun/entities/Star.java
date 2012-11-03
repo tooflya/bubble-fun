@@ -32,11 +32,6 @@ public class Star extends Entity {
 	}
 
 	@Override
-	public Entity deepCopy() {
-		return new Star(getTextureRegion(), this.mParentScreen);
-	}
-
-	@Override
 	public Entity create() {
 		this.isParticle = false;
 

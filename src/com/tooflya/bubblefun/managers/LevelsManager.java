@@ -5,13 +5,14 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
+import com.tooflya.bubblefun.entities.Sprite;
 
-public class LevelsManager extends EntityManager {
+public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private float PADDING, PADDING_B;
 	private float X, Y;
 
-	private EntityManager mNumbers;
+	private EntityManager<Sprite> mNumbers;
 
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
@@ -40,7 +41,7 @@ public class LevelsManager extends EntityManager {
 
 	}
 
-	public void generate(final EntityManager pNumbers) {
+	public void generate(final EntityManager<Sprite> pNumbers) {
 		this.mNumbers = pNumbers;
 
 		this.generate();

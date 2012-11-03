@@ -44,11 +44,6 @@ public class Glint extends Entity {
 	}
 
 	@Override
-	public Entity deepCopy() {
-		return new Glint(getTextureRegion(), this.mParentScreen);
-	}
-
-	@Override
 	public Entity create() {
 		this.isParticle = false;
 

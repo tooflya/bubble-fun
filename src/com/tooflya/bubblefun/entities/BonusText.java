@@ -71,9 +71,4 @@ public class BonusText extends AwesomeText {
 		super.setCenterPosition(pX, pY + this.getHeight() * 2);
 	}
 
-	@Override
-	public com.tooflya.bubblefun.entities.Entity deepCopy() {
-		return new BonusText(getTextureRegion(), this.mParentScreen);
-	}
-
 }

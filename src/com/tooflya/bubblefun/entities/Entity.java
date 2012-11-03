@@ -27,9 +27,10 @@ import com.tooflya.bubblefun.managers.EntityManager;
  * Base this class is abstract class we necessarily need to override <i>deepCopy()</i> method.
  * 
  * @author Tooflya.com
+ * @param <T>
  * @since
  */
-public abstract class Entity extends AnimatedSprite {
+public abstract class Entity  extends AnimatedSprite {
 
 	// ===========================================================
 	// Constants
@@ -38,7 +39,7 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
+	  
 	/** ID of this instance in the <b>EntityManager</b>. Used to <i>destroy()</i> method like <i>destroySelf()</i> from her entity manager. */
 	private int mId;
 
@@ -69,7 +70,7 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
-
+		
 		/** As some entities may be elements of a manager we need to hide them here. They will appers to ther screen after call <i>create()</i> method. */
 		this.hide();
 
@@ -173,14 +174,28 @@ public abstract class Entity extends AnimatedSprite {
 	/** Method wich used only for apper (setting visible to true) this entity and set ignore to false. */
 	public void show() {
 		this.setVisible(true);
+		this.setCullingEnabled(true);
 		this.setIgnoreUpdate(false);
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
 	public void hide() {
 		this.setVisible(false);
+		this.setCullingEnabled(false);
 		this.setIgnoreUpdate(true);
-		/* TODO: Check is culling needed! >>  this.setCullingEnabled(true); */
+	}
+
+	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
+	public Entity deepCopy() {
+		try {
+			return (Entity)
+					Class.forName(this.getClass().getName()).
+					getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class).newInstance(getTextureRegion(), this.mParentScreen);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		return null;
 	}
 
 	// ===========================================================
@@ -330,10 +345,4 @@ public abstract class Entity extends AnimatedSprite {
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
 	}
-
-	// ===========================================================
-	// Abstract methods
-	// ===========================================================
-
-	public abstract Entity deepCopy();
 }

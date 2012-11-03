@@ -20,8 +20,4 @@ public class Sprite extends Entity {
 		super(pTiledTextureRegion);
 	}
 
-	@Override
-	public Entity deepCopy() {
-		return new Sprite(getTextureRegion(), this.mParentScreen);
-	}
 }

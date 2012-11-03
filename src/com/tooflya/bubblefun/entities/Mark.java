@@ -29,9 +29,4 @@ public class Mark extends Entity {
 		return super.create();
 	}
 
-	@Override
-	public Entity deepCopy() {
-		return new Mark(getTextureRegion(), this.mParentScreen);
-	}
-
 }

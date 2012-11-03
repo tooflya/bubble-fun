@@ -146,14 +146,4 @@ public class BlueBird extends Entity {
 			}
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.entities.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new BlueBird(getTextureRegion(), this.mFeathersManager, this.mParentScreen);
-	}
 }

@@ -265,14 +265,4 @@ public class Bubble extends Entity implements IAnimationListener {
 		this.destroy();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.entities.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new Bubble(getTextureRegion(), this.mParentScreen);
-	}
-
 }

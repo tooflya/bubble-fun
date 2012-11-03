@@ -52,14 +52,4 @@ public class GraphicsBubble extends Bubble {
 
 		return super.create();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.entities.Entity#deepCopy()
-	 */
-	@Override
-	public Entity deepCopy() {
-		return new GraphicsBubble(getTextureRegion(), this.mParentScreen);
-	}
 }
