@@ -29,7 +29,7 @@ public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends org.and
 		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, new int[] { pFromColor, pToColor }, null, TileMode.CLAMP));
 		
 
-		LevelScreen.mBackgroundGradientTexture.setUpdateOnHardwareNeeded(true);
+		((LevelScreen) Game.screens.get(Screen.LEVEL)).mBackgroundGradientTexture.setUpdateOnHardwareNeeded(true);
 	}
 
 	public static enum LinearGradientDirection {

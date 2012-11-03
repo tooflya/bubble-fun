@@ -10,7 +10,7 @@ import com.tooflya.bubblefun.Game;
  * @author Tooflya.com
  * @since
  */
-public class Particle extends Entity {
+public class Feather extends Entity {
 
 	// ===========================================================
 	// Constants
@@ -30,7 +30,7 @@ public class Particle extends Entity {
 	// Constructors
 	// ===========================================================
 
-	public Particle(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
+	public Feather(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -40,7 +40,7 @@ public class Particle extends Entity {
 	// Methods
 	// ===========================================================
 
-	public Particle Init() {
+	public Feather Init() {
 
 		this.setSpeedX(Game.random.nextFloat() * 2 - 1);
 		this.setSpeedY(Game.random.nextFloat() * 2 - 1);
@@ -121,7 +121,7 @@ public class Particle extends Entity {
 	 */
 	@Override
 	public Entity deepCopy() {
-		return new Particle(getTextureRegion(), this.mParentScreen);
+		return new Feather(getTextureRegion(), this.mParentScreen);
 	}
 
 }

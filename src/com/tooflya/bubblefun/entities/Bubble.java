@@ -4,7 +4,10 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class Bubble extends Entity implements IAnimationListener {
@@ -215,32 +218,36 @@ public class Bubble extends Entity implements IAnimationListener {
 
 			boolean hasTopChiks = false;
 
-			for (int n = LevelScreen.chikies.getCount() - 1; n >= 0; --n) {
-				if (LevelScreen.chikies.getByIndex(n).getY() < this.getY()) {
+			EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+			
+			for (int n = chikies.getCount() - 1; n >= 0; --n) {
+				if (chikies.getByIndex(n).getY() < this.getY()) {
 					hasTopChiks = true;
 				}
 			}
 
+			LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
+			
 			if (!hasTopChiks) {
 				this.mShowsLabel = true;
 
-				if (this.birdsKills == 1 && LevelScreen.chikies.getCount() <= 1) {
-					LevelScreen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+				if (this.birdsKills == 1 && chikies.getCount() <= 1) {
+					screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
 
-					final Entity bonus = LevelScreen.mBonusesText.create();
+					final Entity bonus = screen.mBonusesText.create();
 					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
 					bonus.setCurrentTileIndex(2);
 				}
 				else if (this.birdsKills == 2) {
-					LevelScreen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+					screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
 
-					final Entity bonus = LevelScreen.mBonusesText.create();
+					final Entity bonus = screen.mBonusesText.create();
 					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
 					bonus.setCurrentTileIndex(0);
 				} else if (this.birdsKills == 3) {
-					LevelScreen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+					screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
 
-					final Entity bonus = LevelScreen.mBonusesText.create();
+					final Entity bonus = screen.mBonusesText.create();
 					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
 					bonus.setCurrentTileIndex(3);
 				}

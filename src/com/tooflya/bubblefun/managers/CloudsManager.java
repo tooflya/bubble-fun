@@ -3,11 +3,10 @@ package com.tooflya.bubblefun.managers;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Cloud;
-import com.tooflya.bubblefun.entities.Entity;
 
-public class CloudsManager extends EntityManager {
+public class CloudsManager<T> extends EntityManager<Cloud> {
 
-	public CloudsManager(int capacity, Entity element) {
+	public CloudsManager(int capacity, Cloud element) {
 		super(capacity, element);
 	}
 
@@ -19,7 +18,7 @@ public class CloudsManager extends EntityManager {
 
 	public void generateCloud(final boolean isStart) {
 		final int frame = Game.random.nextInt(4);
-		final Cloud cloud = ((Cloud) this.create());
+		final Cloud cloud = this.create();
 
 		switch (frame) {
 		case 0:
@@ -36,7 +35,8 @@ public class CloudsManager extends EntityManager {
 			break;
 		}
 
-		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraOriginRatioX + cloud.getWidth())) - cloud.getWidth() : Options.cameraOriginRatioX, Game.random.nextInt((int) (Options.cameraOriginRatioY / 3 * 2 - cloud.getHeight())));
+		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraOriginRatioX + cloud.getWidth())) - cloud.getWidth() : Options.cameraOriginRatioX,
+				Game.random.nextInt((int) (Options.cameraOriginRatioY / 3 * 2 - cloud.getHeight())));
 		cloud.setAlpha(0.4f + Game.random.nextFloat() * (1f - 0.4f));
 		cloud.setSpeedX(0.2f + Game.random.nextFloat() * (2f - 0.2f));
 		cloud.setCurrentTileIndex(frame);

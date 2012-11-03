@@ -51,7 +51,7 @@ public abstract class Entity extends AnimatedSprite {
 	protected org.anddev.andengine.entity.Entity mParentScreen;
 
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object may be <b>null</b>. */
-	private EntityManager mEntityManager;
+	private EntityManager<?> mEntityManager;
 
 	// ===========================================================
 	// Constructors
@@ -260,7 +260,7 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * @param pEntityManager
 	 */
-	public void setManager(final EntityManager pEntityManager) {
+	public void setManager(final EntityManager<?> pEntityManager) {
 		this.mEntityManager = pEntityManager;
 	}
 

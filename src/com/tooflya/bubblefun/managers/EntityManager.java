@@ -6,7 +6,7 @@ import com.tooflya.bubblefun.entities.Entity;
  * @author Tooflya.com
  * @since
  */
-public class EntityManager extends org.anddev.andengine.entity.Entity {
+public class EntityManager<T extends Entity> extends org.anddev.andengine.entity.Entity {
 
 	// ===========================================================
 	// Constants
@@ -29,7 +29,7 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 	 * @param capacity
 	 * @param element
 	 */
-	public EntityManager(final int capacity, Entity element) {
+	public EntityManager(final int capacity, final T element) {
 		this.lastElementNumber = -1;
 
 		this.capacity = capacity;
@@ -73,13 +73,14 @@ public class EntityManager extends org.anddev.andengine.entity.Entity {
 		return elements[index];
 	}
 
-	public Entity create() {
+	@SuppressWarnings("unchecked")
+	public T create() {
 		if (lastElementNumber + 1 < capacity) {
 			lastElementNumber++;
 
 			elements[lastElementNumber].create();
 
-			return elements[lastElementNumber];
+			return (T) elements[lastElementNumber];
 		}
 
 		return null;
