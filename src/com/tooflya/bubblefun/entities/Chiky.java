@@ -19,44 +19,42 @@ public class Chiky extends Entity {
 	// Constants
 	// ===========================================================
 
+	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
+	private static final int[] pNormalMoveFrames = new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 };
+	private static final int[] pNormalMoveWithGumFrames = new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 };
+	private static final int[] pSpeedyMoveFrames = new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 };
+	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private float time = 0f;
-	private float timeStep = 1f;
-	private final float normalStepTime = 200f; // TODO: Find correct number.
-	private final float doubleStepTime = 50f; // TODO: Find correct number.
+	private int pState = 0; // 0 - Normal move; 1 - Speedy move; 2 - fall;
 
-	private float lastX = 0;
-	private float lastY = 0;
+	private float pStartX = 0;
+	private float pStartY = 0;
+	private float pStepX = 0;
+	private float pNormalStepX = 0;
+	private float pSpeedyStepX = 0;
+	private float pStepY = 0;
+	private float pOffsetX = 0;
+	private boolean pIsJumply = false;
+	private boolean pIsSpeedy = false;
+	private boolean pIsWavely = false;
 
-	private int timeToFall = 0;
-	private float airgumScale = 1;
+	private float mX_ = 0; // Last x.
+	private float mY_ = 0; // Last y.
+	
+	private float pTime = 0f;
+	
+	private final float pMaxTimeNormal = 4f; // TODO: Find correct number.
+	private final float pMaxTimeSpeedy = 1f; // TODO: Find correct number.
+	private final float pMaxTimeWithGum = 2f; // TODO: Find correct number.
 
-	private float fallStepX = 0;
-	private float fallStepY = 0;
-	private int fallSign = 1;
-
-	private int state = 0; // 0 - fly; 1 - flyWithGum; 2 - fall;
-
-	// Temp
-	private float x = 0;
-	private float y = 0;
-
-	private float startX = 0;
-	private float startY = 0;
-
-	private float stepX = 0;
-
-	private int type = 0;
-
-	private boolean mAnimationOfSpeed;
-	private boolean mAnimationDefiad;
-
-	private Acceleration wind;
-
-	public int birdsKills;
+	private float pTimeWithGum = 0f;
+	
+	private Bubble pAirgum = null;
+	private Acceleration pWind = null;
 
 	// ===========================================================
 	// Constructors
@@ -67,11 +65,8 @@ public class Chiky extends Entity {
 	 */
 	public Chiky(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
-
-		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
-		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
-
-		this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
+		this.mRotationCenterX = this.mWidth / 2;
+		this.mRotationCenterY = this.mHeight / 2;		
 	}
 
 	// ===========================================================
@@ -80,51 +75,90 @@ public class Chiky extends Entity {
 
 	@Override
 	public Entity create() {
-		this.birdsKills = 0;
+		this.setRotation(0);
+
+		pState = 0; // 0 - Normal move; 1 - Speedy move; 2 - fall;
+
+		// Center of used region.
+		this.pStartX = Options.cameraOriginRatioX / 2;
+		this.pStartY = Options.chikySize / 2 + Options.ellipseHeight + (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
+
+		this.pNormalStepX = Game.random.nextFloat() * (Options.maxChikyStepX - Options.minChikyStepX) + Options.minChikyStepX;
+		if (Game.random.nextBoolean()){
+			this.pStepX = -this.pStepX;
+		}
+		this.pSpeedyStepX = this.pNormalStepX * 2.5f; // TODO: (R) Magic number. Work correct in previous version.
+		this.pStepX = this.pNormalStepX;
+		this.pStepY = 0;
+		
+		this.pOffsetX = 0;
+		
+		this.pIsJumply = false;
+		this.pIsSpeedy = false;
+		this.pIsWavely = false;
+		
+		this.mX_ = 0;
+		this.mY_ = 0;
+	
+		this.pTime = 0f;
+		this.pTimeWithGum = 0f;
+
+		this.pAirgum = null;
+		this.pWind = null;
+		
+		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
 
 		return super.create();
 	}
 
-	public void init(final int type, final float startX, final float startY, final int stepSign) {
-		this.mAnimationOfSpeed = false;
-		this.mAnimationDefiad = false;
-
-		this.type = type;
-
-		this.startX = startX;
-		this.startY = startY;
-
-		final float minStepX = 1f; // TODO:
-		final float maxStepX = 2f; // TODO:
-		if (this.type == 0) {
-			this.stepX = (minStepX + maxStepX) / 2;
-		}
-		else {
-			this.stepX = Math.signum(stepSign) * (Game.random.nextFloat() * (maxStepX - minStepX) + minStepX);
-		}
-
-		this.x = this.startX;
-		this.y = this.startY;
+	public void initStartX(final float startX){
+		this.pStartX = startX;
+	}
+	
+	public void initStartY(final float startY){
+		this.pStartY = startY;
 	}
 
+	public void initNormalStepX(final float normalStepX){
+		this.pNormalStepX = normalStepX;
+		this.pStepX = this.pNormalStepX; 
+	}
+
+	public void initSpeedyStepX(final float speedyStepX){
+		this.pSpeedyStepX = speedyStepX;
+	}
+	
+	public void initOffsetX(final float offsetX){
+		this.pOffsetX = offsetX;
+	}
+
+	public void initIsJumply(){
+		this.pIsJumply = true;
+	}
+	
+	public void initIsSpeedy(){
+		this.pIsSpeedy = true;
+	}
+	
+	public void initIsWavely(){
+		this.pIsWavely = true;
+	}
+	
 	// ===========================================================
 	// Setters
 	// ===========================================================
 
-	public void setIsNeedToFlyAway(final float airgumScale) {
-		LevelScreen.deadBirds++;
-		this.state = 1;
-		this.timeToFall = 100; // TODO: (R) Change number later.
-		this.airgumScale = airgumScale;
-
-		if (!this.mAnimationDefiad) {
-			if (this.mAnimationOfSpeed) {
-				this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 }, 9999);
-			} else {
-				this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, 9999);
+	public void isCollide(Bubble airgum) {
+		if(this.pAirgum == null){
+			this.pAirgum = airgum;
+			this.pTimeWithGum = 0;
+			
+			if (this.pState == 0){ // Normal move.
+				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 			}
-
-			this.mAnimationDefiad = true;
+			else{ // Speedy move.
+				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+			}
 		}
 	}
 
@@ -132,67 +166,129 @@ public class Chiky extends Entity {
 	// Getters
 	// ===========================================================
 
-	private float getCalculatedX() {
-		this.x += this.stepX;
-		if ((this.type == 2 || this.type == 5) && this.normalStepTime < this.time) {
-			this.x += 1.3f * this.stepX;
-
-			if (!this.mAnimationOfSpeed) {
-				this.wind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
-				this.wind.mFollowEntity = this;
-			}
-
-			if (this.mAnimationDefiad) {
-				if (!this.mAnimationOfSpeed) {
-					this.mAnimationOfSpeed = true;
-					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 }, 9999);
-				}
-			} else {
-				if (!this.mAnimationOfSpeed) {
-					this.mAnimationOfSpeed = true;
-					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 }, 9999);
-				}
-			}
-		}
-
-		float offsetX = 0;
-		if (this.type == 4 || this.type == 5) {
-			offsetX = 3 * Options.chikySize;
-		}
-
-		if (this.x - this.getWidth() / 2 < -offsetX) {
-			this.x = -offsetX + (-offsetX - (this.x - this.getWidth() / 2)) + this.getWidth() / 2;
-			this.stepX = +Math.abs(this.stepX);
-			if (this.type == 4) {
-				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
-			}
-		}
-		if (this.x + this.getWidth() / 2 > Options.cameraOriginRatioX + offsetX) {
-			this.x = Options.cameraOriginRatioX + offsetX - ((this.x + this.getWidth() / 2) - (Options.cameraOriginRatioX + offsetX)) - this.getWidth() / 2;
-			this.stepX = -Math.abs(this.stepX);
-			if (this.type == 4) {
-				this.y = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
-			}
-		}
-		return this.x;
-	}
-
-	private float getCalculatedY() {
-		if (this.type != 3) {
-			return this.y;
-		}
-		else {
-			return this.startY + FloatMath.sin(this.time * Options.PI * Math.abs(this.stepX) / Options.cameraOriginRatioX) * Options.ellipseHeight;
-		}
-	}
-
-	public boolean getIsFly() {
-		return this.state == 0;
+	public boolean isCanCollide() {
+		return this.pAirgum == null;
 	}
 
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	private void onManagedUpdateWithGum(final float pSecondsElapsed) {
+		this.pTimeWithGum += pSecondsElapsed;
+		if (this.pTimeWithGum >= this.pMaxTimeWithGum) {
+			this.pTime = 0;
+			if(this.pState == 1){
+				this.pWind.destroy();
+			}
+			this.pState = 2; // Fall state.
+			this.pStepY = 3f;// * Math.abs(this.pStepX);
+			this.pStepX = 0f; // TODO: (R) Correct magic number.
+			//this.pStepY = Game.random.nextFloat() * 5 + 1; // TODO: (R) Correct magic number.
+
+			Bubble airgum = (Bubble) LevelScreen.airgums.create();
+			if(airgum != null){
+				airgum.setCenterPosition(this.getCenterX(), this.getCenterY());
+				airgum.setScale(Math.max(this.pAirgum.getScaleX(), Bubble.minScale));
+				airgum.setIsScale(false);
+				airgum.birdsKills = this.pAirgum.birdsKills;
+			}
+			
+			Particle particle;
+			for (int i = 0; i < Options.particlesCount; i++) {
+				particle = ((Particle) LevelScreen.feathers.create());
+				if (particle != null) {
+					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
+			}
+			
+			this.stopAnimation(6);
+		}
+	}
+	
+	private void onManagedUpdateMove(final float pSecondsElapsed) {
+		float x = this.getCenterX() + this.pStepX; // TODO: (R) Right step calculation?
+
+		boolean isBorder = false;
+		if (x - this.mWidth / 2 < -this.pOffsetX) {
+			x = -this.pOffsetX + (-this.pOffsetX - (x - this.mWidth / 2)) + this.mWidth / 2;
+			this.pStepX = +Math.abs(this.pStepX);
+			isBorder = true;
+		}
+		if (x + this.mWidth / 2 > Options.cameraOriginRatioX + this.pOffsetX) {
+			x = Options.cameraOriginRatioX + this.pOffsetX - ((x + this.mWidth / 2) - (Options.cameraOriginRatioX + this.pOffsetX)) - this.mWidth / 2;
+			this.pStepX = -Math.abs(this.pStepX);
+			isBorder = true;
+		}
+		if (isBorder && this.pIsJumply) {
+			this.pStartY = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
+		}
+
+		float y = this.pStartY;
+		if (this.pIsWavely) {
+			y += FloatMath.sin(this.pTime * Options.PI * Math.abs(this.pStepX) / Options.cameraOriginRatioX) * Options.ellipseHeight;
+		}
+		
+		this.setCenterPosition(x,  y);
+		
+		if(this.pAirgum != null){
+			this.onManagedUpdateWithGum(pSecondsElapsed);
+		}		
+	}
+	
+	private void onManagedUpdateNormal(final float pSecondsElapsed) {
+		this.onManagedUpdateMove(pSecondsElapsed);
+		if (this.pTime >= this.pMaxTimeNormal){
+			this.pTime = 0;
+			if(this.pIsSpeedy){
+				this.pStepX = Math.signum(this.pStepX) * this.pSpeedyStepX;
+				this.pState = 1; // Speedy move.
+				this.pWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
+				this.pWind.mFollowEntity = this;
+				if(this.pAirgum == null){
+					this.animate(pFrameDuration, pSpeedyMoveFrames, 9999);
+				}
+				else{
+					this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);					
+				}
+			}			
+			// !!! Maybe need use switch for another moving.
+		}
+	}
+	
+	private void onManagedUpdateSpeedy(final float pSecondsElapsed) {
+		this.onManagedUpdateMove(pSecondsElapsed);
+		if (this.pTime >= this.pMaxTimeSpeedy){
+			this.pTime = 0;
+			this.pStepX = Math.signum(this.pStepX) * this.pNormalStepX;
+			this.pState = 0; // Normal move.
+			this.pWind.destroy();
+			this.pWind = null;
+			if(this.pAirgum == null){
+				this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+			}
+			else{
+				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);					
+			}
+			// !!! Maybe need use switch for another moving.
+		}
+	}
+
+	private void onManagedUpdateFall(final float pSecondsElapsed) {
+		// TODO: (R) Need to refact.
+		this.pTime += this.pStepX; // TODO: (R) Some strange code.
+		//this.setCenterPosition(this.getCenterX() + this.pStepX * 5, this.getCenterY() + (this.pTime - this.pStepY) * (this.pTime - this.pStepY) - this.pStepY * this.pStepY - this.mY_); // TODO: (R) Some strange code.
+		this.setCenterPosition(this.getCenterX() + this.pStepX * pSecondsElapsed, this.getCenterY() + this.pStepY * pSecondsElapsed ); // TODO: (R) Some strange code.
+		this.mY_ = (this.pTime - this.pStepY) * (this.pTime - this.pStepY) - this.pStepY * this.pStepY;
+
+		if (this.pTime > this.pStepY) {
+			this.setRotation(this.getRotation() + 10);
+		}
+
+		if (this.mY > Options.cameraOriginRatioY) {
+			this.destroy();
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -203,103 +299,28 @@ public class Chiky extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.time += this.timeStep;
-		if ((this.type == 2 || this.type == 5) && this.time >= this.normalStepTime + this.doubleStepTime) {
-			if (this.mAnimationOfSpeed) {
-				if (this.mAnimationDefiad) {
-					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, 9999);
-				} else {
-					this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
-				}
-				this.mAnimationOfSpeed = false;
-				this.wind.destroy();
-				this.wind = null;
-			}
-			this.time -= this.normalStepTime + this.doubleStepTime;
-		}
-
-		this.lastX = this.getCenterX();
-
-		switch (this.state) {
-		case 0:
-			this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
-
+		this.pTime += pSecondsElapsed;
+		
+		this.mX_ = this.mX;
+		
+		switch (this.pState) {
+		case 0: // Normal move.
+			this.onManagedUpdateNormal(pSecondsElapsed);
 			break;
-		case 1:
-			this.setCenterPosition(this.getCalculatedX(), this.getCalculatedY());
-
-			this.timeToFall--;
-			if (this.timeToFall <= 0) {
-				Bubble airgum;
-				if (this.airgumScale > Bubble.minScale) {
-					airgum = (Bubble) LevelScreen.airgums.create();
-					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
-					airgum.setScale(this.airgumScale);
-					airgum.setIsScale(false);
-				} else {
-					airgum = (Bubble) LevelScreen.airgums.create();
-					airgum.setCenterPosition(this.getCenterX() + Game.random.nextInt(50) - 25, this.getCenterY() + Game.random.nextInt(50) - 25); // TODO: Correct.
-					airgum.setScale(Bubble.minScale);
-					airgum.setIsScale(false);
-				}
-
-				airgum.birdsKills = this.birdsKills;
-
-				Particle particle;
-				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((Particle) LevelScreen.feathers.create());
-					if (particle != null) {
-						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-					}
-				}
-
-				this.state = 2;
-				this.fallStepX = 10f; // TODO: (R) Correct magic number.
-				this.fallStepY = Game.random.nextFloat() * 5 + 1; // TODO: (R) Correct magic number.
-				this.fallSign = 1; // TODO: (R) Some strange code.
-				if (Game.random.nextInt(2) != 0) {
-					this.fallSign = -1; // TODO: (R) Some strange code.
-				}
-
-				this.time = 0; // TODO: (R) Try make a initialize function?
-			}
+		case 1: // Speedy move.
+			this.onManagedUpdateSpeedy(pSecondsElapsed);
 			break;
-		case 2:
-
-			this.time -= this.timeStep; // TODO: (R) Some strange code.
-			this.time += this.fallStepX; // TODO: (R) Some strange code.
-			this.fallStepX = 0.1f;
-			this.setCenterPosition(this.getCenterX() + this.fallSign * this.fallStepX * 5, this.getCenterY() + (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY - this.lastY); // TODO: (R) Some strange code.
-			this.lastY = (this.time - this.fallStepY) * (this.time - this.fallStepY) - this.fallStepY * this.fallStepY;
-
-			if (this.time > this.fallStepY) {
-				this.setRotation(this.getRotation() + 10);
-			}
-
-			if (this.getY() > Options.cameraOriginRatioY) {
-				LevelScreen.deadBirds--;
-				this.destroy();
-			}
+		case 2: // Fall.
+			this.onManagedUpdateFall(pSecondsElapsed);			
 			break;
 		}
 
-		if (this.getCenterX() - lastX > 0) {
+		if (this.mX - this.mX_ > 0) {
 			this.getTextureRegion().setFlippedHorizontal(false);
 		}
 		else {
 			this.getTextureRegion().setFlippedHorizontal(true);
 		}
-
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-
-		this.state = 0;
-		this.animate(new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
-		this.setRotation(0);
-		this.lastY = 0;
 	}
 
 	/*

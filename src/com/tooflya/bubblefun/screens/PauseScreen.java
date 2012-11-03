@@ -3,7 +3,6 @@ package com.tooflya.bubblefun.screens;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.primitive.Rectangle;
-import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
