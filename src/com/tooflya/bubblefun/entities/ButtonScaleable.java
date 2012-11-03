@@ -4,8 +4,6 @@ import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.bubblefun.Options;
-
 public class ButtonScaleable extends Button {
 
 	private ScaleModifier mScaleModifier;

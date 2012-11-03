@@ -19,7 +19,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearG
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Color;
@@ -595,12 +594,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private void checkCollision() {
 		Chiky chiky;
 		Bubble airgum;
-		for (int i = this.chikies.getCount() - 1; i >= 0; --i) {
-			chiky = (Chiky) this.chikies.getByIndex(i);
+		for (int i = chikies.getCount() - 1; i >= 0; --i) {
+			chiky = (Chiky) chikies.getByIndex(i);
 
 			if (chiky.getIsFly()) {
-				for (int j = this.airgums.getCount() - 1; j >= 0; --j) {
-					airgum = (Bubble) this.airgums.getByIndex(j);
+				for (int j = airgums.getCount() - 1; j >= 0; --j) {
+					airgum = (Bubble) airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.setIsNeedToFlyAway(airgum.getScaleX() * 0.75f);
 
@@ -626,9 +625,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						}
 					}
 
-					if (this.isCollide(this.mBlueBird, airgum)) {
-						if (!this.mBlueBird.isSleep()) {
-							this.mBlueBird.particles();
+					if (this.isCollide(mBlueBird, airgum)) {
+						if (!mBlueBird.isSleep()) {
+							mBlueBird.particles();
 							if (!airgum.isAnimationRunning()) {
 								airgum.animate(10, 0, airgum);
 							}

@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.Options;
 
 /**
  * @author Tooflya.com
