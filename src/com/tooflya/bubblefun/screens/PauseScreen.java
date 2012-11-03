@@ -78,7 +78,7 @@ public class PauseScreen extends Screen {
 		}
 	};
 
-	private final EntityManager mLables = new EntityManager(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-big-btn.png", 0, 0, 1, 4)));
+	private final EntityManager<Sprite> mLables = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-big-btn.png", 0, 0, 1, 4)));
 
 	// ===========================================================
 	// Constructors

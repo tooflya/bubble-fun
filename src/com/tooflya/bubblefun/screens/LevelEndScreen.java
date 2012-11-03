@@ -1,9 +1,5 @@
 package com.tooflya.bubblefun.screens;
 
-import java.io.IOException;
-
-import org.anddev.andengine.audio.sound.Sound;
-import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.opengl.texture.TextureOptions;
@@ -22,9 +18,6 @@ import com.tooflya.bubblefun.managers.EntityManager;
 public class LevelEndScreen extends Screen {
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	public EntityManager stars;
-	public EntityManager mLevelStars;
 
 	private static int mStarsCount;
 
@@ -79,8 +72,6 @@ public class LevelEndScreen extends Screen {
 					Star star = (Star) mLevelStars.getByIndex(mStarsAnimationCount - 1);
 					star.setCurrentTileIndex(0);
 
-					LevelEndScreen.this.mBlampSound.play();
-
 					Star particle;
 					for (int i = 0; i < 7; i++) {
 						particle = ((Star) stars.create());
@@ -93,7 +84,8 @@ public class LevelEndScreen extends Screen {
 		}
 	});
 
-	private Sound mExplosionSound, mBlampSound;
+	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-star.png", 230, 615, 1, 1), this.mBackground));
+	public EntityManager<Star> mLevelStars = new EntityManager<Star>(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 195, 615, 1, 2), this.mBackground));
 
 	// ===========================================================
 	// Constructors
@@ -106,20 +98,11 @@ public class LevelEndScreen extends Screen {
 		mRePlay.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 170f);
 		mPlayNext.create().setCenterPosition(Options.cameraOriginRatioCenterX + 100f, Options.cameraOriginRatioCenterY + 170f);
 
-		stars = new EntityManager(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-star.png", 230, 615, 1, 1), this.mBackground));
-
-		mLevelStars = new EntityManager(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 195, 615, 1, 2), this.mBackground));
-
 		Star star;
 		for (int i = 0; i < 3; i++) {
-			(star = (Star) mLevelStars.create()).setCenterPosition(Options.cameraOriginRatioCenterX + 80f * (i - 1), Options.cameraOriginRatioCenterY + 80f);
+			star = mLevelStars.create();
+			star.setCenterPosition(Options.cameraOriginRatioCenterX + 80f * (i - 1), Options.cameraOriginRatioCenterY + 80f);
 			star.setCurrentTileIndex(1);
-		}
-
-		try {
-			this.mExplosionSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "cheers.mp3");
-			this.mBlampSound = SoundFactory.createSoundFromAsset(Game.engine.getSoundManager(), Game.instance, "blamp.mp3");
-		} catch (final IOException e) {
 		}
 	}
 

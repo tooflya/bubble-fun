@@ -187,7 +187,7 @@ public class Chiky extends Entity {
 				this.pStepX = -this.pNormalStepX;				
 			}
 
-			Bubble airgum = (Bubble) LevelScreen.airgums.create();
+			Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if(airgum != null){
 				airgum.setCenterPosition(this.getCenterX(), this.getCenterY());
 				airgum.setScale(Math.max(this.pAirgum.getScaleX(), Bubble.minScale));
@@ -195,9 +195,9 @@ public class Chiky extends Entity {
 				airgum.birdsKills = this.pAirgum.birdsKills;
 			}
 			
-			Particle particle;
+			Feather particle;
 			for (int i = 0; i < Options.particlesCount; i++) {
-				particle = ((Particle) LevelScreen.feathers.create());
+				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
 				if (particle != null) {
 					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 				}
