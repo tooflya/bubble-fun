@@ -21,7 +21,6 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
@@ -693,41 +692,39 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		Bubble airgum;
 		for (int i = chikies.getCount() - 1; i >= 0; --i) {
 			chiky = (Chiky) chikies.getByIndex(i);
-
 			if (chiky.isCanCollide()) {
 				for (int j = airgums.getCount() - 1; j >= 0; --j) {
 					airgum = (Bubble) airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.isCollide(airgum);
+						deadBirds++;
 						airgum.birdsKills++;
 						airgum.mWasCollision = true;
 
 						this.mYeahSound.play();
 					}
-					for (int a = thorns.getCount() - 1; a >= 0; --a) {
-						if (this.isCollide(airgum, thorns.getByIndex(a), true)) {
-							if (!airgum.isAnimationRunning()) {
-								airgum.animate(10, 0, airgum);
-							}
-						}
+				}
+			}
+		}
+		for (int i = airgums.getCount() - 1; i >= 0; --i) {
+			airgum = (Bubble) airgums.getByIndex(i);
+			if (!airgum.isAnimationRunning()) {
+				for (int j = thorns.getCount() - 1; j >= 0; --j) {
+					if (this.isCollide(airgum, thorns.getByIndex(j), true)) {
+						airgum.animate(10, 0, airgum);
 					}
-					for (int a = electrods.getCount() - 1; a >= 0; --a) {
-						Electrod electrod = ((Electrod) electrods.getByIndex(a));
-						if (electrod.isAnimationRunning() && this.isCollide(airgum, electrod, true)) {
-							if (!airgum.isAnimationRunning()) {
-								airgum.animate(10, 0, airgum);
-							}
-						}
+				}
+				for (int j = electrods.getCount() - 1; j >= 0; --j) {
+					Electrod electrod = ((Electrod) electrods.getByIndex(j));
+					if (electrod.isAnimationRunning() && this.isCollide(airgum, electrod, true)) {
+						airgum.animate(10, 0, airgum);
 					}
-
-					if (this.isCollide(mBlueBird, airgum)) {
-						if (!mBlueBird.isSleep()) {
-							mBlueBird.particles();
-							if (!airgum.isAnimationRunning()) {
-								airgum.animate(10, 0, airgum);
-							}
-						}
-					}
+				}
+			}
+			if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
+				mBlueBird.particles();
+				if (!airgum.isAnimationRunning()) {
+					airgum.animate(10, 0, airgum);
 				}
 			}
 		}
@@ -741,7 +738,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private boolean isCollide(Entity entity1, Entity entity2, final boolean rectangle) {
-		return entity1.collidesWith(entity2);
+		return 
+				(entity2.getX() + entity2.getWidth() >= entity1.getX()) && 
+				(entity1.getX() + entity1.getWidth() <= entity2.getX()) && 
+				(entity2.getY() + entity2.getHeight() >= entity1.getY()) &&
+				(entity1.getY() + entity1.getHeight() <= entity2.getY());
+		// TODO: (R) What do with scaledSize and various rotationCenter?
 	}
 
 	/*
