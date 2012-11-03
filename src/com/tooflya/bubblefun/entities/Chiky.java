@@ -19,6 +19,11 @@ public class Chiky extends Entity {
 	// Constants
 	// ===========================================================
 
+	 // TODO: Find correct numbers. Are they constant?
+	private final float pMaxTimeNormal = 4f; // Time in seconds.
+	private final float pMaxTimeSpeedy = 1f; // Time in seconds.
+	private final float pMaxTimeWithGum = 2f; // Time in seconds.
+
 	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
 	private static final int[] pNormalMoveFrames = new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 };
 	private static final int[] pNormalMoveWithGumFrames = new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 };
@@ -36,21 +41,14 @@ public class Chiky extends Entity {
 	private float pStepX = 0;
 	private float pNormalStepX = 0;
 	private float pSpeedyStepX = 0;
-	private float pStepY = 0;
 	private float pOffsetX = 0;
 	private boolean pIsJumply = false;
 	private boolean pIsSpeedy = false;
 	private boolean pIsWavely = false;
 
 	private float mX_ = 0; // Last x.
-	private float mY_ = 0; // Last y.
 	
 	private float pTime = 0f;
-	
-	private final float pMaxTimeNormal = 4f; // TODO: Find correct number.
-	private final float pMaxTimeSpeedy = 1f; // TODO: Find correct number.
-	private final float pMaxTimeWithGum = 2f; // TODO: Find correct number.
-
 	private float pTimeWithGum = 0f;
 	
 	private Bubble pAirgum = null;
@@ -89,7 +87,6 @@ public class Chiky extends Entity {
 		}
 		this.pSpeedyStepX = this.pNormalStepX * 2.5f; // TODO: (R) Magic number. Work correct in previous version.
 		this.pStepX = this.pNormalStepX;
-		this.pStepY = 0;
 		
 		this.pOffsetX = 0;
 		
@@ -98,7 +95,6 @@ public class Chiky extends Entity {
 		this.pIsWavely = false;
 		
 		this.mX_ = 0;
-		this.mY_ = 0;
 	
 		this.pTime = 0f;
 		this.pTimeWithGum = 0f;
@@ -182,9 +178,14 @@ public class Chiky extends Entity {
 				this.pWind.destroy();
 			}
 			this.pState = 2; // Fall state.
-			this.pStepY = 3f;// * Math.abs(this.pStepX);
-			this.pStepX = 0f; // TODO: (R) Correct magic number.
-			//this.pStepY = Game.random.nextFloat() * 5 + 1; // TODO: (R) Correct magic number.
+			this.pStartX = this.getCenterX();
+			this.pStartY = this.getCenterY();
+			if(this.getCenterX() < Options.cameraOriginRatioX / 2){
+				this.pStepX = this.pNormalStepX;
+			}
+			else{
+				this.pStepX = -this.pNormalStepX;				
+			}
 
 			Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if(airgum != null){
@@ -207,16 +208,18 @@ public class Chiky extends Entity {
 	}
 	
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
-		float x = this.getCenterX() + this.pStepX; // TODO: (R) Right step calculation?
+		float x = this.getCenterX() + this.pStepX;
 
 		boolean isBorder = false;
-		if (x - this.mWidth / 2 < -this.pOffsetX) {
-			x = -this.pOffsetX + (-this.pOffsetX - (x - this.mWidth / 2)) + this.mWidth / 2;
+		final float minX = 0 - this.pOffsetX + this.mWidth / 2;		
+		if (x < minX) {
+			x = 2 * minX - x;
 			this.pStepX = +Math.abs(this.pStepX);
 			isBorder = true;
 		}
-		if (x + this.mWidth / 2 > Options.cameraOriginRatioX + this.pOffsetX) {
-			x = Options.cameraOriginRatioX + this.pOffsetX - ((x + this.mWidth / 2) - (Options.cameraOriginRatioX + this.pOffsetX)) - this.mWidth / 2;
+		final float maxX = Options.cameraOriginRatioX + this.pOffsetX - this.mWidth / 2;		
+		if (x > maxX) {
+			x = 2 * maxX - x;
 			this.pStepX = -Math.abs(this.pStepX);
 			isBorder = true;
 		}
@@ -275,15 +278,15 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
-		// TODO: (R) Need to refact.
-		this.pTime += this.pStepX; // TODO: (R) Some strange code.
-		//this.setCenterPosition(this.getCenterX() + this.pStepX * 5, this.getCenterY() + (this.pTime - this.pStepY) * (this.pTime - this.pStepY) - this.pStepY * this.pStepY - this.mY_); // TODO: (R) Some strange code.
-		this.setCenterPosition(this.getCenterX() + this.pStepX * pSecondsElapsed, this.getCenterY() + this.pStepY * pSecondsElapsed ); // TODO: (R) Some strange code.
-		this.mY_ = (this.pTime - this.pStepY) * (this.pTime - this.pStepY) - this.pStepY * this.pStepY;
+		// For remember: y = y_2 - y_1, where y_n = y_ * (x_n - x_) ^ 2.
+		final float y_ = Options.ellipseHeight;
+		final float x_ = FloatMath.sqrt(y_);
+		final float x = this.getCenterX() - this.pStartX + this.pStepX;
+		final float y = y_ * this.pStepX * (2 * (x - x_) - this.pStepX);		
+		this.setCenterPosition(this.pStartX + x, this.pStartY + y);
+		// TODO: (R) Need to do easy? Can you understand this?
 
-		if (this.pTime > this.pStepY) {
-			this.setRotation(this.getRotation() + 10);
-		}
+		this.setRotation(this.getRotation() + 1); // Rotate at 1 degree. Maybe need to correct.
 
 		if (this.mY > Options.cameraOriginRatioY) {
 			this.destroy();

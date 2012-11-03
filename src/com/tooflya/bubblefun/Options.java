@@ -42,9 +42,9 @@ public class Options {
 
 	public final static int chikySize = 64;
 
-	
-	public final static float minChikyStepX = 1f; // TODO: Correct value.
-	public final static float maxChikyStepX = 2f; // TODO: Correct value.
+	 // TODO: Correct values.
+	public final static float minChikyStepX = 1f; // Pixels by one managed update.
+	public final static float maxChikyStepX = 2f; // Pixels by one managed update.
 
 	public final static float chikyOffsetX = 3 * Options.chikySize; // TODO: Correct value.
 }
