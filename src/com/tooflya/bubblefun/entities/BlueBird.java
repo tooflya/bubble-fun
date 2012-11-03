@@ -21,8 +21,8 @@ public class BlueBird extends Entity {
 
 	private final static float mSpeed = 2f;
 
-	private final static int mAnimationTime = 50;
-	private final static int mParticlesCount = 10;
+	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
+	private static final int[] pNormalMoveFrames = new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 };
 
 	// ===========================================================
 	// Fields
@@ -49,7 +49,7 @@ public class BlueBird extends Entity {
 
 		this.mFeathersManager = pFeathersManager;
 
-		this.animate(new long[] { mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime, mAnimationTime }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 9999);
+		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
 	}
 
 	// ===========================================================
@@ -87,7 +87,7 @@ public class BlueBird extends Entity {
 	 * @return
 	 */
 	private float generateNewHeight() {
-		return Game.random.nextInt((int) (Options.cameraOriginRatioX / 3 * 2)) - this.getHeight();
+		return Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - this.mHeight);
 	}
 
 	// ===========================================================
