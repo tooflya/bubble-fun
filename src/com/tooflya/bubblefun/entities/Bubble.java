@@ -5,7 +5,10 @@ import org.anddev.andengine.util.MathUtils;
 
 import android.util.FloatMath;
 
+import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class Bubble extends BubbleBase {
@@ -14,25 +17,18 @@ public class Bubble extends BubbleBase {
 	// Constants
 	// ===========================================================
 
-	public final static float mMaxFastSpeed = 4f;
-
-	//private final static float mDecrementStep = 0.05f / Options.SPEED;
-	//private final static float mFastDecrementStep = 0.1f / Options.SPEED;
-
-	private enum States {
-		Creating, Moving, Destroying
-	};
+	private enum States {Creating, Moving, Destroying};
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private States pState = States.Creating;
-	private float pTime = 0f; // Seconds.
+	private States mState = States.Creating;
+	
+	private float mTime = 0f; // Seconds.
 
-	//protected float mSpeedDecrement;
-	//protected float mFastSpeedDecrement;
-
+	private float mLostedSpeed = 0;
+	
 	public int birdsKills;
 
 	// ===========================================================
@@ -60,14 +56,20 @@ public class Bubble extends BubbleBase {
 
 	public void initStartPosition(final float x, final float y) {
 		this.setCenterPosition(x, y);
+		this.mLostedSpeed = 0;
 	}
 
 	public void initFinishPosition(final float x, final float y) {
 
-		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
+		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());		
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
-		distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
-
+		if (distance < Options.eps){
+			angle = -Options.PI / 2;
+		}
+		distance -= this.mLostedSpeed;
+		distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
+		distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;		
+		
 		if (0 < angle) {
 			angle -= Options.PI;
 		}
@@ -84,16 +86,16 @@ public class Bubble extends BubbleBase {
 		//}
 		//}
 
-		this.pState = States.Moving;
+		this.mState = States.Moving;
 	}
 
 	public void isCollide() {
 		this.animate(40, 0);
-		this.pState = States.Destroying;
+		this.mState = States.Destroying;
 	}
 
 	public boolean isCanCollide() {
-		return this.pState != States.Destroying;
+		return this.mState == States.Moving;
 	}
 
 	// ===========================================================
@@ -105,11 +107,12 @@ public class Bubble extends BubbleBase {
 		this.stopAnimation();
 		this.setCurrentTileIndex(0);
 
-		this.pState = States.Creating;
-		this.pTime = 0f; // Seconds.
+		this.mState = States.Creating;
+		this.mTime = 0f; // Seconds.
 
 		this.mSpeedX = 0;
-		this.mSpeedY = Options.bubbleMinSpeed;
+		this.mSpeedY = 0;
+		this.mLostedSpeed = 0;
 
 		this.mWidth = Options.bubbleMinSize;
 		this.mHeight = Options.bubbleMinSize;
@@ -120,16 +123,15 @@ public class Bubble extends BubbleBase {
 	}
 
 	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
-		if (this.mWidth + Options.bubbleSizeStep < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
-
-			//this.mSpeedDecrement += mDecrementStep;
-			//this.mFastSpeedDecrement += mFastDecrementStep;
-
-			this.mWidth += Options.bubbleSizeStep;
-			this.mHeight += Options.bubbleSizeStep;
-
-			Options.bubbleSizePower -= Options.bubbleSizeStep;
-
+		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
+			
+			this.mLostedSpeed += Options.bubbleStepSpeed;
+			
+			this.setWidth(mWidth + Options.bubbleStepSize);
+			this.setHeight(mHeight + Options.bubbleStepSize);
+			
+			Options.bubbleSizePower -= Options.bubbleStepSize;
+			
 			LevelScreen.AIR--;
 		}
 	}
@@ -139,58 +141,55 @@ public class Bubble extends BubbleBase {
 		this.mX += this.mSpeedX;
 		this.mY += this.mSpeedY;
 
-		if (this.pTime > Options.bubbleMaxTimeMove) {
+		if (this.mTime > Options.bubbleMaxTimeMove) {
 			this.animate(40, 0);
-			this.pState = States.Destroying;
+			this.mState = States.Destroying;
 		}
 		else if (this.mY + this.getHeightScaled() < 0) {
-			this.pState = States.Destroying;
+			this.mState = States.Destroying;
 		}
 	}
 
 	protected void onManagedUpdateDestroying(final float pSecondsElapsed) {
 		if (!this.isAnimationRunning()) {
-			//			if (this.birdsKills > 0 && !this.mShowsLabel) {
-			//
-			//				boolean hasTopChiks = false;
-			//
-			//				EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
-			//				
-			//				for (int i = chikies.getCount() - 1; i >= 0; --i) {
-			//					if (chikies.getByIndex(i).getY() < this.getY()) {
-			//						hasTopChiks = true;
-			//					}
-			//				}
-			//
-			//				LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-			//				
-			//				if (!hasTopChiks) {
-			//					this.mShowsLabel = true;
-			//
-			//					if (this.birdsKills == 1 && chikies.getCount() <= 1) {
-			//						screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			//
-			//						final Entity bonus = screen.mBonusesText.create();
-			//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-			//						bonus.setCurrentTileIndex(2);
-			//					}
-			//					else if (this.birdsKills == 2) {
-			//						screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			//
-			//						final Entity bonus = screen.mBonusesText.create();
-			//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-			//						bonus.setCurrentTileIndex(0);
-			//					} else if (this.birdsKills == 3) {
-			//						screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			//
-			//						final Entity bonus = screen.mBonusesText.create();
-			//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-			//						bonus.setCurrentTileIndex(3);
-			//					}
-			//				}
-			//			}
-
-			this.destroy();
+			if (this.birdsKills > 0) {
+		
+				boolean hasTopChiks = false;
+			
+				EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+							
+				for (int i = chikies.getCount() - 1; i >= 0; --i) {
+					if (chikies.getByIndex(i).getY() < this.getY()) {
+						hasTopChiks = true;
+					}
+				}
+			
+				LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
+							
+				if (!hasTopChiks) {
+					if (this.birdsKills == 1 && chikies.getCount() <= 1) {
+						screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+			
+						final Entity bonus = screen.mBonusesText.create();
+						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+						bonus.setCurrentTileIndex(2);
+					}
+					else if (this.birdsKills == 2) {
+						screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+			
+						final Entity bonus = screen.mBonusesText.create();
+						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+						bonus.setCurrentTileIndex(0);
+					} else if (this.birdsKills == 3) {
+						screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+			
+						final Entity bonus = screen.mBonusesText.create();
+						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+						bonus.setCurrentTileIndex(3);
+					}
+				}
+			}
+		this.destroy();
 		}
 	}
 
@@ -203,9 +202,9 @@ public class Bubble extends BubbleBase {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.pTime += pSecondsElapsed;
+		this.mTime += pSecondsElapsed;
 
-		switch (this.pState) {
+		switch (this.mState) {
 		case Creating:
 			this.onManagedUpdateCreating(pSecondsElapsed);
 			break;

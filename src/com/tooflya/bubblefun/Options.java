@@ -14,6 +14,7 @@ public class Options {
 
 	// > Math options.
 	public static float PI = (float) (2 * Math.asin(1));
+	public static float eps = 5f;
 	// < Math options.
 
 	// > Camera options.
@@ -81,27 +82,24 @@ public class Options {
 	// < Chiky options.
 
 	// > BubbleBase options.
-	public final static float bubbleBaseMinScale = 0.4f;
-	public final static float bubbleBaseMaxScale = 1.7f;
-	public final static float bubbleBaseScaleStep = 0.05f;
+	public final static float bubbleBaseMinScale = 0.8f;
+	public final static float bubbleBaseMaxScale = 1.2f;
+	public final static float bubbleBaseStepScale = 0.005f;
 	// < BubbleBase options.
 
 	// > Bubble options.
 	public final static float bubbleAlpha = 0.8f;
 
-	//public final static float bubbleMinAnimatedScaleCoeficient = 0.7f;
-	//public final static float bubbleMaxAnimatedScaleCoeficient = 1.2f;
-	//public final static float bubbleAnimatedScaleStepCoeficient = 0.003f;
-
 	public static float bubbleSizePower;
 	public final static float bubbleMinSize = 10f; // TODO: (R) Auto set value. // Pixels.
-	public final static float bubbleMaxSize = 70f; // TODO: (R) Auto set value. // Pixels.
-	public final static float bubbleSizeStep = 1f; // Pixels by frame.
+	public final static float bubbleMaxSize = 200f; // TODO: (R) Auto set value. // Pixels.
+	public final static float bubbleStepSize = 1f; // Pixels by frame.
 
 	public final static float bubbleMinSpeed = 1f; // Pixels by frame.
 	public final static float bubbleMaxSpeed = 2f; // Pixels by frame.	
+	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.
 
-	public final static float bubbleMaxTimeMove = 2f; // Seconds.
+	public final static float bubbleMaxTimeMove = 4f; // Seconds.
 	// < Bubble options.
 
 	public static Music mMainSound, mLevelSound, mLastPlayedMusic;
