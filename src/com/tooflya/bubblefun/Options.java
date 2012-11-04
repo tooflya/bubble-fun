@@ -80,7 +80,7 @@ public class Options {
 	// > BubbleBase options.
 	public final static float bubbleBaseMinScale = 0.4f;
 	public final static float bubbleBaseMaxScale = 1.7f;
-	public final static float bubbleBaseScaleStep = 0.05f;
+	public final static float bubbleBaseStepScale = 0.05f;
 	// < BubbleBase options.
 
 	// > Bubble options.
@@ -93,10 +93,11 @@ public class Options {
 	public static float bubbleSizePower;
 	public final static float bubbleMinSize = 10f; // TODO: (R) Auto set value. // Pixels.
 	public final static float bubbleMaxSize = 70f; // TODO: (R) Auto set value. // Pixels.
-	public final static float bubbleSizeStep = 1f; // Pixels by frame.
+	public final static float bubbleStepSize = 1f; // Pixels by frame.
 
 	public final static float bubbleMinSpeed = 1f; // Pixels by frame.
 	public final static float bubbleMaxSpeed = 2f; // Pixels by frame.	
+	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.
 
 	public final static float bubbleMaxTimeMove = 2f; // Seconds.
 	// < Bubble options.

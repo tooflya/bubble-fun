@@ -3,15 +3,15 @@ package com.tooflya.bubblefun.entities;
 import com.tooflya.bubblefun.Options;
 
 public class BubbleBase extends Entity {
-	private float pScaleStepX = Options.bubbleBaseScaleStep;
-	private float pScaleStepY = -Options.bubbleBaseScaleStep;
+	private float pScaleStepX = Options.bubbleBaseStepScale;
+	private float pScaleStepY = -Options.bubbleBaseStepScale;
 
 	@Override
 	public Entity create() {
 		this.mScaleX = Options.bubbleBaseMinScale;
-		this.pScaleStepX = Options.bubbleBaseScaleStep;
+		this.pScaleStepX = Options.bubbleBaseStepScale;
 		this.mScaleY = Options.bubbleBaseMaxScale;
-		this.pScaleStepY = -Options.bubbleBaseScaleStep;
+		this.pScaleStepY = -Options.bubbleBaseStepScale;
 
 		return super.create();
 	}
@@ -29,16 +29,16 @@ public class BubbleBase extends Entity {
 		this.mScaleY += this.pScaleStepY;
 
 		if (this.mScaleX + this.pScaleStepX < Options.bubbleBaseMinScale) {
-			this.pScaleStepX = Options.bubbleBaseScaleStep;
+			this.pScaleStepX = Options.bubbleBaseStepScale;
 		}
 		if (Options.bubbleBaseMinScale < this.mScaleX + this.pScaleStepX) {
-			this.pScaleStepX = -Options.bubbleBaseScaleStep;
+			this.pScaleStepX = -Options.bubbleBaseStepScale;
 		}
 		if (this.mScaleY + this.pScaleStepY < Options.bubbleBaseMinScale) {
-			this.pScaleStepY = Options.bubbleBaseScaleStep;
+			this.pScaleStepY = Options.bubbleBaseStepScale;
 		}
 		if (Options.bubbleBaseMinScale < this.mScaleY + this.pScaleStepY) {
-			this.pScaleStepY = -Options.bubbleBaseScaleStep;
+			this.pScaleStepY = -Options.bubbleBaseStepScale;
 		}
 	}
 }

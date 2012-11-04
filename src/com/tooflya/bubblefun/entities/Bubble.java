@@ -14,11 +14,6 @@ public class Bubble extends BubbleBase {
 	// Constants
 	// ===========================================================
 
-	public final static float mMaxFastSpeed = 4f;
-
-	//private final static float mDecrementStep = 0.05f / Options.SPEED;
-	//private final static float mFastDecrementStep = 0.1f / Options.SPEED;
-
 	private enum States {Creating, Moving, Destroying};
 
 	// ===========================================================
@@ -27,9 +22,6 @@ public class Bubble extends BubbleBase {
 
 	private States pState = States.Creating;
 	private float pTime = 0f; // Seconds.
-
-	//protected float mSpeedDecrement;
-	//protected float mFastSpeedDecrement;
 
 	public int birdsKills;
 	// ===========================================================
@@ -133,15 +125,15 @@ public class Bubble extends BubbleBase {
 	}
 
 	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
-		if (this.mWidth + Options.bubbleSizeStep < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
+		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
 			
 			//this.mSpeedDecrement += mDecrementStep;
 			//this.mFastSpeedDecrement += mFastDecrementStep;
 			
-			this.mWidth += Options.bubbleSizeStep;
-			this.mHeight += Options.bubbleSizeStep;
+			this.mWidth += Options.bubbleStepSize;
+			this.mHeight += Options.bubbleStepSize;
 			
-			Options.bubbleSizePower -= Options.bubbleSizeStep;
+			Options.bubbleSizePower -= Options.bubbleStepSize;
 			
 			LevelScreen.AIR--;
 		}		
