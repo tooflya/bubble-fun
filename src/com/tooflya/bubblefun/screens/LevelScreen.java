@@ -852,21 +852,21 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
 
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
-				while (x < Options.cameraOriginRatioX && y > 0 && x > 0) {
-					x -= this.lastAirgum.getSpeedX() * 15;
-					y -= this.lastAirgum.getSpeedY() * 15;
+				while (0 < x && x < Options.cameraOriginRatioX && 0 < y && y < Options.cameraOriginRatioY) {
+					x += this.lastAirgum.getSpeedX() * 15;
+					y += this.lastAirgum.getSpeedY() * 15;
 					Entity w = mMarks.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
 				}
 				x = this.lastAirgum.getCenterX();
 				y = this.lastAirgum.getCenterY();
-				while (x < Options.cameraOriginRatioX && y < Options.cameraOriginRatioY && x > 0) {
+				while (0 < x && x < Options.cameraOriginRatioX && 0 < y && y < Options.cameraOriginRatioY) {
 					Entity w = mMarks.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
-					x += this.lastAirgum.getSpeedX() * 15;
-					y += this.lastAirgum.getSpeedY() * 15;
+					x -= this.lastAirgum.getSpeedX() * 15;
+					y -= this.lastAirgum.getSpeedY() * 15;
 				}
 
 				this.lastAirgum = null;
