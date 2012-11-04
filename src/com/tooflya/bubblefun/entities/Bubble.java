@@ -129,6 +129,7 @@ public class Bubble extends BubbleBase {
 			
 			this.setWidth(mWidth + Options.bubbleStepSize);
 			this.setHeight(mHeight + Options.bubbleStepSize);
+			this.mX -= Options.bubbleStepSize / 2;
 			
 			Options.bubbleSizePower -= Options.bubbleStepSize;
 			
