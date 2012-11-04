@@ -1,62 +1,37 @@
 package com.tooflya.bubblefun.entities;
 
-import org.anddev.andengine.entity.sprite.AnimatedSprite;
-import org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.util.MathUtils;
 
-import com.tooflya.bubblefun.Game;
+import android.util.FloatMath;
+
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
-public class Bubble extends Entity implements IAnimationListener {
+public class Bubble extends BubbleBase {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	public final static float mMaxSpeed = 2f;
 	public final static float mMaxFastSpeed = 4f;
 
-	public final static float minScale = 0.4f; // TODO: (R) Find right minimal scale.
-	public final static float maxScale = 1.7f; // TODO: (R) Find right maximal scale.
-	public final static float scaleStep = 0.05f; // TODO: (R) Find right step of scale.
+	//private final static float mDecrementStep = 0.05f / Options.SPEED;
+	//private final static float mFastDecrementStep = 0.1f / Options.SPEED;
 
-	private final static float mDecrementStep = 0.05f / Options.SPEED;
-	private final static float mFastDecrementStep = 0.1f / Options.SPEED;
+	private enum States {Creating, Moving, Destroying};
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	protected float mMinScaleX;
-	protected float mMaxScaleX;
-	protected float mSpeedScaleX = 0.003f;
+	private States pState = States.Creating;
+	private float pTime = 0f; // Seconds.
 
-	protected float mMinScaleY;
-	protected float mMaxScaleY;
-	protected float mSpeedScaleY = 0.006f;
-
-	protected boolean mIsYReverse = false;
-	protected boolean mIsXReverse = true;
-
-	protected float mScaleY = mMinScaleY;
-	protected float mScaleX = mMaxScaleX;
-
-	protected boolean isScaleAction = false;
-	protected boolean isFlyAction = true;
-	protected boolean isScaleDefined = false;
-
-	protected float mSpeedDecrement;
-	protected float mFastSpeedDecrement;
-	protected float mDeathTime;
+	//protected float mSpeedDecrement;
+	//protected float mFastSpeedDecrement;
 
 	public int birdsKills;
-
-	private boolean mShowsLabel;
-	public boolean mWasCollision;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -64,10 +39,11 @@ public class Bubble extends Entity implements IAnimationListener {
 	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pNeedAlpha, final boolean pRegisterTouchArea) {
 		super(pTiledTextureRegion, pParentScreen, pRegisterTouchArea);
 
+		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
+		this.setRotationCenter(this.mWidth / 2, this.mHeight / 2);
+
 		if (pNeedAlpha) {
-			this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
-			this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
-			this.setAlpha(0.8f);
+			this.setAlpha(Options.bubbleAlpha);
 		}
 	}
 
@@ -87,27 +63,6 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Setters
 	// ===========================================================
 
-	public void setIsScale(final boolean isScale) {
-		if (!this.isScaleAction && isScale) {
-			this.setScale(minScale);
-		}
-		this.isScaleAction = isScale;
-
-		this.mMinScaleX = this.getScaleX() - 0.2f;
-		this.mMinScaleY = this.getScaleY() - 0.2f;
-
-		this.mMaxScaleX = this.getScaleX();
-		this.mMaxScaleY = this.getScaleY() + 0.2f;
-
-		this.mScaleY = this.mMinScaleY;
-		this.mScaleX = this.mMaxScaleX;
-
-		this.isScaleDefined = true;
-		this.mWasCollision = false;
-
-		this.setSpeedYA(this.getSpeedY() * Options.SPEED - this.mSpeedDecrement);
-	}
-
 	// ===========================================================
 	// Getters
 	// ===========================================================
@@ -116,38 +71,140 @@ public class Bubble extends Entity implements IAnimationListener {
 	// Methods
 	// ===========================================================
 
+	public void initStartPosition(final float x, final float y){
+		this.setCenterPosition(x, y);
+	}
+	
+	public void initFinishPosition(final float x, final float y){
+
+		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
+		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
+		distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
+
+		if (0 < angle){
+			angle -= Options.PI;
+		}
+			
+		this.mSpeedX = distance * FloatMath.cos(angle);
+		this.mSpeedY = distance * FloatMath.sin(angle);
+
+		// TODO: (R) Is it needed here?
+		//Glint particle;
+		//for (int i = 0; i < 15; i++) {
+			//particle = ((Glint) glints.create());
+			//if (particle != null) {
+				//particle.Init(i, this.lastAirgum);
+			//}
+		//}
+		
+		this.pState = States.Moving;
+	}
+
+	public void isCollide() {
+		this.animate(40, 0);
+		this.pState = States.Destroying;
+	}
+
+	public boolean isCanCollide() {
+		return this.pState != States.Destroying;
+	}
+
 	// ===========================================================
 	// Virtual Methods
 	// ===========================================================
 
-	public void setSpeedYA(final float pSpeedY) {
-		super.setSpeedY(pSpeedY > mMaxSpeed ? mMaxSpeed - this.mSpeedDecrement : pSpeedY);
-	}
-
-	public void setSpeedYB(final float pSpeedY) {
-		super.setSpeedY((pSpeedY > mMaxFastSpeed ? mMaxFastSpeed : pSpeedY) / this.mFastSpeedDecrement);
-	}
-
-	public void setSpeedXB(final float pSpeedX) {
-		super.setSpeedX((pSpeedX > mMaxFastSpeed ? mMaxFastSpeed : pSpeedX) / this.mFastSpeedDecrement);
-	}
-
 	@Override
 	public Entity create() {
-		this.setSpeedX(0f);
-		this.setSpeedYA(mMaxSpeed);
-
-		this.mDeathTime = 200f;
-		this.mSpeedDecrement = 0f;
-		this.mFastSpeedDecrement = 0f;
-
 		this.stopAnimation();
 		this.setCurrentTileIndex(0);
+		
+		this.pState = States.Creating;
+		this.pTime = 0f; // Seconds.
 
+		this.mSpeedX = 0;
+		this.mSpeedY = Options.bubbleMinSpeed;
+		
+		this.mWidth = Options.bubbleMinSize;
+		this.mHeight = Options.bubbleMinSize;
+		
 		this.birdsKills = 0;
-		this.mShowsLabel = false;
 
 		return super.create();
+	}
+
+	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
+		if (this.mWidth + Options.bubbleSizeStep < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
+			
+			//this.mSpeedDecrement += mDecrementStep;
+			//this.mFastSpeedDecrement += mFastDecrementStep;
+			
+			this.mWidth += Options.bubbleSizeStep;
+			this.mHeight += Options.bubbleSizeStep;
+			
+			Options.bubbleSizePower -= Options.bubbleSizeStep;
+			
+			LevelScreen.AIR--;
+		}		
+	}
+
+	protected void onManagedUpdateMoving(final float pSecondsElapsed) {
+		
+		this.mX += this.mSpeedX;
+		this.mY += this.mSpeedY;
+		
+		if (this.pTime > Options.bubbleMaxTimeMove){
+			this.animate(40, 0);
+			this.pState = States.Destroying;
+		}
+		else if (this.mY + this.getHeightScaled() < 0) {
+			this.pState = States.Destroying;
+		}
+	}
+
+	protected void onManagedUpdateDestroying(final float pSecondsElapsed) {
+		if (!this.isAnimationRunning()) {
+//			if (this.birdsKills > 0 && !this.mShowsLabel) {
+//
+//				boolean hasTopChiks = false;
+//
+//				EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+//				
+//				for (int i = chikies.getCount() - 1; i >= 0; --i) {
+//					if (chikies.getByIndex(i).getY() < this.getY()) {
+//						hasTopChiks = true;
+//					}
+//				}
+//
+//				LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
+//				
+//				if (!hasTopChiks) {
+//					this.mShowsLabel = true;
+//
+//					if (this.birdsKills == 1 && chikies.getCount() <= 1) {
+//						screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+//
+//						final Entity bonus = screen.mBonusesText.create();
+//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+//						bonus.setCurrentTileIndex(2);
+//					}
+//					else if (this.birdsKills == 2) {
+//						screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+//
+//						final Entity bonus = screen.mBonusesText.create();
+//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+//						bonus.setCurrentTileIndex(0);
+//					} else if (this.birdsKills == 3) {
+//						screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+//
+//						final Entity bonus = screen.mBonusesText.create();
+//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+//						bonus.setCurrentTileIndex(3);
+//					}
+//				}
+//			}
+
+			this.destroy();
+		}
 	}
 
 	/*
@@ -159,110 +216,18 @@ public class Bubble extends Entity implements IAnimationListener {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if (this.isScaleAction) {
-			if (this.getScaleX() + scaleStep < Math.min(maxScale, Options.scalePower)) {
-				this.mSpeedDecrement += mDecrementStep;
-				this.mFastSpeedDecrement += mFastDecrementStep;
-				this.setScale(this.getScaleX() + scaleStep);
-				Options.scalePower -= scaleStep;
-				LevelScreen.AIR--;
-			}
-		}
-		else {
-			this.mDeathTime--;
-			if (this.mDeathTime <= 0 && this.isFlyAction) {
-				if (!this.isAnimationRunning()) {
-					this.animate(40, 0, this);
-				}
-			}
-
-			if (this.isFlyAction) {
-				this.mY -= this.getSpeedY();
-				this.mX -= this.getSpeedX();
-				if (this.getCenterY() + this.getHeightScaled() < 0) {
-					this.destroy();
-				}
-			}
-
-			if (this.isScaleDefined) {
-				if (this.mIsYReverse) {
-					this.mScaleY -= mSpeedScaleY;
-					if (this.mScaleY < mMinScaleY) {
-						this.mIsYReverse = !this.mIsYReverse;
-					}
-				} else {
-					this.mScaleY += mSpeedScaleY;
-					if (this.mScaleY > mMaxScaleY) {
-						this.mIsYReverse = !this.mIsYReverse;
-					}
-				}
-
-				if (this.mIsXReverse) {
-					this.mScaleX -= mSpeedScaleX;
-					if (this.mScaleX < mMinScaleX) {
-						this.mIsXReverse = !this.mIsXReverse;
-					}
-				} else {
-					this.mScaleX += mSpeedScaleX;
-					if (this.mScaleX > mMaxScaleX) {
-						this.mIsXReverse = !this.mIsXReverse;
-					}
-				}
-
-				this.setScaleY(this.mScaleY);
-				this.setScaleX(this.mScaleX);
-			}
-		}
-
-		if (this.birdsKills > 0 && !this.mShowsLabel && this.mWasCollision) {
-
-			boolean hasTopChiks = false;
-
-			EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
-			
-			for (int n = chikies.getCount() - 1; n >= 0; --n) {
-				if (chikies.getByIndex(n).getY() < this.getY()) {
-					hasTopChiks = true;
-				}
-			}
-
-			LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-			
-			if (!hasTopChiks) {
-				this.mShowsLabel = true;
-
-				if (this.birdsKills == 1 && chikies.getCount() <= 1) {
-					screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-
-					final Entity bonus = screen.mBonusesText.create();
-					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-					bonus.setCurrentTileIndex(2);
-				}
-				else if (this.birdsKills == 2) {
-					screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-
-					final Entity bonus = screen.mBonusesText.create();
-					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-					bonus.setCurrentTileIndex(0);
-				} else if (this.birdsKills == 3) {
-					screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-
-					final Entity bonus = screen.mBonusesText.create();
-					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-					bonus.setCurrentTileIndex(3);
-				}
-			}
-		}
+		this.pTime += pSecondsElapsed;
+		
+		switch (this.pState) {
+		case Creating:
+			this.onManagedUpdateCreating(pSecondsElapsed);
+			break;
+		case Moving:
+			this.onManagedUpdateMoving(pSecondsElapsed);
+			break;
+		case Destroying:
+			this.onManagedUpdateDestroying(pSecondsElapsed);			
+			break;
+		}		
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite.IAnimationListener#onAnimationEnd(org.anddev.andengine.entity.sprite.AnimatedSprite)
-	 */
-	@Override
-	public void onAnimationEnd(AnimatedSprite arg0) {
-		this.destroy();
-	}
-
 }

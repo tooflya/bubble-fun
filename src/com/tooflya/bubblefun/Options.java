@@ -18,7 +18,6 @@ public class Options {
 
 	// > Camera options.
 	public final static float cameraRatioCenter = 520f;
-	public static float cameraRatioFactor;
 
 	public static int cameraWidth;
 	public static int cameraHeight;
@@ -26,10 +25,24 @@ public class Options {
 	public static int cameraCenterY;
 
 	public static float cameraOriginRatioX;
-	public static float cameraOriginRatioY;
+	public static void setCameraOriginRatioX(final float pCameraOriginRatioX){
+		cameraOriginRatioX = pCameraOriginRatioX;
+		cameraOriginRatioCenterX = pCameraOriginRatioX / 2;
+	}
 
-	public static float cameraOriginRatioCenterX;
-	public static float cameraOriginRatioCenterY;
+	public static float cameraOriginRatioY;
+	public static void setCameraOriginRatioY(final float pCameraOriginRatioY){
+		cameraOriginRatioY = pCameraOriginRatioY;
+		cameraOriginRatioCenterY = pCameraOriginRatioY / 2;
+		
+		touchHeight = Options.cameraOriginRatioY * touchHeightPercents;
+		chikyOffsetY = Options.cameraOriginRatioY * chikyOffsetYPercent;
+	}
+
+	public static float cameraRatioFactor;
+
+	public static float cameraOriginRatioCenterX; // For initialize use setCameraOriginRatioX. 
+	public static float cameraOriginRatioCenterY; // For initialize use setCameraOriginRatioY.
 	// < Camera options.
 
 	public static float DPI;
@@ -41,14 +54,13 @@ public class Options {
 
 	public static int levelNumber = 1;
 
-	public static float touchHeight;
-
-	public static float scalePower;
+	private final static float touchHeightPercents = 0.3f;
+	public static float touchHeight; // For initialize use setCameraOriginRatioY.
 
 	public final static int particlesCount = 7;
 
 	// > Chiky options.
-	public final static int chikyEtalonSize = 64;
+	public final static int chikyEtalonSize = 64; // Pixels.
 
 	public final static float chikyMinStepX = 1f; // Pixels by frame.
 	public final static float chikyMaxStepX = 2f; // Pixels by frame.
@@ -60,8 +72,34 @@ public class Options {
 	public final static float chikySpeedCoeficient = 2.5f;
 
 	public final static float chikyOffsetX = 3 * Options.chikyEtalonSize;
+
+	private final static float chikyOffsetYPercent = 0.1f;;
 	public static float chikyOffsetY;
 	// < Chiky options.
+	
+	// > BubbleBase options.
+	public final static float bubbleBaseMinScale = 0.4f;
+	public final static float bubbleBaseMaxScale = 1.7f;
+	public final static float bubbleBaseScaleStep = 0.05f;
+	// < BubbleBase options.
+
+	// > Bubble options.
+	public final static float bubbleAlpha = 0.8f;
+			
+	//public final static float bubbleMinAnimatedScaleCoeficient = 0.7f;
+	//public final static float bubbleMaxAnimatedScaleCoeficient = 1.2f;
+	//public final static float bubbleAnimatedScaleStepCoeficient = 0.003f;
+
+	public static float bubbleSizePower;
+	public final static float bubbleMinSize = 10f; // TODO: (R) Auto set value. // Pixels.
+	public final static float bubbleMaxSize = 70f; // TODO: (R) Auto set value. // Pixels.
+	public final static float bubbleSizeStep = 1f; // Pixels by frame.
+
+	public final static float bubbleMinSpeed = 1f; // Pixels by frame.
+	public final static float bubbleMaxSpeed = 2f; // Pixels by frame.	
+
+	public final static float bubbleMaxTimeMove = 2f; // Seconds.
+	// < Bubble options.
 	
 	public static Music mMainSound, mLevelSound, mLastPlayedMusic; 
 	public static Sound mButtonSound;

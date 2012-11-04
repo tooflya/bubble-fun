@@ -35,6 +35,9 @@ public class Chiky extends Entity {
 
 	private States pState = States.NormalMove;
 
+	private float pTime = 0f; // Seconds.
+	private float pTimeWithGum = 0f; // Seconds.
+
 	private float pStartX = 0;
 	private float pStartY = 0;
 	private float pNormalStepX = 0;
@@ -43,10 +46,7 @@ public class Chiky extends Entity {
 	private int pProperties = 0;
 
 	private float mX_ = 0; // Last (or old) x.
-	
-	private float pTime = 0f;
-	private float pTimeWithGum = 0f;
-	
+		
 	private Bubble pAirgum = null;
 	private Acceleration pWind = null;
 
@@ -187,9 +187,9 @@ public class Chiky extends Entity {
 
 			Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if(airgum != null){
-				airgum.setCenterPosition(this.getCenterX(), this.getCenterY());
-				airgum.setScale(Math.max(this.pAirgum.getScaleX(), Bubble.minScale));
-				airgum.setIsScale(false);
+				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.pAirgum.mSpeedY);
+				// TODO: (R) Correct! airgum.setSize(Math.max(this.pAirgum.getWidth(), Options.bubbleBaseMinScale));
 				airgum.birdsKills = this.pAirgum.birdsKills;
 			}
 			

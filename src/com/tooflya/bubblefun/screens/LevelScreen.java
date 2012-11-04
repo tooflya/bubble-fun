@@ -366,7 +366,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		feathers.clear();
 
-		Options.scalePower = 20; // TODO: Change count of scale power.
+		Options.bubbleSizePower = 100; // TODO: Change count of scale power. // Pixels.
 
 		AIR = 100;// 100;
 
@@ -672,9 +672,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		Chiky chiky;
 		Bubble airgum;
 		for (int i = chikies.getCount() - 1; i >= 0; --i) {
-
-			chiky = chikies.getByIndex(i);
-			
+			chiky = chikies.getByIndex(i);			
 			if (chiky.isCanCollide()) {
 				for (int j = airgums.getCount() - 1; j >= 0; --j) {
 					airgum = (Bubble) airgums.getByIndex(j);
@@ -682,30 +680,29 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						chiky.isCollide(airgum);
 						deadBirds++;
 						airgum.birdsKills++;
-						airgum.mWasCollision = true;
 					}
 				}
 			}
 		}
 		for (int i = airgums.getCount() - 1; i >= 0; --i) {
 			airgum = (Bubble) airgums.getByIndex(i);
-			if (!airgum.isAnimationRunning()) {
+			if (airgum.isCanCollide()) {
 				for (int j = thorns.getCount() - 1; j >= 0; --j) {
 					if (this.isCollide(airgum, thorns.getByIndex(j), true)) {
-						airgum.animate(10, 0, airgum);
+						airgum.isCollide();
 					}
 				}
 				for (int j = electrods.getCount() - 1; j >= 0; --j) {
 					Electrod electrod = ((Electrod) electrods.getByIndex(j));
 					if (electrod.isAnimationRunning() && this.isCollide(airgum, electrod, true)) {
-						airgum.animate(10, 0, airgum);
+						airgum.isCollide();
 					}
 				}
 			}
 			if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
 				mBlueBird.particles();
 				if (!airgum.isAnimationRunning()) {
-					airgum.animate(10, 0, airgum);
+					airgum.isCollide();
 				}
 			}
 		}
@@ -851,44 +848,16 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
 
-			if (AIR > 0) {
-				if (this.lastAirgum == null && pTouchY > Options.cameraOriginRatioY - Options.cameraOriginRatioY / 3)
-				{
-					this.lastAirgum = (Bubble) airgums.create();
-					this.lastAirgum.setCenterPosition(pTouchX, pTouchY);
-					this.lastAirgum.setScaleCenterY(0);
-				}
-				if (this.lastAirgum != null) {
-					this.lastAirgum.setIsScale(true);
-				}
+			if (AIR > 0 && this.lastAirgum == null && pTouchY > Options.cameraOriginRatioY - Options.touchHeight) {
+				this.lastAirgum = (Bubble) airgums.create();
+				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
+				this.lastAirgum.setScaleCenterY(0); // TODO: (R) Something strange.
 			}
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
-				if (this.lastAirgum.getCenterY() - pTouchY > 2f) {
-
-					this.lastAirgum.setIsScale(false);
-
-					float angle = (float) Math.atan2(pTouchY - this.lastAirgum.getCenterY(), pTouchX - this.lastAirgum.getCenterX());
-
-					float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), pTouchX, pTouchY);
-
-					distance = distance > 6 ? 6 : distance;
-
-					this.lastAirgum.setSpeedXB(-(distance * FloatMath.cos(angle)));
-					this.lastAirgum.setSpeedYB(-(distance * FloatMath.sin(angle)));
-
-					Glint particle;
-					for (int i = 0; i < 15; i++) {
-						particle = ((Glint) glints.create());
-						if (particle != null) {
-							particle.Init(i, this.lastAirgum);
-						}
-					}
-				} else {
-
-					this.lastAirgum.setIsScale(false);
-				}
+				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
+				
 
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
 				while (x < Options.cameraOriginRatioX && y > 0 && x > 0) {

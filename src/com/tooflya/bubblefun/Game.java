@@ -109,16 +109,13 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** */
 		if (Options.cameraWidth > Options.cameraRatioCenter && false) {
-			Options.cameraOriginRatioX = 640.0f;
-			Options.cameraOriginRatioY = 1024.0f;
+			Options.setCameraOriginRatioX(640.0f);
+			Options.setCameraOriginRatioY(1024.0f);
 
 			Options.CR = "HD/";
 		} else {
-			Options.cameraOriginRatioX = 380.0f;
-			Options.cameraOriginRatioY = 610.0f;
-
-			Options.cameraOriginRatioCenterX = Options.cameraOriginRatioX / 2;
-			Options.cameraOriginRatioCenterY = Options.cameraOriginRatioY / 2;
+			Options.setCameraOriginRatioX(380.0f);
+			Options.setCameraOriginRatioY(610.0f);
 
 			Options.CR = "SD/";
 		}
@@ -127,9 +124,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
-
-		Options.touchHeight = Options.cameraOriginRatioY / 3; // TODO: WTF?
-		Options.chikyOffsetY = Options.cameraOriginRatioY / 10; // TODO: WTF?
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)

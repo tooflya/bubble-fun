@@ -45,10 +45,10 @@ public class GraphicsBubble extends Bubble {
 		this.setSpeedX(0f);
 		this.setSpeedY(Game.random.nextInt(10));
 
-		this.mDeathTime = 200f;
-		this.mSpeedDecrement = 0f;
+//		this.mDeathTime = 200f;
+//		this.mSpeedDecrement = 0f;
 
-		this.isScaleAction = false;
+//		this.isScaleAction = false;
 
 		return super.create();
 	}
