@@ -110,6 +110,9 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 
 		updates = 0;
 		mBalon.create();
+		
+		if(Options.mLevelSound.isPlaying()) Options.mLevelSound.pause();
+		if(Options.mMainSound.isPlaying()) Options.mMainSound.pause();
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);

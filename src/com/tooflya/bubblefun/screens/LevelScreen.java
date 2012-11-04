@@ -2,7 +2,6 @@ package com.tooflya.bubblefun.screens;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.audio.sound.Sound;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -76,6 +75,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Gradient mBackground = new Gradient(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
 
+	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 0, 615, 1, 3), this.mBackground));
+
 	public  EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
 	public  EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
 	public  EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
@@ -89,8 +90,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
-
-	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 0, 615, 1, 3), this.mBackground));
 
 	private final Sprite mDottedLine = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line.png", 0, 1020, 1, 1), this.mBackground);
 
@@ -736,6 +735,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	public void onAttached() {
 		super.onAttached();
+		
+		if(!Options.mLevelSound.isPlaying()) Options.mLevelSound.play();
 	}
 
 	/*

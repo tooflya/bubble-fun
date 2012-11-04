@@ -1,5 +1,8 @@
 package com.tooflya.bubblefun;
 
+import org.anddev.andengine.audio.music.Music;
+import org.anddev.andengine.audio.sound.Sound;
+
 /**
  * @author Tooflya.com
  * @since
@@ -47,4 +50,7 @@ public class Options {
 	public final static float maxChikyStepX = 2f; // Pixels by one managed update.
 
 	public final static float chikyOffsetX = 3 * Options.chikySize; // TODO: Correct value.
+	
+	public static Music mMainSound, mLevelSound, mLastPlayedMusic; 
+	public static Sound mButtonSound;
 }

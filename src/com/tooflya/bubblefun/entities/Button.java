@@ -4,6 +4,8 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.Options;
+
 public abstract class Button extends Sprite {
 
 	public Button(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
@@ -12,6 +14,10 @@ public abstract class Button extends Sprite {
 
 	public abstract void onClick();
 
+	protected void onClickStandartActions() {
+		Options.mButtonSound.play();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -27,6 +33,7 @@ public abstract class Button extends Sprite {
 		case TouchEvent.ACTION_UP:
 			this.setCurrentTileIndex(0);
 
+			this.onClickStandartActions();
 			this.onClick();
 			break;
 		}

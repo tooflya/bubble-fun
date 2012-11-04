@@ -74,6 +74,7 @@ public class ButtonScaleable extends Button {
 
 		if (this.mDoAction) {
 			if (this.mWaitBeforeAction-- <= 0) {
+				this.onClickStandartActions();
 				this.mDoAction = false;
 				this.mWaitBeforeAction = 20;
 				this.setScale(this.mBaseScale);

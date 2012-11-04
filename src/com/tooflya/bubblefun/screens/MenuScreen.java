@@ -36,7 +36,7 @@ public class MenuScreen extends Screen {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
+	
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
@@ -257,6 +257,8 @@ public class MenuScreen extends Screen {
 		super.onAttached();
 
 		PreloaderScreen.mChangeAction = 0;
+		
+		if(!Options.mMainSound.isPlaying()) Options.mMainSound.play();
 	}
 
 	/*

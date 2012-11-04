@@ -1,7 +1,9 @@
 package com.tooflya.bubblefun;
 
+import java.io.IOException;
 import java.util.Random;
 
+import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.FixedStepEngine;
@@ -167,6 +169,18 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/" + Options.CR);
 		SoundFactory.setAssetBasePath("mfx/");
+		MusicFactory.setAssetBasePath("mfx/");
+		
+		try {
+			Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
+			Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
+			Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W3.ogg");
+			
+			Options.mMainSound.setLooping(true);
+			Options.mLevelSound.setLooping(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -176,7 +190,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void workToDo() {
-
+		
 		/** Create screen manager */
 		screens = new ScreenManager();
 
@@ -271,7 +285,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onResumeGame() {
 		super.onResumeGame();
 
-		// TODO: Release all music, update handlers and other active things
+		if(Options.mLastPlayedMusic != null) {
+			Options.mLastPlayedMusic.resume();
+		}
 	}
 
 	/*
@@ -283,7 +299,16 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onPauseGame() {
 		super.onPauseGame();
 
-		// TODO: Stop all music, update handlers and other active things
+		Options.mLastPlayedMusic = null;
+		
+		if(Options.mMainSound.isPlaying()) {
+			Options.mMainSound.pause();
+			Options.mLastPlayedMusic = Options.mMainSound;
+		}
+		if(Options.mLevelSound.isPlaying()) {
+			Options.mLevelSound.pause();
+			Options.mLastPlayedMusic = Options.mLevelSound;
+		}
 	}
 
 	/*
@@ -304,6 +329,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		screenChangeTime = System.currentTimeMillis();
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			Options.mButtonSound.play();
 			return screens.get(Screen.screen).onBackPressed();
 		}
 

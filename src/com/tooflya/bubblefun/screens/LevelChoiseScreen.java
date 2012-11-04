@@ -105,6 +105,8 @@ public class LevelChoiseScreen extends Screen {
 
 		this.levels.clear();
 		this.levels.generate();
+		
+		if(!Options.mMainSound.isPlaying()) Options.mMainSound.play();
 	}
 
 	/*
