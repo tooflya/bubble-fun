@@ -89,10 +89,10 @@ public class PauseScreen extends Screen {
 
 		this.setBackgroundEnabled(false);
 
-		this.b1.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY - 120f);
-		this.b2.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY - 40f);
-		this.b3.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 40f);
-		this.b4.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 120f);
+		this.b1.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 120f);
+		this.b2.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f);
+		this.b3.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 40f);
+		this.b4.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 120f);
 
 		Entity sprite;
 
@@ -122,7 +122,7 @@ public class PauseScreen extends Screen {
 	// ===========================================================
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraOriginRatioX, Options.cameraOriginRatioY);
+		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
 		coloredRect.setColor(pRed, pGreen, pBlue);
 		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		coloredRect.setAlpha(0.7f);

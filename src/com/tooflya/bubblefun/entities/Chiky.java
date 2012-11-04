@@ -83,8 +83,8 @@ public class Chiky extends Entity {
 		mState = States.NormalMove;
 
 		// Center of used region.
-		this.mStartX = Options.cameraOriginRatioX / 2;
-		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraOriginRatioY - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
+		this.mStartX = Options.cameraWidth / 2;
+		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
 
 		this.mNormalStepX = Game.random.nextFloat() * (Options.chikyMaxStepX - Options.chikyMinStepX) + Options.chikyMinStepX;
 		if (Game.random.nextBoolean()) {
@@ -196,7 +196,7 @@ public class Chiky extends Entity {
 			this.mState = States.Fall;
 			this.mStartX = this.getCenterX();
 			this.mStartY = this.getCenterY();
-			if (this.getCenterX() < Options.cameraOriginRatioX / 2) {
+			if (this.getCenterX() < Options.cameraWidth / 2) {
 				this.mSpeedX = this.mNormalStepX;
 			}
 			else {
@@ -234,19 +234,19 @@ public class Chiky extends Entity {
 			this.mSpeedX = +Math.abs(this.mSpeedX);
 			isBorder = true;
 		}
-		final float maxX = Options.cameraOriginRatioX + this.mOffsetX - this.mWidth / 2;
+		final float maxX = Options.cameraWidth + this.mOffsetX - this.mWidth / 2;
 		if (x > maxX) {
 			x = 2 * maxX - x;
 			this.mSpeedX = -Math.abs(this.mSpeedX);
 			isBorder = true;
 		}
 		if (isBorder && this.IsProperty(isJumplyFlag)) {
-			this.mStartY = Options.chikyEtalonSize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikyEtalonSize);
+			this.mStartY = Options.chikyEtalonSize / 2 + Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize);
 		}
 
 		float y = this.mStartY;
 		if (this.IsProperty(isWavelyFlag)) {
-			y += FloatMath.sin(this.mTime * Options.PI * Math.abs(this.mSpeedX) / Options.cameraOriginRatioX) * Options.chikyOffsetY;
+			y += FloatMath.sin(this.mTime * Options.PI * Math.abs(this.mSpeedX) / Options.cameraWidth) * Options.chikyOffsetY;
 		}
 
 		this.setCenterPosition(x, y);
@@ -307,7 +307,7 @@ public class Chiky extends Entity {
 
 		this.setRotation(this.getRotation() + 1); // Rotate at 1 degree. Maybe need to correct.
 
-		if (this.mY > Options.cameraOriginRatioY) {
+		if (this.mY > Options.cameraHeight) {
 			this.destroy();
 		}
 	}

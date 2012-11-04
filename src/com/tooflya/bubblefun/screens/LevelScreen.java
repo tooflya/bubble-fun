@@ -72,7 +72,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap,
 			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
 
-	private Gradient mBackground = new Gradient(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
+	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
 
 	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 0, 615, 1, 3), this.mBackground));
 
@@ -157,7 +157,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final Rectangle shape = new Rectangle(0, 0, Options.cameraOriginRatioX, Options.cameraOriginRatioY) {
+	private final Rectangle shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
 		private float s = 0.005f;
 
@@ -201,24 +201,24 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
 	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 10, 1), this.mBackground));
 
-	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraOriginRatioCenterX - mTextTapHere.getWidth() / 2, Options.cameraOriginRatioCenterX
-			- mTextTapHere.getWidth() / 2, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3,
-			(Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2) {
+	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX
+			- mTextTapHere.getWidth() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3,
+			(Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2) {
 		@Override
 		public void onFinished() {
 			mTextTapHere.reset();
 		}
 	};
 
-	private final MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraOriginRatioCenterX - mTextTapHere.getWidth() / 2, Options.cameraOriginRatioCenterX
-			- mTextTapHere.getWidth() / 2, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2, (Options.cameraOriginRatioY / 3 * 2)
-			+ Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3);
+	private final MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX
+			- mTextTapHere.getWidth() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2, (Options.cameraHeight / 3 * 2)
+			+ Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3);
 
 	private final Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context,
 			"text-restart.png", 430, 0, 1, 1), this.mRectangle);
 
-	private final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraOriginRatioX / 8, Options.cameraOriginRatioCenterY,
-			Options.cameraOriginRatioCenterY) {
+	private final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY,
+			Options.cameraCenterY) {
 		@Override
 		public void onStarted() {
 			rectangleAlphaModifierOn.reset();
@@ -233,16 +233,16 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final AlphaModifier rectangleAlphaModifierOn = new AlphaModifier(1f, 0f, 0.7f);
 	private final AlphaModifier rectangleAlphaModifierOff = new AlphaModifier(1f, 0.7f, 0f);
 
-	private final MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraOriginRatioX / 8, Options.cameraOriginRatioX / 8 * 2, Options.cameraOriginRatioCenterY,
-			Options.cameraOriginRatioCenterY) {
+	private final MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY,
+			Options.cameraCenterY) {
 		@Override
 		public void onFinished() {
 			restartMove3.reset();
 		}
 	};
 
-	private final MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraOriginRatioX / 8 * 2, Options.cameraOriginRatioX, Options.cameraOriginRatioCenterY,
-			Options.cameraOriginRatioCenterY) {
+	private final MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraWidth / 8 * 2, Options.cameraWidth, Options.cameraCenterY,
+			Options.cameraCenterY) {
 		@Override
 		public void onFinished() {
 			reInit();
@@ -285,17 +285,17 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.clouds.generateStartClouds();
 
-		mDottedLine.create().setPosition(0, Options.cameraOriginRatioY / 3 * 2);
+		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
 
 		this.attachChild(shape);
 		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.shape.setAlpha(0f);
 
-		mLevelWord.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
-		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX - 30f, Options.cameraOriginRatioCenterY);
-		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX - 10f, Options.cameraOriginRatioCenterY);
-		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX + 10f, Options.cameraOriginRatioCenterY);
-		numbers.create().setCenterPosition(Options.cameraOriginRatioCenterX + 30f, Options.cameraOriginRatioCenterY);
+		mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX - 30f, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX + 10f, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX + 30f, Options.cameraCenterY);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Shape) shape.getChild(i)).setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -316,10 +316,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
 
-		this.mMenuButton.create().setPosition(Options.cameraOriginRatioX - (10 + this.mMenuButton.getWidth()), 10);
-		this.mResetButton.create().setPosition(Options.cameraOriginRatioX - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
+		this.mMenuButton.create().setPosition(Options.cameraWidth - (10 + this.mMenuButton.getWidth()), 10);
+		this.mResetButton.create().setPosition(Options.cameraWidth - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
 
-		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraOriginRatioCenterY - mResetText.getHeight() / 2);
+		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraCenterY - mResetText.getHeight() / 2);
 		mResetText.registerEntityModifier(restartMove1);
 		mResetText.registerEntityModifier(restartMove2);
 		mResetText.registerEntityModifier(restartMove3);
@@ -346,6 +346,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mDoubleKillText.clear();
 		mTripleKillText.clear();
 		mBonusesText.clear();
+		parachutes.clear();
 
 		mBlueBird.create();
 		mBlueBird.clear();
@@ -366,17 +367,17 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		mBubblesCount = 0;
 
-		mTextTapHere.create().setCenterPosition(Options.cameraOriginRatioCenterX, (Options.cameraOriginRatioY / 3 * 2) + Options.cameraOriginRatioY / 3 / 2 + Options.cameraOriginRatioY / 3);
+		mTextTapHere.create().setCenterPosition(Options.cameraCenterX, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3);
 
 		shape.reset();
 
 		if (Options.levelNumber < 10) {
-			mLevelWord.setCenterPosition(Options.cameraOriginRatioCenterX - 10f, Options.cameraOriginRatioCenterY - 40f);
+			mLevelWord.setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY - 40f);
 			numbers.getByIndex(3).setVisible(false);
 
 			numbers.getByIndex(2).setCurrentTileIndex(Options.levelNumber);
 		} else {
-			mLevelWord.setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY - 40f);
+			mLevelWord.setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f);
 			numbers.getByIndex(3).setVisible(true);
 
 			numbers.getByIndex(2).setCurrentTileIndex((int) Math.floor(Options.levelNumber / 10));
@@ -393,7 +394,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		Chiky chiky;
 
 		final float minHeight = Options.chikyEtalonSize / 2 + Options.chikyOffsetY;
-		final float sizeHeight2 = (Options.cameraOriginRatioY - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
+		final float sizeHeight2 = (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
 		final float stepX = (Options.chikyMinStepX + Options.chikyMaxStepX) / 2;
 
 		switch (Options.levelNumber) {
@@ -401,7 +402,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			chiky = chikies.create();
 			chiky.initIsParachute();
 
-			electrods.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
+			electrods.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 			return;
 		case 2:
@@ -843,7 +844,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
 
-			if (AIR > 0 && this.lastAirgum == null && pTouchY > Options.cameraOriginRatioY - Options.touchHeight) {
+			if (AIR > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 				this.lastAirgum = (Bubble) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
 				this.lastAirgum.setScaleCenterY(0); // TODO: (R) Something strange.
@@ -854,7 +855,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
 
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
-				while (0 < x && x < Options.cameraOriginRatioX && 0 < y && y < Options.cameraOriginRatioY) {
+				while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
 					x += this.lastAirgum.getSpeedX() * 15;
 					y += this.lastAirgum.getSpeedY() * 15;
 					Entity w = mMarks.create();
@@ -863,7 +864,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				}
 				x = this.lastAirgum.getCenterX();
 				y = this.lastAirgum.getCenterY();
-				while (0 < x && x < Options.cameraOriginRatioX && 0 < y && y < Options.cameraOriginRatioY) {
+				while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
 					Entity w = mMarks.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
@@ -886,7 +887,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraOriginRatioX, Options.cameraOriginRatioY);
+		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
 		coloredRect.setColor(pRed, pGreen, pBlue);
 		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		coloredRect.setAlpha(0f);

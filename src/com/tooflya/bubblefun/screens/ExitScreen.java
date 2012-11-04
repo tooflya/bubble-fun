@@ -136,7 +136,7 @@ public class ExitScreen extends Screen {
 
 		this.mPanel.create();
 		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
-		this.mPanel.setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
 
 		this.mYIcon.create();
 		this.mYIcon.setScaleCenter(this.mYIcon.getWidth() / 2, this.mYIcon.getHeight() / 2);
@@ -163,10 +163,11 @@ public class ExitScreen extends Screen {
 	// ===========================================================
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraOriginRatioX, Options.cameraOriginRatioY);
+		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
 		coloredRect.setColor(pRed, pGreen, pBlue);
 		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		coloredRect.setAlpha(0.7f);
+		
 
 		this.attachChild(coloredRect);
 

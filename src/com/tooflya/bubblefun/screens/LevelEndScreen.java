@@ -92,16 +92,16 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		mBackground.create().setBackgroundCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		mBackground.create().setBackgroundCenterPosition();
 
-		mMenu.create().setCenterPosition(Options.cameraOriginRatioCenterX - 100f, Options.cameraOriginRatioCenterY + 170f);
-		mRePlay.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 170f);
-		mPlayNext.create().setCenterPosition(Options.cameraOriginRatioCenterX + 100f, Options.cameraOriginRatioCenterY + 170f);
+		mMenu.create().setCenterPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 170f);
+		mRePlay.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 170f);
+		mPlayNext.create().setCenterPosition(Options.cameraCenterX + 100f, Options.cameraCenterY + 170f);
 
 		Star star;
 		for (int i = 0; i < 3; i++) {
 			star = mLevelStars.create();
-			star.setCenterPosition(Options.cameraOriginRatioCenterX + 80f * (i - 1), Options.cameraOriginRatioCenterY + 80f);
+			star.setCenterPosition(Options.cameraCenterX + 80f * (i - 1), Options.cameraCenterY + 80f);
 			star.setCurrentTileIndex(1);
 		}
 	}

@@ -287,9 +287,9 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * 
 	 */
-	public void setBackgroundCenterPosition(final float pCenterX, final float pCenterY) {
-		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
-		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+	public void setBackgroundCenterPosition() {
+		this.mX = Options.screenWidth / 2 - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+		this.mY = Options.screenHeight / 2 - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
 
 	/**
@@ -341,6 +341,31 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.Entity#setPosition(float, float)
+	 */
+	@Override
+	public void setPosition(final float pX, final float pY) {
+		super.setPosition(pX, pY);
+
+		float factorX, factorY;
+
+		if (this.mX < Options.cameraCenterX) {
+			factorX = (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2;
+		} else {
+			factorX = -(Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2;
+		}
+
+		if (this.mY < Options.cameraCenterY) {
+			factorY = (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2;
+		} else {
+			factorY = -(Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2;
+		}
+
+		this.mX += factorX / Options.cameraRatioFactor;
+		this.mY += factorY / Options.cameraRatioFactor;
+	}
 
 	/*
 	 * (non-Javadoc)
