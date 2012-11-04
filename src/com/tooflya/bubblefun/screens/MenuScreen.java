@@ -195,7 +195,7 @@ public class MenuScreen extends Screen {
 
 		this.mClouds.generateStartClouds();
 
-		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mBackground.create().setBackgroundCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.mLogoBackground.create().setCenterPosition(Options.cameraOriginRatioCenterX, mBackground.getY() + 120f);
 
 		this.mTwitterIcon.create().setPosition(Options.cameraOriginRatioX - ICONS_PADDING - ICONS_SIZE, Options.cameraOriginRatioY - ICONS_PADDING - ICONS_SIZE);

@@ -92,7 +92,7 @@ public class LevelEndScreen extends Screen {
 	// ===========================================================
 
 	public LevelEndScreen() {
-		mBackground.create();
+		mBackground.create().setBackgroundCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		mMenu.create().setCenterPosition(Options.cameraOriginRatioCenterX - 100f, Options.cameraOriginRatioCenterY + 170f);
 		mRePlay.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY + 170f);

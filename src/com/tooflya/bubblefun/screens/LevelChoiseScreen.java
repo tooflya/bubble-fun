@@ -59,7 +59,7 @@ public class LevelChoiseScreen extends Screen {
 
 		this.mClouds.generateStartClouds();
 
-		this.mBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mBackground.create().setBackgroundCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
 		this.mBackButton.create().setPosition(10f, Options.cameraOriginRatioY - 60f);
 
