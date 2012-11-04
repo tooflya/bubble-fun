@@ -2,7 +2,7 @@ package com.tooflya.bubblefun.managers;
 
 import com.tooflya.bubblefun.entities.Entity;
 
-public class BubblesManager extends EntityManager {
+public class BubblesManager extends EntityManager<Entity> {
 
 	public BubblesManager(int capacity, Entity element) {
 		super(capacity, element);

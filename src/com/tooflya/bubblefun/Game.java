@@ -1,6 +1,5 @@
 package com.tooflya.bubblefun;
 
-import java.io.IOException;
 import java.util.Random;
 
 import org.anddev.andengine.audio.music.MusicFactory;

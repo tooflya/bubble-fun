@@ -33,7 +33,7 @@ public class BlueBird extends Entity {
 
 	private boolean mIsSleep;
 
-	private EntityManager mFeathersManager;
+	private EntityManager<?> mFeathersManager;
 
 	// ===========================================================
 	// Constructors
@@ -44,7 +44,7 @@ public class BlueBird extends Entity {
 	 * @param pFeathersManager
 	 * @param pParentScreen
 	 */
-	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager pFeathersManager, final org.anddev.andengine.entity.Entity pParentScreen) {
+	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager<?> pFeathersManager, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.mFeathersManager = pFeathersManager;

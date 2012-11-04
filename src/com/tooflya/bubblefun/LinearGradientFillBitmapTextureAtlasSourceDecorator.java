@@ -1,12 +1,10 @@
 package com.tooflya.bubblefun;
 
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
 
 import com.tooflya.bubblefun.screens.LevelScreen;
 
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader.TileMode;
 
