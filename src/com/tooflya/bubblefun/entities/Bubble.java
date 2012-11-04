@@ -5,7 +5,10 @@ import org.anddev.andengine.util.MathUtils;
 
 import android.util.FloatMath;
 
+import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class Bubble extends BubbleBase {
@@ -149,47 +152,44 @@ public class Bubble extends BubbleBase {
 
 	protected void onManagedUpdateDestroying(final float pSecondsElapsed) {
 		if (!this.isAnimationRunning()) {
-			//			if (this.birdsKills > 0 && !this.mShowsLabel) {
-			//
-			//				boolean hasTopChiks = false;
-			//
-			//				EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
-			//				
-			//				for (int i = chikies.getCount() - 1; i >= 0; --i) {
-			//					if (chikies.getByIndex(i).getY() < this.getY()) {
-			//						hasTopChiks = true;
-			//					}
-			//				}
-			//
-			//				LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-			//				
-			//				if (!hasTopChiks) {
-			//					this.mShowsLabel = true;
-			//
-			//					if (this.birdsKills == 1 && chikies.getCount() <= 1) {
-			//						screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			//
-			//						final Entity bonus = screen.mBonusesText.create();
-			//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-			//						bonus.setCurrentTileIndex(2);
-			//					}
-			//					else if (this.birdsKills == 2) {
-			//						screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			//
-			//						final Entity bonus = screen.mBonusesText.create();
-			//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-			//						bonus.setCurrentTileIndex(0);
-			//					} else if (this.birdsKills == 3) {
-			//						screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			//
-			//						final Entity bonus = screen.mBonusesText.create();
-			//						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-			//						bonus.setCurrentTileIndex(3);
-			//					}
-			//				}
-			//			}
-
-			this.destroy();
+			if (this.birdsKills > 0) {
+		
+				boolean hasTopChiks = false;
+			
+				EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+							
+				for (int i = chikies.getCount() - 1; i >= 0; --i) {
+					if (chikies.getByIndex(i).getY() < this.getY()) {
+						hasTopChiks = true;
+					}
+				}
+			
+				LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
+							
+				if (!hasTopChiks) {
+					if (this.birdsKills == 1 && chikies.getCount() <= 1) {
+						screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+			
+						final Entity bonus = screen.mBonusesText.create();
+						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+						bonus.setCurrentTileIndex(2);
+					}
+					else if (this.birdsKills == 2) {
+						screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+			
+						final Entity bonus = screen.mBonusesText.create();
+						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+						bonus.setCurrentTileIndex(0);
+					} else if (this.birdsKills == 3) {
+						screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+			
+						final Entity bonus = screen.mBonusesText.create();
+						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+						bonus.setCurrentTileIndex(3);
+					}
+				}
+			}
+		this.destroy();
 		}
 	}
 
