@@ -64,8 +64,12 @@ public class Bubble extends BubbleBase {
 		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());		
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
 		if (distance < Options.eps){
-			angle = -Options.PI / 2;
+			this.mSpeedX = 0;
+			this.mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 - this.mLostedSpeed;
+			this.mSpeedY = this.mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : this.mSpeedY;
+			this.mSpeedY = -this.mSpeedY;
 		}
+		else{
 		distance -= this.mLostedSpeed;
 		distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
 		distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;		
@@ -77,25 +81,70 @@ public class Bubble extends BubbleBase {
 		this.mSpeedX = distance * FloatMath.cos(angle);
 		this.mSpeedY = distance * FloatMath.sin(angle);
 
-		// TODO: (R) Is it needed here?
-		//Glint particle;
-		//for (int i = 0; i < 15; i++) {
-		//particle = ((Glint) glints.create());
-		//if (particle != null) {
-		//particle.Init(i, this.lastAirgum);
-		//}
-		//}
-
+		if(Options.bubbleMinSpeed < distance){
+			// TODO: (R) Is it needed here?
+			Glint particle;
+			for (int i = 0; i < 15; i++) {
+				particle = ((Glint) ((LevelScreen)Game.screens.get(Screen.LEVEL)).glints.create());
+				if (particle != null) {
+					particle.Init(i, this);
+				}
+			}
+		}
+		}
+		this.mTime = 0;
 		this.mState = States.Moving;
 	}
 
 	public void isCollide() {
 		this.animate(40, 0);
+		this.writeText();
 		this.mState = States.Destroying;
 	}
 
 	public boolean isCanCollide() {
 		return this.mState == States.Moving;
+	}
+
+	public void writeText() {
+		if (this.birdsKills > 0) {
+			boolean hasTopChiks = false;
+		
+			EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+						
+			for (int i = chikies.getCount() - 1; i >= 0; --i) {
+				Chiky chiky = chikies.getByIndex(i);
+				if (chiky.isCanCollide() && chiky.getY() < this.getY()) {
+					hasTopChiks = true;
+				}
+			}
+			hasTopChiks = false;
+			LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
+						
+			if (!hasTopChiks) {
+				if (this.birdsKills == 1 && chikies.getCount() <= 1) {
+					System.out.println("2 " + this.getCenterX() + " " + this.getCenterY());
+					screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+		
+					final Entity bonus = screen.mBonusesText.create();
+					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+					bonus.setCurrentTileIndex(2);
+				}
+				else if (this.birdsKills == 2) {
+					screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+		
+					final Entity bonus = screen.mBonusesText.create();
+					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+					bonus.setCurrentTileIndex(0);
+				} else if (this.birdsKills == 3) {
+					screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
+		
+					final Entity bonus = screen.mBonusesText.create();
+					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
+					bonus.setCurrentTileIndex(3);
+				}
+			}
+		}
 	}
 
 	// ===========================================================
@@ -121,8 +170,8 @@ public class Bubble extends BubbleBase {
 
 		return super.create();
 	}
-
-	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
+	
+	private void onManagedUpdateCreating(final float pSecondsElapsed) {
 		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
 			
 			this.mLostedSpeed += Options.bubbleStepSpeed;
@@ -130,6 +179,7 @@ public class Bubble extends BubbleBase {
 			this.setWidth(mWidth + Options.bubbleStepSize);
 			this.setHeight(mHeight + Options.bubbleStepSize);
 			this.mX -= Options.bubbleStepSize / 2;
+			this.mY -= Options.bubbleStepSize / 2;
 			
 			Options.bubbleSizePower -= Options.bubbleStepSize;
 			
@@ -137,7 +187,7 @@ public class Bubble extends BubbleBase {
 		}
 	}
 
-	protected void onManagedUpdateMoving(final float pSecondsElapsed) {
+	private void onManagedUpdateMoving(final float pSecondsElapsed) {
 
 		this.mX += this.mSpeedX;
 		this.mY += this.mSpeedY;
@@ -151,46 +201,12 @@ public class Bubble extends BubbleBase {
 		}
 	}
 
-	protected void onManagedUpdateDestroying(final float pSecondsElapsed) {
-		if (!this.isAnimationRunning()) {
-			if (this.birdsKills > 0) {
+	private void onManagedUpdateDestroying(final float pSecondsElapsed) {
+		this.mX += this.mSpeedX;
+		this.mY += this.mSpeedY;
 		
-				boolean hasTopChiks = false;
-			
-				EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
-							
-				for (int i = chikies.getCount() - 1; i >= 0; --i) {
-					if (chikies.getByIndex(i).getY() < this.getY()) {
-						hasTopChiks = true;
-					}
-				}
-			
-				LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-							
-				if (!hasTopChiks) {
-					if (this.birdsKills == 1 && chikies.getCount() <= 1) {
-						screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			
-						final Entity bonus = screen.mBonusesText.create();
-						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-						bonus.setCurrentTileIndex(2);
-					}
-					else if (this.birdsKills == 2) {
-						screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			
-						final Entity bonus = screen.mBonusesText.create();
-						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-						bonus.setCurrentTileIndex(0);
-					} else if (this.birdsKills == 3) {
-						screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-			
-						final Entity bonus = screen.mBonusesText.create();
-						bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-						bonus.setCurrentTileIndex(3);
-					}
-				}
-			}
-		this.destroy();
+		if (!this.isAnimationRunning()) {
+			this.destroy();
 		}
 	}
 
