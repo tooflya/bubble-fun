@@ -80,14 +80,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public  EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
 	public  EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
 	public  EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
-	public  EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4), this.mBackground));
-
-	
-	
-	
-	
-	
-	
+	public  EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4), this.mBackground));	
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 

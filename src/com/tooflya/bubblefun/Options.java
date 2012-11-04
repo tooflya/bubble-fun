@@ -79,8 +79,8 @@ public class Options {
 	// < Chiky options.
 	
 	// > BubbleBase options.
-	public final static float bubbleBaseMinScale = 0.4f;
-	public final static float bubbleBaseMaxScale = 1.7f;
+	public final static float bubbleBaseMinScale = 0.8f;
+	public final static float bubbleBaseMaxScale = 1.2f;
 	public final static float bubbleBaseStepScale = 0.005f;
 	// < BubbleBase options.
 
