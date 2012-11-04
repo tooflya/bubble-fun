@@ -25,16 +25,18 @@ public class Options {
 	public static int cameraCenterY;
 
 	public static float cameraOriginRatioX;
-	public static void setCameraOriginRatioX(final float pCameraOriginRatioX){
+
+	public static void setCameraOriginRatioX(final float pCameraOriginRatioX) {
 		cameraOriginRatioX = pCameraOriginRatioX;
 		cameraOriginRatioCenterX = pCameraOriginRatioX / 2;
 	}
 
 	public static float cameraOriginRatioY;
-	public static void setCameraOriginRatioY(final float pCameraOriginRatioY){
+
+	public static void setCameraOriginRatioY(final float pCameraOriginRatioY) {
 		cameraOriginRatioY = pCameraOriginRatioY;
 		cameraOriginRatioCenterY = pCameraOriginRatioY / 2;
-		
+
 		touchHeight = Options.cameraOriginRatioY * touchHeightPercents;
 		chikyOffsetY = Options.cameraOriginRatioY * chikyOffsetYPercent;
 	}
@@ -68,6 +70,7 @@ public class Options {
 	public final static float chikyMaxTimeNormal = 4f; // Seconds.
 	public final static float chikyMaxTimeSpeedy = 1f; // Seconds.
 	public final static float chikyMaxTimeWithGum = 2f; // Seconds.
+	public final static float chickyMaxTimeParachute = 1f; // Seconds
 
 	public final static float chikySpeedCoeficient = 2.5f;
 
@@ -76,7 +79,7 @@ public class Options {
 	private final static float chikyOffsetYPercent = 0.1f;;
 	public static float chikyOffsetY;
 	// < Chiky options.
-	
+
 	// > BubbleBase options.
 	public final static float bubbleBaseMinScale = 0.4f;
 	public final static float bubbleBaseMaxScale = 1.7f;
@@ -85,7 +88,7 @@ public class Options {
 
 	// > Bubble options.
 	public final static float bubbleAlpha = 0.8f;
-			
+
 	//public final static float bubbleMinAnimatedScaleCoeficient = 0.7f;
 	//public final static float bubbleMaxAnimatedScaleCoeficient = 1.2f;
 	//public final static float bubbleAnimatedScaleStepCoeficient = 0.003f;
@@ -100,7 +103,7 @@ public class Options {
 
 	public final static float bubbleMaxTimeMove = 2f; // Seconds.
 	// < Bubble options.
-	
-	public static Music mMainSound, mLevelSound, mLastPlayedMusic; 
+
+	public static Music mMainSound, mLevelSound, mLastPlayedMusic;
 	public static Sound mButtonSound;
 }

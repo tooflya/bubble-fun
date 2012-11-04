@@ -14,7 +14,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextur
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Color;
 import android.util.FloatMath;
@@ -63,7 +62,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int Score;
 
-	public final  BitmapTextureAtlas mBackgroundGradientTexture = new BitmapTextureAtlas(2, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public final BitmapTextureAtlas mBackgroundGradientTexture = new BitmapTextureAtlas(2, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -77,17 +76,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 0, 615, 1, 3), this.mBackground));
 
-	public  EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
-	public  EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
-	public  EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
-	public  EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4), this.mBackground));
-
-	
-	
-	
-	
-	
-	
+	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
+	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
+	public EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
+	public EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4), this.mBackground));
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
@@ -272,14 +264,16 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
-	public  EntityManager<Chiky> chikies = new EntityManager<Chiky>(31, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
-	public  EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "gum-animation.png", 430, 280, 1, 6), this.mBackground));
-	public  EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather.png", 730, 585, 1, 2), this.mBackground));
+	public EntityManager<Sprite> parachutes = new EntityManager<Sprite>(30, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "parachute.png", 200, 200, 1, 1), this.mBackground));
 	
+	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(30, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
+	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "gum-animation.png", 430, 280, 1, 6), this.mBackground));
+	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather.png", 730, 585, 1, 2), this.mBackground));
+
 	public EntityManager<Glint> glints = new EntityManager<Glint>(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas,
 			Game.context, "blesk.png", 730, 900, 1, 3), this.mBackground));
 
-	private  BlueBird mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blue-bird.png", 430, 600, 6, 1),
+	private BlueBird mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blue-bird.png", 430, 600, 6, 1),
 			new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather_new_blue.png", 430, 890, 1, 2), this.mBackground)), this.mBackground);
 
 	// ===========================================================
@@ -321,7 +315,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mTextTapHere.setRotation(-15f);
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
-		
+
 		this.mMenuButton.create().setPosition(Options.cameraOriginRatioX - (10 + this.mMenuButton.getWidth()), 10);
 		this.mResetButton.create().setPosition(Options.cameraOriginRatioX - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
 
@@ -362,7 +356,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		thorns.clear();
 		electrods.clear();
 		mMarks.clear();
-		generateChikies(); 
+		generateChikies();
 
 		feathers.clear();
 
@@ -405,7 +399,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		switch (Options.levelNumber) {
 		case 1:
 			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
+			chiky.initIsParachute();
 
 			electrods.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
 
@@ -672,7 +666,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		Chiky chiky;
 		Bubble airgum;
 		for (int i = chikies.getCount() - 1; i >= 0; --i) {
-			chiky = chikies.getByIndex(i);			
+			chiky = chikies.getByIndex(i);
 			if (chiky.isCanCollide()) {
 				for (int j = airgums.getCount() - 1; j >= 0; --j) {
 					airgum = (Bubble) airgums.getByIndex(j);
@@ -716,9 +710,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private boolean isCollide(Entity entity1, Entity entity2, final boolean rectangle) {
-		return 
-				(entity2.getX() + entity2.getWidth() >= entity1.getX()) && 
-				(entity1.getX() + entity1.getWidth() <= entity2.getX()) && 
+		return (entity2.getX() + entity2.getWidth() >= entity1.getX()) &&
+				(entity1.getX() + entity1.getWidth() <= entity2.getX()) &&
 				(entity2.getY() + entity2.getHeight() >= entity1.getY()) &&
 				(entity1.getY() + entity1.getHeight() <= entity2.getY());
 		// TODO: (R) What do with scaledSize and various rotationCenter?
@@ -732,8 +725,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	public void onAttached() {
 		super.onAttached();
-		
-		if(!Options.mLevelSound.isPlaying()) Options.mLevelSound.play();
+
+		if (!Options.mLevelSound.isPlaying())
+			Options.mLevelSound.play();
 	}
 
 	/*
@@ -857,7 +851,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
 				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
-				
 
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
 				while (x < Options.cameraOriginRatioX && y > 0 && x > 0) {
