@@ -87,7 +87,7 @@ public class BlueBird extends Entity {
 	 * @return
 	 */
 	private float generateNewHeight() {
-		return Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - this.mHeight);
+		return Game.random.nextFloat() * (Options.cameraHeight - Options.touchHeight - this.mHeight);
 	}
 
 	// ===========================================================
@@ -103,7 +103,7 @@ public class BlueBird extends Entity {
 	public Entity create() {
 		this.setSpeedX(mSpeed);
 
-		this.mX = Game.random.nextInt(2) == 0 ? 0 - this.mWidth : Options.cameraOriginRatioX + this.mWidth;
+		this.mX = Game.random.nextInt(2) == 0 ? 0 - this.mWidth : Options.cameraWidth + this.mWidth;
 		this.mY = this.generateNewHeight();
 
 		return super.create();
@@ -136,7 +136,7 @@ public class BlueBird extends Entity {
 					this.mX -= this.getSpeedX();
 				}
 			} else {
-				if (this.mX - this.mWidth > Options.cameraOriginRatioX) {
+				if (this.mX - this.mWidth > Options.cameraWidth) {
 					this.getTextureRegion().setFlippedHorizontal(true);
 					this.mSleepTime = this.mSleepTimeOrigin;
 					this.mY = this.generateNewHeight();

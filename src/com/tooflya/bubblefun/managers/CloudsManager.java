@@ -35,8 +35,8 @@ public class CloudsManager<T> extends EntityManager<Cloud> {
 			break;
 		}
 
-		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraOriginRatioX + cloud.getWidth())) - cloud.getWidth() : Options.cameraOriginRatioX,
-				Game.random.nextInt((int) (Options.cameraOriginRatioY / 3 * 2 - cloud.getHeight())));
+		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraWidth + cloud.getWidth())) - cloud.getWidth() : Options.cameraWidth,
+				Game.random.nextInt((int) (Options.cameraHeight / 3 * 2 - cloud.getHeight())));
 		cloud.setAlpha(0.4f + Game.random.nextFloat() * (1f - 0.4f));
 		cloud.setSpeedX(0.2f + Game.random.nextFloat() * (2f - 0.2f));
 		cloud.setCurrentTileIndex(frame);

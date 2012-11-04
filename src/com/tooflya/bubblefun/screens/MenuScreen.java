@@ -115,7 +115,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final MoveModifier mMoreMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 53f + ICONS_PADDING * 2, Options.cameraOriginRatioY - 50f, Options.cameraOriginRatioY - 50f) {
+	private final MoveModifier mMoreMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 53f + ICONS_PADDING * 2, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
@@ -125,7 +125,7 @@ public class MenuScreen extends Screen {
 			registerTouchArea(mMoreIcon);
 		}
 	};
-	private final MoveModifier mMoreMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 53f, ICONS_PADDING, Options.cameraOriginRatioY - 50f, Options.cameraOriginRatioY - 50f) {
+	private final MoveModifier mMoreMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 53f, ICONS_PADDING, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
@@ -135,7 +135,7 @@ public class MenuScreen extends Screen {
 			unregisterTouchArea(mMoreIcon);
 		}
 	};
-	private final MoveModifier mSoundMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 90f + ICONS_PADDING * 2, Options.cameraOriginRatioY - 50f, Options.cameraOriginRatioY - 50f) {
+	private final MoveModifier mSoundMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 90f + ICONS_PADDING * 2, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
@@ -145,7 +145,7 @@ public class MenuScreen extends Screen {
 			registerTouchArea(mSoundIcon);
 		}
 	};
-	private final MoveModifier mSoundMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 90f, ICONS_PADDING, Options.cameraOriginRatioY - 50f, Options.cameraOriginRatioY - 50f) {
+	private final MoveModifier mSoundMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 90f, ICONS_PADDING, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
@@ -195,17 +195,17 @@ public class MenuScreen extends Screen {
 
 		this.mClouds.generateStartClouds();
 
-		this.mBackground.create().setBackgroundCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		this.mLogoBackground.create().setCenterPosition(Options.cameraOriginRatioCenterX, mBackground.getY() + 120f);
+		this.mBackground.create().setBackgroundCenterPosition();
+		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 120f);
 
-		this.mTwitterIcon.create().setPosition(Options.cameraOriginRatioX - ICONS_PADDING - ICONS_SIZE, Options.cameraOriginRatioY - ICONS_PADDING - ICONS_SIZE);
-		this.mFacebookIcon.create().setPosition(Options.cameraOriginRatioX - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraOriginRatioY - ICONS_PADDING - ICONS_SIZE);
+		this.mTwitterIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
+		this.mFacebookIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 
-		this.mPlayIcon.create().setCenterPosition(Options.cameraOriginRatioCenterX, Options.cameraOriginRatioCenterY);
+		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 
-		this.mSettingsIcon.create().setPosition(10f, Options.cameraOriginRatioY - 60f);
-		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraOriginRatioY - 50f);
-		this.mSoundIcon.create().setPosition(ICONS_PADDING, Options.cameraOriginRatioY - 50f);
+		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
+		this.mSoundIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 
 		this.mSettingsIcon.setRotationCenter(this.mSettingsIcon.getWidthScaled() / 2, this.mSettingsIcon.getHeightScaled() / 2);
 

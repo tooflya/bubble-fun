@@ -101,29 +101,36 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.SPEED = Options.targetDPI / Options.DPI;
 
 		/** Initialize camera parameters */
-		Options.cameraWidth = displayMetrics.widthPixels;
-		Options.cameraHeight = displayMetrics.heightPixels;
-
-		Options.cameraCenterX = Options.cameraWidth / 2;
-		Options.cameraCenterY = Options.cameraHeight / 2;
+		Options.screenWidth = displayMetrics.widthPixels;
+		Options.screenHeight = displayMetrics.heightPixels;
 
 		/** */
-		if (Options.cameraWidth > Options.cameraRatioCenter && false) {
-			Options.setCameraOriginRatioX(640.0f);
-			Options.setCameraOriginRatioY(1024.0f);
+		if (Options.screenWidth > Options.cameraRatioCenter && false) {
+			Options.cameraWidth = 640;
+			Options.cameraHeight = 1024;
 
 			Options.CR = "HD/";
 		} else {
-			Options.setCameraOriginRatioX(380.0f);
-			Options.setCameraOriginRatioY(610.0f);
+			Options.cameraWidth = 380;
+			Options.cameraHeight = 610;
 
 			Options.CR = "SD/";
 		}
 
-		Options.cameraRatioFactor = Options.cameraWidth / Options.cameraOriginRatioX > Options.cameraHeight / Options.cameraOriginRatioY ? Options.cameraWidth / Options.cameraOriginRatioX : Options.cameraHeight / Options.cameraOriginRatioY;
+		Options.cameraCenterX = Options.cameraWidth / 2;
+		Options.cameraCenterY = Options.cameraHeight / 2;
+
+		Options.screenCenterX = (int) (Options.screenWidth / 2);
+		Options.screenCenterY = (int) (Options.screenHeight / 2);
+
+		Options.touchHeight = Options.cameraHeight * Options.touchHeightPercents;
+		Options.chikyOffsetY = Options.cameraHeight * Options.chikyOffsetYPercent;
+
+		Options.cameraRatioFactor = Options.screenWidth / Options.cameraWidth > Options.screenHeight / Options.cameraHeight ? Options.screenWidth / Options.cameraWidth : Options.screenHeight / Options.cameraHeight;
+		System.out.println(Options.cameraHeight);
 
 		/** Initialize camera instance */
-		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
+		camera = new Camera(0, 0, Options.screenWidth, Options.screenHeight);
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
@@ -133,8 +140,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				.setNeedsSound(true);
 
 		/**
-		 * Disable extension vertex buffer objects. This extension usually has a
-		 * problems with HTC phones
+		 * Disable extension vertex buffer objects. This extension usually has a problems with HTC phones
 		 */
 		options.getRenderOptions().disableExtensionVertexBufferObjects();
 
@@ -163,12 +169,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/" + Options.CR);
 		SoundFactory.setAssetBasePath("mfx/");
 		MusicFactory.setAssetBasePath("mfx/");
-		
+
 		try {
 			Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
 			Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
 			Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W3.ogg");
-			
+
 			Options.mMainSound.setLooping(true);
 			Options.mLevelSound.setLooping(true);
 		} catch (Exception e) {
@@ -183,7 +189,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void workToDo() {
-		
+
 		/** Create screen manager */
 		screens = new ScreenManager();
 
@@ -233,8 +239,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		new AsyncTaskLoader().execute(this);
 
 		/**
-		 * Create loading screen and return her scene for attaching to the
-		 * activity
+		 * Create loading screen and return her scene for attaching to the activity
 		 */
 		return new LoadingScreen();
 	}
@@ -252,19 +257,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		getTextureManager().unloadTextures();
 
 		/**
-		 * Notify the system to finalize and collect all objects of the
-		 * application on exit so that the process running the application can
-		 * be killed by the system without causing issues. NOTE: If this is set
-		 * to true then the process will not be killed until all of its threads
-		 * have closed.
+		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
 		 */
 		System.runFinalizersOnExit(true);
 
 		/**
-		 * Force the system to close the application down completely instead of
-		 * retaining it in the background. The process that runs the application
-		 * will be killed. The application will be completely created as a new
-		 * application in a new process if the user starts the application again.
+		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again.
 		 */
 		System.exit(0);
 	}
@@ -278,7 +276,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onResumeGame() {
 		super.onResumeGame();
 
-		if(Options.mLastPlayedMusic != null) {
+		if (Options.mLastPlayedMusic != null) {
 			Options.mLastPlayedMusic.resume();
 		}
 	}
@@ -293,12 +291,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		super.onPauseGame();
 
 		Options.mLastPlayedMusic = null;
-		
-		if(Options.mMainSound.isPlaying()) {
+
+		if (Options.mMainSound.isPlaying()) {
 			Options.mMainSound.pause();
 			Options.mLastPlayedMusic = Options.mMainSound;
 		}
-		if(Options.mLevelSound.isPlaying()) {
+		if (Options.mLevelSound.isPlaying()) {
 			Options.mLevelSound.pause();
 			Options.mLastPlayedMusic = Options.mLevelSound;
 		}

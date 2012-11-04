@@ -30,7 +30,7 @@ import com.tooflya.bubblefun.managers.EntityManager;
  * @param <T>
  * @since
  */
-public abstract class Entity  extends AnimatedSprite {
+public abstract class Entity extends AnimatedSprite {
 
 	// ===========================================================
 	// Constants
@@ -39,7 +39,7 @@ public abstract class Entity  extends AnimatedSprite {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	  
+
 	/** ID of this instance in the <b>EntityManager</b>. Used to <i>destroy()</i> method like <i>destroySelf()</i> from her entity manager. */
 	private int mId;
 
@@ -70,7 +70,7 @@ public abstract class Entity  extends AnimatedSprite {
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
-		
+
 		/** As some entities may be elements of a manager we need to hide them here. They will appers to ther screen after call <i>create()</i> method. */
 		this.hide();
 
@@ -81,7 +81,7 @@ public abstract class Entity  extends AnimatedSprite {
 
 			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
 			if (pRegisterTouchArea) {
-				if(this.mParentScreen instanceof Screen) {
+				if (this.mParentScreen instanceof Screen) {
 					((Screen) this.mParentScreen).registerTouchArea(this);
 				} else {
 					((Screen) this.mParentScreen.getParent()).registerTouchArea(this);
@@ -188,13 +188,12 @@ public abstract class Entity  extends AnimatedSprite {
 	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
 	public Entity deepCopy() {
 		try {
-			return (Entity)
-					Class.forName(this.getClass().getName()).
+			return (Entity) Class.forName(this.getClass().getName()).
 					getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class).newInstance(getTextureRegion(), this.mParentScreen);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		return null;
 	}
 
@@ -261,14 +260,14 @@ public abstract class Entity  extends AnimatedSprite {
 	public void setCenterY(final float pCenterY) {
 		this.mY = pCenterY - this.mHeight / 2;
 	}
-	
+
 	/**
 	 * @param pCenterX
 	 */
 	public void setBackgroundCenterX(final float pCenterX) {
 		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
 	}
-	
+
 	/**
 	 * @param pCenterY
 	 */
@@ -288,11 +287,11 @@ public abstract class Entity  extends AnimatedSprite {
 	/**
 	 * 
 	 */
-	public void setBackgroundCenterPosition(final float pCenterX, final float pCenterY) {
-		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
-		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+	public void setBackgroundCenterPosition() {
+		this.mX = Options.screenWidth / 2 - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+		this.mY = Options.screenHeight / 2 - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
-	
+
 	/**
 	 * @param pEntityManager
 	 */
@@ -315,14 +314,14 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedX() {
-		return this.mSpeedX;
+		return this.mSpeedX * Options.SPEED;
 	}
 
 	/**
 	 * @return
 	 */
 	public float getSpeedY() {
-		return this.mSpeedY;
+		return this.mSpeedY * Options.SPEED;
 	}
 
 	/**
@@ -342,6 +341,31 @@ public abstract class Entity  extends AnimatedSprite {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.Entity#setPosition(float, float)
+	 */
+	@Override
+	public void setPosition(final float pX, final float pY) {
+		super.setPosition(pX, pY);
+
+		float factorX, factorY;
+
+		if (this.mX < Options.cameraCenterX) {
+			factorX = (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2;
+		} else {
+			factorX = -(Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2;
+		}
+
+		if (this.mY < Options.cameraCenterY) {
+			factorY = (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2;
+		} else {
+			factorY = -(Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2;
+		}
+
+		this.mX += factorX / Options.cameraRatioFactor;
+		this.mY += factorY / Options.cameraRatioFactor;
+	}
 
 	/*
 	 * (non-Javadoc)

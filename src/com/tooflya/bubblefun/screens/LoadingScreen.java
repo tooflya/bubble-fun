@@ -60,7 +60,7 @@ public class LoadingScreen extends Screen {
 
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
-		this.mBackground.create().setBackgroundCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mBackground.create().setBackgroundCenterPosition();
 
 		this.mProgressBar.create().setCenterPosition(192f, 562f);
 		this.mProgressBar.setWidth(1);
