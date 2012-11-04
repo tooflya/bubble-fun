@@ -14,7 +14,7 @@ public class Options {
 
 	// > Math options.
 	public static float PI = (float) (2 * Math.asin(1));
-	public static float eps = 5f;
+	public static float eps = 20f;
 	// < Math options.
 
 	// > Camera options.
@@ -75,15 +75,18 @@ public class Options {
 	public final static float bubbleAlpha = 0.8f;
 
 	public static float bubbleSizePower;
+
+	public static float bubbleMaxSizePower = 10000;
 	public final static float bubbleMinSize = 25f; // TODO: (R) Auto set value. // Pixels.
-	public final static float bubbleMaxSize = 200f; // TODO: (R) Auto set value. // Pixels.
+	public final static float bubbleMaxSize = 100f; // TODO: (R) Auto set value. // Pixels.
 	public final static float bubbleStepSize = 1f; // Pixels by frame.
 
-	public final static float bubbleMinSpeed = 1f; // Pixels by frame.
+	public final static float bubbleMinSpeed = 0.1f; // Pixels by frame.
+
 	public final static float bubbleMaxSpeed = 6f; // Pixels by frame.	
 	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.
 
-	public final static float bubbleMaxTimeMove = 4f; // Seconds.
+	public final static float bubbleMaxTimeMove = 2f; // Seconds.
 	// < Bubble options.
 
 	public static Music mMainSound, mLevelSound, mLastPlayedMusic;

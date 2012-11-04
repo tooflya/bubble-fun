@@ -361,7 +361,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		feathers.clear();
 
-		Options.bubbleSizePower = 1000; // TODO: Change count of scale power. // Pixels.
+		Options.bubbleSizePower = Options.bubbleMaxSizePower;
 
 		AIR = 100;// 100;
 
@@ -671,9 +671,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (chiky.isCanCollide()) {
 				for (int j = airgums.getCount() - 1; j >= 0; --j) {
 					airgum = (Bubble) airgums.getByIndex(j);
-					if (this.isCollide(chiky, airgum)) {
-						chiky.isCollide(airgum);
+					if (airgum.isCanCollide() && this.isCollide(chiky, airgum)) {
 						airgum.birdsKills++;
+						chiky.isCollide(airgum);
+						airgum.writeText();
 						deadBirds++;
 					}
 				}
@@ -847,7 +848,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (AIR > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 				this.lastAirgum = (Bubble) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
-				this.lastAirgum.setScaleCenterY(0); // TODO: (R) Something strange.
+				this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);
 			}
 			break;
 		case TouchEvent.ACTION_UP:
