@@ -17,8 +17,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
 
-		PADDING = 59f;
-		PADDING_B = 14f;
+		PADDING = 45f;
+		PADDING_B = 23f;
 
 		X = PADDING_B + 5f;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
@@ -33,8 +33,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	public void clear() {
 		super.clear();
 
-		PADDING = 59f;
-		PADDING_B = 14f;
+		PADDING = 45f;
+		PADDING_B = 23f;
 
 		X = PADDING_B + 5f;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
