@@ -44,14 +44,14 @@ public abstract class Entity  extends AnimatedSprite {
 	private int mId;
 
 	/** Entity speed on axis X. The private identifier is used to adjust the speed depending on the screen resolution in the method <i>setSpeedX()</i>. */
-	private float mSpeedX;
+	protected float mSpeedX;
 	/** Entity speed on axis Y. The private identifier is used to adjust the speed depending on the screen resolution in the method <i>setSpeedY()</i>. */
-	private float mSpeedY;
+	protected float mSpeedY;
 
 	/** <b>Screen</b> which is the essence of the place rendering. */
 	protected org.anddev.andengine.entity.Entity mParentScreen;
 
-	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object may be <b>null</b>. */
+	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object can be <b>null</b>. */
 	private EntityManager<?> mEntityManager;
 
 	// ===========================================================
@@ -59,7 +59,7 @@ public abstract class Entity  extends AnimatedSprite {
 	// ===========================================================
 
 	/**
-	 * Base contructor for instantinate this Entity class.
+	 * Base constructor for instantinate this Entity class.
 	 * 
 	 * @param pTiledTextureRegion
 	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
@@ -137,7 +137,7 @@ public abstract class Entity  extends AnimatedSprite {
 	}
 
 	/**
-	 * Simple contructor which takes only one parameter.
+	 * Simple constructor which takes only one parameter.
 	 * 
 	 * @param pTiledTextureRegion
 	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
@@ -208,11 +208,7 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @return boolean Result of of inspection.
 	 */
 	public boolean isManagerExist() {
-		if (this.mEntityManager != null) {
-			return true;
-		}
-
-		return false;
+		return this.mEntityManager != null;
 	}
 
 	// ===========================================================
@@ -230,6 +226,7 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @param pSpeedX
 	 */
 	public void setSpeedX(final float pSpeedX) {
+		// TODO: (R) I think it is need two methods: with correction and without.
 		this.mSpeedX = pSpeedX / Options.SPEED;
 	}
 
@@ -237,6 +234,7 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @param pSpeedY
 	 */
 	public void setSpeedY(final float pSpeedY) {
+		// TODO: (R) I think it is need two methods: with correction and without.
 		this.mSpeedY = pSpeedY / Options.SPEED;
 	}
 
@@ -245,6 +243,7 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @param pSpeedY
 	 */
 	public void setSpeed(final float pSpeedX, final float pSpeedY) {
+		// TODO: (R) I think it is need two methods: with correction and without.
 		this.mSpeedX = pSpeedX / Options.SPEED;
 		this.mSpeedY = pSpeedY / Options.SPEED;
 	}
@@ -253,14 +252,14 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @param centerX
 	 */
 	public void setCenterX(final float pCenterX) {
-		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+		this.mX = pCenterX - this.mWidth / 2;
 	}
 
 	/**
 	 * @param pCenterY
 	 */
 	public void setCenterY(final float pCenterY) {
-		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+		this.mY = pCenterY - this.mHeight / 2;
 	}
 
 	/**
@@ -268,8 +267,8 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @param pCenterY
 	 */
 	public void setCenterPosition(final float pCenterX, final float pCenterY) {
-		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
-		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+		this.mX = pCenterX - this.mWidth / 2;
+		this.mY = pCenterY - this.mHeight / 2;
 	}
 
 	/**
@@ -308,14 +307,14 @@ public abstract class Entity  extends AnimatedSprite {
 	 * @return
 	 */
 	public float getCenterX() {
-		return this.mX + this.mScaleCenterX + (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+		return this.mX + this.mWidth / 2;
 	}
 
 	/**
 	 * @return
 	 */
 	public float getCenterY() {
-		return this.mY + this.mScaleCenterY + (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+		return this.mY + this.mHeight / 2;
 	}
 
 	// ===========================================================

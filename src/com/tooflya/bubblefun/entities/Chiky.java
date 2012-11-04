@@ -19,34 +19,30 @@ public class Chiky extends Entity {
 	// Constants
 	// ===========================================================
 
-	 // TODO: Find correct numbers. Are they constant?
-	private final float pMaxTimeNormal = 4f; // Time in seconds.
-	private final float pMaxTimeSpeedy = 1f; // Time in seconds.
-	private final float pMaxTimeWithGum = 2f; // Time in seconds.
-
 	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
 	private static final int[] pNormalMoveFrames = new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 };
 	private static final int[] pNormalMoveWithGumFrames = new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 };
 	private static final int[] pSpeedyMoveFrames = new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 };
 	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
 
+	private enum States {NormalMove, SpeedyMove, Fall};
+	private static final int isJumplyFlag = 1;
+	private static final int isSpeedyFlag = 2;
+	private static final int isWavelyFlag = 4;
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private int pState = 0; // 0 - Normal move; 1 - Speedy move; 2 - fall;
+	private States pState = States.NormalMove;
 
 	private float pStartX = 0;
 	private float pStartY = 0;
-	private float pStepX = 0;
 	private float pNormalStepX = 0;
 	private float pSpeedyStepX = 0;
 	private float pOffsetX = 0;
-	private boolean pIsJumply = false;
-	private boolean pIsSpeedy = false;
-	private boolean pIsWavely = false;
+	private int pProperties = 0;
 
-	private float mX_ = 0; // Last x.
+	private float mX_ = 0; // Last (or old) x.
 	
 	private float pTime = 0f;
 	private float pTimeWithGum = 0f;
@@ -75,24 +71,22 @@ public class Chiky extends Entity {
 	public Entity create() {
 		this.setRotation(0);
 
-		pState = 0; // 0 - Normal move; 1 - Speedy move; 2 - fall;
+		pState = States.NormalMove;
 
 		// Center of used region.
 		this.pStartX = Options.cameraOriginRatioX / 2;
-		this.pStartY = Options.chikySize / 2 + Options.ellipseHeight + (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
+		this.pStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraOriginRatioY - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
 
-		this.pNormalStepX = Game.random.nextFloat() * (Options.maxChikyStepX - Options.minChikyStepX) + Options.minChikyStepX;
+		this.pNormalStepX = Game.random.nextFloat() * (Options.chikyMaxStepX - Options.chikyMinStepX) + Options.chikyMinStepX;
 		if (Game.random.nextBoolean()){
-			this.pStepX = -this.pStepX;
+			this.mSpeedX = -this.mSpeedX;
 		}
-		this.pSpeedyStepX = this.pNormalStepX * 2.5f; // TODO: (R) Magic number. Work correct in previous version.
-		this.pStepX = this.pNormalStepX;
+		this.pSpeedyStepX = this.pNormalStepX * Options.chikySpeedCoeficient;
+		this.mSpeedX = this.pNormalStepX;
 		
 		this.pOffsetX = 0;
 		
-		this.pIsJumply = false;
-		this.pIsSpeedy = false;
-		this.pIsWavely = false;
+		this.pProperties = 0;
 		
 		this.mX_ = 0;
 	
@@ -117,7 +111,7 @@ public class Chiky extends Entity {
 
 	public void initNormalStepX(final float normalStepX){
 		this.pNormalStepX = normalStepX;
-		this.pStepX = this.pNormalStepX; 
+		this.mSpeedX = this.pNormalStepX; 
 	}
 
 	public void initSpeedyStepX(final float speedyStepX){
@@ -129,17 +123,21 @@ public class Chiky extends Entity {
 	}
 
 	public void initIsJumply(){
-		this.pIsJumply = true;
+		this.pProperties = this.pProperties | isJumplyFlag;
 	}
 	
 	public void initIsSpeedy(){
-		this.pIsSpeedy = true;
+		this.pProperties = this.pProperties | isSpeedyFlag;
 	}
 	
 	public void initIsWavely(){
-		this.pIsWavely = true;
+		this.pProperties = this.pProperties | isWavelyFlag;
 	}
 	
+	private boolean IsProperty(int flag){
+		return (this.pProperties & flag) == flag;
+	}
+
 	// ===========================================================
 	// Setters
 	// ===========================================================
@@ -149,10 +147,10 @@ public class Chiky extends Entity {
 			this.pAirgum = airgum;
 			this.pTimeWithGum = 0;
 			
-			if (this.pState == 0){ // Normal move.
+			if (this.pState == States.NormalMove){
 				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 			}
-			else{ // Speedy move.
+			else{ // States.SpeedyMove.
 				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
 			}
 		}
@@ -172,19 +170,19 @@ public class Chiky extends Entity {
 
 	private void onManagedUpdateWithGum(final float pSecondsElapsed) {
 		this.pTimeWithGum += pSecondsElapsed;
-		if (this.pTimeWithGum >= this.pMaxTimeWithGum) {
+		if (this.pTimeWithGum >= Options.chikyMaxTimeWithGum) {
 			this.pTime = 0;
-			if(this.pState == 1){
+			if(this.pState == States.SpeedyMove){
 				this.pWind.destroy();
 			}
-			this.pState = 2; // Fall state.
+			this.pState = States.Fall;
 			this.pStartX = this.getCenterX();
 			this.pStartY = this.getCenterY();
 			if(this.getCenterX() < Options.cameraOriginRatioX / 2){
-				this.pStepX = this.pNormalStepX;
+				this.mSpeedX = this.pNormalStepX;
 			}
 			else{
-				this.pStepX = -this.pNormalStepX;				
+				this.mSpeedX = -this.pNormalStepX;				
 			}
 
 			Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
@@ -208,28 +206,28 @@ public class Chiky extends Entity {
 	}
 	
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
-		float x = this.getCenterX() + this.pStepX;
+		float x = this.getCenterX() + this.mSpeedX;
 
 		boolean isBorder = false;
 		final float minX = 0 - this.pOffsetX + this.mWidth / 2;		
 		if (x < minX) {
 			x = 2 * minX - x;
-			this.pStepX = +Math.abs(this.pStepX);
+			this.mSpeedX = +Math.abs(this.mSpeedX);
 			isBorder = true;
 		}
 		final float maxX = Options.cameraOriginRatioX + this.pOffsetX - this.mWidth / 2;		
 		if (x > maxX) {
 			x = 2 * maxX - x;
-			this.pStepX = -Math.abs(this.pStepX);
+			this.mSpeedX = -Math.abs(this.mSpeedX);
 			isBorder = true;
 		}
-		if (isBorder && this.pIsJumply) {
-			this.pStartY = Options.chikySize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize);
+		if (isBorder && this.IsProperty(isJumplyFlag)) {
+			this.pStartY = Options.chikyEtalonSize / 2 + Game.random.nextFloat() * (Options.cameraOriginRatioY - Options.touchHeight - Options.chikyEtalonSize);
 		}
 
 		float y = this.pStartY;
-		if (this.pIsWavely) {
-			y += FloatMath.sin(this.pTime * Options.PI * Math.abs(this.pStepX) / Options.cameraOriginRatioX) * Options.ellipseHeight;
+		if (this.IsProperty(isWavelyFlag)) {
+			y += FloatMath.sin(this.pTime * Options.PI * Math.abs(this.mSpeedX) / Options.cameraOriginRatioX) * Options.chikyOffsetY;
 		}
 		
 		this.setCenterPosition(x,  y);
@@ -241,11 +239,11 @@ public class Chiky extends Entity {
 	
 	private void onManagedUpdateNormal(final float pSecondsElapsed) {
 		this.onManagedUpdateMove(pSecondsElapsed);
-		if (this.pTime >= this.pMaxTimeNormal){
+		if (this.pTime >= Options.chikyMaxTimeNormal){
 			this.pTime = 0;
-			if(this.pIsSpeedy){
-				this.pStepX = Math.signum(this.pStepX) * this.pSpeedyStepX;
-				this.pState = 1; // Speedy move.
+			if(this.IsProperty(isSpeedyFlag)){
+				this.mSpeedX = Math.signum(this.mSpeedX) * this.pSpeedyStepX;
+				this.pState = States.SpeedyMove;
 				this.pWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
 				this.pWind.mFollowEntity = this;
 				if(this.pAirgum == null){
@@ -261,10 +259,10 @@ public class Chiky extends Entity {
 	
 	private void onManagedUpdateSpeedy(final float pSecondsElapsed) {
 		this.onManagedUpdateMove(pSecondsElapsed);
-		if (this.pTime >= this.pMaxTimeSpeedy){
+		if (this.pTime >= Options.chikyMaxTimeSpeedy){
 			this.pTime = 0;
-			this.pStepX = Math.signum(this.pStepX) * this.pNormalStepX;
-			this.pState = 0; // Normal move.
+			this.mSpeedX = Math.signum(this.mSpeedX) * this.pNormalStepX;
+			this.pState = States.NormalMove;
 			this.pWind.destroy();
 			this.pWind = null;
 			if(this.pAirgum == null){
@@ -279,9 +277,9 @@ public class Chiky extends Entity {
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
 		// For remember: y = y_2 - y_1, where y_n = (x_n - x_) ^ 2.
-		final float x_ = FloatMath.sqrt(Options.ellipseHeight);
-		final float x = this.getCenterX() - this.pStartX + this.pStepX;
-		final float y = this.pStepX * (2 * (x - x_) - this.pStepX);		
+		final float x_ = FloatMath.sqrt(Options.chikyOffsetY);
+		final float x = this.getCenterX() - this.pStartX + this.mSpeedX;
+		final float y = this.mSpeedX * (2 * (x - x_) - this.mSpeedX);		
 		this.setCenterPosition(this.pStartX + x, this.pStartY + y);
 		// TODO: (R) Need to do easy? Can you understand this?
 
@@ -306,13 +304,13 @@ public class Chiky extends Entity {
 		this.mX_ = this.mX;
 		
 		switch (this.pState) {
-		case 0: // Normal move.
+		case NormalMove:
 			this.onManagedUpdateNormal(pSecondsElapsed);
 			break;
-		case 1: // Speedy move.
+		case SpeedyMove:
 			this.onManagedUpdateSpeedy(pSecondsElapsed);
 			break;
-		case 2: // Fall.
+		case Fall:
 			this.onManagedUpdateFall(pSecondsElapsed);			
 			break;
 		}

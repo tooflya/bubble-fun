@@ -130,7 +130,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		camera = new Camera(0, 0, Options.cameraWidth, Options.cameraHeight);
 
 		Options.touchHeight = Options.cameraOriginRatioY / 3; // TODO: WTF?
-		Options.ellipseHeight = Options.cameraOriginRatioY / 10; // TODO: WTF?
+		Options.chikyOffsetY = Options.cameraOriginRatioY / 10; // TODO: WTF?
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)

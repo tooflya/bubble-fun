@@ -398,9 +398,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private void generateChikies() {
 		Chiky chiky;
 
-		final float minHeight = Options.chikySize / 2 + Options.ellipseHeight;
-		final float sizeHeight2 = (Options.cameraOriginRatioY - Options.touchHeight - Options.chikySize - 2 * Options.ellipseHeight) / 2;
-		final float stepX = (Options.minChikyStepX + Options.maxChikyStepX) / 2;
+		final float minHeight = Options.chikyEtalonSize / 2 + Options.chikyOffsetY;
+		final float sizeHeight2 = (Options.cameraOriginRatioY - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
+		final float stepX = (Options.chikyMinStepX + Options.chikyMaxStepX) / 2;
 
 		switch (Options.levelNumber) {
 		case 1:
