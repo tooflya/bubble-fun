@@ -8,7 +8,6 @@ import android.util.FloatMath;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
-import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class Bubble extends BubbleBase {
@@ -17,7 +16,7 @@ public class Bubble extends BubbleBase {
 	// Constants
 	// ===========================================================
 
-	private enum States {Creating, Moving, Destroying};
+	private enum States {Creating, Moving, Destroying, WaitingForText};
 
 	// ===========================================================
 	// Fields
@@ -28,6 +27,11 @@ public class Bubble extends BubbleBase {
 	private float mTime = 0f; // Seconds.
 
 	private float mLostedSpeed = 0;
+
+	public Bubble mParent = null;
+	public float mLastX = 0;
+	public float mLastY = 0;
+	public int mChildCount = 0;
 	
 	public int birdsKills;
 
@@ -98,7 +102,6 @@ public class Bubble extends BubbleBase {
 
 	public void isCollide() {
 		this.animate(40, 0);
-		this.writeText();
 		this.mState = States.Destroying;
 	}
 
@@ -106,45 +109,25 @@ public class Bubble extends BubbleBase {
 		return this.mState == States.Moving;
 	}
 
-	public void writeText() {
-		if (this.birdsKills > 0) {
-			boolean hasTopChiks = false;
-		
-			EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
-						
-			for (int i = chikies.getCount() - 1; i >= 0; --i) {
-				Chiky chiky = chikies.getByIndex(i);
-				if (chiky.isCanCollide() && chiky.getY() < this.getY()) {
-					hasTopChiks = true;
-				}
-			}
-			hasTopChiks = false;
+	private void writeText() {
 			LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-						
-			if (!hasTopChiks) {
-				if (this.birdsKills == 1 && chikies.getCount() <= 1) {
-					System.out.println("2 " + this.getCenterX() + " " + this.getCenterY());
-					screen.mAwesomeKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-		
-					final Entity bonus = screen.mBonusesText.create();
-					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-					bonus.setCurrentTileIndex(2);
-				}
-				else if (this.birdsKills == 2) {
-					screen.mDoubleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-		
-					final Entity bonus = screen.mBonusesText.create();
-					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-					bonus.setCurrentTileIndex(0);
-				} else if (this.birdsKills == 3) {
-					screen.mTripleKillText.create().setCenterPosition(this.getCenterX(), this.getCenterY());
-		
-					final Entity bonus = screen.mBonusesText.create();
-					bonus.setCenterPosition(this.getCenterX(), this.getCenterY());
-					bonus.setCurrentTileIndex(3);
-				}
+			if (this.birdsKills == 1) {
+				screen.mAwesomeKillText.create().setCenterPosition(this.mLastX, this.mLastY);		
+				final Entity bonus = screen.mBonusesText.create();
+				bonus.setCenterPosition(this.mLastX, this.mLastY);
+				bonus.setCurrentTileIndex(2);
 			}
-		}
+			else if (this.birdsKills == 2) {
+				screen.mDoubleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+				final Entity bonus = screen.mBonusesText.create();
+				bonus.setCenterPosition(this.mLastX, this.mLastY);
+				bonus.setCurrentTileIndex(0);
+			} else if (this.birdsKills == 3) {
+				screen.mTripleKillText.create().setCenterPosition(this.mLastX, this.mLastY);		
+				final Entity bonus = screen.mBonusesText.create();
+				bonus.setCenterPosition(this.mLastX, this.mLastY);
+				bonus.setCurrentTileIndex(3);
+			}
 	}
 
 	// ===========================================================
@@ -167,6 +150,11 @@ public class Bubble extends BubbleBase {
 		this.mHeight = Options.bubbleMinSize;
 
 		this.birdsKills = 0;
+
+		this.mParent = null;
+		this.mLastX = 0;
+		this.mLastY = 0;
+		this.mChildCount = 0;
 
 		return super.create();
 	}
@@ -206,7 +194,21 @@ public class Bubble extends BubbleBase {
 		this.mY += this.mSpeedY;
 		
 		if (!this.isAnimationRunning()) {
-			this.destroy();
+			if(this.mParent == null){
+				this.mY = -this.mHeight;
+				this.mState = States.WaitingForText;
+			}
+			else{
+				this.mParent.mChildCount--;
+				destroy();
+			}
+		}
+	}
+
+	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
+		if(this.mChildCount == 0){
+			this.writeText();
+			this.destroy(); // TODO: (R) Can be lost memory.
 		}
 	}
 
@@ -230,6 +232,9 @@ public class Bubble extends BubbleBase {
 			break;
 		case Destroying:
 			this.onManagedUpdateDestroying(pSecondsElapsed);
+			break;
+		case WaitingForText:
+			this.onManagedUpdateWaitingForText(pSecondsElapsed);
 			break;
 		}
 	}

@@ -48,9 +48,6 @@ public class Chiky extends Entity {
 	private float mX_ = 0; // Last (or old) x.
 		
 	private Bubble pAirgum = null;
-	private float pAirgumSize = 0;
-	private float pAirgumSpeedY = 0;
-	private int pAirgumBirdsKills = 0;
 	private Acceleration pWind = null;
 
 	// ===========================================================
@@ -146,11 +143,13 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	public void isCollide(Bubble airgum) {
-		if(this.pAirgum == null){
-			this.pAirgum = airgum;
-			this.pAirgumSize = airgum.getWidth();
-			this.pAirgumSpeedY = airgum.getSpeedY();
-			this.pAirgumBirdsKills = airgum.birdsKills;
+		if(this.pAirgum == null){			
+			if(airgum.mParent != null){
+				this.pAirgum = airgum.mParent;
+			}
+			else{
+				this.pAirgum = airgum;
+			}
 			this.pTimeWithGum = 0;			
 			
 			if (this.pState == States.NormalMove){
@@ -194,9 +193,13 @@ public class Chiky extends Entity {
 			Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if(airgum != null){
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.pAirgumSpeedY);
-				airgum.setSize(this.pAirgumSize, this.pAirgumSize);
-				airgum.birdsKills = this.pAirgumBirdsKills;
+				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.pAirgum.getSpeedY());
+				airgum.setSize(this.pAirgum.getWidth(), this.pAirgum.getHeight());
+				airgum.mParent = this.pAirgum;
+				this.pAirgum.mChildCount++;
+				this.pAirgum.mLastX = this.getCenterX();
+				this.pAirgum.mLastY = this.getCenterY();
+				airgum.birdsKills = this.pAirgum.birdsKills;
 			}
 			
 			Feather particle;

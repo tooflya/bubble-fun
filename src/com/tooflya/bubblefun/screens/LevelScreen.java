@@ -672,7 +672,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					if (airgum.isCanCollide() && this.isCollide(chiky, airgum)) {
 						airgum.birdsKills++;
 						chiky.isCollide(airgum);
-						airgum.writeText();
 						deadBirds++;
 					}
 				}
