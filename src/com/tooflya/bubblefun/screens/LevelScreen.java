@@ -366,7 +366,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		feathers.clear();
 
-		Options.bubbleSizePower = 100; // TODO: Change count of scale power. // Pixels.
+		Options.bubbleSizePower = 1000; // TODO: Change count of scale power. // Pixels.
 
 		AIR = 100;// 100;
 
@@ -678,8 +678,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					airgum = (Bubble) airgums.getByIndex(j);
 					if (this.isCollide(chiky, airgum)) {
 						chiky.isCollide(airgum);
-						deadBirds++;
 						airgum.birdsKills++;
+						deadBirds++;
 					}
 				}
 			}
@@ -716,12 +716,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private boolean isCollide(Entity entity1, Entity entity2, final boolean rectangle) {
-		return 
-				(entity2.getX() + entity2.getWidth() >= entity1.getX()) && 
-				(entity1.getX() + entity1.getWidth() <= entity2.getX()) && 
-				(entity2.getY() + entity2.getHeight() >= entity1.getY()) &&
-				(entity1.getY() + entity1.getHeight() <= entity2.getY());
-		// TODO: (R) What do with scaledSize and various rotationCenter?
+		return !(
+				(entity1.getX() + entity1.getWidth() <= entity2.getX()) || 
+				(entity2.getX() + entity2.getWidth() <= entity1.getX()) || 
+				(entity2.getY() + entity2.getHeight() <= entity1.getY()) ||
+				(entity1.getY() + entity1.getHeight() <= entity2.getY()));
+		// TODO: (R) What to do with scaledSize and various rotationCenter?
 	}
 
 	/*
@@ -857,7 +857,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
 				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
-				
 
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
 				while (x < Options.cameraOriginRatioX && y > 0 && x > 0) {

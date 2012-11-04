@@ -1,10 +1,16 @@
 package com.tooflya.bubblefun.entities;
 
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+
 import com.tooflya.bubblefun.Options;
 
 public class BubbleBase extends Entity {
 	private float pScaleStepX = Options.bubbleBaseStepScale;
 	private float pScaleStepY = -Options.bubbleBaseStepScale;
+
+	public BubbleBase(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen);
+	}
 
 	@Override
 	public Entity create() {
@@ -24,7 +30,7 @@ public class BubbleBase extends Entity {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		
+
 		this.mScaleX += this.pScaleStepX;
 		this.mScaleY += this.pScaleStepY;
 
