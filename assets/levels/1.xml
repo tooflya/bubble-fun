@@ -3,8 +3,9 @@
 	r1="196" g1="11" b1="224"
 	r2="238" g2="197" b2="244"
 >
-	<chiky x="0" y="0" state="0"/>
-	<chiky x="100" y="100" state="4"/>
+	<chiky x="100" y="100" state="0"/>
+	<chiky x="150" y="200" state="0"/>
+	<chiky x="200" y="300" state="0"/>
 
 	<electrod x="200" y="200"/>
 </level>
