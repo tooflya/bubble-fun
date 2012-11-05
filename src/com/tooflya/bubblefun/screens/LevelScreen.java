@@ -407,7 +407,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				for (int j = airgums.getCount() - 1; j >= 0; --j) {
 					airgum = (Bubble) airgums.getByIndex(j);
 					if (airgum.isCanCollide() && this.isCollide(chiky, airgum)) {
-						airgum.birdsKills++;
+						airgum.addBirdsKills();
 						chiky.isCollide(airgum);
 						deadBirds++;
 					}
@@ -491,7 +491,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.clouds.update();
 
-		if (chikies.getCount() == 0) {
+		if (chikies.getCount() == 0 && airgums.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0) {
 			Game.screens.set(Screen.LEVELEND);
 		} else {
 
@@ -576,8 +576,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
-
-			if (AIR > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
+			if (AIR > 0 && chikies.getCount() == 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 				this.lastAirgum = (Bubble) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
 				this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);

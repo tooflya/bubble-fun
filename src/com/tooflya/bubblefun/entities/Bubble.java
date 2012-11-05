@@ -30,12 +30,12 @@ public class Bubble extends BubbleBase {
 
 	public float mLostedSpeed = 0;
 
-	public Bubble mParent = null;
-	public float mLastX = 0;
-	public float mLastY = 0;
-	public int mChildCount = 0;
+	private Bubble mParent = null;
+	private float mLastX = 0;
+	private float mLastY = 0;
+	private int mChildCount = 0;
 
-	public int birdsKills;
+	private int mBirdsKills;
 
 	// ===========================================================
 	// Constructors
@@ -52,10 +52,24 @@ public class Bubble extends BubbleBase {
 	// Setters
 	// ===========================================================
 
+	public void setParent(Bubble pBubble){
+		this.mParent = pBubble;
+		this.mParent.mChildCount++;
+		this.mParent.mLastX = this.getCenterX();
+		this.mParent.mLastY = this.getCenterY();
+	}
+
 	// ===========================================================
 	// Getters
 	// ===========================================================
 
+	public Bubble getParent(){
+		if(this.mParent == null){
+			return this;
+		}
+		return this.mParent;
+	}
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -113,23 +127,27 @@ public class Bubble extends BubbleBase {
 
 	private void writeText() {
 		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-		if (this.birdsKills == 1) {
+		if (this.mBirdsKills == 1) {
 			screen.mAwesomeKillText.create().setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(this.mLastX, this.mLastY);
 			bonus.setCurrentTileIndex(2);
 		}
-		else if (this.birdsKills == 2) {
+		else if (this.mBirdsKills == 2) {
 			screen.mDoubleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(this.mLastX, this.mLastY);
 			bonus.setCurrentTileIndex(0);
-		} else if (this.birdsKills == 3) {
+		} else if (this.mBirdsKills == 3) {
 			screen.mTripleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(this.mLastX, this.mLastY);
 			bonus.setCurrentTileIndex(3);
 		}
+	}
+	
+	public void addBirdsKills(){
+		this.getParent().mBirdsKills++;
 	}
 
 	// ===========================================================
@@ -151,7 +169,7 @@ public class Bubble extends BubbleBase {
 		this.mWidth = Options.bubbleMinSize;
 		this.mHeight = Options.bubbleMinSize;
 
-		this.birdsKills = 0;
+		this.mBirdsKills = 0;
 
 		this.mParent = null;
 		this.mLastX = 0;
@@ -208,7 +226,8 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
-		if (this.mChildCount == 0) {
+		final boolean isNoChilies = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
+		if (this.mChildCount == 0 || isNoChilies) {
 			this.writeText();
 			this.destroy(); // TODO: (R) Can be lost memory.
 		}
