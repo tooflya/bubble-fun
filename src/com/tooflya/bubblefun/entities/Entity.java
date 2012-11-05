@@ -174,15 +174,15 @@ public abstract class Entity extends AnimatedSprite {
 	/** Method wich used only for apper (setting visible to true) this entity and set ignore to false. */
 	public void show() {
 		this.setVisible(true);
-		this.setCullingEnabled(true);
 		this.setIgnoreUpdate(false);
+		/* TODO: Check is culling really need -->  this.setCullingEnabled(true); */
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
 	public void hide() {
 		this.setVisible(false);
-		this.setCullingEnabled(false);
 		this.setIgnoreUpdate(true);
+		/* TODO: Check is culling really need -->  this.setCullingEnabled(false); */
 	}
 
 	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
