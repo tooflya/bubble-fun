@@ -14,6 +14,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextur
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Color;
 import android.util.FloatMath;
@@ -876,6 +877,59 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				this.lastAirgum = null;
 
 				mBubblesCount++;
+			}
+			break;
+		case TouchEvent.ACTION_MOVE:
+			if (this.lastAirgum != null) {
+				mMarks.clear();
+
+				float xr = pTouchX, yr = pTouchY;
+
+				float mSpeedX, mSpeedY;
+
+				float angle = (float) Math.atan2(yr - this.lastAirgum.getCenterY(), xr - this.lastAirgum.getCenterX());
+				float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), xr, yr);
+				if (distance < Options.eps) {
+					mSpeedX = 0;
+					mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 - this.lastAirgum.mLostedSpeed;
+					mSpeedY = mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : mSpeedY;
+					mSpeedY = -mSpeedY;
+				}
+				else {
+					distance -= this.lastAirgum.mLostedSpeed;
+					distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
+					distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
+
+					if (0 < angle) {
+						angle -= Options.PI;
+					}
+
+					mSpeedX = distance * FloatMath.cos(angle);
+					mSpeedY = distance * FloatMath.sin(angle);
+
+					float dx = mSpeedX / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
+					float dy = mSpeedY / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
+
+					float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
+					while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
+						x += dx * 35;
+						y += dy * 35;
+						Entity w = mMarks.create();
+						if (w != null)
+							w.setCenterPosition(x, y);
+					}
+					x = this.lastAirgum.getCenterX();
+					y = this.lastAirgum.getCenterY();
+					while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
+						Entity w = mMarks.create();
+						if (w != null)
+							w.setCenterPosition(x, y);
+						x -= dx * 35;
+						y -= dy * 35;
+					}
+
+
+				}
 			}
 			break;
 		}

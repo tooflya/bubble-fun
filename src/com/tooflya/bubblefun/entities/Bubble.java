@@ -28,7 +28,7 @@ public class Bubble extends BubbleBase {
 
 	private float mTime = 0f; // Seconds.
 
-	private float mLostedSpeed = 0;
+	public float mLostedSpeed = 0;
 
 	public Bubble mParent = null;
 	public float mLastX = 0;
