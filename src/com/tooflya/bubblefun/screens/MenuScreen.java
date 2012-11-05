@@ -38,13 +38,14 @@ public class MenuScreen extends Screen {
 	// ===========================================================
 	
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
 
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-bg.png", 0, 0, 1, 1), this);
 
-	private final CloudsManager<Cloud> mClouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 400, 0, 1, 3), this.mBackground));
+	private final CloudsManager<Cloud> mClouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "cloud.png", 0, 0, 1, 5), this.mBackground));
 
 	private final Sprite mLogoBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-name.png", 550, 0, 1, 1), this.mBackground);
 
@@ -278,7 +279,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
+		Game.loadTextures(this.mBackgroundTextureAtlas,this.mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -288,7 +289,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
+		Game.unloadTextures(this.mBackgroundTextureAtlas,this.mBackgroundTextureAtlas2);
 	}
 
 	/*

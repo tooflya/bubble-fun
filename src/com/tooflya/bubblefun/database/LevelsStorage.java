@@ -99,7 +99,11 @@ public class LevelsStorage extends SQLiteOpenHelper {
 			cursor.moveToFirst();
 		}
 
-		return new Level(cursor.getInt(0) > 0, cursor.getInt(1));
+		final Level level = new Level(cursor.getInt(0) > 0, cursor.getInt(1));
+
+		cursor.close();
+
+		return level;
 	}
 
 	// ===========================================================

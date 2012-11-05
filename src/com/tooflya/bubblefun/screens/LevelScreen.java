@@ -76,7 +76,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
 
-	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 0, 615, 1, 3), this.mBackground));
+	private final Sprite mA = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "process-objects.png", 0, 0, 1, 1), this.mBackground);
+	
+	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "cloud.png", 600, 300, 1, 5), this.mBackground));
 
 	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
 	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
@@ -284,7 +286,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public LevelScreen() {
 		this.setOnSceneTouchListener(this);
-
+this. mA.create().setPosition(0, Options.cameraHeight-this.mA.getHeight());
 		this.clouds.generateStartClouds();
 
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);
