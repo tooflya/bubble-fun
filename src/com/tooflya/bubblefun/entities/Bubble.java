@@ -16,14 +16,16 @@ public class Bubble extends BubbleBase {
 	// Constants
 	// ===========================================================
 
-	private enum States {Creating, Moving, Destroying, WaitingForText};
+	private enum States {
+		Creating, Moving, Destroying, WaitingForText
+	};
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private States mState = States.Creating;
-	
+
 	private float mTime = 0f; // Seconds.
 
 	private float mLostedSpeed = 0;
@@ -32,7 +34,7 @@ public class Bubble extends BubbleBase {
 	public float mLastX = 0;
 	public float mLastY = 0;
 	public int mChildCount = 0;
-	
+
 	public int birdsKills;
 
 	// ===========================================================
@@ -65,36 +67,36 @@ public class Bubble extends BubbleBase {
 
 	public void initFinishPosition(final float x, final float y) {
 
-		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());		
+		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
-		if (distance < Options.eps){
+		if (distance < Options.eps) {
 			this.mSpeedX = 0;
 			this.mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 - this.mLostedSpeed;
 			this.mSpeedY = this.mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : this.mSpeedY;
 			this.mSpeedY = -this.mSpeedY;
 		}
-		else{
-		distance -= this.mLostedSpeed;
-		distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
-		distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;		
-		
-		if (0 < angle) {
-			angle -= Options.PI;
-		}
+		else {
+			distance -= this.mLostedSpeed;
+			distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
+			distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
 
-		this.mSpeedX = distance * FloatMath.cos(angle);
-		this.mSpeedY = distance * FloatMath.sin(angle);
+			if (0 < angle) {
+				angle -= Options.PI;
+			}
 
-		if(Options.bubbleMinSpeed < distance){
-			// TODO: (R) Is it needed here?
-			Glint particle;
-			for (int i = 0; i < 15; i++) {
-				particle = ((Glint) ((LevelScreen)Game.screens.get(Screen.LEVEL)).glints.create());
-				if (particle != null) {
-					particle.Init(i, this);
+			this.mSpeedX = distance * FloatMath.cos(angle);
+			this.mSpeedY = distance * FloatMath.sin(angle);
+
+			if (Options.bubbleMinSpeed < distance) {
+				// TODO: (R) Is it needed here?
+				Glint particle;
+				for (int i = 0; i < 15; i++) {
+					particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
+					if (particle != null) {
+						particle.Init(i, this);
+					}
 				}
 			}
-		}
 		}
 		this.mTime = 0;
 		this.mState = States.Moving;
@@ -110,24 +112,24 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void writeText() {
-			LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-			if (this.birdsKills == 1) {
-				screen.mAwesomeKillText.create().setCenterPosition(this.mLastX, this.mLastY);		
-				final Entity bonus = screen.mBonusesText.create();
-				bonus.setCenterPosition(this.mLastX, this.mLastY);
-				bonus.setCurrentTileIndex(2);
-			}
-			else if (this.birdsKills == 2) {
-				screen.mDoubleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
-				final Entity bonus = screen.mBonusesText.create();
-				bonus.setCenterPosition(this.mLastX, this.mLastY);
-				bonus.setCurrentTileIndex(0);
-			} else if (this.birdsKills == 3) {
-				screen.mTripleKillText.create().setCenterPosition(this.mLastX, this.mLastY);		
-				final Entity bonus = screen.mBonusesText.create();
-				bonus.setCenterPosition(this.mLastX, this.mLastY);
-				bonus.setCurrentTileIndex(3);
-			}
+		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
+		if (this.birdsKills == 1) {
+			screen.mAwesomeKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+			final Entity bonus = screen.mBonusesText.create();
+			bonus.setCenterPosition(this.mLastX, this.mLastY);
+			bonus.setCurrentTileIndex(2);
+		}
+		else if (this.birdsKills == 2) {
+			screen.mDoubleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+			final Entity bonus = screen.mBonusesText.create();
+			bonus.setCenterPosition(this.mLastX, this.mLastY);
+			bonus.setCurrentTileIndex(0);
+		} else if (this.birdsKills == 3) {
+			screen.mTripleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+			final Entity bonus = screen.mBonusesText.create();
+			bonus.setCenterPosition(this.mLastX, this.mLastY);
+			bonus.setCurrentTileIndex(3);
+		}
 	}
 
 	// ===========================================================
@@ -158,19 +160,19 @@ public class Bubble extends BubbleBase {
 
 		return super.create();
 	}
-	
+
 	private void onManagedUpdateCreating(final float pSecondsElapsed) {
 		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
-			
+
 			this.mLostedSpeed += Options.bubbleStepSpeed;
-			
+
 			this.setWidth(mWidth + Options.bubbleStepSize);
 			this.setHeight(mHeight + Options.bubbleStepSize);
 			this.mX -= Options.bubbleStepSize / 2;
 			this.mY -= Options.bubbleStepSize / 2;
-			
+
 			Options.bubbleSizePower -= Options.bubbleStepSize;
-			
+
 			LevelScreen.AIR--;
 		}
 	}
@@ -192,13 +194,13 @@ public class Bubble extends BubbleBase {
 	private void onManagedUpdateDestroying(final float pSecondsElapsed) {
 		this.mX += this.mSpeedX;
 		this.mY += this.mSpeedY;
-		
+
 		if (!this.isAnimationRunning()) {
-			if(this.mParent == null){
+			if (this.mParent == null) {
 				this.mY = -this.mHeight;
 				this.mState = States.WaitingForText;
 			}
-			else{
+			else {
 				this.mParent.mChildCount--;
 				destroy();
 			}
@@ -206,7 +208,7 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
-		if(this.mChildCount == 0){
+		if (this.mChildCount == 0) {
 			this.writeText();
 			this.destroy(); // TODO: (R) Can be lost memory.
 		}

@@ -265,7 +265,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private Bubble lastAirgum = null;
 
 	public EntityManager<Sprite> parachutes = new EntityManager<Sprite>(30, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "parachute.png", 200, 200, 1, 1), this.mBackground));
-	
+
 	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(30, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
 	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "gum-animation.png", 430, 280, 1, 6), this.mBackground));
 	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather.png", 730, 585, 1, 2), this.mBackground));
@@ -711,11 +711,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private boolean isCollide(Entity entity1, Entity entity2, final boolean rectangle) {
-		return !(
-				(entity1.getX() + entity1.getWidth() <= entity2.getX()) || 
-				(entity2.getX() + entity2.getWidth() <= entity1.getX()) || 
-				(entity2.getY() + entity2.getHeight() <= entity1.getY()) ||
-				(entity1.getY() + entity1.getHeight() <= entity2.getY()));
+		return !((entity1.getX() + entity1.getWidth() <= entity2.getX()) ||
+				(entity2.getX() + entity2.getWidth() <= entity1.getX()) ||
+				(entity2.getY() + entity2.getHeight() <= entity1.getY()) || (entity1.getY() + entity1.getHeight() <= entity2.getY()));
 		// TODO: (R) What to do with scaledSize and various rotationCenter?
 	}
 
@@ -854,10 +852,13 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (this.lastAirgum != null) {
 				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
 
+				float dx = this.lastAirgum.getSpeedX() / FloatMath.sqrt((float) (Math.pow(this.lastAirgum.getSpeedX(), 2) + Math.pow(this.lastAirgum.getSpeedY(), 2)));
+				float dy = this.lastAirgum.getSpeedY() / FloatMath.sqrt((float) (Math.pow(this.lastAirgum.getSpeedX(), 2) + Math.pow(this.lastAirgum.getSpeedY(), 2)));
+
 				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
 				while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
-					x += this.lastAirgum.getSpeedX() * 15;
-					y += this.lastAirgum.getSpeedY() * 15;
+					x += dx * 35;
+					y += dy * 35;
 					Entity w = mMarks.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
@@ -868,8 +869,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					Entity w = mMarks.create();
 					if (w != null)
 						w.setCenterPosition(x, y);
-					x -= this.lastAirgum.getSpeedX() * 15;
-					y -= this.lastAirgum.getSpeedY() * 15;
+					x -= dx * 35;
+					y -= dy * 35;
 				}
 
 				this.lastAirgum = null;
