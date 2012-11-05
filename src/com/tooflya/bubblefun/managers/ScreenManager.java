@@ -16,6 +16,7 @@ import com.tooflya.bubblefun.screens.ExitScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.LoadingScreen;
 import com.tooflya.bubblefun.screens.MenuScreen;
 import com.tooflya.bubblefun.screens.PauseScreen;
 import com.tooflya.bubblefun.screens.PreloaderScreen;
@@ -32,7 +33,7 @@ public class ScreenManager {
 
 	private final HUD hud = new HUD();
 
-	private final AlphaModifier modifierOn = new AlphaModifier(0.1f, 0f, 1f, new IEntityModifierListener() {
+	private final AlphaModifier modifierOn = new AlphaModifier(0.2f, 0f, 1f, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -63,7 +64,7 @@ public class ScreenManager {
 		}
 	});
 
-	private final AlphaModifier modifierOff = new AlphaModifier(0.1f, 1f, 0f, new IEntityModifierListener() {
+	private final AlphaModifier modifierOff = new AlphaModifier(0.2f, 1f, 0f, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -105,9 +106,10 @@ public class ScreenManager {
 		screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all scenes */
+		screens[Screen.LOAD] = new LoadingScreen();
 		screens[Screen.MENU] = new MenuScreen();
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
-		screens[Screen.LOAD] = new PreloaderScreen();
+		screens[Screen.PRELOAD] = new PreloaderScreen();
 		screens[Screen.LEVEL] = new LevelScreen();
 		screens[Screen.LEVELEND] = new LevelEndScreen();
 		screens[Screen.EXIT] = new ExitScreen();

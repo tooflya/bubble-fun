@@ -62,7 +62,7 @@ public class PauseScreen extends Screen {
 		@Override
 		public void onClick() {
 			PreloaderScreen.mChangeAction = 2;
-			Game.screens.set(Screen.LOAD);
+			Game.screens.set(Screen.PRELOAD);
 		}
 	};
 
@@ -74,7 +74,7 @@ public class PauseScreen extends Screen {
 		@Override
 		public void onClick() {
 			PreloaderScreen.mChangeAction = 1;
-			Game.screens.set(Screen.LOAD);
+			Game.screens.set(Screen.PRELOAD);
 		}
 	};
 

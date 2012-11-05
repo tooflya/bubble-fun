@@ -26,7 +26,7 @@ import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
 import com.tooflya.bubblefun.database.LevelsStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
-import com.tooflya.bubblefun.screens.LoadingScreen;
+import com.tooflya.bubblefun.screens.SplashScreen;
 
 /**
  * @author Tooflya.com
@@ -127,7 +127,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.chikyOffsetY = Options.cameraHeight * Options.chikyOffsetYPercent;
 
 		Options.cameraRatioFactor = Options.screenWidth / Options.cameraWidth > Options.screenHeight / Options.cameraHeight ? Options.screenWidth / Options.cameraWidth : Options.screenHeight / Options.cameraHeight;
-		System.out.println(Options.cameraHeight);
 
 		/** Initialize camera instance */
 		camera = new Camera(0, 0, Options.screenWidth, Options.screenHeight);
@@ -241,7 +240,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/**
 		 * Create loading screen and return her scene for attaching to the activity
 		 */
-		return new LoadingScreen();
+		return new SplashScreen();
 	}
 
 	/*
@@ -279,6 +278,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		if (Options.mLastPlayedMusic != null) {
 			Options.mLastPlayedMusic.resume();
 		}
+
+		//screens.getCurrent().setIgnoreUpdate(false);
+		//screens.getCurrent().setChildrenIgnoreUpdate(false);
 	}
 
 	/*
@@ -300,6 +302,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			Options.mLevelSound.pause();
 			Options.mLastPlayedMusic = Options.mLevelSound;
 		}
+
+		//screens.getCurrent().setIgnoreUpdate(true);
+		//screens.getCurrent().setChildrenIgnoreUpdate(true);
 	}
 
 	/*

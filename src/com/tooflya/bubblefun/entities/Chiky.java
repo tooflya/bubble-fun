@@ -148,6 +148,23 @@ public class Chiky extends Entity {
 		this.setSpeedY(1f);
 	}
 
+	public void initStateByNumber(final int pNumber) {
+		switch (pNumber) {
+		case isJumplyFlag:
+			this.initIsJumply();
+			break;
+		case isSpeedyFlag:
+			this.initIsSpeedy();
+			break;
+		case isWavelyFlag:
+			this.initIsWavely();
+			break;
+		case isParachuteFlag:
+			this.initIsParachute();
+			break;
+		}
+	}
+
 	private boolean IsProperty(int flag) {
 		return (this.mProperties & flag) == flag;
 	}
@@ -157,16 +174,16 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	public void isCollide(Bubble airgum) {
-		if(this.mAirgum == null){			
-			if(airgum.mParent != null){
+		if (this.mAirgum == null) {
+			if (airgum.mParent != null) {
 				this.mAirgum = airgum.mParent;
 			}
-			else{
+			else {
 				this.mAirgum = airgum;
 			}
-			this.mTimeWithGum = 0;			
-			
-			if (this.mState == States.NormalMove){
+			this.mTimeWithGum = 0;
+
+			if (this.mState == States.NormalMove) {
 				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 			}
 			else { // States.SpeedyMove.
@@ -375,5 +392,12 @@ public class Chiky extends Entity {
 		else {
 			this.getTextureRegion().setFlippedHorizontal(true);
 		}
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+
+		LevelScreen.deadBirds--;
 	}
 }

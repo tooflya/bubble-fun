@@ -16,7 +16,7 @@ import com.tooflya.bubblefun.entities.Sprite;
  * @author Tooflya.com
  * @since
  */
-public class LoadingScreen extends Screen {
+public class SplashScreen extends Screen {
 
 	// ===========================================================
 	// Constants
@@ -32,21 +32,11 @@ public class LoadingScreen extends Screen {
 	/** Declare the entity that acts as a background image of the screen. */
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen.png", 0, 0, 1, 1), this);
 
-	/** Declare the entity that acts as a loading bar. */
-	private final Sprite mProgressBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-fill.png", 0, 660, 1, 1), this.mBackground);
-
 	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
-	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
+	private final TimerHandler mTimer = new TimerHandler(2f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			/** Changing size of progressbar. */
-			if (mProgressBar.getWidthScaled() < mProgressBar.getBaseWidth()) {
-				mProgressBar.getTextureRegion().setWidth((int) (mProgressBar.getTextureRegion().getWidth() + 5f));
-				mProgressBar.setWidth(mProgressBar.getWidth() + 5f);
-			} else {
-				/** If progressbar is full. */
-				Game.isGameLoaded = true;
-			}
+			Game.screens.set(Screen.LOAD);
 		}
 	});
 
@@ -54,16 +44,12 @@ public class LoadingScreen extends Screen {
 	// Constructors
 	// ===========================================================
 
-	public LoadingScreen() {
+	public SplashScreen() {
 		this.loadResources();
 
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
 		this.mBackground.create().setBackgroundCenterPosition();
-
-		this.mProgressBar.create().setCenterPosition(192f, 562f);
-		this.mProgressBar.setWidth(1);
-		this.mProgressBar.getTextureRegion().setWidth(1);
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);

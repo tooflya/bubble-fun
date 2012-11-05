@@ -22,7 +22,7 @@ public class LevelIcon extends ButtonScaleable {
 		if (!this.blocked) {
 			Options.levelNumber = this.id;
 			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
-			Game.screens.set(Screen.LOAD);
+			Game.screens.set(Screen.PRELOAD);
 		}
 	}
 }

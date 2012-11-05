@@ -1,11 +1,24 @@
 package com.tooflya.bubblefun.managers;
 
+import java.io.IOException;
+
+import org.anddev.andengine.level.LevelLoader;
+import org.anddev.andengine.level.LevelLoader.IEntityLoader;
+import org.anddev.andengine.util.SAXUtils;
+import org.xml.sax.Attributes;
+
+import android.graphics.Color;
+
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.database.Level;
+import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.Electrod;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class LevelsManager<T> extends EntityManager<Entity> {
 
@@ -14,8 +27,13 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private EntityManager<Sprite> mNumbers;
 
+	private static LevelLoader mLevelLoader;
+
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
+
+		mLevelLoader = new LevelLoader();
+		mLevelLoader.setAssetBasePath("levels/");
 
 		PADDING = 45f;
 		PADDING_B = 23f;
@@ -103,6 +121,83 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				icon.setCurrentTileIndex(4);
 				icon.blocked = true;
 			}
+		}
+	}
+
+	public static void generateLevel(final int pLevel) {
+		final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		mLevelLoader.registerEntityLoader("level", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final int r1 = SAXUtils.getIntAttributeOrThrow(pAttributes, "r1");
+				final int g1 = SAXUtils.getIntAttributeOrThrow(pAttributes, "g1");
+				final int b1 = SAXUtils.getIntAttributeOrThrow(pAttributes, "b1");
+
+				final int r2 = SAXUtils.getIntAttributeOrThrow(pAttributes, "r2");
+				final int g2 = SAXUtils.getIntAttributeOrThrow(pAttributes, "g2");
+				final int b2 = SAXUtils.getIntAttributeOrThrow(pAttributes, "b2");
+
+				screen.gradientSource.changeColors(screen.bitmap, Color.rgb(r1, g1, b1), Color.rgb(r2, g2, b2));
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final Chiky chiky = screen.chikies.create();
+
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+
+				final int state = SAXUtils.getIntAttributeOrThrow(pAttributes, "state");
+
+				chiky.initStartX(x);
+				chiky.initStartY(y);
+
+				chiky.initStateByNumber(state);
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		mLevelLoader.registerEntityLoader("electrod", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final Electrod electrod = screen.electrods.create();
+
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+
+				electrod.setPosition(x, y);
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		try {
+			mLevelLoader.loadLevelFromAsset(Game.instance, pLevel + ".xml");
+		} catch (final IOException e) {
 		}
 	}
 }

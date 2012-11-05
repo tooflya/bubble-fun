@@ -40,6 +40,7 @@ import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.LevelsManager;
 import com.tooflya.bubblefun.modifiers.AlphaModifier;
 import com.tooflya.bubblefun.modifiers.MoveModifier;
 
@@ -68,9 +69,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
+	public final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
 
-	final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap,
+	public final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap,
 			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
 
 	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
@@ -251,7 +252,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	};
 
 	private final EntityManager<Sprite> thorns = new EntityManager<Sprite>(10, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "thorn.png", 430, 40, 1, 1), this.mBackground));
-	private final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5), this.mBackground));
+	public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5), this.mBackground));
 
 	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65, 6, 1), this.mBackground));
 
@@ -392,276 +393,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private void generateChikies() {
-		Chiky chiky;
+		
 
-		final float minHeight = Options.chikyEtalonSize / 2 + Options.chikyOffsetY;
-		final float sizeHeight2 = (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
-		final float stepX = (Options.chikyMinStepX + Options.chikyMaxStepX) / 2;
-
-		switch (Options.levelNumber) {
-		case 1:
-			chiky = chikies.create();
-			chiky.initIsParachute();
-
-			electrods.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-
-			return;
-		case 2:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * 0.5f);
-
-			chiky = chikies.create();
-
-			chiky.initNormalStepX(stepX);
-			gradientSource.changeColors(bitmap, Color.rgb(3, 91, 200), Color.rgb(102, 211, 234));
-
-			return;
-		case 3:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-
-			thorns.create().setCenterPosition(80, Options.cameraCenterY);
-			//
-			gradientSource.changeColors(bitmap, Color.rgb(200, 49, 3), Color.rgb(237, 225, 41));
-			return;
-		case 4:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-
-			chiky = chikies.create();
-
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			gradientSource.changeColors(bitmap, Color.rgb(196, 11, 224), Color.rgb(238, 197, 244));
-
-			return;
-		case 5:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			return;
-		case 6:
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			return;
-		case 7:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * 0.5f);
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-			return;
-		case 8:
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * 0.5f);
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-			return;
-		case 9:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			return;
-		case 10:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initNormalStepX(stepX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			return;
-		case 11:
-			chiky = chikies.create();
-
-			return;
-		case 12:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-
-			return;
-		case 13:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			return;
-		case 14:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			return;
-		case 15:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-
-			return;
-		case 16:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * 0.5f);
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			return;
-		case 17:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			return;
-		case 18:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			return;
-		case 19:
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			return;
-		case 20:
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * Game.random.nextFloat());
-
-			chiky = chikies.create();
-
-			chiky = chikies.create();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			chiky = chikies.create();
-			chiky.initIsSpeedy();
-			chiky.initStartY(minHeight + sizeHeight2 * (Game.random.nextFloat() + 1));
-			chiky.initOffsetX(Options.chikyOffsetX);
-
-			return;
-		}
+		LevelsManager.generateLevel(Options.levelNumber);
 	}
 
 	private void checkCollision() {
@@ -927,7 +661,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						x -= dx * 35;
 						y -= dy * 35;
 					}
-
 
 				}
 			}
