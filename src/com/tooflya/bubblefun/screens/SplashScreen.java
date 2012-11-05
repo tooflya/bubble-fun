@@ -36,7 +36,7 @@ public class SplashScreen extends Screen {
 	private final TimerHandler mTimer = new TimerHandler(2f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			Game.screens.set(Screen.LOAD);
+			Game.engine.setScene(new LoadingScreen());
 		}
 	});
 

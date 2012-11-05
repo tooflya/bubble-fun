@@ -106,7 +106,6 @@ public class ScreenManager {
 		screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all scenes */
-		screens[Screen.LOAD] = new LoadingScreen();
 		screens[Screen.MENU] = new MenuScreen();
 		screens[Screen.CHOISE] = new LevelChoiseScreen();
 		screens[Screen.PRELOAD] = new PreloaderScreen();
