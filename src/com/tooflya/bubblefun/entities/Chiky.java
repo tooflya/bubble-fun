@@ -176,6 +176,7 @@ public class Chiky extends Entity {
 	public void isCollide(Bubble airgum) {
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
+			this.mAirgum.AddChildCount();
 			this.mTimeWithGum = 0;
 
 			if (this.mState == States.NormalMove) {
@@ -221,7 +222,7 @@ public class Chiky extends Entity {
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getSpeedY());
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
-				airgum.setParent(this.mAirgum);
+				airgum.setParent(mAirgum);
 			}
 
 			Feather particle;

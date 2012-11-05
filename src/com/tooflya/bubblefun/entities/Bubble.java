@@ -53,10 +53,10 @@ public class Bubble extends BubbleBase {
 	// ===========================================================
 
 	public void setParent(Bubble pBubble){
-		this.mParent = pBubble;
-		this.mParent.mChildCount++;
+		this.mParent = pBubble.getParent();
 		this.mParent.mLastX = this.getCenterX();
 		this.mParent.mLastY = this.getCenterY();
+		System.out.println(" " + this.getCenterX() + " " + this.getCenterY());
 	}
 
 	// ===========================================================
@@ -150,6 +150,9 @@ public class Bubble extends BubbleBase {
 		this.getParent().mBirdsKills++;
 	}
 
+	public void AddChildCount(){
+		this.getParent().mChildCount++;		
+	}
 	// ===========================================================
 	// Virtual Methods
 	// ===========================================================

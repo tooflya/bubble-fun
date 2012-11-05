@@ -578,7 +578,7 @@ this. mA.create().setPosition(0, Options.cameraHeight-this.mA.getHeight());
 
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
-			if (AIR > 0 && chikies.getCount() == 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
+			if (AIR > 0 && chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 				this.lastAirgum = (Bubble) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
 				this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);
