@@ -41,6 +41,7 @@ public class Chiky extends Entity {
 
 	private float mTime = 0f; // Seconds.
 	private float mTimeWithGum = 0f; // Seconds.
+	private float mAngle = 0f; // Degree.
 
 	private float mStartX = 0;
 	private float mStartY = 0;
@@ -53,9 +54,6 @@ public class Chiky extends Entity {
 	private float mX_ = 0; // Last (or old) x.
 
 	private Bubble mAirgum = null;
-	private float mAirgumSize = 0;
-	private float mAirgumSpeedY = 0;
-	private int mAirgumBirdsKills = 0;
 	private Acceleration mWind = null;
 	private Entity mParahute = null;
 
@@ -101,6 +99,8 @@ public class Chiky extends Entity {
 
 		this.mTime = 0f;
 		this.mTimeWithGum = 0f;
+
+		this.mAngle = 0f; // Degree.
 
 		this.mAirgum = null;
 		this.mWind = null;
@@ -259,8 +259,9 @@ public class Chiky extends Entity {
 
 		float y = this.mStartY;
 		if (this.IsProperty(isWavelyFlag)) {
-			y += FloatMath.sin(this.mTime * Options.PI * Math.abs(this.mSpeedX) / Options.cameraWidth) * Options.chikyOffsetY;
+			y += FloatMath.sin(this.mAngle * Options.PI * Math.abs(this.mSpeedX) / Options.cameraWidth) * Options.chikyOffsetY;
 		}
+		System.out.println(" " + isWavelyFlag + " " + Options.chikyOffsetY);
 
 		this.setCenterPosition(x, y);
 
@@ -360,6 +361,7 @@ public class Chiky extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.mTime += pSecondsElapsed;
+		this.mAngle += Options.chikyAngleStep;
 
 		this.mX_ = this.mX;
 

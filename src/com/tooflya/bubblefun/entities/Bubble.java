@@ -56,7 +56,6 @@ public class Bubble extends BubbleBase {
 		this.mParent = pBubble.getParent();
 		this.mParent.mLastX = this.getCenterX();
 		this.mParent.mLastY = this.getCenterY();
-		System.out.println(" " + this.getCenterX() + " " + this.getCenterY());
 	}
 
 	// ===========================================================
@@ -85,12 +84,12 @@ public class Bubble extends BubbleBase {
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
 		if (distance < Options.eps) {
 			this.mSpeedX = 0;
-			this.mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 - this.mLostedSpeed;
+			this.mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 / this.mLostedSpeed;
 			this.mSpeedY = this.mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : this.mSpeedY;
 			this.mSpeedY = -this.mSpeedY;
 		}
 		else {
-			distance -= this.mLostedSpeed;
+			distance /= this.mLostedSpeed;
 			distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
 			distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
 
@@ -151,7 +150,7 @@ public class Bubble extends BubbleBase {
 	}
 
 	public void AddChildCount(){
-		this.getParent().mChildCount++;		
+		this.getParent().mChildCount++; // TODO: (R) Need raise at setParent(). How?		
 	}
 	// ===========================================================
 	// Virtual Methods
@@ -229,8 +228,8 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
-		final boolean isNoChilies = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
-		if (this.mChildCount == 0 || isNoChilies) {
+		final boolean isNoChikies = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
+		if (this.mChildCount == 0 || isNoChikies) {
 			this.writeText();
 			this.destroy(); // TODO: (R) Can be lost memory.
 		}

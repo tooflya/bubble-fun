@@ -61,8 +61,9 @@ public class Options {
 
 	public final static float chikyOffsetX = 3 * Options.chikyEtalonSize;
 
-	final static float chikyOffsetYPercent = 0.1f;;
-	public static float chikyOffsetY;
+	public final static float chikyAngleStep = 3f;
+	public final static float chikyOffsetYPercent = 0.1f;
+	public static float chikyOffsetY; // For initialize use setCameraOriginRatioY.
 	// < Chiky options.
 
 	// > BubbleBase options.
@@ -84,7 +85,7 @@ public class Options {
 	public final static float bubbleMinSpeed = 0.1f; // Pixels by frame.
 
 	public final static float bubbleMaxSpeed = 6f; // Pixels by frame.	
-	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.
+	public final static float bubbleStepSpeed = 1f; // Pixels by frame.
 
 	public final static float bubbleMaxTimeMove = 2f; // Seconds.
 	// < Bubble options.
