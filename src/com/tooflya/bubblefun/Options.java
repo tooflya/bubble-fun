@@ -14,7 +14,7 @@ public class Options {
 
 	// > Math options.
 	public static float PI = (float) (2 * Math.asin(1));
-	public static float eps = 20f;
+	public static float eps = 10f;
 	// < Math options.
 
 	// > Camera options.
@@ -52,6 +52,8 @@ public class Options {
 	public final static float chikyMinStepX = 1f; // Pixels by frame.
 	public final static float chikyMaxStepX = 2f; // Pixels by frame.
 
+	public final static float chikyFallSpeed = 4f; // Pixels by frame.
+
 	public final static float chikyMaxTimeNormal = 4f; // Seconds.
 	public final static float chikyMaxTimeSpeedy = 1f; // Seconds.
 	public final static float chikyMaxTimeWithGum = 2f; // Seconds.
@@ -82,10 +84,10 @@ public class Options {
 	public final static float bubbleMaxSize = 100f; // TODO: (R) Auto set value. // Pixels.
 	public final static float bubbleStepSize = 1f; // Pixels by frame.
 
-	public final static float bubbleMinSpeed = 0.1f; // Pixels by frame.
-
-	public final static float bubbleMaxSpeed = 6f; // Pixels by frame.	
-	public final static float bubbleStepSpeed = 1f; // Pixels by frame.
+	public final static float bubbleSpeedMaxSpeed = 6f; // Pixels by frame.
+	public final static float bubbleMinSpeed = 0.8f; // Pixels by frame.
+	public final static float bubbleMaxSpeed = 2f; // Pixels by frame.	
+	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.
 
 	public final static float bubbleMaxTimeMove = 2f; // Seconds.
 	// < Bubble options.

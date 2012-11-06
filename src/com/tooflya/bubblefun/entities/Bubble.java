@@ -86,12 +86,13 @@ public class Bubble extends BubbleBase {
 			this.mSpeedX = 0;
 			this.mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 / this.mLostedSpeed;
 			this.mSpeedY = this.mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : this.mSpeedY;
+			this.mSpeedY = this.mSpeedY > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : this.mSpeedY;
 			this.mSpeedY = -this.mSpeedY;
 		}
 		else {
 			distance /= this.mLostedSpeed;
 			distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
-			distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
+			distance = distance > Options. bubbleSpeedMaxSpeed ? Options. bubbleSpeedMaxSpeed : distance;
 
 			if (0 < angle) {
 				angle -= Options.PI;

@@ -219,7 +219,7 @@ public class Chiky extends Entity {
 				this.mSpeedX = -this.mNormalStepX;
 			}
 
-			Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getSpeedY());
@@ -263,7 +263,6 @@ public class Chiky extends Entity {
 		if (this.IsProperty(isWavelyFlag)) {
 			y += FloatMath.sin(this.mAngle * Options.PI * Math.abs(this.mSpeedX) / Options.cameraWidth) * Options.chikyOffsetY;
 		}
-		System.out.println(" " + isWavelyFlag + " " + Options.chikyOffsetY);
 
 		this.setCenterPosition(x, y);
 
@@ -314,14 +313,9 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
-		// For remember: y = y_2 - y_1, where y_n = (x_n - x_) ^ 2.
-		final float x_ = FloatMath.sqrt(Options.chikyOffsetY);
-		final float x = this.getCenterX() - this.mStartX + this.mSpeedX;
-		final float y = this.mSpeedX * (2 * (x - x_) - this.mSpeedX);
-		this.setCenterPosition(this.mStartX + x, this.mStartY + y);
-		// TODO: (R) Need to do easy? Can you understand this?
+		this.mY += Options.chikyFallSpeed;
 
-		this.setRotation(this.getRotation() + 1); // Rotate at 1 degree. Maybe need to correct.
+		this.setRotation(this.getRotation() + 5); // Rotate at 1 degree. Maybe need to correct.
 
 		if (this.mY > Options.cameraHeight) {
 			this.destroy();
