@@ -111,10 +111,12 @@ public class Chiky extends Entity {
 	}
 
 	public void initStartX(final float startX) {
+		this.mX = startX;
 		this.mStartX = startX;
 	}
 
 	public void initStartY(final float startY) {
+		this.mY = startY;
 		this.mStartY = startY;
 	}
 

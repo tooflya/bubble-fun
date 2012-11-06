@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level
-	r1="196" g1="11" b1="224"
-	r2="238" g2="197" b2="244"
->
-	<chiky x="0" y="0" state="0"/>
-	<chiky x="100" y="100" state="2"/>
+<level r1="255" g1="242" b1="5" r2="255" g2="251" b2="175" bluebird="false">
+	<chiky x="100" y="200"/>
+	<chiky x="300" y="400"/>
 </level>

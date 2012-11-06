@@ -75,8 +75,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
 
 	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
-
-	private final Sprite mA = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "process-objects.png", 0, 0, 1, 1), this.mBackground);
 	
 	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "cloud.png", 600, 300, 1, 5), this.mBackground));
 
@@ -277,7 +275,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public EntityManager<Glint> glints = new EntityManager<Glint>(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas,
 			Game.context, "blesk.png", 730, 900, 1, 3), this.mBackground));
 
-	private BlueBird mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blue-bird.png", 430, 600, 6, 1),
+	public BlueBird mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blue-bird.png", 430, 600, 6, 1),
 			new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather_new_blue.png", 430, 890, 1, 2), this.mBackground)), this.mBackground);
 
 	// ===========================================================
@@ -286,7 +284,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public LevelScreen() {
 		this.setOnSceneTouchListener(this);
-this. mA.create().setPosition(0, Options.cameraHeight-this.mA.getHeight());
+
 		this.clouds.generateStartClouds();
 
 		mDottedLine.create().setPosition(0, Options.cameraHeight / 3 * 2);

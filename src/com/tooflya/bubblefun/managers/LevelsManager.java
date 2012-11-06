@@ -1,13 +1,18 @@
 package com.tooflya.bubblefun.managers;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.anddev.andengine.level.LevelLoader;
 import org.anddev.andengine.level.LevelLoader.IEntityLoader;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 import android.graphics.Color;
+import android.os.Environment;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
@@ -31,10 +36,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
-
+		
 		mLevelLoader = new LevelLoader();
-		mLevelLoader.setAssetBasePath("levels/");
-
+		
 		PADDING = 45f;
 		PADDING_B = 23f;
 
@@ -143,6 +147,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final int r2 = SAXUtils.getIntAttributeOrThrow(pAttributes, "r2");
 				final int g2 = SAXUtils.getIntAttributeOrThrow(pAttributes, "g2");
 				final int b2 = SAXUtils.getIntAttributeOrThrow(pAttributes, "b2");
+				
+				final boolean isBlueBirdNeed = SAXUtils.getBooleanAttribute(pAttributes, "bluebird", true);
+				
+				screen.mBlueBird.setIgnoreUpdate(!isBlueBirdNeed);
 
 				screen.gradientSource.changeColors(screen.bitmap, Color.rgb(r1, g1, b1), Color.rgb(r2, g2, b2));
 			}
@@ -162,7 +170,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				final int state = SAXUtils.getIntAttributeOrThrow(pAttributes, "state");
+				final int state = SAXUtils.getIntAttribute(pAttributes, "state", 0);
 
 				chiky.initStartX(x);
 				chiky.initStartY(y);
@@ -195,9 +203,47 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
-		try {
-			mLevelLoader.loadLevelFromAsset(Game.instance, pLevel + ".xml");
-		} catch (final IOException e) {
-		}
+		
+		
+		
+		
+		
+		 if(false){
+			 try {
+				mLevelLoader.loadLevelFromAsset(Game.instance, pLevel + ".xml");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+     }else{
+             System.out.println("TMXLevel: Loading level from SD");
+             InputStream inputStream;
+             String state = Environment.getExternalStorageState();
+             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/temp/"+pLevel+".xml");    //Can be done with 2 params : folder & file.
+         try {
+             inputStream = new FileInputStream(file);
+             mLevelLoader.loadLevelFromStream(inputStream);
+             inputStream.close();
+         } catch (IOException e) {
+        	 System.out.println(e.getMessage());
+             if(!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)){
+            	 System.out.println("TMXLevel: SD Storage unavailable.");
+                     }else{
+                    	 System.out.println("TMXLevel: File not found, falling back to regular level. Does it exist ? ("+Environment.getExternalStorageDirectory().getAbsolutePath()+"/temp/"+pLevel+".xml"+")");
+                     }
+         }
+     }
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+
 	}
 }
