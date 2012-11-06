@@ -90,8 +90,9 @@ public class Bubble extends BubbleBase {
 			this.mSpeedY = -this.mSpeedY;
 		}
 		else {
+			distance = distance > 6 ? 6 : distance;
 			distance /= this.mLostedSpeed;
-			distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
+			distance = distance < Options.bubbleSpeedMinSpeed ? Options.bubbleSpeedMinSpeed : distance;
 			distance = distance > Options. bubbleSpeedMaxSpeed ? Options. bubbleSpeedMaxSpeed : distance;
 
 			if (0 < angle) {
@@ -127,21 +128,24 @@ public class Bubble extends BubbleBase {
 
 	private void writeText() {
 		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-		if (this.mBirdsKills == 1) {
-			screen.mAwesomeKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+		if (this.mBirdsKills == 1 && screen.chikies.getCount() <=1 ) {
+			final Entity text = screen.mAwesomeKillText.create();
+			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
-			bonus.setCenterPosition(this.mLastX, this.mLastY);
+			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(2);
 		}
 		else if (this.mBirdsKills == 2) {
-			screen.mDoubleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+			final Entity text =screen.mDoubleKillText.create();
+			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
-			bonus.setCenterPosition(this.mLastX, this.mLastY);
+			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(0);
 		} else if (this.mBirdsKills == 3) {
-			screen.mTripleKillText.create().setCenterPosition(this.mLastX, this.mLastY);
+			final Entity text =screen.mTripleKillText.create();
+			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
-			bonus.setCenterPosition(this.mLastX, this.mLastY);
+			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(3);
 		}
 	}

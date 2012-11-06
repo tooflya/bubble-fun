@@ -84,7 +84,8 @@ public class Options {
 	public final static float bubbleMaxSize = 100f; // TODO: (R) Auto set value. // Pixels.
 	public final static float bubbleStepSize = 1f; // Pixels by frame.
 
-	public final static float bubbleSpeedMaxSpeed = 6f; // Pixels by frame.
+	public final static float bubbleSpeedMaxSpeed = 5f; // Pixels by frame.
+	public final static float bubbleSpeedMinSpeed = 1f; // Pixels by frame.
 	public final static float bubbleMinSpeed = 0.8f; // Pixels by frame.
 	public final static float bubbleMaxSpeed = 2f; // Pixels by frame.	
 	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.

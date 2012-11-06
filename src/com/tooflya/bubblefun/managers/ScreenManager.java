@@ -16,7 +16,6 @@ import com.tooflya.bubblefun.screens.ExitScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
-import com.tooflya.bubblefun.screens.LoadingScreen;
 import com.tooflya.bubblefun.screens.MenuScreen;
 import com.tooflya.bubblefun.screens.PauseScreen;
 import com.tooflya.bubblefun.screens.PreloaderScreen;
