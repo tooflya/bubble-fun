@@ -170,10 +170,14 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
+				final float speed  = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
+
 				final int state = SAXUtils.getIntAttribute(pAttributes, "state", 0);
 
 				chiky.initStartX(x);
 				chiky.initStartY(y);
+				
+				chiky.initNormalStepX(speed);
 
 				chiky.initStateByNumber(state);
 			}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level r1="255" g1="0" b1="0" r2="180" g2="199" b2="120" bluebird="true">
+	<chiky x="50" y="100" speed="1.3" state="4"/>
+	<chiky x="200" y="200" speed="1.3" state="4"/>
+	<chiky x="350" y="350" speed="1.3" state="4"/>
+</level>
