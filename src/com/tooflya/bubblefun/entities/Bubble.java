@@ -31,8 +31,8 @@ public class Bubble extends BubbleBase {
 	public float mLostedSpeed = 0;
 
 	private Bubble mParent = null;
-	private float mLastX = 0;
-	private float mLastY = 0;
+	float mLastX = 0;
+	float mLastY = 0;
 	private int mChildCount = 0;
 
 	private int mBirdsKills;
@@ -129,6 +129,7 @@ public class Bubble extends BubbleBase {
 	private void writeText() {
 		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
 		if (this.mBirdsKills == 1 && screen.chikies.getCount() <=1 ) {
+			this.mBirdsKills--;
 			final Entity text = screen.mAwesomeKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
@@ -136,12 +137,14 @@ public class Bubble extends BubbleBase {
 			bonus.setCurrentTileIndex(2);
 		}
 		else if (this.mBirdsKills == 2) {
+			this.mBirdsKills-=2;
 			final Entity text =screen.mDoubleKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(0);
-		} else if (this.mBirdsKills == 3) {
+		} else if(this.mBirdsKills > 0) {
+			this.mBirdsKills-=3;
 			final Entity text =screen.mTripleKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
@@ -234,7 +237,8 @@ public class Bubble extends BubbleBase {
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
 		final boolean isNoChikies = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
-		if (this.mChildCount == 0 || isNoChikies) {
+		final int b = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount();
+		if (this.mChildCount == 0 || isNoChikies || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b-this.mBirdsKills <= 0)) {
 			this.writeText();
 			this.destroy(); // TODO: (R) Can be lost memory.
 		}
@@ -264,6 +268,11 @@ public class Bubble extends BubbleBase {
 		case WaitingForText:
 			this.onManagedUpdateWaitingForText(pSecondsElapsed);
 			break;
+		}
+
+		final int b = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount();
+		if (this.mChildCount == 0 ||this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b-this.mBirdsKills <= 0)) {
+			this.writeText();
 		}
 	}
 }

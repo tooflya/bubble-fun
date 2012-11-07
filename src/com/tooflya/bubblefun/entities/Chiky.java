@@ -132,6 +132,11 @@ public class Chiky extends Entity {
 	public void initOffsetX(final float offsetX) {
 		this.mOffsetX = offsetX;
 	}
+	
+	public void initScale(final float scale) {
+		this.setWidth(this.mBaseWidth * scale);
+		this.setHeight(this.mBaseHeight  * scale);
+	}
 
 	public void initIsJumply() {
 		this.mProperties = this.mProperties | isJumplyFlag;
@@ -181,6 +186,9 @@ public class Chiky extends Entity {
 			this.mAirgum.AddChildCount();
 			this.mTimeWithGum = 0;
 
+			this.mAirgum.mLastX = this.getCenterX();
+			this.mAirgum.mLastY = this.getCenterY();
+			
 			if (this.mState == States.NormalMove) {
 				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 			}
