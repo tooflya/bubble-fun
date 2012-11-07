@@ -27,7 +27,7 @@ public class SplashScreen extends Screen {
 	// ===========================================================
 
 	/** Declare the necessary canvas in graphics memory, which then will be used to download images. */
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	/** Declare the entity that acts as a background image of the screen. */
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen.png", 0, 0, 1, 1), this);
@@ -37,6 +37,7 @@ public class SplashScreen extends Screen {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
 			Game.engine.setScene(new LoadingScreen());
+			onDetached();
 		}
 	});
 

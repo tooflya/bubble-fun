@@ -70,7 +70,7 @@ public abstract class Screen extends Scene {
 	@Override
 	public void attachChild(final IEntity pEntity) {
 		super.attachChild(pEntity);
-
+try{
 		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);
@@ -78,7 +78,7 @@ public abstract class Screen extends Scene {
 		/** After scale action we need to find center of entity position. */
 		if (((Shape) pEntity).getWidthScaled() > Options.cameraWidth || ((Shape) pEntity).getHeightScaled() > Options.cameraHeight) {
 			pEntity.setPosition((Options.screenWidth - ((Shape) pEntity).getWidthScaled()) / 2, (Options.screenHeight - ((Shape) pEntity).getHeightScaled()) / 2);
-		}
+		}}catch(ClassCastException e){}
 	}
 
 	// ===========================================================

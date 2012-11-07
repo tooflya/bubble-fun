@@ -362,7 +362,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		Options.bubbleSizePower = Options.bubbleMaxSizePower;
 
-		AIR = 100;// 100;
+		AIR = 100;
 
 		mBubblesCount = 0;
 
