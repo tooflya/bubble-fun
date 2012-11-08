@@ -12,6 +12,7 @@ import org.anddev.andengine.util.modifier.IModifier;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.BoxScreen;
 import com.tooflya.bubblefun.screens.ExitScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
@@ -112,6 +113,7 @@ public class ScreenManager {
 		screens[Screen.LEVELEND] = new LevelEndScreen();
 		screens[Screen.EXIT] = new ExitScreen();
 		screens[Screen.PAUSE] = new PauseScreen();
+		screens[Screen.BOX] = new BoxScreen();
 	}
 
 	// ===========================================================

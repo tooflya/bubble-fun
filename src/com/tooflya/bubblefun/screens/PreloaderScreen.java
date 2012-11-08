@@ -146,6 +146,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 		if (mChangeAction == 0) {
 			Game.screens.get(Screen.EXIT).unloadResources();
 			Game.screens.get(Screen.MENU).unloadResources();
+			Game.screens.get(Screen.BOX).unloadResources();
 			Game.screens.get(Screen.CHOISE).unloadResources();
 			Game.screens.get(Screen.LEVEL).loadResources();
 			Game.screens.get(Screen.LEVELEND).loadResources();
@@ -154,7 +155,8 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 			Game.screens.get(Screen.PAUSE).unloadResources();
 			Game.screens.get(Screen.LEVEL).unloadResources();
 			Game.screens.get(Screen.LEVELEND).unloadResources();
-			Game.screens.get(Screen.MENU).loadResources();
+			Game.screens.get(Screen.MENU).loadResources();;
+			Game.screens.get(Screen.BOX).loadResources();
 			Game.screens.get(Screen.CHOISE).loadResources();
 			Game.screens.get(Screen.EXIT).loadResources();
 		}

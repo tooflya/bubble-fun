@@ -92,7 +92,7 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public void onClick() {
-			Game.screens.set(Screen.CHOISE);
+			Game.screens.set(Screen.BOX);
 		}
 	};
 

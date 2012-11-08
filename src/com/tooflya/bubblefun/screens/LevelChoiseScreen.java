@@ -43,7 +43,7 @@ public class LevelChoiseScreen extends Screen {
 		 */
 		@Override
 		public void onClick() {
-			Game.screens.set(Screen.MENU);
+			Game.screens.set(Screen.BOX);
 		}
 	};
 
@@ -146,7 +146,7 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public boolean onBackPressed() {
-		Game.screens.set(Screen.MENU);
+		Game.screens.set(Screen.BOX);
 
 		return false;
 	}
