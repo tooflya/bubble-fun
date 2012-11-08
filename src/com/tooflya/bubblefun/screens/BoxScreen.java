@@ -1,8 +1,5 @@
 package com.tooflya.bubblefun.screens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -16,7 +13,8 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+
+import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
@@ -25,6 +23,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
+import com.tooflya.bubblefun.managers.EntityManager;
 
 /**
  * @author Tooflya.com
@@ -46,27 +45,12 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	// ===========================================================
 	// Fields
-	// ===========================================================   
-
-	private BitmapTextureAtlas mMenuTextureAtlas;
-	private TextureRegion mMenuLeftTextureRegion;
-	private TextureRegion mMenuRightTextureRegion;
+	// ===========================================================
 
 	private SurfaceScrollDetector mScrollDetector;
 	private ClickDetector mClickDetector;
 
-	private float mMinX = 0;
-	private float mMaxX = 0;
-	private float mCurrentX = 0;
-	private int iItemClicked = -1;
-	
-	
 	private boolean mPostScroll = false;
-	private boolean mPostScrollToNear = false;
-	private boolean mPostScrollWay;
-
-	private Rectangle scrollBar;
-	private List<Sprite> A = new ArrayList<Sprite>();
 
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main-bg.png", 0, 0, 1, 1), this);
 
@@ -83,7 +67,9 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		}
 	};
 
-	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
+	private final Rectangle rectangle = new Rectangle(10, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
+
+	private final EntityManager<Sprite> mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "navi.png", 400, 900, 1, 2), this.mBackground));
 
 	// ===========================================================
 	// Constructors
@@ -102,20 +88,28 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		this.rectangle.setAlpha(0);
 
 		for (int i = 0; i < MENUITEMS; i++) {
-			final Sprite sprite = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu" + i + ".png", 0, 0, 1, 1), this.rectangle);
+			final int bi = i;
+			final ButtonScaleable sprite = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu" + i + ".png", 0, 0, 1, 1), this.rectangle) {
+				@Override
+				public void onClick() {
+					Options.boxNumber = bi;
+					Game.screens.set(Screen.CHOISE);
+				}
+			};
 			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX, Options.cameraCenterY);
-
-			A.add(sprite);
-			
-			mMaxX = sprite.getWidth() - Options.cameraWidth;
 		}
+
+		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 200f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 200f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 200f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 200f);
+
+		mPoints.getByIndex(0).setCurrentTileIndex(1);
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mClickDetector = new ClickDetector(this);
 
 		this.setOnSceneTouchListener(this);
-		this.setTouchAreaBindingEnabled(true);
-		this.setOnSceneTouchListenerBindingEnabled(true);
 	}
 
 	// ===========================================================
@@ -132,26 +126,44 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.mClouds.update();
-		
-		if(this.mPostScroll) {
+
+		if (this.mPostScroll) {
 			this.rectangle.setPosition(this.rectangle.getX() + sx, 0);
-			
-			if(sx > 0) {
 
-				if(sx <= 0) {
+			if (sx > 0) {
+
+				if (sx <= 0) {
 					this.mPostScroll = false;
 				}
 			}
-			
-			if(sx < 0) {
 
-				if(sx >= 0) {
+			if (sx < 0) {
+
+				if (sx >= 0) {
 					this.mPostScroll = false;
 				}
 			}
-			
-			if(Math.abs(this.rectangle.getX() % Options.cameraWidth) <= 10) {
-				this.mPostScroll = false;
+
+			if (this.rectangle.getX() > 5 || this.rectangle.getX() < -Options.cameraWidth * MENUITEMS + Options.cameraWidth / 2) {
+				if (this.rectangle.getX() > 5) {
+					sx = -Math.abs(sx);
+				} else if (this.rectangle.getX() < -Options.cameraWidth * MENUITEMS + Options.cameraWidth / 2) {
+					sx = +Math.abs(sx);
+				}
+			}
+			else {
+				if (Math.abs(this.rectangle.getX() % Options.cameraWidth) <= 10) {
+					this.mPostScroll = false;
+
+					for (int i = mPoints.getCount() - 1; i >= 0; i--) {
+						mPoints.getByIndex(i).setCurrentTileIndex(0);
+					}
+
+					try {
+						mPoints.getByIndex((int) Math.abs(FloatMath.floor(this.rectangle.getX() / Options.cameraWidth)) - 1).setCurrentTileIndex(1);
+					} catch (ArrayIndexOutOfBoundsException e) {
+					}
+				}
 			}
 		}
 	}
@@ -205,25 +217,18 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	@Override
 	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pSceneTouchEvent) {
-		if (pSceneTouchEvent.isActionDown()) {
-			this.mPostScroll = false;
-		}
-		
+
 		this.mClickDetector.onTouchEvent(pSceneTouchEvent);
 		this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
 		return false;
 	}
-	
-private float lx, sx;
+
+	private float sx;
+
 	@Override
 	public void onScroll(ScrollDetector arg0, TouchEvent pTouchEvent, float pDistanceX, float pDistanceY) {
-		if (pTouchEvent.isActionDown()) {
-			this.mPostScroll = false;
-		} else if (pTouchEvent.isActionMove()) {
-			this.mPostScroll = false;
-			
-			mCurrentX -= pDistanceX;
-			sx = pDistanceX > 0 ? 5 : -5;
+		if (pTouchEvent.isActionMove()) {
+			sx = pDistanceX > 0 ? 8 : -8;
 
 			this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
 		} else if (pTouchEvent.isActionUp()) {

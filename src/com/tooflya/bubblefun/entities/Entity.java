@@ -2,11 +2,11 @@ package com.tooflya.bubblefun.entities;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -85,7 +85,11 @@ public abstract class Entity extends AnimatedSprite {
 				if (this.mParentScreen instanceof Screen) {
 					((Screen) this.mParentScreen).registerTouchArea(this);
 				} else {
-					((Screen) this.mParentScreen.getParent()).registerTouchArea(this);
+					if (this.mParentScreen.getParent() instanceof Screen) {
+						((Screen) this.mParentScreen.getParent()).registerTouchArea(this);
+					} else {
+						((Screen) this.mParentScreen.getParent().getParent()).registerTouchArea(this);
+					}
 				}
 			}
 		}

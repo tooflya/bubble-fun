@@ -88,7 +88,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			LevelIcon icon = ((LevelIcon) this.create());
 
 			icon.setCenterPosition(25f + X, 25f + Y);
-			icon.id = i + 1;
+			icon.id = (i + 1);
 
 			Level level = Game.db.getLevel(icon.id);
 
@@ -105,7 +105,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 					float a;
 					if ((int) Math.floor(icon.id / 10) == 1) {
-						a = 1 * Options.cameraRatioFactor;
+						a = 1;
 					} else {
 						a = 0;
 					}
@@ -124,6 +124,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			} else {
 				icon.setCurrentTileIndex(4);
 				icon.blocked = true;
+				final Entity text = this.mNumbers.create();
+				text.setVisible(false);
 			}
 		}
 	}
@@ -182,7 +184,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				chiky.initNormalStepX(speed);
 
 				chiky.initStateByNumber(state);
-				
+
 				chiky.initScale(scale);
 			}
 		});

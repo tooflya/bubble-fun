@@ -143,7 +143,7 @@ public class Bubble extends BubbleBase {
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(0);
-		} else if(this.mBirdsKills > 0) {
+		} else if(this.mBirdsKills >= 3) {
 			this.mBirdsKills-=3;
 			final Entity text =screen.mTripleKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);

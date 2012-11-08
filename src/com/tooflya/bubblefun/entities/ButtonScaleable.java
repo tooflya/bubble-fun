@@ -19,6 +19,10 @@ public class ButtonScaleable extends Button {
 		super(pTiledTextureRegion, pParentScreen);
 	}
 
+	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen, final boolean isTouchArea) {
+		super(pTiledTextureRegion, pParentScreen, false);
+	}
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.entities.Entity#create()
 	 */
@@ -45,22 +49,34 @@ public class ButtonScaleable extends Button {
 	public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		switch (pAreaTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
+			this.isClicked = true;
+			this.mLastClickedX = pTouchAreaLocalX;
+			this.mLastClickedY = pTouchAreaLocalY;
 			break;
 		case TouchEvent.ACTION_UP:
-			if (this.mWaitBeforeAction == 20) {
-				if (this.mModifierAttached) {
-					this.mScaleModifier.reset();
-				} else {
-					this.registerEntityModifier(this.mScaleModifier);
-					this.mModifierAttached = true;
+			if (this.isClicked) {
+				if (this.mWaitBeforeAction == 20) {
+					if (this.mModifierAttached) {
+						this.mScaleModifier.reset();
+					} else {
+						this.registerEntityModifier(this.mScaleModifier);
+						this.mModifierAttached = true;
+					}
+
+					this.mDoAction = true;
 				}
 
-				this.mDoAction = true;
+				isClicked = false;
+			}
+			break;
+		case TouchEvent.ACTION_MOVE:
+			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 10 || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 10) {
+				this.isClicked = false;
 			}
 			break;
 		}
 
-		return true;
+		return false;
 	}
 
 	/*

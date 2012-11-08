@@ -48,7 +48,7 @@ public class LevelChoiseScreen extends Screen {
 	};
 
 	private final LevelsManager<LevelIcon> levels = new LevelsManager<LevelIcon>(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level-btn.png", 0, 612, 1, 5), this.mBackground));
-	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 11)));
+	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 12)));
 
 	// ===========================================================
 	// Constructors
@@ -104,6 +104,7 @@ public class LevelChoiseScreen extends Screen {
 		PreloaderScreen.mChangeAction = 0;
 
 		this.levels.clear();
+		this.numbers.clear();
 		this.levels.generate();
 		
 		if(!Options.mMainSound.isPlaying()) Options.mMainSound.play();

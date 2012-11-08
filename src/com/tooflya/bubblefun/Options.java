@@ -40,6 +40,7 @@ public class Options {
 	public static String CR;
 
 	public static int levelNumber = 1;
+	public static int boxNumber = 1;
 
 	final static float touchHeightPercents = 0.3f;
 	public static float touchHeight; // For initialize use setCameraOriginRatioY.

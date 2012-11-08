@@ -8,8 +8,15 @@ import com.tooflya.bubblefun.Options;
 
 public abstract class Button extends Sprite {
 
+	protected boolean isClicked = false;
+	protected float mLastClickedX, mLastClickedY;
+
 	public Button(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen, true);
+	}
+
+	public Button(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen, final boolean isTouchArea) {
+		super(pTiledTextureRegion, pParentScreen, false);
 	}
 
 	public abstract void onClick();
@@ -17,7 +24,7 @@ public abstract class Button extends Sprite {
 	protected void onClickStandartActions() {
 		Options.mButtonSound.play();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -29,12 +36,24 @@ public abstract class Button extends Sprite {
 
 		case TouchEvent.ACTION_DOWN:
 			this.setCurrentTileIndex(1);
+			this.isClicked = true;
+			this.mLastClickedX = pTouchAreaLocalX;
+			this.mLastClickedY = pTouchAreaLocalY;
 			break;
 		case TouchEvent.ACTION_UP:
-			this.setCurrentTileIndex(0);
+			if (this.isClicked) {
+				this.setCurrentTileIndex(0);
 
-			this.onClickStandartActions();
-			this.onClick();
+				this.onClickStandartActions();
+				this.onClick();
+
+				isClicked = false;
+			}
+			break;
+		case TouchEvent.ACTION_MOVE:
+			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 10 || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 10) {
+				this.isClicked = false;
+			}
 			break;
 		}
 
