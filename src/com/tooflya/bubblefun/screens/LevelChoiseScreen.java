@@ -26,6 +26,8 @@ public class LevelChoiseScreen extends Screen {
 	// Constants
 	// ===========================================================
 
+	public static int starsCollected;
+
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
@@ -49,11 +51,15 @@ public class LevelChoiseScreen extends Screen {
 
 	private final LevelsManager<LevelIcon> levels = new LevelsManager<LevelIcon>(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level-btn.png", 0, 612, 1, 5), this.mBackground));
 	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 12)));
+	
+	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 10, 1), this.mBackground));
+
+	private final Sprite mStar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 200, 900, 1, 2), this.mBackground);
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
+	int g = -1;
 	public LevelChoiseScreen() {
 		this.loadResources();
 
@@ -63,7 +69,7 @@ public class LevelChoiseScreen extends Screen {
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
-		int g = -1;
+	
 		for (int i = 0; i < this.levels.getCapacity(); i++) {
 			if (i < 9) {
 				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(++g));
@@ -74,6 +80,8 @@ public class LevelChoiseScreen extends Screen {
 		}
 
 		this.levels.generate(this.numbers);
+
+		this.mStar.create().setPosition(Options.cameraWidth - 150f, 10f);
 	}
 
 	// ===========================================================
@@ -101,13 +109,41 @@ public class LevelChoiseScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 
+		starsCollected = 0;
+
 		PreloaderScreen.mChangeAction = 0;
 
 		this.levels.clear();
 		this.numbers.clear();
+		this.mSmallnumbers.clear();
+
 		this.levels.generate();
+
+		if (!Options.mMainSound.isPlaying()) {
+			Options.mMainSound.play();
+		}
+
+		Sprite sprite;
 		
-		if(!Options.mMainSound.isPlaying()) Options.mMainSound.play();
+		sprite = (Sprite) this.mSmallnumbers.create();
+		sprite.setPosition(Options.cameraWidth - 110f, 20f);
+		sprite.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
+		
+		sprite = (Sprite) this.mSmallnumbers.create();
+		sprite.setPosition(Options.cameraWidth - 95f, 20f);
+		sprite.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
+		
+		sprite = (Sprite) this.mSmallnumbers.create();
+		sprite.setPosition(Options.cameraWidth - 80f, 20f);
+		sprite.setCurrentTileIndex(11);
+		
+		sprite = (Sprite) this.mSmallnumbers.create();
+		sprite.setPosition(Options.cameraWidth - 65f, 20f);
+		sprite.setCurrentTileIndex(7);
+		
+		sprite = (Sprite)this.mSmallnumbers.create();
+		sprite.setPosition(Options.cameraWidth - 50f, 20f);
+		sprite.setCurrentTileIndex(5);
 	}
 
 	/*

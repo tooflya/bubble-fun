@@ -36,7 +36,7 @@ public class MenuScreen extends Screen {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -197,12 +197,12 @@ public class MenuScreen extends Screen {
 		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
-		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 120f);
+		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 170f);
 
 		this.mTwitterIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 		this.mFacebookIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 
-		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
 
 		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
@@ -227,7 +227,7 @@ public class MenuScreen extends Screen {
 
 		this.mSoundIcon.registerEntityModifier(this.mSoundMoveOn);
 		this.mSoundIcon.registerEntityModifier(this.mSoundMoveOff);
-		
+
 		this.unregisterTouchArea(this.mMoreIcon);
 		this.unregisterTouchArea(this.mSoundIcon);
 	}
@@ -258,8 +258,9 @@ public class MenuScreen extends Screen {
 		super.onAttached();
 
 		PreloaderScreen.mChangeAction = 0;
-		
-		if(!Options.mMainSound.isPlaying()) Options.mMainSound.play();
+
+		if (!Options.mMainSound.isPlaying())
+			Options.mMainSound.play();
 	}
 
 	/*
@@ -279,7 +280,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas,this.mBackgroundTextureAtlas2);
+		Game.loadTextures(this.mBackgroundTextureAtlas, this.mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -289,7 +290,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas,this.mBackgroundTextureAtlas2);
+		Game.unloadTextures(this.mBackgroundTextureAtlas, this.mBackgroundTextureAtlas2);
 	}
 
 	/*

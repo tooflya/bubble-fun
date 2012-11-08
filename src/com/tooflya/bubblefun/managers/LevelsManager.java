@@ -23,6 +23,7 @@ import com.tooflya.bubblefun.entities.Electrod;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class LevelsManager<T> extends EntityManager<Entity> {
@@ -95,6 +96,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			if (icon.id == 1 || level.isOpen()) {
 				icon.blocked = false;
 				icon.setCurrentTileIndex(level.getStarsCount());
+				
+				LevelChoiseScreen.starsCollected+=level.getStarsCount();
+				
 				if (icon.id < 10) {
 					final Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id);
