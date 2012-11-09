@@ -4,6 +4,11 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 /**
  * @author Tooflya.com
@@ -14,6 +19,10 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+	public static TiledTextureRegion cloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "cloud.png", 0, 0, 1, 4);
 
 	public static final int SCREENS_COUNT = 9;
 
@@ -98,5 +107,5 @@ public abstract class Screen extends Scene {
 
 	public abstract void unloadResources();
 
-	public abstract boolean onBackPressed();
+	public abstract void onBackPressed();
 }

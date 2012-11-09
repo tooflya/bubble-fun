@@ -213,8 +213,7 @@ public class ExitScreen extends Screen {
 	}
 
 	@Override
-	public boolean onBackPressed() {
-		return false;
+	public void onBackPressed() {
 	}
 
 }

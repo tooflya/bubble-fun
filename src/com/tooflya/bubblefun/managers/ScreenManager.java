@@ -114,6 +114,8 @@ public class ScreenManager {
 		screens[Screen.EXIT] = new ExitScreen();
 		screens[Screen.PAUSE] = new PauseScreen();
 		screens[Screen.BOX] = new BoxScreen();
+
+		Game.loadTextures(Screen.mCommonTextureAtlas);
 	}
 
 	// ===========================================================

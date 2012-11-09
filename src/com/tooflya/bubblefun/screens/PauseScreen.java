@@ -145,8 +145,7 @@ public class PauseScreen extends Screen {
 	}
 
 	@Override
-	public boolean onBackPressed() {
-		return false;
+	public void onBackPressed() {
 	}
 
 	/*

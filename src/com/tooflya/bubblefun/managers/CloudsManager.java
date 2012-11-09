@@ -20,20 +20,7 @@ public class CloudsManager<T> extends EntityManager<Cloud> {
 		final int frame = Game.random.nextInt(4);
 		final Cloud cloud = this.create();
 
-		switch (frame) {
-		case 0:
-			cloud.setScale(0.5f);
-			break;
-		case 1:
-			cloud.setScale(0.75f);
-			break;
-		case 2:
-			cloud.setScale(1f);
-			break;
-		case 3:
-			cloud.setScale(1.25f);
-			break;
-		}
+
 
 		cloud.setPosition(isStart ? Game.random.nextInt((int) (Options.cameraWidth + cloud.getWidth())) - cloud.getWidth() : Options.cameraWidth,
 				Game.random.nextInt((int) (Options.cameraHeight / 3 * 2 - cloud.getHeight())));
@@ -43,7 +30,7 @@ public class CloudsManager<T> extends EntityManager<Cloud> {
 	}
 
 	public void update() {
-		if (this.getCount() < 5) {
+		if (this.getCount() < 8) {
 			this.generateCloud(false);
 		}
 	}

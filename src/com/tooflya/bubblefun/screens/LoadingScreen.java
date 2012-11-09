@@ -112,8 +112,7 @@ public class LoadingScreen extends Screen {
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
-	public boolean onBackPressed() {
-		return false;
+	public void onBackPressed() {
 	}
 
 	// ===========================================================

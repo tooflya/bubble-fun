@@ -156,8 +156,7 @@ public class LevelEndScreen extends Screen {
 	}
 
 	@Override
-	public boolean onBackPressed() {
-		return false;
+	public void  onBackPressed() {
 	}
 
 }

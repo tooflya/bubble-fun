@@ -45,7 +45,7 @@ public class MenuScreen extends Screen {
 
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "mb.png", 0, 0, 1, 1), this);
 
-	private final CloudsManager<Cloud> mClouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "cloud.png", 0, 0, 1, 3), this.mBackground));
+	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
 	private final Sprite mLogoBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-name.png", 550, 0, 1, 1), this.mBackground);
 
@@ -194,7 +194,7 @@ public class MenuScreen extends Screen {
 	public MenuScreen() {
 		this.loadResources();
 
-		this.mClouds.generateStartClouds();
+		this.clouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
 		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 170f);
@@ -245,7 +245,7 @@ public class MenuScreen extends Screen {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mClouds.update();
+		this.clouds.update();
 	}
 
 	/*
@@ -299,15 +299,13 @@ public class MenuScreen extends Screen {
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
-	public boolean onBackPressed() {
+	public void onBackPressed() {
 		if (this.hasChildScene()) {
 			Game.screens.get(Screen.EXIT).onDetached();
 		} else {
 			this.setChildScene(Game.screens.get(Screen.EXIT), false, false, true);
 			Game.screens.get(Screen.EXIT).onAttached();
 		}
-
-		return true;
 	}
 
 	// ===========================================================

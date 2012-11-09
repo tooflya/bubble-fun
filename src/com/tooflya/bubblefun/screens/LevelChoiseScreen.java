@@ -34,9 +34,9 @@ public class LevelChoiseScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-bg.png", 0, 0, 1, 1), this);
+	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sb.png", 0, 0, 1, 1), this);
 
-	private final CloudsManager<Cloud> mClouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "cloud.png", 382, 0, 1, 3), this.mBackground));
+	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
 	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "back-btn.png", 100, 900, 1, 2), this.mBackground) {
 
@@ -50,9 +50,11 @@ public class LevelChoiseScreen extends Screen {
 	};
 
 	private final LevelsManager<LevelIcon> levels = new LevelsManager<LevelIcon>(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level-btn.png", 0, 612, 1, 5), this.mBackground));
-	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 12)));
-	
-	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 10, 1), this.mBackground));
+	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 11)));
+
+	private final Sprite mPinkCloud= new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "pink-cloud.png", 800, 800, 1, 1), this.mBackground);
+
+	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 11, 1), this.mBackground));
 
 	private final Sprite mStar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 200, 900, 1, 2), this.mBackground);
 
@@ -60,16 +62,16 @@ public class LevelChoiseScreen extends Screen {
 	// Constructors
 	// ===========================================================
 	int g = -1;
+
 	public LevelChoiseScreen() {
 		this.loadResources();
 
-		this.mClouds.generateStartClouds();
+		this.clouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
-	
 		for (int i = 0; i < this.levels.getCapacity(); i++) {
 			if (i < 9) {
 				this.levels.getByIndex(i).attachChild(this.numbers.getByIndex(++g));
@@ -81,7 +83,10 @@ public class LevelChoiseScreen extends Screen {
 
 		this.levels.generate(this.numbers);
 
-		this.mStar.create().setPosition(Options.cameraWidth - 150f, 10f);
+		this.mStar.create();
+		this.mStar.setPosition(Options.cameraWidth - 145f, 15f);
+		this.mStar.setScaleCenter(this.mStar.getWidth() / 2, this.mStar.getHeight() / 2);
+		this.mStar.setScale(this.getScaleX() / 1.3f);
 	}
 
 	// ===========================================================
@@ -97,7 +102,7 @@ public class LevelChoiseScreen extends Screen {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mClouds.update();
+		this.clouds.update();
 	}
 
 	/*
@@ -124,24 +129,26 @@ public class LevelChoiseScreen extends Screen {
 		}
 
 		Sprite sprite;
-		
+
 		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 110f, 20f);
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
-		
+
 		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 95f, 20f);
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
-		
+
 		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 80f, 20f);
-		sprite.setCurrentTileIndex(11);
+		sprite.setCurrentTileIndex(10);
 		
+		mPinkCloud.create().setCenterPosition(sprite.getCenterX(), sprite.getCenterY());
+
 		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 65f, 20f);
 		sprite.setCurrentTileIndex(7);
-		
-		sprite = (Sprite)this.mSmallnumbers.create();
+
+		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 50f, 20f);
 		sprite.setCurrentTileIndex(5);
 	}
@@ -182,10 +189,8 @@ public class LevelChoiseScreen extends Screen {
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
-	public boolean onBackPressed() {
+	public void onBackPressed() {
 		Game.screens.set(Screen.BOX);
-
-		return false;
 	}
 
 	// ===========================================================

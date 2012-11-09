@@ -137,8 +137,7 @@ public class PreloaderScreen extends Screen implements IAsyncCallback {
 	}
 
 	@Override
-	public boolean onBackPressed() {
-		return false;
+	public void onBackPressed() {
 	}
 
 	@Override

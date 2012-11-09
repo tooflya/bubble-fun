@@ -75,8 +75,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
 
 	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
-	
-	private CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "cloud.png", 600, 300, 1, 3), this.mBackground));
+
+	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
 	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
 	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
@@ -200,8 +200,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	};
 
 	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-level.png", 0, 980, 1, 1), this.shape);
-	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 12), this.shape));
-	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 10, 1), this.mBackground));
+	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
+	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1), this.mBackground));
 
 	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX
 			- mTextTapHere.getWidth() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3,
@@ -303,9 +303,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
-		numbersSmall.create().setPosition(67, 16);
-		numbersSmall.create().setPosition(81, 16);
-		numbersSmall.create().setPosition(95, 16);
+		numbersSmall.create().setPosition(67, 13);
+		numbersSmall.create().setPosition(81, 13);
+		numbersSmall.create().setPosition(95, 13);
 
 		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
@@ -553,7 +553,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
-	public boolean onBackPressed() {
+	public void onBackPressed() {
 		PreloaderScreen.mChangeAction = 1; // TODO: WTF? LOL d:
 
 		if (this.hasChildScene()) {
@@ -561,8 +561,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		} else {
 			this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
 		}
-
-		return true;
 	}
 
 	/* (non-Javadoc)

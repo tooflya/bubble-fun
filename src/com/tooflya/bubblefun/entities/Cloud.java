@@ -1,10 +1,6 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-
-import com.tooflya.bubblefun.Options;
 
 /**
  * @author Tooflya.com
@@ -40,14 +36,6 @@ public class Cloud extends Entity {
 	// Virtual methods
 	// ===========================================================
 
-	@Override
-	public Entity create() {
-		this.setScaleY(Options.cameraRatioFactor);
-		this.setScaleX(Options.cameraRatioFactor);
-
-		return super.create();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,7 +46,7 @@ public class Cloud extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.mX -= this.getSpeedX();
-		if (this.mX + this.getWidthScaled() < 0) {
+		if (this.mX + this.getWidth() < 0) {
 			this.destroy();
 		}
 	}

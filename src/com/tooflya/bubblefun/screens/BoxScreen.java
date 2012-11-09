@@ -52,9 +52,9 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	private boolean mPostScroll = false;
 
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "main-bg.png", 0, 0, 1, 1), this);
+	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "lb.png", 0, 0, 1, 1), this);
 
-	private final CloudsManager<Cloud> mClouds = new CloudsManager<Cloud>(10, new Cloud(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "cloud.png", 382, 0, 1, 3), this.mBackground));
+	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
 	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "back-btn.png", 100, 900, 1, 2), this.mBackground) {
 
@@ -78,7 +78,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	public BoxScreen() {
 		this.loadResources();
 
-		this.mClouds.generateStartClouds();
+		this.clouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
 
@@ -125,7 +125,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mClouds.update();
+		this.clouds.update();
 
 		if (this.mPostScroll) {
 			this.rectangle.setPosition(this.rectangle.getX() + sx, 0);
@@ -204,10 +204,8 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
-	public boolean onBackPressed() {
+	public void onBackPressed() {
 		Game.screens.set(Screen.MENU);
-
-		return false;
 	}
 
 	@Override

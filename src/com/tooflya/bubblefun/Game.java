@@ -87,6 +87,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 * 
 	 * @see org.anddev.andengine.ui.IGameInterface#onLoadEngine()
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	public Engine onLoadEngine() {
 
@@ -279,8 +280,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			Options.mLastPlayedMusic.resume();
 		}
 
-		//screens.getCurrent().setIgnoreUpdate(false);
-		//screens.getCurrent().setChildrenIgnoreUpdate(false);
+		try {
+			screens.getCurrent().setIgnoreUpdate(false);
+			screens.getCurrent().setChildrenIgnoreUpdate(false);
+		} catch (NullPointerException e) {
+		}
 	}
 
 	/*
@@ -303,8 +307,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			Options.mLastPlayedMusic = Options.mLevelSound;
 		}
 
-		//screens.getCurrent().setIgnoreUpdate(true);
-		//screens.getCurrent().setChildrenIgnoreUpdate(true);
+		try {
+			screens.getCurrent().setIgnoreUpdate(true);
+			screens.getCurrent().setChildrenIgnoreUpdate(true);
+		} catch (NullPointerException e) {
+		}
 	}
 
 	/*
@@ -314,19 +321,21 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-		if (Screen.screen < 0) {
-			return false;
-		}
-
-		if (System.currentTimeMillis() - screenChangeTime < 500) {
-			return false;
-		}
-
-		screenChangeTime = System.currentTimeMillis();
-
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (Screen.screen < 0) {
+				return true;
+			}
+
+			if (System.currentTimeMillis() - screenChangeTime < 500) {
+				return true;
+			}
+
+			screenChangeTime = System.currentTimeMillis();
+
 			Options.mButtonSound.play();
-			return screens.get(Screen.screen).onBackPressed();
+			screens.get(Screen.screen).onBackPressed();
+
+			return true;
 		}
 
 		return super.onKeyDown(keyCode, event);

@@ -3,10 +3,10 @@ package com.tooflya.bubblefun;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
 
-import com.tooflya.bubblefun.screens.LevelScreen;
-
 import android.graphics.LinearGradient;
 import android.graphics.Shader.TileMode;
+
+import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator {
 
@@ -25,7 +25,7 @@ public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends org.and
 		final float toY = LinearGradientDirection.BOTTOM_TO_TOP.getToY(bottom);
 
 		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, new int[] { pFromColor, pToColor }, null, TileMode.CLAMP));
-		
+		this.mPaint.setDither(true);
 
 		((LevelScreen) Game.screens.get(Screen.LEVEL)).mBackgroundGradientTexture.setUpdateOnHardwareNeeded(true);
 	}
