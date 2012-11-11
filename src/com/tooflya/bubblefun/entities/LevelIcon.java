@@ -4,8 +4,8 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 public class LevelIcon extends ButtonScaleable {
 

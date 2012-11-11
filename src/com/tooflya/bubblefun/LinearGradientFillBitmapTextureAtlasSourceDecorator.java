@@ -7,6 +7,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Shader.TileMode;
 
 import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator {
 

@@ -22,7 +22,9 @@ public abstract class Button extends Sprite {
 	public abstract void onClick();
 
 	protected void onClickStandartActions() {
-		Options.mButtonSound.play();
+		if (Options.isMusicEnabled) {
+			Options.mButtonSound.play();
+		}
 	}
 
 	/*

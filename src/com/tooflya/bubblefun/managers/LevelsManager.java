@@ -16,7 +16,6 @@ import android.os.Environment;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Electrod;
@@ -25,6 +24,7 @@ import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 public class LevelsManager<T> extends EntityManager<Entity> {
 
@@ -96,9 +96,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			if (icon.id == 1 || level.isOpen()) {
 				icon.blocked = false;
 				icon.setCurrentTileIndex(level.getStarsCount());
-				
-				LevelChoiseScreen.starsCollected+=level.getStarsCount();
-				
+
+				LevelChoiseScreen.starsCollected += level.getStarsCount();
+
 				if (icon.id < 10) {
 					final Entity text = this.mNumbers.create();
 					text.setCurrentTileIndex(icon.id);
@@ -218,11 +218,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 */
 
-		if (false) {
+		if (true) {
 			try {
-				mLevelLoader.loadLevelFromAsset(Game.instance, pLevel + ".xml");
+				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel + ".xml");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {

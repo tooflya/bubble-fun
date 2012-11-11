@@ -7,7 +7,6 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.LevelIcon;
@@ -52,7 +51,7 @@ public class LevelChoiseScreen extends Screen {
 	private final LevelsManager<LevelIcon> levels = new LevelsManager<LevelIcon>(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level-btn.png", 0, 612, 1, 5), this.mBackground));
 	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 11)));
 
-	private final Sprite mPinkCloud= new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "pink-cloud.png", 800, 800, 1, 1), this.mBackground);
+	private final Sprite mPinkCloud = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "pink-cloud.png", 800, 800, 1, 1), this.mBackground);
 
 	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 11, 1), this.mBackground));
 
@@ -124,7 +123,7 @@ public class LevelChoiseScreen extends Screen {
 
 		this.levels.generate();
 
-		if (!Options.mMainSound.isPlaying()) {
+		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
 			Options.mMainSound.play();
 		}
 
@@ -141,7 +140,7 @@ public class LevelChoiseScreen extends Screen {
 		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 80f, 20f);
 		sprite.setCurrentTileIndex(10);
-		
+
 		mPinkCloud.create().setCenterPosition(sprite.getCenterX(), sprite.getCenterY());
 
 		sprite = (Sprite) this.mSmallnumbers.create();

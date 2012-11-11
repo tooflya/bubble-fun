@@ -7,8 +7,8 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 public class Bubble extends BubbleBase {
 
@@ -52,7 +52,7 @@ public class Bubble extends BubbleBase {
 	// Setters
 	// ===========================================================
 
-	public void setParent(Bubble pBubble){
+	public void setParent(Bubble pBubble) {
 		this.mParent = pBubble.getParent();
 		this.mParent.mLastX = this.getCenterX();
 		this.mParent.mLastY = this.getCenterY();
@@ -62,13 +62,13 @@ public class Bubble extends BubbleBase {
 	// Getters
 	// ===========================================================
 
-	public Bubble getParent(){
-		if(this.mParent == null){
+	public Bubble getParent() {
+		if (this.mParent == null) {
 			return this;
 		}
 		return this.mParent;
 	}
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -83,24 +83,24 @@ public class Bubble extends BubbleBase {
 		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
 		if (distance < Options.eps) {
-			this.mSpeedX = 0;
-			this.mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 / this.mLostedSpeed;
-			this.mSpeedY = this.mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : this.mSpeedY;
-			this.mSpeedY = this.mSpeedY > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : this.mSpeedY;
-			this.mSpeedY = -this.mSpeedY;
+			this.setSpeedX(0);
+			this.setSpeedY((Game.correctSpeed(Options.bubbleMinSpeed) + Game.correctSpeed(Options.bubbleMaxSpeed)) / 2 / this.mLostedSpeed);
+			this.setSpeedY(this.getOriginSpeedY() < Game.correctSpeed(Options.bubbleMinSpeed) ? Game.correctSpeed(Options.bubbleMinSpeed) : this.getOriginSpeedY());
+			this.setSpeedY(this.getOriginSpeedY() > Game.correctSpeed(Options.bubbleMaxSpeed) ? Game.correctSpeed(Options.bubbleMaxSpeed) : this.getOriginSpeedY());
+			this.setSpeedY(-this.getOriginSpeedY());
 		}
 		else {
 			distance = distance > 6 ? 6 : distance;
 			distance /= this.mLostedSpeed;
-			distance = distance < Options.bubbleSpeedMinSpeed ? Options.bubbleSpeedMinSpeed : distance;
-			distance = distance > Options. bubbleSpeedMaxSpeed ? Options. bubbleSpeedMaxSpeed : distance;
+			distance = distance < Game.correctSpeed(Options.bubbleSpeedMinSpeed) ? Game.correctSpeed(Options.bubbleSpeedMinSpeed) : distance;
+			distance = distance > Game.correctSpeed(Options.bubbleSpeedMaxSpeed) ? Game.correctSpeed(Options.bubbleSpeedMaxSpeed) : distance;
 
 			if (0 < angle) {
 				angle -= Options.PI;
 			}
 
-			this.mSpeedX = distance * FloatMath.cos(angle);
-			this.mSpeedY = distance * FloatMath.sin(angle);
+			this.setSpeedX(distance * FloatMath.cos(angle));
+			this.setSpeedY(distance * FloatMath.sin(angle));
 
 			if (Options.bubbleMinSpeed < distance) {
 				// TODO: (R) Is it needed here?
@@ -128,7 +128,7 @@ public class Bubble extends BubbleBase {
 
 	private void writeText() {
 		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-		if (this.mBirdsKills == 1 && screen.chikies.getCount() <=1 ) {
+		if (this.mBirdsKills == 1 && screen.chikies.getCount() <= 1) {
 			this.mBirdsKills--;
 			final Entity text = screen.mAwesomeKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
@@ -137,29 +137,30 @@ public class Bubble extends BubbleBase {
 			bonus.setCurrentTileIndex(2);
 		}
 		else if (this.mBirdsKills == 2) {
-			this.mBirdsKills-=2;
-			final Entity text =screen.mDoubleKillText.create();
+			this.mBirdsKills -= 2;
+			final Entity text = screen.mDoubleKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(0);
-		} else if(this.mBirdsKills >= 3) {
-			this.mBirdsKills-=3;
-			final Entity text =screen.mTripleKillText.create();
+		} else if (this.mBirdsKills >= 3) {
+			this.mBirdsKills -= 3;
+			final Entity text = screen.mTripleKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
 			final Entity bonus = screen.mBonusesText.create();
 			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
 			bonus.setCurrentTileIndex(3);
 		}
 	}
-	
-	public void addBirdsKills(){
+
+	public void addBirdsKills() {
 		this.getParent().mBirdsKills++;
 	}
 
-	public void AddChildCount(){
+	public void AddChildCount() {
 		this.getParent().mChildCount++; // TODO: (R) Need raise at setParent(). How?		
 	}
+
 	// ===========================================================
 	// Virtual Methods
 	// ===========================================================
@@ -172,8 +173,8 @@ public class Bubble extends BubbleBase {
 		this.mState = States.Creating;
 		this.mTime = 0f; // Seconds.
 
-		this.mSpeedX = 0;
-		this.mSpeedY = 0;
+		this.setSpeedX(0);
+		this.setSpeedY(0);
 		this.mLostedSpeed = 0;
 
 		this.mWidth = Options.bubbleMinSize;
@@ -192,7 +193,7 @@ public class Bubble extends BubbleBase {
 	private void onManagedUpdateCreating(final float pSecondsElapsed) {
 		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
 
-			this.mLostedSpeed += Options.bubbleStepSpeed;
+			this.mLostedSpeed += Game.correctSpeed(Options.bubbleStepSpeed);
 
 			this.setWidth(mWidth + Options.bubbleStepSize);
 			this.setHeight(mHeight + Options.bubbleStepSize);
@@ -207,8 +208,8 @@ public class Bubble extends BubbleBase {
 
 	private void onManagedUpdateMoving(final float pSecondsElapsed) {
 
-		this.mX += this.mSpeedX;
-		this.mY += this.mSpeedY;
+		this.mX += this.getSpeedX();
+		this.mY += this.getSpeedY();
 
 		if (this.mTime > Options.bubbleMaxTimeMove) {
 			this.animate(40, 0);
@@ -220,8 +221,8 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateDestroying(final float pSecondsElapsed) {
-		this.mX += this.mSpeedX;
-		this.mY += this.mSpeedY;
+		this.mX += this.getSpeedX();
+		this.mY += this.getSpeedY();
 
 		if (!this.isAnimationRunning()) {
 			if (this.mParent == null) {
@@ -236,9 +237,9 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
-		final boolean isNoChikies = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
-		final int b = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount();
-		if (this.mChildCount == 0 || isNoChikies || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b-this.mBirdsKills <= 0)) {
+		final boolean isNoChikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
+		final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
+		if (this.mChildCount == 0 || isNoChikies || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0)) {
 			this.writeText();
 			this.destroy(); // TODO: (R) Can be lost memory.
 		}
@@ -270,8 +271,8 @@ public class Bubble extends BubbleBase {
 			break;
 		}
 
-		final int b = ((LevelScreen)Game.screens.get(Screen.LEVEL)).chikies.getCount();
-		if (this.mChildCount == 0 ||this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b-this.mBirdsKills <= 0)) {
+		final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
+		if (this.mChildCount == 0 || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0)) {
 			this.writeText();
 		}
 	}

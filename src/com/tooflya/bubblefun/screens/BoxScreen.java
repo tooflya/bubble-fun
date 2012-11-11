@@ -1,5 +1,7 @@
 package com.tooflya.bubblefun.screens;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -13,14 +15,15 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -67,7 +70,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		}
 	};
 
-	private final Rectangle rectangle = new Rectangle(10, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
+	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
 
 	private final EntityManager<Sprite> mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "navi.png", 400, 900, 1, 2), this.mBackground));
 
@@ -87,16 +90,23 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		this.mBackground.attachChild(rectangle);
 		this.rectangle.setAlpha(0);
 
+		final TiledTextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box.png", 0, 0, 2, 3);
+
 		for (int i = 0; i < MENUITEMS; i++) {
 			final int bi = i;
-			final ButtonScaleable sprite = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "menu" + i + ".png", 0, 0, 1, 1), this.rectangle) {
+			final ButtonScaleable sprite = new ButtonScaleable(textureRegion, this.rectangle) {
+
 				@Override
 				public void onClick() {
+					if (mPostScroll)
+						return;
 					Options.boxNumber = bi;
 					Game.screens.set(Screen.CHOISE);
 				}
 			};
-			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX, Options.cameraCenterY);
+
+			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY);
+			sprite.setCurrentTileIndex(0);
 		}
 
 		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 200f);
@@ -144,15 +154,15 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 				}
 			}
 
-			if (this.rectangle.getX() > 5 || this.rectangle.getX() < -Options.cameraWidth * MENUITEMS + Options.cameraWidth / 2) {
+			if (this.rectangle.getX() > 5 || this.rectangle.getX() < -254 * 3.5f) {
 				if (this.rectangle.getX() > 5) {
 					sx = -Math.abs(sx);
-				} else if (this.rectangle.getX() < -Options.cameraWidth * MENUITEMS + Options.cameraWidth / 2) {
+				} else if (this.rectangle.getX() < -5) {
 					sx = +Math.abs(sx);
 				}
 			}
 			else {
-				if (Math.abs(this.rectangle.getX() % Options.cameraWidth) <= 10) {
+				if (Math.abs(this.rectangle.getX() % 254) <= 10) {
 					this.mPostScroll = false;
 
 					for (int i = mPoints.getCount() - 1; i >= 0; i--) {
@@ -210,7 +220,6 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	@Override
 	public void onClick(ClickDetector arg0, TouchEvent arg1) {
-		//Game.screens.set(Screen.CHOISE);
 	}
 
 	@Override
@@ -228,7 +237,8 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		if (pTouchEvent.isActionMove()) {
 			sx = pDistanceX > 0 ? 8 : -8;
 
-			this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
+			if (this.rectangle.getX() < Options.cameraCenterX / 2 && this.rectangle.getX() > -254 * 3.2f)
+				this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
 		} else if (pTouchEvent.isActionUp()) {
 			this.mPostScroll = true;
 		}

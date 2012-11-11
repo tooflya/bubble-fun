@@ -31,6 +31,8 @@ public class Options {
 	public static int screenCenterY;
 
 	public static float cameraRatioFactor;
+	
+	public static boolean isMusicEnabled = true;
 
 	public static float DPI;
 	public final static float targetDPI = 300f;

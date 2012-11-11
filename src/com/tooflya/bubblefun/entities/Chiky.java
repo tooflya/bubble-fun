@@ -6,8 +6,8 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 /**
  * @author Tooflya.com
@@ -84,12 +84,9 @@ public class Chiky extends Entity {
 		this.mStartX = Options.cameraWidth / 2;
 		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
 
-		this.mNormalStepX = Game.random.nextFloat() * (Options.chikyMaxStepX - Options.chikyMinStepX) + Options.chikyMinStepX;
-		if (Game.random.nextBoolean()) {
-			this.mSpeedX = -this.mSpeedX;
-		}
+		this.mNormalStepX = Game.random.nextFloat() * (Game.correctSpeed(Options.chikyMaxStepX) - Game.correctSpeed(Options.chikyMinStepX)) + Game.correctSpeed(Options.chikyMinStepX);
 		this.mSpeedyStepX = this.mNormalStepX * Options.chikySpeedCoeficient;
-		this.mSpeedX = this.mNormalStepX;
+		this.setSpeedX(this.mNormalStepX);
 
 		this.mOffsetX = 0;
 
@@ -122,7 +119,7 @@ public class Chiky extends Entity {
 
 	public void initNormalStepX(final float normalStepX) {
 		this.mNormalStepX = normalStepX;
-		this.mSpeedX = this.mNormalStepX;
+		this.setSpeedX(this.mNormalStepX);
 	}
 
 	public void initSpeedyStepX(final float speedyStepX) {
@@ -130,12 +127,12 @@ public class Chiky extends Entity {
 	}
 
 	public void initOffsetX(final float offsetX) {
-		this.mOffsetX = offsetX;
+		this.setSpeedX(offsetX);
 	}
-	
+
 	public void initScale(final float scale) {
 		this.setWidth(this.mBaseWidth * scale);
-		this.setHeight(this.mBaseHeight  * scale);
+		this.setHeight(this.mBaseHeight * scale);
 	}
 
 	public void initIsJumply() {
@@ -188,7 +185,7 @@ public class Chiky extends Entity {
 
 			this.mAirgum.mLastX = this.getCenterX();
 			this.mAirgum.mLastY = this.getCenterY();
-			
+
 			if (this.mState == States.NormalMove) {
 				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 			}
@@ -221,16 +218,16 @@ public class Chiky extends Entity {
 			this.mStartX = this.getCenterX();
 			this.mStartY = this.getCenterY();
 			if (this.getCenterX() < Options.cameraWidth / 2) {
-				this.mSpeedX = this.mNormalStepX;
+				this.setSpeedX(this.mNormalStepX);
 			}
 			else {
-				this.mSpeedX = -this.mNormalStepX;
+				this.setSpeedX(-this.mNormalStepX);
 			}
 
 			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getSpeedY());
+				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getOriginSpeedY());
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
 				airgum.setParent(mAirgum);
 			}
@@ -248,19 +245,19 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
-		float x = this.getCenterX() + this.mSpeedX;
+		float x = this.getCenterX() + this.getSpeedX();
 
 		boolean isBorder = false;
 		final float minX = 0 - this.mOffsetX + this.mWidth / 2;
 		if (x < minX) {
 			x = 2 * minX - x;
-			this.mSpeedX = +Math.abs(this.mSpeedX);
+			this.setSpeedX(Math.abs(this.getOriginSpeedX()));
 			isBorder = true;
 		}
 		final float maxX = Options.cameraWidth + this.mOffsetX - this.mWidth / 2;
 		if (x > maxX) {
 			x = 2 * maxX - x;
-			this.mSpeedX = -Math.abs(this.mSpeedX);
+			this.setSpeedX(-Math.abs(this.getOriginSpeedX()));
 			isBorder = true;
 		}
 		if (isBorder && this.IsProperty(isJumplyFlag)) {
@@ -269,7 +266,7 @@ public class Chiky extends Entity {
 
 		float y = this.mStartY;
 		if (this.IsProperty(isWavelyFlag)) {
-			y += FloatMath.sin(this.mAngle * Options.PI * Math.abs(this.mSpeedX) / Options.cameraWidth) * Options.chikyOffsetY;
+			y += FloatMath.sin(this.mAngle * Options.PI * Math.abs(this.getSpeedX()) / Options.cameraWidth) * Options.chikyOffsetY;
 		}
 
 		this.setCenterPosition(x, y);
@@ -284,7 +281,7 @@ public class Chiky extends Entity {
 		if (this.mTime >= Options.chikyMaxTimeNormal) {
 			this.mTime = 0;
 			if (this.IsProperty(isSpeedyFlag)) {
-				this.mSpeedX = Math.signum(this.mSpeedX) * this.mSpeedyStepX;
+				this.setSpeedX(Math.signum(this.getOriginSpeedX()) * this.mSpeedyStepX);
 				this.mState = States.SpeedyMove;
 				this.mWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
 				this.mWind.mFollowEntity = this;
@@ -306,7 +303,7 @@ public class Chiky extends Entity {
 		this.onManagedUpdateMove(pSecondsElapsed);
 		if (this.mTime >= Options.chikyMaxTimeSpeedy) {
 			this.mTime = 0;
-			this.mSpeedX = Math.signum(this.mSpeedX) * this.mNormalStepX;
+			this.setSpeedX(Math.signum(this.getOriginSpeedX()) * this.mNormalStepX);
 			this.mState = States.NormalMove;
 			this.mWind.destroy();
 			this.mWind = null;
@@ -321,7 +318,7 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
-		this.mY += Options.chikyFallSpeed;
+		this.mY += Game.correctSpeed(Options.chikyFallSpeed);
 
 		this.setRotation(this.getRotation() + 5); // Rotate at 1 degree. Maybe need to correct.
 
@@ -338,10 +335,10 @@ public class Chiky extends Entity {
 		this.mParahute.setCenterPosition(this.getCenterX(), this.getY() - this.getHeight() / 2 + 12);
 
 		if (this.mY > Options.touchHeight * 2 - this.getHeight()) {
-			this.mSpeedY = -Math.abs(this.mSpeedY);
+			this.setSpeedY(-Math.abs(this.getSpeedY()));
 		}
 		if (this.mY < this.getHeight()) {
-			this.mSpeedY = Math.abs(this.mSpeedY);
+			this.setSpeedY(Math.abs(this.getSpeedY()));
 		}
 
 		this.mParahute.getTextureRegion().setFlippedHorizontal(this.getTextureRegion().isFlippedHorizontal());

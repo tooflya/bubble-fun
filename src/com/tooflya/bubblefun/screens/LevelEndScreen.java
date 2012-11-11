@@ -9,13 +9,12 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
 
-public class LevelEndScreen extends Screen {
+public class LevelEndScreen extends PopupScreen {
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -23,9 +22,9 @@ public class LevelEndScreen extends Screen {
 
 	private static int mStarsAnimationCount = 0;
 
-	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg.png", 0, 0, 1, 1), this);
+	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-exit.png", 0, 0, 1, 1), this);
 
-	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 2), this.mBackground) {
+	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 2), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -34,30 +33,33 @@ public class LevelEndScreen extends Screen {
 		public void onClick() {
 			PreloaderScreen.mChangeAction = 2;
 			Game.screens.set(Screen.PRELOAD);
+			Game.screens.get(Screen.LEVEL).clearChildScene();
 		}
 	};
 
-	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-replay.png", 65, 615, 1, 2), this.mBackground) {
+	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-replay.png", 65, 615, 1, 2), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
 		public void onClick() {
-			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.LEVEL);
+			Game.screens.get(Screen.LEVEL).clearChildScene();
 		}
 	};
 
-	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-next.png", 130, 615, 1, 2), this.mBackground) {
+	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-next.png", 130, 615, 1, 2), this.mPanel) {
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
 		@Override
 		public void onClick() {
 			Options.levelNumber++;
-			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.LEVEL);
+			Game.screens.get(Screen.LEVEL).clearChildScene();
 		}
 	};
 
@@ -84,26 +86,45 @@ public class LevelEndScreen extends Screen {
 		}
 	});
 
-	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-star.png", 230, 615, 1, 1), this.mBackground));
-	public EntityManager<Star> mLevelStars = new EntityManager<Star>(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 195, 615, 1, 2), this.mBackground));
+	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-star.png", 230, 615, 1, 1), this.mPanel));
+	public EntityManager<Star> mLevelStars = new EntityManager<Star>(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 195, 615, 1, 2), this.mPanel));
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LevelEndScreen() {
-		mBackground.create().setBackgroundCenterPosition();
+		this.setBackgroundEnabled(false);
 
-		mMenu.create().setCenterPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 170f);
-		mRePlay.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 170f);
-		mPlayNext.create().setCenterPosition(Options.cameraCenterX + 100f, Options.cameraCenterY + 170f);
+		this.mPanel.create();
+		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
+		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
+
+		this.mMenu.create();
+		this.mMenu.setScaleCenter(this.mMenu.getWidth() / 2, this.mMenu.getHeight() / 2);
+		this.mMenu.setCenterPosition(50, this.mPanel.getHeight());
+
+		this.mRePlay.create();
+		this.mRePlay.setScaleCenter(this.mRePlay.getWidth() / 2, this.mRePlay.getHeight() / 2);
+		this.mRePlay.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight());
+
+		this.mPlayNext.create();
+		this.mPlayNext.setScaleCenter(this.mRePlay.getWidth() / 2, this.mRePlay.getHeight() / 2);
+		this.mPlayNext.setCenterPosition(this.mPanel.getWidth() - 50, this.mPanel.getHeight());
 
 		Star star;
 		for (int i = 0; i < 3; i++) {
 			star = mLevelStars.create();
-			star.setCenterPosition(Options.cameraCenterX + 80f * (i - 1), Options.cameraCenterY + 80f);
+			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), -80f);
 			star.setCurrentTileIndex(1);
 		}
+
+		this.mPanel.registerEntityModifier(modifier1);
+		this.mPanel.registerEntityModifier(modifier2);
+		this.mPanel.registerEntityModifier(modifier3);
+		this.mPanel.registerEntityModifier(modifier4);
+
+		this.mPanel.setScale(0f);
 	}
 
 	@Override
@@ -156,7 +177,7 @@ public class LevelEndScreen extends Screen {
 	}
 
 	@Override
-	public void  onBackPressed() {
+	public void onBackPressed() {
 	}
 
 }

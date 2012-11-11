@@ -1,4 +1,4 @@
-package com.tooflya.bubblefun;
+package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.IEntity;
@@ -9,6 +9,9 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
 
 /**
  * @author Tooflya.com

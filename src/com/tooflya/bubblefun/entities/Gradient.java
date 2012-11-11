@@ -5,7 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
-import com.tooflya.bubblefun.Screen;
+import com.tooflya.bubblefun.screens.Screen;
 
 public class Gradient extends org.anddev.andengine.entity.sprite.Sprite {
 

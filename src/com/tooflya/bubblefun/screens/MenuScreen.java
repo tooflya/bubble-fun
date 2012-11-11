@@ -11,7 +11,6 @@ import android.net.Uri;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -113,6 +112,15 @@ public class MenuScreen extends Screen {
 		 */
 		@Override
 		public void onClick() {
+			Options.isMusicEnabled = !Options.isMusicEnabled;
+
+			if (Options.isMusicEnabled) {
+				this.setCurrentTileIndex(0);
+				Options.mMainSound.play();
+			} else {
+				this.setCurrentTileIndex(1);
+				Options.mMainSound.pause();
+			}
 		}
 	};
 
@@ -259,7 +267,7 @@ public class MenuScreen extends Screen {
 
 		PreloaderScreen.mChangeAction = 0;
 
-		if (!Options.mMainSound.isPlaying())
+		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled)
 			Options.mMainSound.play();
 	}
 

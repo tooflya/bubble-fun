@@ -5,13 +5,13 @@ import java.util.Random;
 import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.FixedStepEngine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.util.FPSCounter;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
@@ -26,6 +26,7 @@ import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;
 import com.tooflya.bubblefun.database.LevelsStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
+import com.tooflya.bubblefun.screens.Screen;
 import com.tooflya.bubblefun.screens.SplashScreen;
 
 /**
@@ -61,6 +62,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	/**  */
 	public static ScreenManager screens;
+
+	/** */
+	public static float fps;
 
 	// ===========================================================
 	// Fields
@@ -148,7 +152,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine */
-		engine = new FixedStepEngine(options, 80);
+		//engine = new FixedStepEngine(options, 80);
+		engine = new Engine(options);
 
 		/** */
 		db = new LevelsStorage();
@@ -235,6 +240,14 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
+		this.getEngine().registerUpdateHandler(new FPSCounter() {
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				super.onUpdate(pSecondsElapsed);
+
+				fps = getFPS();
+			}
+		});
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
 
@@ -355,5 +368,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	public static void close() {
 		instance.finish();
+	}
+
+	public static float correctSpeed(final float mSpeed) {
+		return mSpeed * (80.0f / Game.fps);
 	}
 }

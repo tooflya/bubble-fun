@@ -9,7 +9,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.Screen;
 import com.tooflya.bubblefun.entities.Sprite;
 
 /**
