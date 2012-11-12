@@ -227,7 +227,7 @@ public class Chiky extends Entity {
 			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getOriginSpeedY());
+				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getSpeedY());
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
 				airgum.setParent(mAirgum);
 			}
@@ -251,13 +251,13 @@ public class Chiky extends Entity {
 		final float minX = 0 - this.mOffsetX + this.mWidth / 2;
 		if (x < minX) {
 			x = 2 * minX - x;
-			this.setSpeedX(Math.abs(this.getOriginSpeedX()));
+			this.setSpeedX(Math.abs(this.getSpeedX()));
 			isBorder = true;
 		}
 		final float maxX = Options.cameraWidth + this.mOffsetX - this.mWidth / 2;
 		if (x > maxX) {
 			x = 2 * maxX - x;
-			this.setSpeedX(-Math.abs(this.getOriginSpeedX()));
+			this.setSpeedX(-Math.abs(this.getSpeedX()));
 			isBorder = true;
 		}
 		if (isBorder && this.IsProperty(isJumplyFlag)) {
@@ -281,7 +281,7 @@ public class Chiky extends Entity {
 		if (this.mTime >= Options.chikyMaxTimeNormal) {
 			this.mTime = 0;
 			if (this.IsProperty(isSpeedyFlag)) {
-				this.setSpeedX(Math.signum(this.getOriginSpeedX()) * this.mSpeedyStepX);
+				this.setSpeedX(Math.signum(this.getSpeedX()) * this.mSpeedyStepX);
 				this.mState = States.SpeedyMove;
 				this.mWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
 				this.mWind.mFollowEntity = this;
@@ -303,7 +303,7 @@ public class Chiky extends Entity {
 		this.onManagedUpdateMove(pSecondsElapsed);
 		if (this.mTime >= Options.chikyMaxTimeSpeedy) {
 			this.mTime = 0;
-			this.setSpeedX(Math.signum(this.getOriginSpeedX()) * this.mNormalStepX);
+			this.setSpeedX(Math.signum(this.getSpeedX()) * this.mNormalStepX);
 			this.mState = States.NormalMove;
 			this.mWind.destroy();
 			this.mWind = null;

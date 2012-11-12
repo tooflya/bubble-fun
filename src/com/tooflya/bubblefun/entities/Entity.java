@@ -6,7 +6,6 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.Screen;
@@ -48,8 +47,6 @@ public abstract class Entity extends AnimatedSprite {
 	private float mSpeedX;
 	/** Entity speed on axis Y. The private identifier is used to adjust the speed depending on the screen resolution in the method <i>setSpeedY()</i>. */
 	private float mSpeedY;
-
-	private float mOriginSpeedX, mOriginSpeedY;
 
 	/** <b>Screen</b> which is the essence of the place rendering. */
 	protected org.anddev.andengine.entity.Entity mParentScreen;
@@ -234,14 +231,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedX
 	 */
 	public void setSpeedX(final float pSpeedX) {
-		this.mOriginSpeedX = pSpeedX / Options.SPEED;
+		this.mSpeedX = pSpeedX / Options.SPEED;
 	}
 
 	/**
 	 * @param pSpeedY
 	 */
 	public void setSpeedY(final float pSpeedY) {
-		this.mOriginSpeedY = pSpeedY / Options.SPEED;
+		this.mSpeedY = pSpeedY / Options.SPEED;
 	}
 
 	/**
@@ -249,8 +246,8 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedY
 	 */
 	public void setSpeed(final float pSpeedX, final float pSpeedY) {
-		this.mOriginSpeedX = pSpeedX / Options.SPEED;
-		this.mOriginSpeedY = pSpeedY / Options.SPEED;
+		this.mSpeedX = pSpeedX / Options.SPEED;
+		this.mSpeedY = pSpeedY / Options.SPEED;
 	}
 
 	/**
@@ -320,28 +317,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedX() {
-		return this.mSpeedX;
+		return this.mSpeedX * Options.SPEED;
 	}
 
 	/**
 	 * @return
 	 */
 	public float getSpeedY() {
-		return this.mSpeedY;
-	}
-
-	/**
-	 * @return
-	 */
-	public float getOriginSpeedX() {
-		return this.mOriginSpeedX * Options.SPEED;
-	}
-
-	/**
-	 * @return
-	 */
-	public float getOriginSpeedY() {
-		return this.mOriginSpeedY * Options.SPEED;
+		return this.mSpeedY * Options.SPEED;
 	}
 
 	/**
@@ -396,8 +379,6 @@ public abstract class Entity extends AnimatedSprite {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mSpeedX = this.mOriginSpeedX * (80.0f / Game.fps);
-		this.mSpeedY = this.mOriginSpeedY * (80.0f / Game.fps);
 	}
 
 	/*

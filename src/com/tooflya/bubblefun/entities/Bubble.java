@@ -85,9 +85,9 @@ public class Bubble extends BubbleBase {
 		if (distance < Options.eps) {
 			this.setSpeedX(0);
 			this.setSpeedY((Game.correctSpeed(Options.bubbleMinSpeed) + Game.correctSpeed(Options.bubbleMaxSpeed)) / 2 / this.mLostedSpeed);
-			this.setSpeedY(this.getOriginSpeedY() < Game.correctSpeed(Options.bubbleMinSpeed) ? Game.correctSpeed(Options.bubbleMinSpeed) : this.getOriginSpeedY());
-			this.setSpeedY(this.getOriginSpeedY() > Game.correctSpeed(Options.bubbleMaxSpeed) ? Game.correctSpeed(Options.bubbleMaxSpeed) : this.getOriginSpeedY());
-			this.setSpeedY(-this.getOriginSpeedY());
+			this.setSpeedY(this.getSpeedY() < Game.correctSpeed(Options.bubbleMinSpeed) ? Game.correctSpeed(Options.bubbleMinSpeed) : this.getSpeedY());
+			this.setSpeedY(this.getSpeedY() > Game.correctSpeed(Options.bubbleMaxSpeed) ? Game.correctSpeed(Options.bubbleMaxSpeed) : this.getSpeedY());
+			this.setSpeedY(-this.getSpeedY());
 		}
 		else {
 			distance = distance > 6 ? 6 : distance;
