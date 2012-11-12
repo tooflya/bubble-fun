@@ -14,6 +14,7 @@ import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com
@@ -115,7 +116,7 @@ public class LevelChoiseScreen extends Screen {
 
 		starsCollected = 0;
 
-		PreloaderScreen.mChangeAction = 0;
+		ScreenManager.mChangeAction = 0;
 
 		this.levels.clear();
 		this.numbers.clear();

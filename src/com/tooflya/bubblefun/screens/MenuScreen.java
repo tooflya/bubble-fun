@@ -15,6 +15,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
+import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.modifiers.MoveModifier;
 import com.tooflya.bubblefun.modifiers.RotationModifier;
 
@@ -265,7 +266,7 @@ public class MenuScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 
-		PreloaderScreen.mChangeAction = 0;
+		ScreenManager.mChangeAction = 0;
 
 		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled)
 			Options.mMainSound.play();

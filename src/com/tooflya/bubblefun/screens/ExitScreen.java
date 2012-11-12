@@ -100,4 +100,9 @@ public class ExitScreen extends PopupScreen {
 	public void onBackPressed() {
 	}
 
+	@Override
+	public void onClose() {
+		Game.screens.get(Screen.MENU).clearChildScene();
+	}
+
 }

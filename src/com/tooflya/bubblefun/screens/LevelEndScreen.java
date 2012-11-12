@@ -13,6 +13,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 public class LevelEndScreen extends PopupScreen {
 
@@ -22,7 +23,7 @@ public class LevelEndScreen extends PopupScreen {
 
 	private static int mStarsAnimationCount = 0;
 
-	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-exit.png", 0, 0, 1, 1), this);
+	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-lvl-popup.png", 0, 0, 1, 1), this);
 
 	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 2), this.mPanel) {
 
@@ -31,9 +32,10 @@ public class LevelEndScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			PreloaderScreen.mChangeAction = 2;
-			Game.screens.set(Screen.PRELOAD);
-			Game.screens.get(Screen.LEVEL).clearChildScene();
+			ScreenManager.mChangeAction = 2;
+			Game.screens.l();
+			
+			modifier4.reset();
 		}
 	};
 
@@ -45,8 +47,8 @@ public class LevelEndScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
-			Game.screens.set(Screen.LEVEL);
-			Game.screens.get(Screen.LEVEL).clearChildScene();
+			
+			modifier4.reset();
 		}
 	};
 
@@ -58,8 +60,8 @@ public class LevelEndScreen extends PopupScreen {
 		public void onClick() {
 			Options.levelNumber++;
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
-			Game.screens.set(Screen.LEVEL);
-			Game.screens.get(Screen.LEVEL).clearChildScene();
+			
+			modifier4.reset();
 		}
 	};
 
@@ -115,7 +117,7 @@ public class LevelEndScreen extends PopupScreen {
 		Star star;
 		for (int i = 0; i < 3; i++) {
 			star = mLevelStars.create();
-			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), -80f);
+			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), 300f);
 			star.setCurrentTileIndex(1);
 		}
 
@@ -178,6 +180,11 @@ public class LevelEndScreen extends PopupScreen {
 
 	@Override
 	public void onBackPressed() {
+	}
+
+	@Override
+	public void onClose() {
+		Game.screens.get(Screen.LEVEL).clearChildScene();
 	}
 
 }

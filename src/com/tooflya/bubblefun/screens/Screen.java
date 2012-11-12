@@ -24,10 +24,11 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 
 	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final BitmapTextureAtlas mCommonTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public static TiledTextureRegion cloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "cloud.png", 0, 0, 1, 4);
 
-	public static final int SCREENS_COUNT = 9;
+	public static final int SCREENS_COUNT = 8;
 
 	public static final int NO_SCREEN = -1;
 
@@ -37,7 +38,6 @@ public abstract class Screen extends Scene {
 	public static final int LEVELEND = 3;
 	public static final int EXIT = 4;
 	public static final int PAUSE = 5;
-	public static final int PRELOAD = 6;
 	public static final int BOX = 7;
 
 	// ===========================================================

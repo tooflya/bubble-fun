@@ -1,8 +1,5 @@
 package com.tooflya.bubblefun.screens;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -15,31 +12,32 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
-public class PauseScreen extends Screen {
+public class PauseScreen extends PopupScreen {
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final Rectangle mBackground = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
+	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-menu.png", 500, 500, 1, 1), this);
 
 	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 0, 256, 1, 2);
 
-	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
+	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
 		public void onClick() {
-			Game.screens.get(Screen.LEVEL).clearChildScene();
+			modifier4.reset();
 		}
 	};
 
-	private final ButtonScaleable b2 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
+	private final ButtonScaleable b2 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
@@ -47,33 +45,56 @@ public class PauseScreen extends Screen {
 		@Override
 		public void onClick() {
 			Options.levelNumber++;
-
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
-			Game.screens.get(Screen.LEVEL).clearChildScene();
+
+			modifier4.reset();
 		}
 	};
 
-	private final ButtonScaleable b3 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
+	private final ButtonScaleable b3 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
 		public void onClick() {
-			PreloaderScreen.mChangeAction = 2;
-			Game.screens.set(Screen.PRELOAD);
+			ScreenManager.mChangeAction = 2;
+			Game.screens.l();
+
+			modifier4.reset();
 		}
 	};
 
-	private final ButtonScaleable b4 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
+	private final ButtonScaleable b4 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
 		 */
 		@Override
 		public void onClick() {
-			PreloaderScreen.mChangeAction = 1;
-			Game.screens.set(Screen.PRELOAD);
+			ScreenManager.mChangeAction = 1;
+			Game.screens.l();
+
+			modifier4.reset();
+		}
+	};
+
+	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 450, 700, 1, 2), this.mPanel) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.Button#onClick()
+		 */
+		@Override
+		public void onClick() {
+			Options.isMusicEnabled = !Options.isMusicEnabled;
+
+			if (Options.isMusicEnabled) {
+				this.setCurrentTileIndex(0);
+				Options.mLevelSound.play();
+			} else {
+				this.setCurrentTileIndex(1);
+				Options.mLevelSound.pause();
+			}
 		}
 	};
 
@@ -84,14 +105,12 @@ public class PauseScreen extends Screen {
 	// ===========================================================
 
 	public PauseScreen() {
-		this.loadResources();
+		this.b1.create().setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 - 90f);
+		this.b2.create().setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 - 30f);
+		this.b3.create().setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 30f);
+		this.b4.create().setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 90f);
 
-		this.setBackgroundEnabled(false);
-
-		this.b1.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 120f);
-		this.b2.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 40f);
-		this.b3.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 40f);
-		this.b4.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 120f);
+		this.mSoundIcon.create().setCenterPosition(0 + 35f, this.mPanel.getHeight() - 40f);
 
 		Entity sprite;
 
@@ -114,22 +133,24 @@ public class PauseScreen extends Screen {
 		sprite.setCenterPosition(this.b4.getWidth() / 2, this.b4.getHeight() / 2);
 		sprite.setCurrentTileIndex(3);
 		this.b4.attachChild(sprite);
+
+		this.setBackgroundEnabled(false);
+
+		this.mPanel.create();
+		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
+		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
+
+		this.mPanel.registerEntityModifier(modifier1);
+		this.mPanel.registerEntityModifier(modifier2);
+		this.mPanel.registerEntityModifier(modifier3);
+		this.mPanel.registerEntityModifier(modifier4);
+
+		this.mPanel.setScale(0f);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
-		coloredRect.setColor(pRed, pGreen, pBlue);
-		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		coloredRect.setAlpha(0.7f);
-
-		this.attachChild(coloredRect);
-
-		return coloredRect;
-	}
 
 	@Override
 	public void loadResources() {
@@ -147,15 +168,8 @@ public class PauseScreen extends Screen {
 	public void onBackPressed() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.Screen#onDetached()
-	 */
 	@Override
-	public void onDetached() {
-		super.onDetached();
-
+	public void onClose() {
 		Game.screens.get(Screen.LEVEL).clearChildScene();
 	}
 }

@@ -1,7 +1,5 @@
 package com.tooflya.bubblefun.screens;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -23,7 +21,6 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
-import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -100,13 +97,16 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 				public void onClick() {
 					if (mPostScroll)
 						return;
+					
+					if(bi > 0) return;
 					Options.boxNumber = bi;
 					Game.screens.set(Screen.CHOISE);
 				}
 			};
-
 			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY);
 			sprite.setCurrentTileIndex(0);
+
+			if(bi > 0) sprite.setCurrentTileIndex(4);
 		}
 
 		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 200f);
@@ -170,8 +170,9 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 					}
 
 					try {
-						mPoints.getByIndex((int) Math.abs(FloatMath.floor(this.rectangle.getX() / Options.cameraWidth)) - 1).setCurrentTileIndex(1);
+						mPoints.getByIndex((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1).setCurrentTileIndex(1);
 					} catch (ArrayIndexOutOfBoundsException e) {
+						mPoints.getByIndex(0).setCurrentTileIndex(1);
 					}
 				}
 			}

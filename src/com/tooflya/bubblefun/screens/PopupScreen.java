@@ -72,7 +72,7 @@ public class PopupScreen extends Screen {
 		 */
 		@Override
 		public void onFinished() {
-			Game.screens.get(Screen.MENU).clearChildScene();
+			onClose();
 		}
 	};
 
@@ -104,21 +104,6 @@ public class PopupScreen extends Screen {
 		}
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
-		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
-		coloredRect.setColor(pRed, pGreen, pBlue);
-		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		coloredRect.setAlpha(0.4f);
-
-		this.attachChild(coloredRect);
-
-		return coloredRect;
-	}
-
 	@Override
 	public void loadResources() {
 	}
@@ -129,5 +114,24 @@ public class PopupScreen extends Screen {
 
 	@Override
 	public void onBackPressed() {
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	public void onClose() {
+
+	}
+
+	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
+		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
+		coloredRect.setColor(pRed, pGreen, pBlue);
+		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		coloredRect.setAlpha(0.4f);
+
+		this.attachChild(coloredRect);
+
+		return coloredRect;
 	}
 }

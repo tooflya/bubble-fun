@@ -90,7 +90,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		@Override
 		public void onClick() {
-			LevelScreen.this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
+			Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
 		}
 	};
 
@@ -489,8 +489,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.clouds.update();
 
 		if (chikies.getCount() == 0 && airgums.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && running) {
-			this.setChildScene(Game.screens.get(Screen.LEVELEND), false, false, true);
-			Game.screens.get(Screen.LEVELEND).onAttached();
+			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 			running = false;
 		} else {
 
@@ -499,7 +498,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				running = false;
 			}
 
-			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning) {
+			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning && running) {
 				restartMove1.reset();
 				isResetAnimationRunning = true;
 			}
@@ -554,14 +553,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void onBackPressed() {
-		PreloaderScreen.mChangeAction = 1; // TODO: WTF? LOL d:
-
 		if (this.hasChildScene()) {
 			if (this.getChildScene() != Game.screens.get(Screen.LEVELEND)) {
-				this.clearChildScene();
+				Game.screens.clearChildScreens();
 			}
 		} else {
-			this.setChildScene(Game.screens.get(Screen.PAUSE), false, true, true);
+			Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
 		}
 	}
 

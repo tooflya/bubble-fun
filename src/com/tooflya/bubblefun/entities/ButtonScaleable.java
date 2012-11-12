@@ -10,7 +10,7 @@ public class ButtonScaleable extends Button {
 
 	private boolean mModifierAttached = false;
 
-	private int mWaitBeforeAction = 20;
+	private float mWaitBeforeAction = 0.3f;
 	private boolean mDoAction = false;
 
 	private float mBaseScale = -1;
@@ -31,7 +31,7 @@ public class ButtonScaleable extends Button {
 		if (this.mBaseScale == -1) {
 			this.mBaseScale = this.getScaleX();
 
-			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.3f);
+			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.1f);
 			this.mScaleModifier.setRemoveWhenFinished(false);
 
 			this.setScaleCenter(this.getBaseWidth() / 2, this.getBaseHeight() / 2);
@@ -55,7 +55,7 @@ public class ButtonScaleable extends Button {
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.isClicked) {
-				if (this.mWaitBeforeAction == 20) {
+				if (this.mWaitBeforeAction == 0.3f) {
 					if (this.mModifierAttached) {
 						this.mScaleModifier.reset();
 					} else {
@@ -89,10 +89,11 @@ public class ButtonScaleable extends Button {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		if (this.mDoAction) {
-			if (this.mWaitBeforeAction-- <= 0) {
+			this.mWaitBeforeAction -= pSecondsElapsed;
+			if (this.mWaitBeforeAction <= 0) {
 				this.onClickStandartActions();
 				this.mDoAction = false;
-				this.mWaitBeforeAction = 20;
+				this.mWaitBeforeAction = 0.3f;
 				this.setScale(this.mBaseScale);
 
 				this.onClick();

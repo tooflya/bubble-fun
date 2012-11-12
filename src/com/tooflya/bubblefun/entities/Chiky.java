@@ -85,7 +85,7 @@ public class Chiky extends Entity {
 		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
 
 		this.mNormalStepX = Game.random.nextFloat() * (Game.correctSpeed(Options.chikyMaxStepX) - Game.correctSpeed(Options.chikyMinStepX)) + Game.correctSpeed(Options.chikyMinStepX);
-		this.mSpeedyStepX = this.mNormalStepX * Options.chikySpeedCoeficient;
+		this.mSpeedyStepX = this.mNormalStepX * Game.correctSpeed(Options.chikySpeedCoeficient);
 		this.setSpeedX(this.mNormalStepX);
 
 		this.mOffsetX = 0;
