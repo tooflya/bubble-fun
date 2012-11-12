@@ -84,8 +84,8 @@ public class Chiky extends Entity {
 		this.mStartX = Options.cameraWidth / 2;
 		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
 
-		this.mNormalStepX = Game.random.nextFloat() * (Game.correctSpeed(Options.chikyMaxStepX) - Game.correctSpeed(Options.chikyMinStepX)) + Game.correctSpeed(Options.chikyMinStepX);
-		this.mSpeedyStepX = this.mNormalStepX * Game.correctSpeed(Options.chikySpeedCoeficient);
+		this.mNormalStepX = Game.random.nextFloat() * (Options.chikyMaxStepX - Options.chikyMinStepX) + Options.chikyMinStepX;
+		this.mSpeedyStepX = this.mNormalStepX * Options.chikySpeedCoeficient;
 		this.setSpeedX(this.mNormalStepX);
 
 		this.mOffsetX = 0;
@@ -318,7 +318,7 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
-		this.mY += Game.correctSpeed(Options.chikyFallSpeed);
+		this.mY += Options.chikyFallSpeed;
 
 		this.setRotation(this.getRotation() + 5); // Rotate at 1 degree. Maybe need to correct.
 

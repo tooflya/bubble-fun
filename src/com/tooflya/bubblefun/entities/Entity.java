@@ -181,14 +181,12 @@ public abstract class Entity extends AnimatedSprite {
 	public void show() {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
-		/* TODO: Check is culling really need -->  this.setCullingEnabled(true); */
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
 	public void hide() {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
-		/* TODO: Check is culling really need -->  this.setCullingEnabled(false); */
 	}
 
 	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
@@ -231,14 +229,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedX
 	 */
 	public void setSpeedX(final float pSpeedX) {
-		this.mSpeedX = pSpeedX / Options.SPEED;
+		this.mSpeedX = pSpeedX;
 	}
 
 	/**
 	 * @param pSpeedY
 	 */
 	public void setSpeedY(final float pSpeedY) {
-		this.mSpeedY = pSpeedY / Options.SPEED;
+		this.mSpeedY = pSpeedY;
 	}
 
 	/**
@@ -246,8 +244,8 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedY
 	 */
 	public void setSpeed(final float pSpeedX, final float pSpeedY) {
-		this.mSpeedX = pSpeedX / Options.SPEED;
-		this.mSpeedY = pSpeedY / Options.SPEED;
+		this.mSpeedX = pSpeedX;
+		this.mSpeedY = pSpeedY;
 	}
 
 	/**
@@ -317,14 +315,14 @@ public abstract class Entity extends AnimatedSprite {
 	 * @return
 	 */
 	public float getSpeedX() {
-		return this.mSpeedX * Options.SPEED;
+		return this.mSpeedX;
 	}
 
 	/**
 	 * @return
 	 */
 	public float getSpeedY() {
-		return this.mSpeedY * Options.SPEED;
+		return this.mSpeedY;
 	}
 
 	/**

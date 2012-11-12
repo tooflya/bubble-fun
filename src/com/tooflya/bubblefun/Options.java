@@ -34,11 +34,6 @@ public class Options {
 	
 	public static boolean isMusicEnabled = true;
 
-	public static float DPI;
-	public final static float targetDPI = 300f;
-
-	public static float SPEED;
-
 	public static String CR;
 
 	public static int levelNumber = 1;

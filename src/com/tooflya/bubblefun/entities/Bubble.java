@@ -84,16 +84,16 @@ public class Bubble extends BubbleBase {
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
 		if (distance < Options.eps) {
 			this.setSpeedX(0);
-			this.setSpeedY((Game.correctSpeed(Options.bubbleMinSpeed) + Game.correctSpeed(Options.bubbleMaxSpeed)) / 2 / this.mLostedSpeed);
-			this.setSpeedY(this.getSpeedY() < Game.correctSpeed(Options.bubbleMinSpeed) ? Game.correctSpeed(Options.bubbleMinSpeed) : this.getSpeedY());
-			this.setSpeedY(this.getSpeedY() > Game.correctSpeed(Options.bubbleMaxSpeed) ? Game.correctSpeed(Options.bubbleMaxSpeed) : this.getSpeedY());
+			this.setSpeedY((Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 / this.mLostedSpeed);
+			this.setSpeedY(this.getSpeedY() < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : this.getSpeedY());
+			this.setSpeedY(this.getSpeedY() > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : this.getSpeedY());
 			this.setSpeedY(-this.getSpeedY());
 		}
 		else {
 			distance = distance > 6 ? 6 : distance;
 			distance /= this.mLostedSpeed;
-			distance = distance < Game.correctSpeed(Options.bubbleSpeedMinSpeed) ? Game.correctSpeed(Options.bubbleSpeedMinSpeed) : distance;
-			distance = distance > Game.correctSpeed(Options.bubbleSpeedMaxSpeed) ? Game.correctSpeed(Options.bubbleSpeedMaxSpeed) : distance;
+			distance = distance < Options.bubbleSpeedMinSpeed? Options.bubbleSpeedMinSpeed : distance;
+			distance = distance > Options.bubbleSpeedMaxSpeed ? Options.bubbleSpeedMaxSpeed : distance;
 
 			if (0 < angle) {
 				angle -= Options.PI;
@@ -193,7 +193,7 @@ public class Bubble extends BubbleBase {
 	private void onManagedUpdateCreating(final float pSecondsElapsed) {
 		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
 
-			this.mLostedSpeed += Game.correctSpeed(Options.bubbleStepSpeed);
+			this.mLostedSpeed += Options.bubbleStepSpeed;
 
 			this.setWidth(mWidth + Options.bubbleStepSize);
 			this.setHeight(mHeight + Options.bubbleStepSize);

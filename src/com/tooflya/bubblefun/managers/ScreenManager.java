@@ -2,7 +2,6 @@ package com.tooflya.bubblefun.managers;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.IEntity;
@@ -13,6 +12,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.util.modifier.IModifier;
 
 import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
 import com.tooflya.bubblefun.background.IAsyncCallback;

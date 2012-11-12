@@ -102,9 +102,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		final DisplayMetrics displayMetrics = new DisplayMetrics();
 		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-		Options.DPI = displayMetrics.densityDpi;
-		Options.SPEED = 1;//Options.targetDPI / Options.DPI;
-
 		/** Initialize camera parameters */
 		Options.screenWidth = displayMetrics.widthPixels;
 		Options.screenHeight = displayMetrics.heightPixels;
@@ -152,7 +149,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine */
-		//engine = new FixedStepEngine(options, 80);
 		engine = new Engine(options);
 
 		/** */
@@ -369,9 +365,5 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	public static void close() {
 		instance.finish();
-	}
-
-	public static float correctSpeed(final float mSpeed) {
-		return mSpeed * (80.0f / Game.fps) / Options.SPEED;
 	}
 }

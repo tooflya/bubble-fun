@@ -46,6 +46,8 @@ public abstract class Screen extends Scene {
 
 	public static int screen = -1;
 
+	private float mDeltaTiming = 0;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -84,13 +86,33 @@ public abstract class Screen extends Scene {
 	public void attachChild(final IEntity pEntity) {
 		super.attachChild(pEntity);
 
-		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
+		/**
+		 * This section is scale object to the real size for adapt size of
+		 * entity to the screen resolution.
+		 */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);
 
 		/** After scale action we need to find center of entity position. */
 		if (((Shape) pEntity).getWidthScaled() > Options.cameraWidth || ((Shape) pEntity).getHeightScaled() > Options.cameraHeight) {
 			pEntity.setPosition((Options.screenWidth - ((Shape) pEntity).getWidthScaled()) / 2, (Options.screenHeight - ((Shape) pEntity).getHeightScaled()) / 2);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
+	 */
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		this.mDeltaTiming += pSecondsElapsed;
+		if (this.mDeltaTiming < 0.0125) {
+			return;
+		} else {
+			super.onManagedUpdate(pSecondsElapsed);
+			this.mDeltaTiming -= 0.0125;
+			while (this.mDeltaTiming >= 0.0125) {
+				super.onManagedUpdate(0);
+				this.mDeltaTiming -= 0.0125;
+			}
 		}
 	}
 
