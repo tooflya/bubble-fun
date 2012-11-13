@@ -229,13 +229,21 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Beta.device = Beta.getDeviceName();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Thanks for you time!\n\nCan you help us?").setTitle("Dear QA!");
-		builder.setPositiveButton("Yeah, sure", new DialogInterface.OnClickListener() {
+		builder.setMessage(R.string.beta_testers_text).setTitle(R.string.beta_testers_title);
+		builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
+				
+				 Runnable runnable = new Runnable() {
+				      @Override
+				      public void run() {
+							Beta.sendFirstInformation();
+				      }
+				    };
+				    new Thread(runnable).start();
 			}
 		});
-		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Game.close();
 			}
@@ -278,7 +286,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				super.onUpdate(pSecondsElapsed);
 
 				fps = getFPS();
-				//System.out.println(fps);
+				System.out.println(fps);
 			}
 		});
 		/** Start background loader */

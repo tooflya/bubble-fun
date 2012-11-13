@@ -13,16 +13,17 @@
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="14" />
+    
+    <!--  FOR THE BETA VERSION ONLY -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--  /FOR THE BETA VERSION ONLY -->
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    
-    <!--  FOR THE BETA VERSION ONLY -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <!--  /FOR THE BETA VERSION ONLY -->
 
     <application
         android:launchMode="singleInstance"

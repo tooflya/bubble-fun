@@ -1,5 +1,7 @@
 package com.tooflya.bubblefun.screens;
 
+import java.util.ArrayList;
+
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -19,6 +21,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.entities.Box;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -39,6 +42,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	protected static int PADDING = 50;
 
 	protected static int MENUITEMS = 4;
+	private static int CURRENTMENUITEM = 0;
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -71,6 +75,8 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	private final EntityManager<Sprite> mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "navi.png", 400, 900, 1, 2), this.mBackground));
 
+	private ArrayList<Box> boxes = new ArrayList<Box>();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -91,14 +97,17 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 		for (int i = 0; i < MENUITEMS; i++) {
 			final int bi = i;
-			final ButtonScaleable sprite = new ButtonScaleable(textureRegion, this.rectangle) {
+			final Box sprite = new Box(textureRegion, this.rectangle) {
 
 				@Override
 				public void onClick() {
 					if (mPostScroll)
 						return;
-					
-					if(bi > 0) return;
+
+					if (bi > 0) {
+						boxes.get(bi).animation();
+						return;
+					}
 					Options.boxNumber = bi;
 					Game.screens.set(Screen.CHOISE);
 				}
@@ -106,7 +115,10 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY);
 			sprite.setCurrentTileIndex(0);
 
-			if(bi > 0) sprite.setCurrentTileIndex(4);
+			if (bi > 0)
+				sprite.setCurrentTileIndex(4);
+
+			boxes.add(sprite);
 		}
 
 		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 200f);
@@ -170,9 +182,24 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 					}
 
 					try {
+						for (Box box : boxes) {
+							if (box != boxes.get((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1))
+								box.modifier5.reset();
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						for (Box box : boxes) {
+							if (box != boxes.get(0))
+								box.modifier5.reset();
+						}
+						;
+					}
+
+					try {
 						mPoints.getByIndex((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1).setCurrentTileIndex(1);
+						boxes.get((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1).animation();
 					} catch (ArrayIndexOutOfBoundsException e) {
 						mPoints.getByIndex(0).setCurrentTileIndex(1);
+						boxes.get(0).animation();
 					}
 				}
 			}

@@ -38,6 +38,8 @@ public class ScreenManager implements IAsyncCallback {
 
 	public static int mChangeAction = 0;
 
+	private static float s = 10f;
+
 	private final HUD hud = new HUD();
 
 	private final AlphaModifier modifierOn = new AlphaModifier(0.2f, 0f, 1f, new IEntityModifierListener() {
@@ -106,19 +108,18 @@ public class ScreenManager implements IAsyncCallback {
 			super.onManagedUpdate(pSecondsElapsed);
 
 			if (mMoveUp) {
-				this.setHeight(this.getHeight() - 15);
-				this.getTextureRegion().setHeight(this.getTextureRegion().getHeight() - 15);
+				this.setHeight(this.getHeight() - s);
+				this.getTextureRegion().setHeight((int) (this.getTextureRegion().getHeight() - s));
 
-				r.setPosition(r.getX(), r.getY() - 15);
+				r.setPosition(r.getX(), r.getY() - s);
 
-				if (this.mY <= -mBackground.getHeightScaled()) {
+				if (r.getY() <= -r.getHeight() - d.getHeight()) {
 					mMoveUp = false;
+					mBackground.hide();
 				}
 
 				if (!cu) {
 					cu = true;
-
-					this.mY = 0;
 					this.setVisible(true);
 				}
 			}
@@ -127,7 +128,7 @@ public class ScreenManager implements IAsyncCallback {
 				if (!cd) {
 					cd = true;
 
-					this.mY = 0;
+					//this.mY = -d.getHeight();
 					this.setHeight(0);
 					this.getTextureRegion().setHeight(0);
 					this.setVisible(true);
@@ -135,15 +136,13 @@ public class ScreenManager implements IAsyncCallback {
 					r.setPosition(r.getX(), -r.getHeight());
 				}
 
-				this.setHeight(this.getHeight() + 15);
-				this.getTextureRegion().setHeight(this.getTextureRegion().getHeight() + 15);
+				this.setHeight(this.getHeight() + s);
+				this.getTextureRegion().setHeight((int) (this.getTextureRegion().getHeight() + s));
 
-				r.setPosition(r.getX(), r.getY() + 15);
+				r.setPosition(r.getX(), r.getY() + s);
 
-				if (this.getHeightScaled() >= this.getBaseHeight() * Options.cameraRatioFactor) {
+				if (r.getY() >= d.getHeight()) {
 					mMoveDown = false;
-
-					this.mY = 0;
 
 					updates = 0;
 
@@ -284,17 +283,19 @@ public class ScreenManager implements IAsyncCallback {
 		Sprite line;
 
 		line = this.lines.create();
-		line.setPosition(0, 0);
+		line.setPosition(0, -d.getHeight());
 
 		line = this.lines.create();
-		line.setPosition(this.mBackground.getWidth() - 7f, 0);
+		line.setPosition(this.mBackground.getWidth() - 7f, -d.getHeight());
 
 		r.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		r.setAlpha(0);
-
+		r.setIgnoreUpdate(true);
+		r.setChildrenIgnoreUpdate(true);
 		mBackground.attachChild(r);
+		r.setPosition(r.getX(), mBackground.getY() - d.getHeight());
 
-		d.create().setPosition(0, r.getHeight() - d.getHeight());
+		d.create().setCenterPosition(mBackground.getWidth() / 2, mBackground.getHeight() + d.getHeight() / 2 - 1f);
 	}
 
 	// ===========================================================
@@ -303,6 +304,7 @@ public class ScreenManager implements IAsyncCallback {
 
 	public void l() {
 		this.mMoveDown = true;
+		mBackground.show();
 	}
 
 	public void u() {
@@ -370,9 +372,10 @@ public class ScreenManager implements IAsyncCallback {
 
 	public Screen getCurrent() {
 		try {
-		return screens[Screen.screen];
-		} catch(ArrayIndexOutOfBoundsException e) {}
-		
+			return screens[Screen.screen];
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
 		return null;
 	}
 

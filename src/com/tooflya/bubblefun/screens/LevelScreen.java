@@ -60,6 +60,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public static boolean running;
 	public static int deadBirds;
 	private static boolean isResetAnimationRunning;
+	private boolean mLevelEndRunning;
 
 	public static int Score;
 
@@ -339,6 +340,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		running = true;
 		deadBirds = 0;
 		isResetAnimationRunning = false;
+		this.mLevelEndRunning = false;
 
 		mAwesomeKillText.clear();
 		mDoubleKillText.clear();
@@ -488,9 +490,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.clouds.update();
 
-		if (chikies.getCount() == 0 && airgums.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && running) {
+		if (chikies.getCount() == 0 && airgums.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && !this.mLevelEndRunning) {
 			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
-			running = false;
+			this.mLevelEndRunning = true;
 		} else {
 
 			if (AIR <= 0 && running) {
@@ -498,7 +500,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				running = false;
 			}
 
-			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning && running) {
+			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning) {
 				restartMove1.reset();
 				isResetAnimationRunning = true;
 			}

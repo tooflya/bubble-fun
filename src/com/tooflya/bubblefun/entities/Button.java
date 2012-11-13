@@ -37,14 +37,14 @@ public abstract class Button extends Sprite {
 		switch (pAreaTouchEvent.getAction()) {
 
 		case TouchEvent.ACTION_DOWN:
-			this.setCurrentTileIndex(1);
+			//this.setCurrentTileIndex(1);
 			this.isClicked = true;
 			this.mLastClickedX = pTouchAreaLocalX;
 			this.mLastClickedY = pTouchAreaLocalY;
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.isClicked) {
-				this.setCurrentTileIndex(0);
+				//this.setCurrentTileIndex(0);
 
 				this.onClickStandartActions();
 				this.onClick();

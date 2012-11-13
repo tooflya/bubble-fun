@@ -87,8 +87,7 @@ public abstract class Screen extends Scene {
 		super.attachChild(pEntity);
 
 		/**
-		 * This section is scale object to the real size for adapt size of
-		 * entity to the screen resolution.
+		 * This section is scale object to the real size for adapt size of entity to the screen resolution.
 		 */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);
@@ -104,14 +103,14 @@ public abstract class Screen extends Scene {
 	 */
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		this.mDeltaTiming += pSecondsElapsed;
-		if (this.mDeltaTiming < 0.0125) {
+		if (this.mDeltaTiming < 0.0125f) {
 			return;
 		} else {
-			super.onManagedUpdate(pSecondsElapsed);
-			this.mDeltaTiming -= 0.0125;
-			while (this.mDeltaTiming >= 0.0125) {
-				super.onManagedUpdate(0);
-				this.mDeltaTiming -= 0.0125;
+			super.onManagedUpdate(0.0125f);
+			this.mDeltaTiming -= 0.0125f;
+			while (this.mDeltaTiming >= 0.0125f) {
+				super.onManagedUpdate(0.0125f);
+				this.mDeltaTiming -= 0.0125f;
 			}
 		}
 	}

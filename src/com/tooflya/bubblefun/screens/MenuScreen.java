@@ -268,8 +268,9 @@ public class MenuScreen extends Screen {
 
 		ScreenManager.mChangeAction = 0;
 
-		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled)
+		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
 			Options.mMainSound.play();
+		}
 	}
 
 	/*

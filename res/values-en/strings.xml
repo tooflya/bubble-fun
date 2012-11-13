@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app">Bubble Fun</string>
+    <string name="beta_testers_title">Hello, dear Beta-tester!</string>
+    <string name="beta_testers_text">        Thank you for taking the time to help us!\n\n
+
+		We ask you to test our game that we could correct all defects available in it. To make the collection of information as fast and productive we need to to send some information from your device to our servers, therefore we will be infinitely grateful if your device will have the Internet access during the game.\n\n
+		
+		Information which will be sent:\n
+		1. An e-mail address in the Gmail mail service;\n
+		2. Complete name of model of the device;\n
+		3. Mean value of frames per second;\n
+		4. Time of passing of each level;\n
+		5. Result of passing of each level.\n\n
+		
+		Thank you very much for your understanding and support!</string>
+    <string name="beta_testers_yes">Yes, of course!</string>
+    <string name="beta_testers_no">No</string>
+
+</resources>

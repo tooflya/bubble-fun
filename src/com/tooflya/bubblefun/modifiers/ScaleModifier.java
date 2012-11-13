@@ -43,6 +43,28 @@ public class ScaleModifier extends org.anddev.andengine.entity.modifier.ScaleMod
 		this.mFinished = true;
 	}
 
+	public ScaleModifier(float pDuration, float pFromScaleX, float pToScaleX, float pFromScaleY, float pToScaleY) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY);
+
+		this.addModifierListener(new IEntityModifierListener() {
+
+			@Override
+			public void onModifierFinished(IModifier<IEntity> arg0, IEntity arg1) {
+				onFinished();
+			}
+
+			@Override
+			public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+				onStarted();
+			}
+
+		});
+
+		this.setRemoveWhenFinished(false);
+
+		this.mFinished = true;
+	}
+
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
