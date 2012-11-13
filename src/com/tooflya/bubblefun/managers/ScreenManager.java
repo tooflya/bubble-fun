@@ -369,7 +369,11 @@ public class ScreenManager implements IAsyncCallback {
 	}
 
 	public Screen getCurrent() {
+		try {
 		return screens[Screen.screen];
+		} catch(ArrayIndexOutOfBoundsException e) {}
+		
+		return null;
 	}
 
 	@Override

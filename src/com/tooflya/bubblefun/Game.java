@@ -1,6 +1,7 @@
 package com.tooflya.bubblefun;
 
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.audio.sound.SoundFactory;
@@ -16,10 +17,16 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Patterns;
 import android.view.KeyEvent;
 
 import com.tooflya.bubblefun.background.AsyncTaskLoader;
@@ -141,7 +148,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				.setNeedsSound(true);
 
 		/**
-		 * Disable extension vertex buffer objects. This extension usually has a problems with HTC phones
+		 * Disable extension vertex buffer objects. This extension usually has a
+		 * problems with HTC phones
 		 */
 		options.getRenderOptions().disableExtensionVertexBufferObjects();
 
@@ -204,8 +212,36 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 * 
 	 * @see com.tooflya.bouncekid.background.IAsyncCallback#onComplete()
 	 */
+	@TargetApi(8)
 	@Override
 	public void onComplete() {
+		// ====================================================================================
+		// FOR THE BETA VERSION ONLY
+		// TODO: Remove this before relise 
+		Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+		Account[] accounts = AccountManager.get(context).getAccounts();
+		for (Account account : accounts) {
+			if (emailPattern.matcher(account.name).matches()) {
+				Beta.mail = account.name;
+				break;
+			}
+		}
+		Beta.device = Beta.getDeviceName();
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Thanks for you time!\n\nCan you help us?").setTitle("Dear QA!");
+		builder.setPositiveButton("Yeah, sure", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				Game.close();
+			}
+		});
+		builder.create().show();
+		// ====================================================================================
 		screens.set(Screen.MENU);
 	}
 
@@ -249,7 +285,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		new AsyncTaskLoader().execute(this);
 
 		/**
-		 * Create loading screen and return her scene for attaching to the activity
+		 * Create loading screen and return her scene for attaching to the
+		 * activity
 		 */
 		return new SplashScreen();
 	}
@@ -267,12 +304,20 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		getTextureManager().unloadTextures();
 
 		/**
-		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
+		 * Notify the system to finalize and collect all objects of the
+		 * application on exit so that the process running the application can
+		 * be killed by the system without causing issues. NOTE: If this is set
+		 * to true then the process will not be killed until all of its threads
+		 * have closed.
 		 */
 		System.runFinalizersOnExit(true);
 
 		/**
-		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again.
+		 * Force the system to close the application down completely instead of
+		 * retaining it in the background. The process that runs the application
+		 * will be killed. The application will be completely created as a new
+		 * application in a new process if the user starts the application
+		 * again.
 		 */
 		System.exit(0);
 	}

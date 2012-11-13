@@ -19,6 +19,12 @@ public class HUD extends org.anddev.andengine.engine.camera.hud.HUD {
 				this.mDeltaTiming -= 0.0125;
 			}
 		}
+
+		// ====================================================================================
+		// FOR THE BETA VERSION ONLY
+		// TODO: Remove this before relise 
+		Beta.update();
+		// ====================================================================================
 	}
 
 }
