@@ -198,7 +198,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				chiky.initProperties(properties);
 
-				chiky.initStartY(chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.touchHeight - chiky.getHeightScaled()));
+				chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
 			}
 		});
 

@@ -213,7 +213,7 @@ public class Chiky extends Entity {
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 				airgum.setParent(mAirgum);
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
-				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY() + this.mAirgum.getSpeedY());
+				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
 			}
 
 			Feather particle;
