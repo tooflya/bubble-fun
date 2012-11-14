@@ -78,10 +78,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
-	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1, 1), this.mBackground));
-	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1), this.mBackground));
-	public EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1), this.mBackground));
-	public EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4), this.mBackground));
+	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1,
+			1), this.mBackground));
+	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1),
+			this.mBackground));
+	public EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(5, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1),
+			this.mBackground));
+	public EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(5, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4),
+			this.mBackground));
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
@@ -201,11 +205,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-level.png", 0, 980, 1, 1), this.shape);
 	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
-	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1), this.mBackground));
+	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1),
+			this.mBackground));
 
-	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX
-			- mTextTapHere.getWidth() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3,
-			(Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2) {
+	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraHeight * 2, Options.cameraHeight / 3 * 2
+			+ Options.cameraHeight / 3 / 2) {
 		@Override
 		public void onFinished() {
 			mTextTapHere.reset();
@@ -213,8 +217,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	};
 
 	private final MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX
-			- mTextTapHere.getWidth() / 2, (Options.cameraHeight / 3 * 2) + Options.cameraHeight / 3 / 2, (Options.cameraHeight / 3 * 2)
-			+ Options.cameraHeight / 3 / 2 + Options.cameraHeight / 3);
+			- mTextTapHere.getWidth() / 2, Options.cameraHeight / 3 * 2 + Options.cameraHeight / 3 / 2, Options.cameraHeight * 2);
 
 	private final Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context,
 			"text-restart.png", 430, 0, 1, 1), this.mRectangle);
@@ -252,9 +255,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	};
 
 	private final EntityManager<Sprite> thorns = new EntityManager<Sprite>(10, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 430, 40, 1, 1), this.mBackground));
-	public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5), this.mBackground));
+	public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5),
+			this.mBackground));
 
-	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65, 6, 1), this.mBackground));
+	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65,
+			6, 1), this.mBackground));
 
 	public EntityManager<Mark> mMarks = new EntityManager<Mark>(100, new Mark(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 800, 700, 1, 1), this.mBackground));
 
@@ -500,7 +505,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				running = false;
 			}
 
-			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning) {
+			if (airgums.getCount() <= 0 && deadBirds <= 0 && !running && !isResetAnimationRunning && !this.mLevelEndRunning) {
 				restartMove1.reset();
 				isResetAnimationRunning = true;
 			}
@@ -584,27 +589,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (this.lastAirgum != null) {
 				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
 
-				float dx = this.lastAirgum.getSpeedX() / FloatMath.sqrt((float) (Math.pow(this.lastAirgum.getSpeedX(), 2) + Math.pow(this.lastAirgum.getSpeedY(), 2)));
-				float dy = this.lastAirgum.getSpeedY() / FloatMath.sqrt((float) (Math.pow(this.lastAirgum.getSpeedX(), 2) + Math.pow(this.lastAirgum.getSpeedY(), 2)));
-
-				float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
-				while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
-					x += dx * 35;
-					y += dy * 35;
-					Entity w = mMarks.create();
-					if (w != null)
-						w.setCenterPosition(x, y);
-				}
-				x = this.lastAirgum.getCenterX();
-				y = this.lastAirgum.getCenterY();
-				while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
-					Entity w = mMarks.create();
-					if (w != null)
-						w.setCenterPosition(x, y);
-					x -= dx * 35;
-					y -= dy * 35;
-				}
-
 				this.lastAirgum = null;
 
 				mBubblesCount++;
@@ -641,20 +625,24 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					float dx = mSpeedX / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
 					float dy = mSpeedY / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
 
-					float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
+					float x = this.lastAirgum.getX() + this.lastAirgum.getWidthScaled() / 2, y = this.lastAirgum.getY() + this.lastAirgum.getHeightScaled() / 2;
 					while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
+						Entity w = mMarks.create();
+						w.setSpeed(dx, dy);
+						if (w != null)
+							w.setCenterPosition(x, y);
+
 						x += dx * 35;
 						y += dy * 35;
-						Entity w = mMarks.create();
-						if (w != null)
-							w.setCenterPosition(x, y);
 					}
-					x = this.lastAirgum.getCenterX();
-					y = this.lastAirgum.getCenterY();
+
+					x = this.lastAirgum.getX() + this.lastAirgum.getWidthScaled() / 2;
+					y = this.lastAirgum.getY() + this.lastAirgum.getHeightScaled() / 2;
 					while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
 						Entity w = mMarks.create();
 						if (w != null)
 							w.setCenterPosition(x, y);
+						w.setSpeed(dx, dy);
 						x -= dx * 35;
 						y -= dy * 35;
 					}

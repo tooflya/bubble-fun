@@ -94,7 +94,7 @@ public class ScreenManager implements IAsyncCallback {
 		}
 	});
 
-	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-2-01.png", 0, 0, 1, 1), this.hud) {
+	public final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg.png", 0, 0, 1, 1), this.hud) {
 
 		private boolean cu = false, cd = false;
 
@@ -165,12 +165,12 @@ public class ScreenManager implements IAsyncCallback {
 
 	private Rectangle r = new Rectangle(0, 0, mBackground.getWidth(), mBackground.getHeight());
 
-	public final Sprite mTextBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-text.png", 400, 0, 1, 1), this.r);
+	public final Sprite mTextBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-text.png", 0, 630, 1, 1), this.r);
 
-	public EntityManager<Sprite> lines = new EntityManager<Sprite>(2, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-line.png", 1000, 0, 1, 1), this.r));
-	public EntityManager<Sprite> circles = new EntityManager<Sprite>(11, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-bar.png", 400, 40, 1, 2), this.r));
+	public EntityManager<Sprite> lines = new EntityManager<Sprite>(2, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-line.png", 	380, 0, 1, 1), this.r));
+	public EntityManager<Sprite> circles = new EntityManager<Sprite>(11, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-bar.png", 400, 0, 1, 2), this.r));
 
-	private Sprite d = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-down-01.png", 0, 700, 1, 1), this.r);
+	private Sprite d = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-down.png", 0, 610, 1, 1), this.r);
 
 	public int updates = 0;
 	private boolean loaded = false;

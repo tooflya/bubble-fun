@@ -18,8 +18,11 @@ public class Mark extends Entity {
 	public Mark(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		this.registerEntityModifier(this.modifier);
 		setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+		this.registerEntityModifier(this.modifier);
+
+		this.setColor(222f / 255f, 105f / 255f, 219f / 255f);
 	}
 
 	@Override
@@ -27,6 +30,14 @@ public class Mark extends Entity {
 		modifier.reset();
 
 		return super.create();
+	}
+
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		this.mX += this.getSpeedX();
+		this.mY += this.getSpeedY();
 	}
 
 }

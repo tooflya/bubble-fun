@@ -37,8 +37,7 @@ public class MenuScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
@@ -47,9 +46,9 @@ public class MenuScreen extends Screen {
 
 	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
-	private final Sprite mLogoBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-name.png", 550, 0, 1, 1), this.mBackground);
+	private final Sprite mLogoBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-name.png", 0, 620, 1, 1), this.mBackground);
 
-	private final ButtonScaleable mTwitterIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "tw-btn.png", 0, 700, 1, 2), this.mBackground) {
+	private final ButtonScaleable mTwitterIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "tw-btn.png", 400, 0, 1, 2), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -69,7 +68,7 @@ public class MenuScreen extends Screen {
 
 	};
 
-	private final ButtonScaleable mFacebookIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "fb-btn.png", 100, 700, 1, 2), this.mBackground) {
+	private final ButtonScaleable mFacebookIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "fb-btn.png", 400, 90, 1, 2), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -85,7 +84,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final ButtonScaleable mPlayIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "play-btn.png", 200, 700, 1, 2), this.mBackground) {
+	private final ButtonScaleable mPlayIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "play.png", 0, 860, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -96,7 +95,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final ButtonScaleable mMoreIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "more-btn.png", 350, 700, 1, 2), this.mBackground) {
+	private final ButtonScaleable mMoreIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "more-btn.png", 400, 180, 1, 2), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -106,7 +105,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 450, 700, 1, 2), this.mBackground) {
+	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 400, 250, 1, 2), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -166,7 +165,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final Sprite mSettingsIcon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "set-btn.png", 550, 700, 1, 2), this.mBackground, true) {
+	private final Sprite mSettingsIcon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "set-btn.png", 400, 350, 1, 2), this.mBackground, true) {
 
 		private boolean rotation = false;
 
@@ -290,7 +289,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas, this.mBackgroundTextureAtlas2);
+		Game.loadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -300,7 +299,7 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas, this.mBackgroundTextureAtlas2);
+		Game.unloadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*

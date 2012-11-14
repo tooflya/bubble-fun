@@ -17,14 +17,14 @@ import com.tooflya.bubblefun.Options;
  * @author Tooflya.com
  * @since
  */
-public abstract class Screen extends Scene {
+public abstract class Screen extends Scene implements IScreen {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
 	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	public static final BitmapTextureAtlas mCommonTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final BitmapTextureAtlas mCommonTextureAtlas2 = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public static TiledTextureRegion cloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "cloud.png", 0, 0, 1, 4);
 
@@ -87,7 +87,8 @@ public abstract class Screen extends Scene {
 		super.attachChild(pEntity);
 
 		/**
-		 * This section is scale object to the real size for adapt size of entity to the screen resolution.
+		 * This section is scale object to the real size for adapt size of
+		 * entity to the screen resolution.
 		 */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);
@@ -103,14 +104,14 @@ public abstract class Screen extends Scene {
 	 */
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		this.mDeltaTiming += pSecondsElapsed;
-		if (this.mDeltaTiming < 0.0125f) {
+		if (this.mDeltaTiming < Options.framesPerSeconds) {
 			return;
 		} else {
-			super.onManagedUpdate(0.0125f);
-			this.mDeltaTiming -= 0.0125f;
-			while (this.mDeltaTiming >= 0.0125f) {
-				super.onManagedUpdate(0.0125f);
-				this.mDeltaTiming -= 0.0125f;
+			super.onManagedUpdate(Options.framesPerSeconds);
+			this.mDeltaTiming -= Options.framesPerSeconds;
+			while (this.mDeltaTiming >= Options.framesPerSeconds) {
+				super.onManagedUpdate(Options.framesPerSeconds);
+				this.mDeltaTiming -= Options.framesPerSeconds;
 			}
 		}
 	}
@@ -122,14 +123,4 @@ public abstract class Screen extends Scene {
 	public void setScene(final Engine pEngine) {
 		pEngine.setScene(this);
 	}
-
-	// ===========================================================
-	// Abstract methods
-	// ===========================================================
-
-	public abstract void loadResources();
-
-	public abstract void unloadResources();
-
-	public abstract void onBackPressed();
 }

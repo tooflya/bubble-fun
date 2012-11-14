@@ -31,7 +31,9 @@ public class Options {
 	public static int screenCenterY;
 
 	public static float cameraRatioFactor;
-	
+
+	public final static float framesPerSeconds = 0.0125f;
+
 	public static boolean isMusicEnabled = true;
 
 	public static String CR;
@@ -40,7 +42,7 @@ public class Options {
 	public static int boxNumber = 1;
 
 	final static float touchHeightPercents = 0.3f;
-	public static float touchHeight; // For initialize use setCameraOriginRatioY.
+	public static float touchHeight;
 
 	public final static int particlesCount = 7;
 

@@ -28,7 +28,7 @@ public class Beta {
 
 	public static void update() {
 		countFPS++;
-		deltaFPS = (deltaFPS + Game.fps) / countFPS;
+		deltaFPS = (deltaFPS + Game.mCurrentFramesPerSecond) / countFPS;
 		//System.out.println(deltaFPS);
 	}
 

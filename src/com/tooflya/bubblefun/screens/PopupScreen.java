@@ -4,7 +4,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.primitive.Rectangle;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.modifiers.ScaleModifier;
 

@@ -20,11 +20,11 @@ public class PauseScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-menu.png", 500, 500, 1, 1), this);
+	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-menu.png", 0, 0, 1, 1), this);
 
-	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 0, 256, 1, 2);
+	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 335, 0, 1, 2);
 
 	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
 
@@ -79,7 +79,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 450, 700, 1, 2), this.mPanel) {
+	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 335, 80, 1, 2), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -98,7 +98,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final EntityManager<Sprite> mLables = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-big-btn.png", 0, 0, 1, 4)));
+	private final EntityManager<Sprite> mLables = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-big-btn.png", 0, 350, 1, 4)));
 
 	// ===========================================================
 	// Constructors

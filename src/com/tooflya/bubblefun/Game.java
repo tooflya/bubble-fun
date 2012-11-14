@@ -3,10 +3,13 @@ package com.tooflya.bubblefun;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.WakeLockOptions;
@@ -71,7 +74,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static ScreenManager screens;
 
 	/** */
-	public static float fps;
+	public static float mCurrentFramesPerSecond;
 
 	// ===========================================================
 	// Fields
@@ -157,7 +160,39 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine */
-		engine = new Engine(options);
+		engine = new Engine(options) {
+
+			/* (non-Javadoc)
+			 * @see org.anddev.andengine.engine.Engine#onDrawFrame(javax.microedition.khronos.opengles.GL10)
+			 */
+			@Override
+			public void onDrawFrame(GL10 pGL) throws InterruptedException {
+				super.onDrawFrame(pGL);
+				pGL.glFlush();
+				
+				int error = pGL.glGetError();
+				/**
+				 * 1280 GL_INVALID_ENUM 
+				 *	1281 GL_INVALID_VALUE 
+				 *	1282 GL_INVALID_OPERATION
+				 *	1283 GL_STACK_OVERFLOW 
+				 *	1284 GL_STACK_UNDERFLOW 
+				 *	1285 GL_OUT_OF_MEMORY
+				 */
+		        if (error != GL10.GL_NO_ERROR)  {
+		        	System.out.println("OpenGL ES has error occurred: " + error);
+		        	Game.close();
+		        }
+			}
+
+			/* (non-Javadoc)
+			 * @see org.anddev.andengine.engine.Engine#onDrawScene(javax.microedition.khronos.opengles.GL10)
+			 */
+			@Override
+			protected void onDrawScene(GL10 pGL) {
+				super.onDrawScene(pGL);
+			}
+		};
 
 		/** */
 		db = new LevelsStorage();
@@ -280,15 +315,37 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
-		this.getEngine().registerUpdateHandler(new FPSCounter() {
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				super.onUpdate(pSecondsElapsed);
+		if(Options.DEBUG) {
+			this.getEngine().registerUpdateHandler(new FPSCounter() {
+				@Override
+				public void onUpdate(float pSecondsElapsed) {
+					super.onUpdate(pSecondsElapsed);
+	
+					mCurrentFramesPerSecond = getFPS();
+				}
+			});
+			
+			this.getEngine().registerUpdateHandler(new IUpdateHandler() {
+				
+				private float mTime;
+				
+				@Override
+				public void onUpdate(float pSecondsElapsed) {
+					this.mTime +=pSecondsElapsed;
+					
+					if(this.mTime > 5) {
+						this.mTime = 0;
+						
+						System.out.println("FPS: " + mCurrentFramesPerSecond);
+						System.out.println("GPU memory allocated: " + Debug.mGraphicsHeapAllocation);
+					}
+				}
 
-				fps = getFPS();
-				System.out.println(fps);
-			}
-		});
+				@Override
+				public void reset() {
+				}
+			});
+		}
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
 
@@ -409,10 +466,30 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
+		if(Options.DEBUG) {
+			final int count =textures.length;
+			for (int i = 0; i < count; i++) {
+				final int width = textures[i].getWidth();
+				final int height = textures[i].getHeight();
+				
+				Debug.mGraphicsHeapAllocation += width * height * 4 / 1024 / 1024;
+			}
+		}
+		
 		engine.getTextureManager().loadTextures(textures);
 	}
 
 	public static void unloadTextures(final BitmapTextureAtlas... textures) {
+		if(Options.DEBUG) {
+			final int count =textures.length;
+			for (int i = 0; i < count; i++) {
+				final int width = textures[i].getWidth();
+				final int height = textures[i].getHeight();
+				
+				Debug.mGraphicsHeapAllocation -= width * height * 4 / 1024 / 1024;
+			}
+		}
+		
 		engine.getTextureManager().unloadTextures(textures);
 	}
 
