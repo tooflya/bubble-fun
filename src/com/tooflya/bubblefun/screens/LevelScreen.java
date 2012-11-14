@@ -133,6 +133,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		@Override
 		protected void onManagedUpdate(final float pSecondsElapsed) {
 			super.onManagedUpdate(pSecondsElapsed);
+			
+			if(chikies.getCount() > 0){
+				chikies.getByIndex(0).delProperties(Chiky.isPauseUpdateFlag);
+			}
 
 			if (shake) {
 				i++;
@@ -411,7 +415,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					airgum = (Bubble) airgums.getByIndex(j);
 					if (airgum.isCanCollide() && this.isCollide(chiky, airgum)) {
 						airgum.addBirdsKills();
-						chiky.isCollide(airgum);
+						chiky.setCollide(airgum);
 						deadBirds++;
 					}
 				}

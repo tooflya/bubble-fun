@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="true">
-	<chiky x="100" y="180" speed="0.1"/>
-	<chiky x="100" y="300" speed="1.7"/>
-	<chiky x="280" y="300" speed="-1.7"/>
+<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="false">
+	<chiky startX="-0.10" startY="0.2" normalStepX="0.5" properties="1"/>
+	
+	<chiky startX="1.10" startY="0.2" normalStepX="-0.7" properties="1"/>
+	<chiky startX="-0.10" startY="0.4" normalStepX="0.9" properties="1"/>
+	<chiky startX="1.10" startY="0.5" normalStepX="-1.1" properties="1"/>
+	<chiky startX="-0.10" startY="0.6" normalStepX="1.3" properties="1"/>
+	<chiky startX="1.10" startY="0.7" normalStepX="-1.5" properties="1"/>
+	<chiky startX="-0.10" startY="0.8" normalStepX="1.7" properties="1"/>
+	<chiky startX="1.10" startY="0.9" normalStepX="-1.9" properties="1"/>
+	<chiky startX="-0.10" startY="1.0" normalStepX="-2.5" properties="1"/>
 </level>

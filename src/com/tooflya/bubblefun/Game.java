@@ -162,7 +162,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Try to init our engine */
 		engine = new Engine(options) {
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.anddev.andengine.engine.Engine#onDrawFrame(javax.microedition.khronos.opengles.GL10)
 			 */
 			@Override
@@ -180,9 +182,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, Debug.mGLMaxTextureParams, 0);
 				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, Debug.mGLMaxTextureParams, 1);
+
 			}
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.anddev.andengine.engine.Engine#onDrawScene(javax.microedition.khronos.opengles.GL10)
 			 */
 			@Override
@@ -247,41 +252,45 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@TargetApi(8)
 	@Override
 	public void onComplete() {
-		// ====================================================================================
-		// FOR THE BETA VERSION ONLY
-		// TODO: Remove this before relise 
-		Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-		Account[] accounts = AccountManager.get(context).getAccounts();
-		for (Account account : accounts) {
-			if (emailPattern.matcher(account.name).matches()) {
-				Beta.mail = account.name;
-				break;
+		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 8) {
+			// ====================================================================================
+			// FOR THE BETA VERSION ONLY
+			// TODO: Remove this before relise
+			Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+			Account[] accounts = AccountManager.get(context).getAccounts();
+			for (Account account : accounts) {
+				if (emailPattern.matcher(account.name).matches()) {
+					Beta.mail = account.name;
+					break;
+				}
 			}
+
+			Beta.device = Beta.getDeviceName();
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.beta_testers_text).setTitle(R.string.beta_testers_title);
+			builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+
+					Runnable runnable = new Runnable() {
+						@Override
+						public void run() {
+							Beta.sendFirstInformation();
+						}
+					};
+					new Thread(runnable).start();
+				}
+			});
+			builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					Game.close();
+				}
+			});
+			builder.create().show();
+			// ====================================================================================
 		}
-		Beta.device = Beta.getDeviceName();
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.beta_testers_text).setTitle(R.string.beta_testers_title);
-		builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
-
-				Runnable runnable = new Runnable() {
-					@Override
-					public void run() {
-						Beta.sendFirstInformation();
-					}
-				};
-				new Thread(runnable).start();
-			}
-		});
-		builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				Game.close();
-			}
-		});
-		builder.create().show();
-		// ====================================================================================
 		screens.set(Screen.MENU);
 	}
 

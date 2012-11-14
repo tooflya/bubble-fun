@@ -29,10 +29,11 @@ public class Chiky extends Entity {
 		NormalMove, SpeedyMove, Fall, Parachute
 	};
 
-	private static final int isJumplyFlag = 1;
-	private static final int isSpeedyFlag = 2;
-	private static final int isWavelyFlag = 4;
-	private static final int isParachuteFlag = 8;
+	public static final int isPauseUpdateFlag = 1;
+	public static final int isJumplyFlag = 2;
+	public static final int isSpeedyFlag = 4;
+	public static final int isWavelyFlag = 8;
+	public static final int isParachuteFlag = 16;
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -110,6 +111,7 @@ public class Chiky extends Entity {
 	public void initStartX(final float startX) {
 		this.mX = startX;
 		this.mStartX = startX;
+		this.mX_ = startX;
 	}
 
 	public void initStartY(final float startY) {
@@ -126,8 +128,12 @@ public class Chiky extends Entity {
 		this.mSpeedyStepX = speedyStepX;
 	}
 
+	public void initParashuteStepY(final float parashuteStepY) {
+		this.mSpeedyStepX = parashuteStepY;
+	}
+
 	public void initOffsetX(final float offsetX) {
-		this.setSpeedX(offsetX);
+		this.mOffsetX = offsetX;
 	}
 
 	public void initScale(final float scale) {
@@ -135,49 +141,32 @@ public class Chiky extends Entity {
 		this.setHeight(this.mBaseHeight * scale);
 	}
 
-	public void initIsJumply() {
-		this.mProperties = this.mProperties | isJumplyFlag;
+	public void initProperties(final int properties) {
+		this.mProperties = properties;
 	}
 
-	public void initIsSpeedy() {
-		this.mProperties = this.mProperties | isSpeedyFlag;
+	public void addProperties(final int properties) {
+		this.mProperties = this.mProperties | properties;
 	}
 
-	public void initIsWavely() {
-		this.mProperties = this.mProperties | isWavelyFlag;
-	}
-
-	public void initIsParachute() {
-		this.mProperties = this.mProperties | isParachuteFlag;
-		this.setSpeedY(1f);
-	}
-
-	public void initStateByNumber(final int pNumber) {
-		switch (pNumber) {
-		case isJumplyFlag:
-			this.initIsJumply();
-			break;
-		case isSpeedyFlag:
-			this.initIsSpeedy();
-			break;
-		case isWavelyFlag:
-			this.initIsWavely();
-			break;
-		case isParachuteFlag:
-			this.initIsParachute();
-			break;
-		}
+	public void delProperties(final int properties) {
+		this.mProperties = this.mProperties & ~properties;
 	}
 
 	private boolean IsProperty(int flag) {
 		return (this.mProperties & flag) == flag;
+		// TODO: (R) I have broken parashute. (stepY)
+	}
+
+	public boolean isCanCollide() {
+		return this.mAirgum == null;
 	}
 
 	// ===========================================================
 	// Setters
 	// ===========================================================
 
-	public void isCollide(Bubble airgum) {
+	public void setCollide(Bubble airgum) {
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
 			this.mAirgum.AddChildCount();
@@ -198,10 +187,6 @@ public class Chiky extends Entity {
 	// ===========================================================
 	// Getters
 	// ===========================================================
-
-	public boolean isCanCollide() {
-		return this.mAirgum == null;
-	}
 
 	// ===========================================================
 	// Virtual methods
@@ -250,13 +235,17 @@ public class Chiky extends Entity {
 		boolean isBorder = false;
 		final float minX = 0 - this.mOffsetX + this.mWidth / 2;
 		if (x < minX) {
-			x = 2 * minX - x;
+			if(this.getSpeedX() < 0){
+				x = 2 * minX - x;
+			}
 			this.setSpeedX(Math.abs(this.getSpeedX()));
 			isBorder = true;
 		}
 		final float maxX = Options.cameraWidth + this.mOffsetX - this.mWidth / 2;
-		if (x > maxX) {
-			x = 2 * maxX - x;
+		if (maxX < x) {
+			if(this.getSpeedX() > 0){
+				x = 2 * maxX - x;
+			}
 			this.setSpeedX(-Math.abs(this.getSpeedX()));
 			isBorder = true;
 		}
@@ -361,31 +350,33 @@ public class Chiky extends Entity {
 	public void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mTime += pSecondsElapsed;
-		this.mAngle += Options.chikyAngleStep;
+		if (!this.IsProperty(isPauseUpdateFlag)) {
+			this.mTime += pSecondsElapsed;
+			this.mAngle += Options.chikyAngleStep;
 
-		this.mX_ = this.mX;
+			this.mX_ = this.mX;
 
-		switch (this.mState) {
-		case NormalMove:
-			this.onManagedUpdateNormal(pSecondsElapsed);
-			break;
-		case SpeedyMove:
-			this.onManagedUpdateSpeedy(pSecondsElapsed);
-			break;
-		case Fall:
-			this.onManagedUpdateFall(pSecondsElapsed);
-			break;
-		case Parachute:
-			this.onManagedUpdateParachute(pSecondsElapsed);
-			break;
-		}
+			switch (this.mState) {
+			case NormalMove:
+				this.onManagedUpdateNormal(pSecondsElapsed);
+				break;
+			case SpeedyMove:
+				this.onManagedUpdateSpeedy(pSecondsElapsed);
+				break;
+			case Fall:
+				this.onManagedUpdateFall(pSecondsElapsed);
+				break;
+			case Parachute:
+				this.onManagedUpdateParachute(pSecondsElapsed);
+				break;
+			}
 
-		if (this.mX - this.mX_ > 0) {
-			this.getTextureRegion().setFlippedHorizontal(false);
-		}
-		else {
-			this.getTextureRegion().setFlippedHorizontal(true);
+			if (this.mX - this.mX_ > 0) {
+				this.getTextureRegion().setFlippedHorizontal(false);
+			}
+			else {
+				this.getTextureRegion().setFlippedHorizontal(true);
+			}
 		}
 	}
 
