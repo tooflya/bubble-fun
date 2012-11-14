@@ -136,6 +136,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		Options.screenCenterX = (int) (Options.screenWidth / 2);
 		Options.screenCenterY = (int) (Options.screenHeight / 2);
 
+		Options.menuHeight = Options.cameraHeight * Options.menuHeightPercents;
 		Options.touchHeight = Options.cameraHeight * Options.touchHeightPercents;
 		Options.chikyOffsetY = Options.cameraHeight * Options.chikyOffsetYPercent;
 

@@ -44,6 +44,10 @@ public class Options {
 	final static float touchHeightPercents = 0.3f;
 	public static float touchHeight;
 
+	final static float menuHeightPercents = 0.1f;
+	public static float menuHeight;
+	// < Camera options.
+
 	public final static int particlesCount = 7;
 
 	// > Chiky options.
