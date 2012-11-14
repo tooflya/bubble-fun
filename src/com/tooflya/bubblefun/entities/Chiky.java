@@ -159,7 +159,7 @@ public class Chiky extends Entity {
 	}
 
 	public boolean isCanCollide() {
-		return this.mAirgum == null;
+		return this.mAirgum == null && !this.IsProperty(isPauseUpdateFlag);
 	}
 
 	// ===========================================================
