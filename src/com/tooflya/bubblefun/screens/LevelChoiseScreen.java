@@ -56,7 +56,7 @@ public class LevelChoiseScreen extends Screen {
 
 	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 11, 1), this.mBackground));
 
-	private final Sprite mStar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 200, 900, 1, 2), this.mBackground);
+	private final Sprite mStar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-stars.png", 200, 900, 1, 2), this.mBackground);
 
 	// ===========================================================
 	// Constructors

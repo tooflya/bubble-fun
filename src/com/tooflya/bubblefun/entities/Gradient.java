@@ -31,13 +31,13 @@ public class Gradient extends org.anddev.andengine.entity.sprite.Sprite {
 
 		float factorX, factorY;
 
-		if (this.mX < Options.cameraCenterX) {
+		if (this.mX > Options.cameraCenterX) {
 			factorX = (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2;
 		} else {
 			factorX = -(Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2;
 		}
 
-		if (this.mY < Options.cameraCenterY) {
+		if (this.mY > Options.cameraCenterY) {
 			factorY = (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2;
 		} else {
 			factorY = -(Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2;
@@ -50,8 +50,7 @@ public class Gradient extends org.anddev.andengine.entity.sprite.Sprite {
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
+		
 		GLHelper.enableDither(pGL);
 	}
 }

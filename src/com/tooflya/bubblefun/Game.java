@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.opengl.GLException;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
@@ -151,8 +152,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				.setNeedsSound(true);
 
 		/**
-		 * Disable extension vertex buffer objects. This extension usually has a
-		 * problems with HTC phones
+		 * Disable extension vertex buffer objects. This extension usually has a problems with HTC phones
 		 */
 		options.getRenderOptions().disableExtensionVertexBufferObjects();
 
@@ -169,20 +169,17 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			public void onDrawFrame(GL10 pGL) throws InterruptedException {
 				super.onDrawFrame(pGL);
 				pGL.glFlush();
-				
+
 				int error = pGL.glGetError();
 				/**
-				 * 1280 GL_INVALID_ENUM 
-				 *	1281 GL_INVALID_VALUE 
-				 *	1282 GL_INVALID_OPERATION
-				 *	1283 GL_STACK_OVERFLOW 
-				 *	1284 GL_STACK_UNDERFLOW 
-				 *	1285 GL_OUT_OF_MEMORY
+				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
 				 */
-		        if (error != GL10.GL_NO_ERROR)  {
-		        	System.out.println("OpenGL ES has error occurred: " + error);
-		        	Game.close();
-		        }
+				if (error != GL10.GL_NO_ERROR) {
+					throw new GLException(error, "OpenGL ES has error occurred: " + error);
+				}
+
+				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, Debug.mGLMaxTextureParams, 0);
+				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, Debug.mGLMaxTextureParams, 1);
 			}
 
 			/* (non-Javadoc)
@@ -268,14 +265,14 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
-				
-				 Runnable runnable = new Runnable() {
-				      @Override
-				      public void run() {
-							Beta.sendFirstInformation();
-				      }
-				    };
-				    new Thread(runnable).start();
+
+				Runnable runnable = new Runnable() {
+					@Override
+					public void run() {
+						Beta.sendFirstInformation();
+					}
+				};
+				new Thread(runnable).start();
 			}
 		});
 		builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
@@ -315,29 +312,32 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
-		if(Options.DEBUG) {
+		if (Options.DEBUG) {
 			this.getEngine().registerUpdateHandler(new FPSCounter() {
 				@Override
 				public void onUpdate(float pSecondsElapsed) {
 					super.onUpdate(pSecondsElapsed);
-	
+
 					mCurrentFramesPerSecond = getFPS();
 				}
 			});
-			
+
 			this.getEngine().registerUpdateHandler(new IUpdateHandler() {
-				
+
 				private float mTime;
-				
+
 				@Override
 				public void onUpdate(float pSecondsElapsed) {
-					this.mTime +=pSecondsElapsed;
-					
-					if(this.mTime > 5) {
+					this.mTime += pSecondsElapsed;
+
+					if (this.mTime > 5) {
 						this.mTime = 0;
-						
-						System.out.println("FPS: " + mCurrentFramesPerSecond);
-						System.out.println("GPU memory allocated: " + Debug.mGraphicsHeapAllocation);
+
+						System.out.println("Avg FPS: " + Debug.deltaFPS);
+						System.out.println("GPU Memory Allocated: " + Debug.mGraphicsHeapAllocation);
+						System.out.println("GL Max Textures Size: " + Debug.mGLMaxTextureParams[0]);
+						System.out.println("GL Max TexturesUnits: " + Debug.mGLMaxTextureParams[1]);
+						System.out.println("=========================================================");
 					}
 				}
 
@@ -350,8 +350,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		new AsyncTaskLoader().execute(this);
 
 		/**
-		 * Create loading screen and return her scene for attaching to the
-		 * activity
+		 * Create loading screen and return her scene for attaching to the activity
 		 */
 		return new SplashScreen();
 	}
@@ -369,20 +368,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		getTextureManager().unloadTextures();
 
 		/**
-		 * Notify the system to finalize and collect all objects of the
-		 * application on exit so that the process running the application can
-		 * be killed by the system without causing issues. NOTE: If this is set
-		 * to true then the process will not be killed until all of its threads
-		 * have closed.
+		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
 		 */
 		System.runFinalizersOnExit(true);
 
 		/**
-		 * Force the system to close the application down completely instead of
-		 * retaining it in the background. The process that runs the application
-		 * will be killed. The application will be completely created as a new
-		 * application in a new process if the user starts the application
-		 * again.
+		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again.
 		 */
 		System.exit(0);
 	}
@@ -466,30 +457,30 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
-		if(Options.DEBUG) {
-			final int count =textures.length;
+		if (Options.DEBUG) {
+			final int count = textures.length;
 			for (int i = 0; i < count; i++) {
 				final int width = textures[i].getWidth();
 				final int height = textures[i].getHeight();
-				
+
 				Debug.mGraphicsHeapAllocation += width * height * 4 / 1024 / 1024;
 			}
 		}
-		
+
 		engine.getTextureManager().loadTextures(textures);
 	}
 
 	public static void unloadTextures(final BitmapTextureAtlas... textures) {
-		if(Options.DEBUG) {
-			final int count =textures.length;
+		if (Options.DEBUG) {
+			final int count = textures.length;
 			for (int i = 0; i < count; i++) {
 				final int width = textures[i].getWidth();
 				final int height = textures[i].getHeight();
-				
+
 				Debug.mGraphicsHeapAllocation -= width * height * 4 / 1024 / 1024;
 			}
 		}
-		
+
 		engine.getTextureManager().unloadTextures(textures);
 	}
 

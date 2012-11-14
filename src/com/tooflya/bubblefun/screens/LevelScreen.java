@@ -208,7 +208,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1),
 			this.mBackground));
 
-	private final MoveModifier move = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraHeight * 2, Options.cameraHeight / 3 * 2
+	private final MoveModifier move = new MoveModifier(0.5f, this.mBackground.getWidth() / 2 - mTextTapHere.getWidth() / 2, this.mBackground.getWidth() / 2 - mTextTapHere.getWidth() / 2, Options.cameraHeight * 2, Options.cameraHeight / 3 * 2
 			+ Options.cameraHeight / 3 / 2) {
 		@Override
 		public void onFinished() {
@@ -216,8 +216,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final MoveModifier moveDown = new MoveModifier(0.5f, Options.cameraCenterX - mTextTapHere.getWidth() / 2, Options.cameraCenterX
-			- mTextTapHere.getWidth() / 2, Options.cameraHeight / 3 * 2 + Options.cameraHeight / 3 / 2, Options.cameraHeight * 2);
+	private final MoveModifier moveDown = new MoveModifier(0.5f, this.mBackground.getWidth() / 2 - mTextTapHere.getWidth() / 2, this.mBackground.getWidth() / 2 - mTextTapHere.getWidth() / 2, Options.cameraHeight / 3 * 2 + Options.cameraHeight / 3 / 2, Options.cameraHeight * 2);
 
 	private final Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context,
 			"text-restart.png", 430, 0, 1, 1), this.mRectangle);
@@ -320,8 +319,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
 
-		this.mMenuButton.create().setPosition(Options.cameraWidth - (10 + this.mMenuButton.getWidth()), 10);
-		this.mResetButton.create().setPosition(Options.cameraWidth - (15 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
+		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 10);
+		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
 
 		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraCenterY - mResetText.getHeight() / 2);
 		mResetText.registerEntityModifier(restartMove1);

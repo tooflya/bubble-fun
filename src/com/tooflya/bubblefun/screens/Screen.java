@@ -87,8 +87,7 @@ public abstract class Screen extends Scene implements IScreen {
 		super.attachChild(pEntity);
 
 		/**
-		 * This section is scale object to the real size for adapt size of
-		 * entity to the screen resolution.
+		 * This section is scale object to the real size for adapt size of entity to the screen resolution.
 		 */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);

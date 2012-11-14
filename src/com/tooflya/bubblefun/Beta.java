@@ -23,13 +23,11 @@ import android.os.Build;
 public class Beta {
 	public static String mail;
 	public static String device;
-	public static float deltaFPS = 0;
-	public static int countFPS = 1;
 
 	public static void update() {
-		countFPS++;
-		deltaFPS = (deltaFPS + Game.mCurrentFramesPerSecond) / countFPS;
-		//System.out.println(deltaFPS);
+		Debug.countFPS++;
+		Debug.sumFPS += Game.mCurrentFramesPerSecond;
+		Debug.deltaFPS = (Debug.sumFPS + Game.mCurrentFramesPerSecond) / Debug.countFPS;
 	}
 
 	public static String getDeviceName() {
@@ -62,7 +60,7 @@ public class Beta {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("mail", mail));
 			nameValuePairs.add(new BasicNameValuePair("device", device));
-			nameValuePairs.add(new BasicNameValuePair("fps", deltaFPS + ""));
+			nameValuePairs.add(new BasicNameValuePair("fps", Debug.deltaFPS + ""));
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse response = httpclient.execute(httppost);

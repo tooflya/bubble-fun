@@ -107,6 +107,8 @@ public class ScreenManager implements IAsyncCallback {
 		protected void onManagedUpdate(final float pSecondsElapsed) {
 			super.onManagedUpdate(pSecondsElapsed);
 
+			s = 10 * pSecondsElapsed / Options.framesPerSeconds;
+
 			if (mMoveUp) {
 				this.setHeight(this.getHeight() - s);
 				this.getTextureRegion().setHeight((int) (this.getTextureRegion().getHeight() - s));
@@ -115,7 +117,6 @@ public class ScreenManager implements IAsyncCallback {
 
 				if (r.getY() <= -r.getHeight() - d.getHeight()) {
 					mMoveUp = false;
-					mBackground.hide();
 				}
 
 				if (!cu) {
@@ -167,7 +168,7 @@ public class ScreenManager implements IAsyncCallback {
 
 	public final Sprite mTextBar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-text.png", 0, 630, 1, 1), this.r);
 
-	public EntityManager<Sprite> lines = new EntityManager<Sprite>(2, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-line.png", 	380, 0, 1, 1), this.r));
+	public EntityManager<Sprite> lines = new EntityManager<Sprite>(2, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-line.png", 380, 0, 1, 1), this.r));
 	public EntityManager<Sprite> circles = new EntityManager<Sprite>(11, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-bar.png", 400, 0, 1, 2), this.r));
 
 	private Sprite d = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(Screen.mCommonTextureAtlas2, Game.context, "preload-bg-down.png", 0, 610, 1, 1), this.r);
@@ -304,7 +305,6 @@ public class ScreenManager implements IAsyncCallback {
 
 	public void l() {
 		this.mMoveDown = true;
-		mBackground.show();
 	}
 
 	public void u() {
