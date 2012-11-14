@@ -129,7 +129,7 @@ public class Chiky extends Entity {
 	}
 
 	public void initParashuteStepY(final float parashuteStepY) {
-		this.mSpeedyStepX = parashuteStepY;
+		this.setSpeedY(parashuteStepY);
 	}
 
 	public void initOffsetX(final float offsetX) {
