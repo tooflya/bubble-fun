@@ -51,8 +51,8 @@ public class Star extends Entity {
 
 		this.mRotation = (float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI);
 
-		this.mScaleX = 0.02f * Options.cameraRatioFactor;
-		this.mScaleY = 0.02f * Options.cameraRatioFactor;
+		this.mScaleX = 0.02f;
+		this.mScaleY = 0.02f;
 
 		this.mAlpha = 1f;
 
@@ -74,8 +74,8 @@ public class Star extends Entity {
 			this.mX += this.mStepX;
 			this.mY += this.mStepY;
 
-			this.mScaleX += 0.03f * Options.cameraRatioFactor;
-			this.mScaleY += 0.03f * Options.cameraRatioFactor;
+			this.mScaleX += 0.03f;
+			this.mScaleY += 0.03f;
 
 			this.mAlpha -= 0.01f;
 

@@ -45,7 +45,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	private static int CURRENTMENUITEM = 0;
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	// ===========================================================
 	// Fields
@@ -115,8 +115,22 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY);
 			sprite.setCurrentTileIndex(0);
 
-			if (bi > 0)
+			if (bi > 0 && bi != 3) {
 				sprite.setCurrentTileIndex(4);
+
+				final Sprite lock = (Sprite) new Sprite(textureRegion, sprite).create();
+				lock.setCurrentTileIndex(5);
+				lock.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+			}
+
+			if (bi == 0) {
+				final Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-1.png", 512, 0, 1, 1), sprite).create();
+				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+			} else if (bi == 3) {
+				final Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "coming-soon-01.png", 512, 512, 1, 1), sprite).create();
+				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				sprite.setCurrentTileIndex(4);
+			}
 
 			boxes.add(sprite);
 		}

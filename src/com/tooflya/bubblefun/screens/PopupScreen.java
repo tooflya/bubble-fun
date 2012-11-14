@@ -61,6 +61,8 @@ public class PopupScreen extends Screen {
 		@Override
 		public void onFinished() {
 			mAnimationRunning = false;
+
+			onShow();
 		}
 	};
 
@@ -118,6 +120,10 @@ public class PopupScreen extends Screen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void onShow() {
+
+	}
 
 	public void onClose() {
 

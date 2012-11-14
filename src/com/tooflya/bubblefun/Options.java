@@ -14,7 +14,7 @@ public class Options {
 
 	// > Math options.
 	public static float PI = (float) (2 * Math.asin(1));
-	public static float eps = 1f;
+	public static float eps = 5f;
 	// < Math options.
 
 	// > Camera options.

@@ -89,7 +89,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
-	private final Sprite mDottedLine = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line.png", 0, 1020, 1, 1), this.mBackground);
+	private final Sprite mDottedLine = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line-new.png", 0, 990, 1, 2), this.mBackground);
 
 	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 2), this.mBackground) {
 
@@ -312,9 +312,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
-		numbersSmall.create().setPosition(67, 13);
-		numbersSmall.create().setPosition(81, 13);
-		numbersSmall.create().setPosition(95, 13);
+		numbersSmall.create().setPosition(97, 13);
+		numbersSmall.create().setPosition(111, 13);
+		numbersSmall.create().setPosition(125, 13);
 
 		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(1).setCurrentTileIndex(0);

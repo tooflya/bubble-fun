@@ -107,7 +107,7 @@ public class ScreenManager implements IAsyncCallback {
 		protected void onManagedUpdate(final float pSecondsElapsed) {
 			super.onManagedUpdate(pSecondsElapsed);
 
-			s = 10 * pSecondsElapsed / Options.framesPerSeconds;
+			s = (int) (10 * pSecondsElapsed / Options.framesPerSeconds);
 
 			if (mMoveUp) {
 				this.setHeight(this.getHeight() - s);

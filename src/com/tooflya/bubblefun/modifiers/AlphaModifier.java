@@ -51,6 +51,10 @@ public class AlphaModifier extends org.anddev.andengine.entity.modifier.AlphaMod
 	// Methods
 	// ===========================================================
 
+	public void stop() {
+		this.mFinished = true;
+	}
+
 	public void onStarted() {
 
 	}

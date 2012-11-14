@@ -56,7 +56,7 @@ public class LevelChoiseScreen extends Screen {
 
 	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 11, 1), this.mBackground));
 
-	private final Sprite mStar = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-stars.png", 200, 900, 1, 2), this.mBackground);
+	private final EntityManager<Sprite> mStars = new EntityManager<Sprite>(2, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-stars.png", 200, 900, 1, 2), this.mBackground));
 
 	// ===========================================================
 	// Constructors
@@ -69,8 +69,8 @@ public class LevelChoiseScreen extends Screen {
 		this.clouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
-		
-		this.mPinkCloud.create().setPosition(Options.cameraWidth - (15 + this.mPinkCloud.getWidth() + this.mPinkCloud.getWidth()), 10);
+
+		this.mPinkCloud.create().setPosition(Options.cameraWidth - (25 + this.mPinkCloud.getWidth() + this.mPinkCloud.getWidth()), 10);
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
@@ -85,10 +85,14 @@ public class LevelChoiseScreen extends Screen {
 
 		this.levels.generate(this.numbers);
 
-		this.mStar.create();
-		this.mStar.setPosition(Options.cameraWidth - 145f, 15f);
-		this.mStar.setScaleCenter(this.mStar.getWidth() / 2, this.mStar.getHeight() / 2);
-		this.mStar.setScale(this.getScaleX() / 1.3f);
+		for (int i = 1; i >= 0; i--) {
+			final Sprite sprite = this.mStars.create();
+
+			sprite.setCurrentTileIndex(i);
+			sprite.setPosition(Options.cameraWidth - 142f, 0f);
+			sprite.setScaleCenter(sprite.getWidth() / 2, sprite.getHeight() / 2);
+			sprite.setScale(this.getScaleX() / 2f);
+		}
 	}
 
 	// ===========================================================
@@ -133,25 +137,25 @@ public class LevelChoiseScreen extends Screen {
 		Sprite sprite;
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 110f, 20f);
+		sprite.setPosition(Options.cameraWidth - 95f, 20f);
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 95f, 20f);
+		sprite.setPosition(Options.cameraWidth - 80f, 20f);
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 80f, 20f);
+		sprite.setPosition(Options.cameraWidth - 65f, 20f);
 		sprite.setCurrentTileIndex(10);
 
 		mPinkCloud.create().setCenterPosition(sprite.getCenterX(), sprite.getCenterY());
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 65f, 20f);
+		sprite.setPosition(Options.cameraWidth - 50f, 20f);
 		sprite.setCurrentTileIndex(7);
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 50f, 20f);
+		sprite.setPosition(Options.cameraWidth - 35f, 20f);
 		sprite.setCurrentTileIndex(5);
 	}
 
