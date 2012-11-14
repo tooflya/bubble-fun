@@ -173,23 +173,32 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 				final Chiky chiky = screen.chikies.create();
 
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "startX");
+				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "startY");
 
-				final float speed = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
+				final float normalStepX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "normalStepX");
+				final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
+				final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
+
+				final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
 
 				final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
 
-				final int state = SAXUtils.getIntAttribute(pAttributes, "state", 0);
+				final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 
-				chiky.initStartX(x);
-				chiky.initStartY(y);
+				chiky.initStartX(startX * Options.cameraWidth);
 
-				chiky.initNormalStepX(speed);
+				chiky.initNormalStepX(normalStepX);
+				chiky.initSpeedyStepX(speedyStepX);
+				chiky.initParashuteStepY(parashuteStepY);
 
-				chiky.initStateByNumber(state);
+				chiky.initOffsetX(offsetX);
 
 				chiky.initScale(scale);
+
+				chiky.initProperties(properties);
+
+				chiky.initStartY(chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.touchHeight - chiky.getHeightScaled() / 2));
 			}
 		});
 
@@ -228,7 +237,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			System.out.println("TMXLevel: Loading level from SD");
 			InputStream inputStream;
 			String state = Environment.getExternalStorageState();
-			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel + ".xml"); //Can be done with 2 params : folder & file.
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel + ".xml"); // Can be done with 2 params : folder & file.
 			try {
 				inputStream = new FileInputStream(file);
 				mLevelLoader.loadLevelFromStream(inputStream);

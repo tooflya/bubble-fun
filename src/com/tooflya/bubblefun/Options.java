@@ -61,8 +61,6 @@ public class Options {
 
 	public final static float chikySpeedCoeficient = 2.5f;
 
-	public final static float chikyOffsetX = 3 * Options.chikyEtalonSize;
-
 	public final static float chikyAngleStep = 3f;
 	public final static float chikyOffsetYPercent = 0.1f;
 	public static float chikyOffsetY; // For initialize use setCameraOriginRatioY.

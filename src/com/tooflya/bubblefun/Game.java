@@ -151,8 +151,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				.setNeedsSound(true);
 
 		/**
-		 * Disable extension vertex buffer objects. This extension usually has a
-		 * problems with HTC phones
+		 * Disable extension vertex buffer objects. This extension usually has a problems with HTC phones
 		 */
 		options.getRenderOptions().disableExtensionVertexBufferObjects();
 
@@ -162,30 +161,29 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/** Try to init our engine */
 		engine = new Engine(options) {
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.anddev.andengine.engine.Engine#onDrawFrame(javax.microedition.khronos.opengles.GL10)
 			 */
 			@Override
 			public void onDrawFrame(GL10 pGL) throws InterruptedException {
 				super.onDrawFrame(pGL);
 				pGL.glFlush();
-				
+
 				int error = pGL.glGetError();
 				/**
-				 * 1280 GL_INVALID_ENUM 
-				 *	1281 GL_INVALID_VALUE 
-				 *	1282 GL_INVALID_OPERATION
-				 *	1283 GL_STACK_OVERFLOW 
-				 *	1284 GL_STACK_UNDERFLOW 
-				 *	1285 GL_OUT_OF_MEMORY
+				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
 				 */
-		        if (error != GL10.GL_NO_ERROR)  {
-		        	System.out.println("OpenGL ES has error occurred: " + error);
-		        	Game.close();
-		        }
+				if (error != GL10.GL_NO_ERROR) {
+					System.out.println("OpenGL ES has error occurred: " + error);
+					Game.close();
+				}
 			}
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.anddev.andengine.engine.Engine#onDrawScene(javax.microedition.khronos.opengles.GL10)
 			 */
 			@Override
@@ -250,41 +248,43 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@TargetApi(8)
 	@Override
 	public void onComplete() {
-		// ====================================================================================
-		// FOR THE BETA VERSION ONLY
-		// TODO: Remove this before relise 
-		Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-		Account[] accounts = AccountManager.get(context).getAccounts();
-		for (Account account : accounts) {
-			if (emailPattern.matcher(account.name).matches()) {
-				Beta.mail = account.name;
-				break;
+		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 8) {
+			// ====================================================================================
+			// FOR THE BETA VERSION ONLY
+			// TODO: Remove this before relise
+			Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+			Account[] accounts = AccountManager.get(context).getAccounts();
+			for (Account account : accounts) {
+				if (emailPattern.matcher(account.name).matches()) {
+					Beta.mail = account.name;
+					break;
+				}
 			}
-		}
-		Beta.device = Beta.getDeviceName();
+			Beta.device = Beta.getDeviceName();
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.beta_testers_text).setTitle(R.string.beta_testers_title);
-		builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
-				
-				 Runnable runnable = new Runnable() {
-				      @Override
-				      public void run() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.beta_testers_text).setTitle(R.string.beta_testers_title);
+			builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+
+					Runnable runnable = new Runnable() {
+						@Override
+						public void run() {
 							Beta.sendFirstInformation();
-				      }
-				    };
-				    new Thread(runnable).start();
-			}
-		});
-		builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				Game.close();
-			}
-		});
-		builder.create().show();
-		// ====================================================================================
+						}
+					};
+					new Thread(runnable).start();
+				}
+			});
+			builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					Game.close();
+				}
+			});
+			builder.create().show();
+			// ====================================================================================
+		}
 		screens.set(Screen.MENU);
 	}
 
@@ -315,27 +315,27 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public Scene onLoadScene() {
-		if(Options.DEBUG) {
+		if (Options.DEBUG) {
 			this.getEngine().registerUpdateHandler(new FPSCounter() {
 				@Override
 				public void onUpdate(float pSecondsElapsed) {
 					super.onUpdate(pSecondsElapsed);
-	
+
 					mCurrentFramesPerSecond = getFPS();
 				}
 			});
-			
+
 			this.getEngine().registerUpdateHandler(new IUpdateHandler() {
-				
+
 				private float mTime;
-				
+
 				@Override
 				public void onUpdate(float pSecondsElapsed) {
-					this.mTime +=pSecondsElapsed;
-					
-					if(this.mTime > 5) {
+					this.mTime += pSecondsElapsed;
+
+					if (this.mTime > 5) {
 						this.mTime = 0;
-						
+
 						System.out.println("FPS: " + mCurrentFramesPerSecond);
 						System.out.println("GPU memory allocated: " + Debug.mGraphicsHeapAllocation);
 					}
@@ -350,8 +350,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		new AsyncTaskLoader().execute(this);
 
 		/**
-		 * Create loading screen and return her scene for attaching to the
-		 * activity
+		 * Create loading screen and return her scene for attaching to the activity
 		 */
 		return new SplashScreen();
 	}
@@ -369,20 +368,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		getTextureManager().unloadTextures();
 
 		/**
-		 * Notify the system to finalize and collect all objects of the
-		 * application on exit so that the process running the application can
-		 * be killed by the system without causing issues. NOTE: If this is set
-		 * to true then the process will not be killed until all of its threads
-		 * have closed.
+		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
 		 */
 		System.runFinalizersOnExit(true);
 
 		/**
-		 * Force the system to close the application down completely instead of
-		 * retaining it in the background. The process that runs the application
-		 * will be killed. The application will be completely created as a new
-		 * application in a new process if the user starts the application
-		 * again.
+		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again.
 		 */
 		System.exit(0);
 	}
@@ -466,30 +457,30 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
-		if(Options.DEBUG) {
-			final int count =textures.length;
+		if (Options.DEBUG) {
+			final int count = textures.length;
 			for (int i = 0; i < count; i++) {
 				final int width = textures[i].getWidth();
 				final int height = textures[i].getHeight();
-				
+
 				Debug.mGraphicsHeapAllocation += width * height * 4 / 1024 / 1024;
 			}
 		}
-		
+
 		engine.getTextureManager().loadTextures(textures);
 	}
 
 	public static void unloadTextures(final BitmapTextureAtlas... textures) {
-		if(Options.DEBUG) {
-			final int count =textures.length;
+		if (Options.DEBUG) {
+			final int count = textures.length;
 			for (int i = 0; i < count; i++) {
 				final int width = textures[i].getWidth();
 				final int height = textures[i].getHeight();
-				
+
 				Debug.mGraphicsHeapAllocation -= width * height * 4 / 1024 / 1024;
 			}
 		}
-		
+
 		engine.getTextureManager().unloadTextures(textures);
 	}
 
