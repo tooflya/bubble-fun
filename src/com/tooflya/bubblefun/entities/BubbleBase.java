@@ -31,19 +31,21 @@ public class BubbleBase extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
+		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
+		
 		this.mScaleX += this.pScaleStepX;
 		this.mScaleY += this.pScaleStepY;
 
 		if (this.mScaleX + this.pScaleStepX < Options.bubbleBaseMinScale) {
 			this.pScaleStepX = Options.bubbleBaseStepScale;
 		}
-		if (Options.bubbleBaseMinScale < this.mScaleX + this.pScaleStepX) {
+		if (Options.bubbleBaseMaxScale < this.mScaleX + this.pScaleStepX) {
 			this.pScaleStepX = -Options.bubbleBaseStepScale;
 		}
 		if (this.mScaleY + this.pScaleStepY < Options.bubbleBaseMinScale) {
 			this.pScaleStepY = Options.bubbleBaseStepScale;
 		}
-		if (Options.bubbleBaseMinScale < this.mScaleY + this.pScaleStepY) {
+		if (Options.bubbleBaseMaxScale < this.mScaleY + this.pScaleStepY) {
 			this.pScaleStepY = -Options.bubbleBaseStepScale;
 		}
 	}

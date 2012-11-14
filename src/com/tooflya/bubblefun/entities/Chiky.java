@@ -44,6 +44,7 @@ public class Chiky extends Entity {
 	private float mTimeWithGum = 0f; // Seconds.
 	private float mAngle = 0f; // Degree.
 
+	@SuppressWarnings("unused")
 	private float mStartX = 0;
 	private float mStartY = 0;
 	private float mNormalStepX = 0;
@@ -109,13 +110,12 @@ public class Chiky extends Entity {
 	}
 
 	public void initStartX(final float startX) {
-		this.mX = startX;
+		this.setCenterX(startX);
 		this.mStartX = startX;
-		this.mX_ = startX;
 	}
 
 	public void initStartY(final float startY) {
-		this.mY = startY;
+		this.setCenterY(startY);
 		this.mStartY = startY;
 	}
 
@@ -155,7 +155,6 @@ public class Chiky extends Entity {
 
 	private boolean IsProperty(int flag) {
 		return (this.mProperties & flag) == flag;
-		// TODO: (R) I have broken parashute. (stepY)
 	}
 
 	public boolean isCanCollide() {
@@ -212,9 +211,9 @@ public class Chiky extends Entity {
 			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(this.getCenterX(), this.getCenterY() + this.mAirgum.getSpeedY());
-				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
 				airgum.setParent(mAirgum);
+				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
+				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY() + this.mAirgum.getSpeedY());
 			}
 
 			Feather particle;

@@ -56,6 +56,7 @@ public class Bubble extends BubbleBase {
 		this.mParent = pBubble.getParent();
 		this.mParent.mLastX = this.getCenterX();
 		this.mParent.mLastY = this.getCenterY();
+		this.mLostedSpeed = this.mParent.mLostedSpeed;
 	}
 
 	// ===========================================================
