@@ -344,6 +344,14 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 
 	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
+	 */
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+		
+	}
+
+	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.Entity#setPosition(float, float)
 	 */
 	@Override
@@ -378,11 +386,5 @@ public abstract class Entity extends AnimatedSprite {
 		super.onInitDraw(pGL);
 
 		GLHelper.enableDither(pGL);
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
-		
-		//int[] max = new int[2];
-		//pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, max, 0);System.out.println(max[0]);
-		//pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, max, 1);System.out.println(max[1]);
 	}
 }

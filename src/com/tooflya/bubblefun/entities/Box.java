@@ -8,7 +8,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.modifiers.AlphaModifier;
 import com.tooflya.bubblefun.modifiers.ScaleModifier;
 
-public class Box extends Button/*Scaleable*/{
+public class Box extends ButtonScaleable {
 
 	private ScaleModifier modifier1 = new ScaleModifier(0.2f, 1f, 0.9f, 1f, 1.1f) {
 		@Override
@@ -48,9 +48,5 @@ public class Box extends Button/*Scaleable*/{
 		if (this.getAlpha() < 1f) {
 			modifier4.reset();
 		}
-	}
-
-	@Override
-	public void onClick() {
 	}
 }

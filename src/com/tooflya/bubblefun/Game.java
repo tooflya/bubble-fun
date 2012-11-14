@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.opengl.GLException;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
@@ -176,9 +177,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
 				 */
 				if (error != GL10.GL_NO_ERROR) {
-					System.out.println("OpenGL ES has error occurred: " + error);
-					Game.close();
+					throw new GLException(error, "OpenGL ES has error occurred: " + error);
 				}
+
+				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, Debug.mGLMaxTextureParams, 0);
+				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, Debug.mGLMaxTextureParams, 1);
+
 			}
 
 			/*
@@ -260,6 +264,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 					break;
 				}
 			}
+
 			Beta.device = Beta.getDeviceName();
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -285,6 +290,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			builder.create().show();
 			// ====================================================================================
 		}
+
 		screens.set(Screen.MENU);
 	}
 
@@ -336,8 +342,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 					if (this.mTime > 5) {
 						this.mTime = 0;
 
-						System.out.println("FPS: " + mCurrentFramesPerSecond);
-						System.out.println("GPU memory allocated: " + Debug.mGraphicsHeapAllocation);
+						System.out.println("Avg FPS: " + Debug.deltaFPS);
+						System.out.println("GPU Memory Allocated: " + Debug.mGraphicsHeapAllocation);
+						System.out.println("GL Max Textures Size: " + Debug.mGLMaxTextureParams[0]);
+						System.out.println("GL Max TexturesUnits: " + Debug.mGLMaxTextureParams[1]);
+						System.out.println("=========================================================");
 					}
 				}
 

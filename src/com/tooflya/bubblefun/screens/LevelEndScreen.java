@@ -34,7 +34,7 @@ public class LevelEndScreen extends PopupScreen {
 		public void onClick() {
 			ScreenManager.mChangeAction = 2;
 			Game.screens.l();
-			
+
 			modifier4.reset();
 		}
 	};
@@ -47,7 +47,7 @@ public class LevelEndScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
-			
+
 			modifier4.reset();
 		}
 	};
@@ -60,7 +60,7 @@ public class LevelEndScreen extends PopupScreen {
 		public void onClick() {
 			Options.levelNumber++;
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
-			
+
 			modifier4.reset();
 		}
 	};
@@ -73,7 +73,7 @@ public class LevelEndScreen extends PopupScreen {
 				if (mStarsAnimationCount < mStarsCount) {
 					mStarsAnimationCount++;
 
-					Star star = (Star) mLevelStars.getByIndex(mStarsAnimationCount - 1);
+					Star star = (Star) stars.getByIndex(mStarsAnimationCount - 1);
 					star.setCurrentTileIndex(0);
 
 					Star particle;
@@ -88,8 +88,7 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	});
 
-	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-star.png", 230, 615, 1, 1), this.mPanel));
-	public EntityManager<Star> mLevelStars = new EntityManager<Star>(3, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_bg_star.png", 195, 615, 1, 2), this.mPanel));
+	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-stars.png", 230, 615, 1, 2), this.mPanel));
 
 	// ===========================================================
 	// Constructors
@@ -116,7 +115,7 @@ public class LevelEndScreen extends PopupScreen {
 
 		Star star;
 		for (int i = 0; i < 3; i++) {
-			star = mLevelStars.create();
+			star = stars.create();
 			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), 300f);
 			star.setCurrentTileIndex(1);
 		}
@@ -163,7 +162,7 @@ public class LevelEndScreen extends PopupScreen {
 		stars.clear();
 
 		for (int i = 0; i < 3; i++) {
-			Star star = (Star) mLevelStars.getByIndex(i);
+			Star star = (Star) stars.getByIndex(i);
 			star.setCurrentTileIndex(1);
 		}
 	}

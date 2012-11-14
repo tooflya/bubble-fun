@@ -2,8 +2,6 @@ package com.tooflya.bubblefun;
 
 public class HUD extends org.anddev.andengine.engine.camera.hud.HUD {
 
-	private float mDeltaTiming = 0;
-
 	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
 	 */
