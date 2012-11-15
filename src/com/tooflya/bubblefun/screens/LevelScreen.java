@@ -91,7 +91,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
-	private final TiledTextureRegion mDottedLineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line.png", 0, 1020, 1, 1);
+	private final TiledTextureRegion mDottedLineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line.png", 0, 1019, 1, 1);
 	private final Sprite mDottedLine = new Sprite(mDottedLineTextureRegion, this.mBackground);
 	private final Sprite mDottedLineAir = new Sprite(mDottedLineTextureRegion, this.mBackground);
 
@@ -265,8 +265,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	/*public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5),
 			this.mBackground));*/
 
-	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bonus.png", 800, 800, 1, 1),
-			this.mBackground));
+	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bonus.png", 800, 800, 1, 1), this.mBackground));
+
+	public final EntityManager<AwesomeText> splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "splash-bonus.png", 860, 800, 1, 1), this.mBackground));
 
 	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65,
 			6, 1), this.mBackground));
@@ -483,6 +484,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				for (int j = bonuses.getCount() - 1; j >= 0; --j) {
 					final Bonus bonus = bonuses.getByIndex(j);
 					if (this.isCollide(airgum, bonus, true)) {
+						final AwesomeText boom = splashBonusesPicture.create();
+						boom.setCenterPosition(bonus.getCenterX(), bonus.getCenterY());
+						boom.setReverse();
+
 						airgum.isCollide();
 						bonus.isCollide();
 					}

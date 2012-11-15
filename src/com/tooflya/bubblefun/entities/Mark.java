@@ -18,11 +18,11 @@ public class Mark extends Entity {
 	public Mark(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.enableBlendFunction();
 
 		this.registerEntityModifier(this.modifier);
 
-		this.setColor(222f / 255f, 105f / 255f, 219f / 255f);
+		//this.setColor(222f / 255f, 105f / 255f, 219f / 255f);
 	}
 
 	@Override

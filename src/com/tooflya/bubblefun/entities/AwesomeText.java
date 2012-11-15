@@ -1,16 +1,15 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 
 public class AwesomeText extends Entity {
-	private static float mScaleStep = 0.3f;
+	private float mScaleStep = 0.3f;
 
 	protected boolean mIsAnimationScaleRunning;
+	protected boolean mIsAnimationReverse;
 
 	public boolean shake = false;
 	private float minS = -5, maxS = 5;
@@ -23,7 +22,8 @@ public class AwesomeText extends Entity {
 	public AwesomeText(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.enableBlendFunction();
+
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 	}
@@ -32,9 +32,17 @@ public class AwesomeText extends Entity {
 		this.mRotation = -5;
 	}
 
+	public void setReverse() {
+		this.setScale(0f);
+
+		this.mScaleStep = 0.03f;
+		this.mIsAnimationReverse = true;
+	}
+
 	@Override
 	public Entity create() {
 		mIsAnimationScaleRunning = true;
+		this.mIsAnimationReverse = false;
 		mNeedDeath = false;
 		shake = false;
 
@@ -56,15 +64,28 @@ public class AwesomeText extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		if (mIsAnimationScaleRunning) {
-			if (this.getAlpha() < 1f) {
-				this.setAlpha(this.getAlpha() + 0.05f);
-			}
+			if (this.mIsAnimationReverse) {
+				if (this.getAlpha() < 1f) {
+					this.setAlpha(this.getAlpha() + 0.05f);
+				}
 
-			this.setScale(this.getScaleX() - mScaleStep);
-			if (this.getScaleX() <= 1f) {
-				this.setScale(1f);
-				this.mIsAnimationScaleRunning = false;
-				this.shake = true;
+				this.setScale(this.getScaleX() + mScaleStep);
+				if (this.getScaleX() >= 1f) {
+					this.setScale(1f);
+					this.mIsAnimationScaleRunning = false;
+					this.shake = true;
+				}
+			} else {
+				if (this.getAlpha() < 1f) {
+					this.setAlpha(this.getAlpha() + 0.05f);
+				}
+
+				this.setScale(this.getScaleX() - mScaleStep);
+				if (this.getScaleX() <= 1f) {
+					this.setScale(1f);
+					this.mIsAnimationScaleRunning = false;
+					this.shake = true;
+				}
 			}
 		}
 
