@@ -298,11 +298,7 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 		final Entity element = this;
 		final Entity element_ = pElement;
 
-		/**
-		 * 
-		 * Check collisions only for elements with some states
-		 * 
-		 */
+		/** Check collisions only for elements with some states */
 		if (false) {
 			return false;
 		}
