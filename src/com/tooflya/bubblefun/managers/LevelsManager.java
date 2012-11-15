@@ -7,7 +7,6 @@ import java.io.InputStream;
 
 import org.anddev.andengine.level.LevelLoader;
 import org.anddev.andengine.level.LevelLoader.IEntityLoader;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
@@ -17,8 +16,8 @@ import android.os.Environment;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.database.Level;
+import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
-import com.tooflya.bubblefun.entities.Electrod;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -173,10 +172,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 				final Chiky chiky = screen.chikies.create();
 
-				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "startX");
-				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "startY");
+				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				final float normalStepX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "normalStepX");
+				final float normalStepX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
 				final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
 				final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
 
@@ -211,12 +210,31 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("electrod", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Electrod electrod = screen.electrods.create();
+				/*final Electrod electrod = screen.electrods.create();
 
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				electrod.setPosition(x, y);
+				electrod.setPosition(x, y);*/
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		mLevelLoader.registerEntityLoader("bonus", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final Bonus bonus = screen.bonuses.create();
+
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+
+				final float time = SAXUtils.getFloatAttributeOrThrow(pAttributes, "time");
+
+				bonus.initTime(time, x, 1f);
 			}
 		});
 

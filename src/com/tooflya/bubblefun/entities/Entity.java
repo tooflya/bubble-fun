@@ -201,6 +201,13 @@ public abstract class Entity extends AnimatedSprite {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
+	public void enableBlendFunction() {
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+	}
+
 	// ===========================================================
 	// Validate methods
 	// ===========================================================
@@ -348,7 +355,7 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		
+
 	}
 
 	/* (non-Javadoc)

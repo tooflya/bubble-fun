@@ -36,8 +36,8 @@ public class Mark extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mX += this.getSpeedX();
-		this.mY += this.getSpeedY();
+		//this.mX += this.getSpeedX();
+		//this.mY += this.getSpeedY();
 	}
 
 }

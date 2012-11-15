@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="false">
-	<chiky startX="-0.10" startY="0.75" normalStepX="+1.5" properties="1"/>
-	
-	<chiky startX="+1.10" startY="0.00" normalStepX="-1.5" properties="1"/>
-	<chiky startX="-0.10" startY="0.00" normalStepX="+1.5" properties="1"/>
-	<chiky startX="+1.10" startY="0.25" normalStepX="-1.5" properties="1"/>
-	<chiky startX="-0.10" startY="0.25" normalStepX="+1.5" properties="1"/>
-	<chiky startX="+1.10" startY="0.50" normalStepX="-1.5" properties="1"/>
-	<chiky startX="-0.10" startY="0.50" normalStepX="+1.5" properties="1"/>
-	<chiky startX="+1.10" startY="0.75" normalStepX="-1.5" properties="1"/>
+<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="true">
+	<chiky x="0.1" y="0.35" speed="1"/>
+	<chiky x="1" y="0.55" speed="1" properties="8"/>
 </level>

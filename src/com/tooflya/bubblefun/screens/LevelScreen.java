@@ -14,6 +14,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextur
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Color;
@@ -25,17 +26,18 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Acceleration;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
+import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Cloud;
-import com.tooflya.bubblefun.entities.Electrod;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.Mark;
+import com.tooflya.bubblefun.entities.Parachute;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -89,7 +91,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
-	private final Sprite mDottedLine = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line-new.png", 0, 990, 1, 2), this.mBackground);
+	private final TiledTextureRegion mDottedLineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line.png", 0, 1020, 1, 1);
+	private final Sprite mDottedLine = new Sprite(mDottedLineTextureRegion, this.mBackground);
+	private final Sprite mDottedLineAir = new Sprite(mDottedLineTextureRegion, this.mBackground);
 
 	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 2), this.mBackground) {
 
@@ -133,8 +137,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		@Override
 		protected void onManagedUpdate(final float pSecondsElapsed) {
 			super.onManagedUpdate(pSecondsElapsed);
-			
-			if(chikies.getCount() > 0){
+
+			if (chikies.getCount() > 0) {
 				chikies.getByIndex(0).delProperties(Chiky.isPauseUpdateFlag);
 			}
 
@@ -258,7 +262,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	};
 
 	private final EntityManager<Sprite> thorns = new EntityManager<Sprite>(10, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 430, 40, 1, 1), this.mBackground));
-	public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5),
+	/*public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5),
+			this.mBackground));*/
+
+	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bonus.png", 800, 800, 1, 1),
 			this.mBackground));
 
 	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65,
@@ -274,7 +281,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
-	public EntityManager<Sprite> parachutes = new EntityManager<Sprite>(30, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "parachute.png", 200, 200, 1, 1), this.mBackground));
+	public EntityManager<Parachute> parachutes = new EntityManager<Parachute>(5, new Parachute(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "parachute.png", 200, 200, 1, 1), this.mBackground));
 	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(30, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
 	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "gum-animation.png", 430, 280, 1, 6), this.mBackground));
 	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather.png", 730, 585, 1, 2), this.mBackground));
@@ -282,6 +289,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public BlueBird mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blue-bird.png", 430, 600, 6, 1),
 			new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather_new_blue.png", 430, 890, 1, 2), this.mBackground)), this.mBackground);
+
+	private final AlphaModifier mAllFallDownModifier = new AlphaModifier(13.4f, 1f, 0f);
+	private final AlphaModifier mAllFallUpModifier = new AlphaModifier(13.4f, 0f, 1f);
 
 	// ===========================================================
 	// Constructors
@@ -292,8 +302,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.clouds.generateStartClouds();
 
-		mDottedLine.create();
-		mDottedLine.setPosition(0, Options.cameraHeight - Options.touchHeight);
+		mDottedLine.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
+		mDottedLineAir.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
+		this.mDottedLineAir.setColor(1f, 0f, 1f);
 
 		this.attachChild(shape);
 		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -336,6 +347,36 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOff);
 
 		mScoreText.create().setPosition(10, 10);
+
+		this.mDottedLine.enableBlendFunction();
+		this.mDottedLineAir.enableBlendFunction();
+		this.mTextTapHere.enableBlendFunction();
+		this.mResetButton.enableBlendFunction();
+		this.mMenuButton.enableBlendFunction();
+		this.mScoreText.enableBlendFunction();
+		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
+			this.numbersSmall.getByIndex(i).enableBlendFunction();
+		}
+
+		this.mDottedLine.registerEntityModifier(this.mAllFallUpModifier);
+		this.mDottedLineAir.registerEntityModifier(this.mAllFallUpModifier);
+		this.mTextTapHere.registerEntityModifier(this.mAllFallUpModifier);
+		this.mResetButton.registerEntityModifier(this.mAllFallUpModifier);
+		this.mMenuButton.registerEntityModifier(this.mAllFallUpModifier);
+		this.mScoreText.registerEntityModifier(this.mAllFallUpModifier);
+		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
+			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallUpModifier);
+		}
+
+		this.mDottedLine.registerEntityModifier(this.mAllFallDownModifier);
+		this.mDottedLineAir.registerEntityModifier(this.mAllFallDownModifier);
+		this.mTextTapHere.registerEntityModifier(this.mAllFallDownModifier);
+		this.mResetButton.registerEntityModifier(this.mAllFallDownModifier);
+		this.mMenuButton.registerEntityModifier(this.mAllFallDownModifier);
+		this.mScoreText.registerEntityModifier(this.mAllFallDownModifier);
+		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
+			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallDownModifier);
+		}
 	}
 
 	// ===========================================================
@@ -343,6 +384,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public void reInit() {
+		this.mAllFallUpModifier.reset();
+
 		Score = 0;
 		rectangleAlphaModifierOff.reset();
 
@@ -355,6 +398,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mDoubleKillText.clear();
 		mTripleKillText.clear();
 		mBonusesText.clear();
+		bonuses.clear();
 		parachutes.clear();
 
 		mBlueBird.create();
@@ -364,7 +408,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		glints.clear();
 		accelerators.clear();
 		thorns.clear();
-		electrods.clear();
+		//electrods.clear();
 		mMarks.clear();
 		generateChikies();
 
@@ -430,10 +474,17 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						airgum.isCollide();
 					}
 				}
-				for (int j = electrods.getCount() - 1; j >= 0; --j) {
+				/*for (int j = electrods.getCount() - 1; j >= 0; --j) {
 					Electrod electrod = ((Electrod) electrods.getByIndex(j));
 					if (electrod.isAnimationRunning() && this.isCollide(airgum, electrod, true)) {
 						airgum.isCollide();
+					}
+				}*/
+				for (int j = bonuses.getCount() - 1; j >= 0; --j) {
+					final Bonus bonus = bonuses.getByIndex(j);
+					if (this.isCollide(airgum, bonus, true)) {
+						airgum.isCollide();
+						bonus.isCollide();
 					}
 				}
 			}
@@ -502,6 +553,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		if (chikies.getCount() == 0 && airgums.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && !this.mLevelEndRunning) {
 			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 			this.mLevelEndRunning = true;
+			this.mAllFallDownModifier.reset();
 		} else {
 
 			if (AIR <= 0 && running) {
@@ -535,6 +587,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			numbersSmall.getByIndex(1).setVisible(true);
 			numbersSmall.getByIndex(2).setVisible(true);
 		}
+
+		/* AIR LINE */
+		final float baseWidth = this.mDottedLineAir.getBaseWidth();
+		this.mDottedLineAir.setWidth((int) (baseWidth / 100 * AIR));
+		this.mDottedLineAir.getTextureRegion().setWidth((int) (baseWidth / 100 * AIR));
 	}
 
 	/*

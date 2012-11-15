@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="16" g1="216" b1="216" r2="225" g2="216" b2="216" bluebird="false">
-	<chiky startX="0.10" startY="0.70" normalStepX="1"/>
-	<chiky startX="0.10" startY="0.30" normalStepX="1"/>
+<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="true">
+	<chiky x="0" y="0.1" speed="1.5" properties="8"/>
+	<chiky x="0.5" y="0.5" speed="1" properties="8"/>
+	<chiky x="1" y="0.8" speed="1" properties="8"/>
+	<chiky x="0.5" y="0.5" speed="1.5"  speedyStepX="3" properties="4"/>
 </level>

@@ -197,15 +197,14 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 					try {
 						for (Box box : boxes) {
-							if (box != boxes.get((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1))
-								box.modifier5.reset();
+							//if (box != boxes.get((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1))
+								//box.modifier5.reset();
 						}
 					} catch (ArrayIndexOutOfBoundsException e) {
 						for (Box box : boxes) {
-							if (box != boxes.get(0))
-								box.modifier5.reset();
+							//if (box != boxes.get(0))
+								//box.modifier5.reset();
 						}
-						;
 					}
 
 					try {
