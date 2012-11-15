@@ -273,21 +273,6 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	}
 
 	/**
-	 * Function of entity death.
-	 */
-	public void death() {
-		this.delete();
-	}
-
-	/**
-	 * Function which will delete entity from the manager list.
-	 */
-	public void delete() {
-		this.setVisible(false);
-		this.setIgnoreUpdate(true);
-	}
-
-	/**
 	 * Collides with.
 	 * 
 	 * @param pElement

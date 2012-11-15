@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.planetbattle.managers.ScreensManager;
 import com.planetbattle.ui.Camera;
 
@@ -184,6 +185,7 @@ public class Game implements ApplicationListener, InputProcessor {
 
 		this.mScreens.update(this.mSecondsElapsed, this.mCamera);
 		this.mScreens.draw();
+		this.mCamera.setToOrtho(true, 100, 100);
 	}
 
 	/*
@@ -193,6 +195,10 @@ public class Game implements ApplicationListener, InputProcessor {
 	 */
 	@Override
 	public void resize(final int pWidth, final int pHeight) {
+		GL20 gl = Gdx.graphics.getGL20();
+
+		gl.glViewport(pWidth / 2 - Options.cameraCenterX, pHeight / 2 - Options.cameraCenterY, Options.cameraWidth, Options.cameraHeight);
+		this.mCamera.update();
 	}
 
 	/*

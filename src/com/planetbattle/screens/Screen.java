@@ -2,6 +2,7 @@ package com.planetbattle.screens;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.planetbattle.interfaces.IEntityEvents;
 import com.planetbattle.ui.Camera;

@@ -1,5 +1,6 @@
 package com.planetbattle.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.planetbattle.ui.Camera;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entity.Entity;
@@ -20,6 +21,8 @@ public class SplashScreen extends Screen {
 
 	public SplashScreen(final Camera pCamera) {
 		super(pCamera);
+
+		this.setColor(Color.WHITE);
 
 		final Entity a = new Entity("assets/gfx/preload-screen.png");
 		a.setVisible(true);
