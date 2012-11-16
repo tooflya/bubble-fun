@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.planetbattle.interfaces.IAnimationListener;
-import com.planetbattle.interfaces.IEntityEvents;
-import com.planetbattle.interfaces.ITouchListener;
 import com.planetbattle.modifiers.BaseModifier;
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.handlers.UpdateHandler;
+import com.tooflya.bubblefun.interfaces.IAnimationListener;
+import com.tooflya.bubblefun.interfaces.IEntityEvents;
+import com.tooflya.bubblefun.interfaces.ITouchListener;
+import com.tooflya.bubblefun.screens.Screen;
 
 /**
  * @author Tooflya.com
@@ -30,20 +33,21 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	// Fields
 	// ===========================================================
 
-	private ArrayList<Entity> mChildrens = new ArrayList<Entity>();
-	private ArrayList<BaseModifier> mModifiers = new ArrayList<BaseModifier>();
+	protected ArrayList<Entity> mChildrens = new ArrayList<Entity>();
+	protected ArrayList<BaseModifier<?>> mModifiers = new ArrayList<BaseModifier<?>>();
+	protected ArrayList<UpdateHandler<?>> mUpdateHandlers = new ArrayList<UpdateHandler<?>>();
 
-	private Object mParent;
+	private Entity mParent;
 
-	protected float mOriginWidth;
-	protected float mOriginHeight;
+	protected float mBaseWidth = -1;
+	protected float mBaseHeight = -1;
 
 	protected boolean mIsIgnoreUpdate;
 	protected boolean mIsVisibility;
 
 	public boolean mIsWasClicked;
 	public boolean mIsHovered;
-	private boolean mIsClickable;
+	private boolean mIsClickable = true;
 
 	private TextureRegion[][] mTextureRegion;
 
@@ -67,6 +71,9 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 */
 	public Entity() {
 		this.setVisible(true);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
 	}
 
 	/**
@@ -77,6 +84,9 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 */
 	public Entity(final String texture) {
 		this(texture, mDefaultFramesCountX, mDefaultFramesCountY);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
 	}
 
 	/**
@@ -86,6 +96,35 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 */
 	public Entity(final Texture texture) {
 		this(texture, mDefaultFramesCountX, mDefaultFramesCountY);
+	}
+
+	public Entity(final float pX, final float pY, final Texture texture) {
+		this(texture, mDefaultFramesCountX, mDefaultFramesCountY);
+
+		this.setCenterPosition(pX, pY);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
+	}
+
+	public Entity(final float pX, final float pY, final Texture texture, final Screen pScreen) {
+		this(pX, pY, texture);
+
+		pScreen.attachChild(this);
+		this.setVisible(true);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
+	}
+
+	public Entity(final float pX, final float pY, final Texture texture, final Entity pEntity) {
+		this(pX, pY, texture);
+
+		pEntity.attachChild(this);
+		this.setVisible(true);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
 	}
 
 	/**
@@ -98,6 +137,50 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 */
 	public Entity(final String texture, final int countFramesX, final int countFramesY) {
 		this(new Texture(Gdx.files.internal(texture)), countFramesX, countFramesY);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
+	}
+
+	public Entity(final float pX, final float pY, final String texture) {
+		this(new Texture(Gdx.files.internal(texture)));
+
+		this.setCenterPosition(pX, pY);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
+	}
+
+	public Entity(final float pX, final float pY, final String texture, final Screen pScreen) {
+		this(pX, pY, new Texture(Gdx.files.internal(texture)));
+
+		pScreen.attachChild(this);
+		this.setVisible(true);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
+	}
+
+	public Entity(final float pX, final float pY, final String texture, final Entity pEntity) {
+		this(pX, pY, new Texture(Gdx.files.internal(texture)));
+
+		pEntity.attachChild(this);
+		this.setVisible(true);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
+	}
+
+	public Entity(final float pX, final float pY, final int countFramesX, final int countFramesY, final String texture, final Entity pEntity) {
+		this(new Texture(Gdx.files.internal(texture)), countFramesX, countFramesY);
+
+		pEntity.attachChild(this);
+		this.setVisible(true);
+
+		this.setCenterPosition(pX, pY);
+
+		this.setBaseWidth(this.getWidth());
+		this.setBaseHeight(this.getHeight());
 	}
 
 	/**
@@ -113,8 +196,8 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 
 		this.setOrigin(getWidth() / 2, getHeight() / 2);
 
-		this.setOriginWidth(getWidth());
-		this.setOriginHeight(getHeight());
+		this.setBaseWidth(getWidth());
+		this.setBaseHeight(getHeight());
 
 		this.mTextureRegion = TextureRegion.split(getTexture(), getTexture().getWidth() / countFramesX, getTexture().getHeight() / countFramesY);
 		this.flipTextureRegion(countFramesX, countFramesY);
@@ -133,7 +216,7 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 */
 	@Override
 	public void draw(final SpriteBatch pSpriteBatch) {
-		if (!this.isVisible()) {
+		if (!this.isVisible() || !this.hasParent()) {
 			return;
 		}
 
@@ -141,9 +224,14 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 		 * Draw the entity of the canvas, taking into account all of its
 		 * parameters
 		 **/
+		pSpriteBatch.begin();
 		pSpriteBatch.setColor(getColor());
-		pSpriteBatch.draw(getTextureRegion(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+		pSpriteBatch.draw(getTextureRegion(),
+				getX() + this.getParentX() + (this.getParent().getBaseWidth() - this.getParent().getWidth() * this.getParent().getScaleX()) / 2,
+				getY() + this.getParentY() + (this.getParent().getHeight() - this.getParent().getHeight() * this.getParent().getScaleY()) / 2,
+				getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 		pSpriteBatch.setColor(Color.CLEAR);
+		pSpriteBatch.end();
 	}
 
 	// ===========================================================
@@ -153,18 +241,62 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	/**
 	 * Function for render all child entities.
 	 */
-	public void onManagedDraw() {
+	public void onManagedDraw(final float pSecondsElapsed) {
+		this.draw(Screen.mSpriteBatch);
+
 		for (Entity entity : this.mChildrens) {
-			entity.draw((SpriteBatch) mParent);
+			entity.onManagedDraw(pSecondsElapsed);
 		}
+	}
+
+	public void onManagedUpdate(final float pSecondsElapsed) {
+		this.onManagedUpdate(pSecondsElapsed, true);
 	}
 
 	/**
 	 * Function for update all child entities.
 	 */
-	public void onManagedUpdate() {
+	public void onManagedUpdate(final float pSecondsElapsed, final boolean pIsTouchUpdate) {
 		for (Entity entity : this.mChildrens) {
-			entity.update();
+			entity.onManagedUpdate(pSecondsElapsed);
+
+			if (pIsTouchUpdate) {
+				if (!entity.isClickable()) {
+					continue;
+				}
+
+				if (Game.mMouseX > entity.getX() && Game.mMouseX < entity.getX() + entity.getWidth() && Game.mMouseY > entity.getY()
+						&& Game.mMouseY < entity.getY() + entity.getHeight()) {
+					if (!Game.mMouseDown || entity.mIsHovered) {
+						entity.onHover();
+
+						if (Game.mMouseDown && entity.mIsHovered) {
+							entity.mIsWasClicked = true;
+						}
+
+						if (!Game.mMouseDown && entity.mIsWasClicked) {
+							entity.onTouch();
+							entity.mIsWasClicked = false;
+						}
+					}
+				} else {
+					entity.mIsHovered = false;
+					entity.mIsWasClicked = false;
+				}
+			}
+		}
+
+		/** Maybe is animation available? **/
+		this.runAnimation();
+
+		/** Check for some modifiers registered **/
+		for (UpdateHandler<?> handler : mUpdateHandlers) {
+			handler.onManagedUpdate(pSecondsElapsed);
+		}
+
+		/** Check for some modifiers registered **/
+		for (BaseModifier<?> modifier : mModifiers) {
+			modifier.onManagedUpdate(pSecondsElapsed);
 		}
 	}
 
@@ -214,8 +346,8 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 *            the modifier
 	 */
 	public void registerEntityModifier(final BaseModifier modifier) {
-		modifier.setParent(this);
-		mModifiers.add(modifier);
+		this.mModifiers.add(modifier);
+		modifier.setEntity(this);
 	}
 
 	/**
@@ -224,15 +356,43 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * @param modifier
 	 *            the modifier
 	 */
-	public void unregisterEntityModifier(final BaseModifier modifier) {
-		mModifiers.remove(modifier);
+	public void unregisterEntityModifier(final BaseModifier<?> modifier) {
+		this.mModifiers.remove(modifier);
 	}
 
 	/**
 	 * Clear entity modifiers.
 	 */
 	public void clearEntityModifiers() {
-		mModifiers.clear();
+		this.mModifiers.clear();
+	}
+
+	/**
+	 * Register entity modifier.
+	 * 
+	 * @param modifier
+	 *            the modifier
+	 */
+	public void registerUpdateHandler(final UpdateHandler handler) {
+		this.mUpdateHandlers.add(handler);
+		handler.setEntity(this);
+	}
+
+	/**
+	 * Unregister entity modifier.
+	 * 
+	 * @param modifier
+	 *            the modifier
+	 */
+	public void unregisterUpdateHandler(final UpdateHandler<?> handler) {
+		this.mUpdateHandlers.remove(handler);
+	}
+
+	/**
+	 * Clear entity modifiers.
+	 */
+	public void clearUpdateHandlers() {
+		this.mUpdateHandlers.clear();
 	}
 
 	/**
@@ -255,24 +415,6 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	}
 
 	/**
-	 * Function for update entity parameters.
-	 */
-	public void update() {
-		/** Don't update entity if he is not visible **/
-		if (!this.isVisible()) {
-			return;
-		}
-
-		/** Maybe is animation available? **/
-		this.runAnimation();
-
-		/** Check for some modifiers registered **/
-		for (BaseModifier modifier : mModifiers) {
-			modifier.update();
-		}
-	}
-
-	/**
 	 * Collides with.
 	 * 
 	 * @param pElement
@@ -282,11 +424,6 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	public boolean collidesWith(final Entity pElement) {
 		final Entity element = this;
 		final Entity element_ = pElement;
-
-		/** Check collisions only for elements with some states */
-		if (false) {
-			return false;
-		}
 
 		final float x = element_.getCenterX() - element.getCenterX();
 		final float y = element_.getCenterY() - element.getCenterY();
@@ -337,7 +474,7 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * @see com.planetbattle.interfaces.IAnimationListener#onAnimationStarted()
 	 */
 	@Override
-	public void onAnimationStarted() {
+	public void onStarted() {
 		// It's function must be override
 	}
 
@@ -347,7 +484,7 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * @see com.planetbattle.interfaces.IAnimationListener#onAnimationFinished()
 	 */
 	@Override
-	public void onAnimationFinished() {
+	public void onFinished() {
 		// It's function must be override
 	}
 
@@ -404,7 +541,7 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 		this.mAnimationRepeatCount = animationRepeatCount - 1;
 		this.mAnimationSleep = animationSleep;
 
-		this.onAnimationStarted();
+		this.onStarted();
 	}
 
 	/**
@@ -427,7 +564,7 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 						if (this.mAnimationRepeatCount == 0) {
 							mIsAnimationRunnig = false;
 
-							this.onAnimationFinished();
+							this.onFinished();
 						} else {
 							this.mAnimationRepeatCount--;
 						}
@@ -553,11 +690,11 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	/**
 	 * Sets the parent.
 	 * 
-	 * @param entity
+	 * @param pEntity
 	 *            the new parent
 	 */
-	public void setParent(final Object entity) {
-		this.mParent = entity;
+	public void setParent(final Entity pEntity) {
+		this.mParent = pEntity;
 	}
 
 	/**
@@ -579,8 +716,8 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * @param width
 	 *            the new origin width
 	 */
-	public void setOriginWidth(final float width) {
-		this.mOriginWidth = width;
+	public void setBaseWidth(final float width) {
+		this.mBaseWidth = width;
 	}
 
 	/**
@@ -589,21 +726,47 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * @param height
 	 *            the new origin height
 	 */
-	public void setOriginHeight(final float height) {
-		this.mOriginHeight = height;
+	public void setBaseHeight(final float height) {
+		this.mBaseHeight = height;
+	}
+
+	public void setScale(final float pScale) {
+		super.setScale(pScale);
+
+		for (Entity entity : this.mChildrens) {
+			entity.setScale(pScale);
+		}
 	}
 
 	// ===========================================================
 	// Getters
 	// ===========================================================
 
+	/*@Override
+	public float getWidth() {
+		if (this.mBaseWidth == -1) {
+			return super.getWidth();
+		} else {
+			return this.getBaseWidth() * this.getScaleX();
+		}
+	}
+
+	@Override
+	public float getHeight() {
+		if (this.mBaseHeight == -1) {
+			return super.getHeight();
+		} else {
+			return this.getBaseHeight() * this.getScaleY();
+		}
+	}y
+
 	/**
 	 * Gets the origin width.
 	 * 
 	 * @return the origin width
 	 */
-	public float getOriginWidth() {
-		return this.mOriginWidth;
+	public float getBaseWidth() {
+		return this.mBaseWidth;
 	}
 
 	/**
@@ -611,8 +774,8 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * 
 	 * @return the origin height
 	 */
-	public float getOriginHeight() {
-		return this.mOriginHeight;
+	public float getBaseHeight() {
+		return this.mBaseHeight;
 	}
 
 	/**
@@ -665,8 +828,22 @@ public class Entity extends Sprite implements IAnimationListener, ITouchListener
 	 * 
 	 * @return the parent
 	 */
-	public Object getParent() {
+	public Entity getParent() {
 		return this.mParent;
+	}
+
+	public float getParentX() {
+		if (!this.hasParent())
+			return 0;
+
+		return this.getParent().getX();
+	}
+
+	public float getParentY() {
+		if (!this.hasParent())
+			return 0;
+
+		return this.getParent().getY();
 	}
 
 	/**

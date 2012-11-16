@@ -1,8 +1,12 @@
 package com.planetbattle.managers;
 
-import com.planetbattle.screens.Screen;
-import com.planetbattle.screens.SplashScreen;
-import com.planetbattle.ui.Camera;
+import com.tooflya.bubblefun.Camera;
+import com.tooflya.bubblefun.screens.BoxScreen;
+import com.tooflya.bubblefun.screens.ExitScreen;
+import com.tooflya.bubblefun.screens.LoadingScreen;
+import com.tooflya.bubblefun.screens.MenuScreen;
+import com.tooflya.bubblefun.screens.Screen;
+import com.tooflya.bubblefun.screens.SplashScreen;
 
 /**
  * @author Tooflya.com
@@ -32,7 +36,11 @@ public class ScreensManager {
 		screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all screens */
-		screens[Screen.SPLASH] = new SplashScreen(pCamera);
+		screens[Screen.SPLASH] = new SplashScreen(this, pCamera);
+		screens[Screen.LOADING] = new LoadingScreen(this, pCamera);
+		screens[Screen.MENU] = new MenuScreen(this, pCamera);
+		screens[Screen.BOX] = new BoxScreen(this, pCamera);
+		screens[Screen.EXIT] = new ExitScreen(this, pCamera);
 
 		this.screen = Screen.SPLASH;
 	}
@@ -59,12 +67,12 @@ public class ScreensManager {
 		return this.get(screen);
 	}
 
-	public void update(final float pSecondsElapsed, final Camera pCamera) {
-		screens[screen].onManagedUpdate(pSecondsElapsed, pCamera);
+	public void onManagedUpdate(final float pSecondsElapsed) {
+		this.getCurrent().onManagedUpdate(pSecondsElapsed);
 	}
 
-	public void draw() {
-		screens[screen].onManagedDraw();
+	public void onManagedDraw(final float pSecondsElapsed) {
+		this.getCurrent().onManagedDraw(pSecondsElapsed);
 	}
 
 	// ===========================================================

@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.planetbattle.managers.ScreensManager;
-import com.planetbattle.ui.Camera;
 
 /**
  * @author Tooflya.com
@@ -19,6 +18,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	// Constants
 	// ===========================================================
 
+	@SuppressWarnings("unused")
 	private final float mFrameRate = 1.0f / 60.0f;
 
 	// ===========================================================
@@ -30,8 +30,8 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	private float mSecondsElapsed = 0;
 
-	public float mMouseX, mMouseY;
-	public boolean mMouseDown;
+	public static float mMouseX, mMouseY;
+	public static boolean mMouseDown;
 
 	// ===========================================================
 	// Constructors
@@ -108,7 +108,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	 */
 	@Override
 	public boolean touchDown(int x, int y, int arg2, int arg3) {
-		this.mMouseDown = true;
+		mMouseDown = true;
 
 		return false;
 	}
@@ -132,8 +132,8 @@ public class Game implements ApplicationListener, InputProcessor {
 	 */
 	@Override
 	public boolean touchMoved(int x, int y) {
-		this.mMouseX = x;
-		this.mMouseY = y;
+		mMouseX = x;
+		mMouseY = y;
 
 		return false;
 	}
@@ -145,7 +145,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	 */
 	@Override
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
-		this.mMouseDown = false;
+		mMouseDown = false;
 
 		return false;
 	}
@@ -177,15 +177,10 @@ public class Game implements ApplicationListener, InputProcessor {
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		this.mSecondsElapsed += Gdx.graphics.getDeltaTime();
-		while (this.mSecondsElapsed > this.mFrameRate) {
-			this.mScreens.update(this.mSecondsElapsed, this.mCamera);
-			this.mSecondsElapsed -= this.mFrameRate;
-		}
+		this.mSecondsElapsed = Gdx.graphics.getDeltaTime();
 
-		this.mScreens.update(this.mSecondsElapsed, this.mCamera);
-		this.mScreens.draw();
-		this.mCamera.setToOrtho(true, 100, 100);
+		this.mScreens.onManagedUpdate(this.mSecondsElapsed);
+		this.mScreens.onManagedDraw(this.mSecondsElapsed);
 	}
 
 	/*

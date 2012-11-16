@@ -60,10 +60,6 @@ public class EntityManager {
 		return this.count + 1;
 	}
 
-	public int getScenarioCount() {
-		return this.scenarioCount;
-	}
-
 	public int getCapacity() {
 		return capacity;
 	}
