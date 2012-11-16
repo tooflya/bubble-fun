@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="false">
+<level r1="251" g1="80" b1="0" r2="35" g2="0" b2="0" bluebird="false">
 	<chiky x="1" y="0.55" speed="1"/>
+
+	<air x="100" y="100"/>
+	<air x="120" y="120"/>
+	<air x="140" y="140"/>
+	<air x="160" y="160"/>
 </level>

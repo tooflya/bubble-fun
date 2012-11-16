@@ -16,6 +16,7 @@ import android.os.Environment;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.database.Level;
+import com.tooflya.bubblefun.entities.AirBubble;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Entity;
@@ -225,6 +226,24 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
+		mLevelLoader.registerEntityLoader("air", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final AirBubble air = screen.airs.create();
+
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+
+				air.setCenterPosition(x, y);
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 		mLevelLoader.registerEntityLoader("bonus", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
@@ -245,7 +264,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 */
 
-		if (true) {
+		if (false) {
 			try {
 				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel + ".xml");
 			} catch (IOException e) {

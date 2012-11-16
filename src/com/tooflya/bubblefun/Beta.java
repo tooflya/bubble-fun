@@ -81,24 +81,6 @@ public class Beta {
 				} catch (IOException e) {
 				}
 			}
-
-			final AlertDialog.Builder builder = new AlertDialog.Builder(Game.instance);
-			builder.setMessage(str.toString()).setTitle("Information send!");
-
-			builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-
-			Game.instance.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					builder.create().show();
-				}
-
-			});
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {
 		}

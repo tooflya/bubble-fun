@@ -24,6 +24,7 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.LinearGradientFillBitmapTextureAtlasSourceDecorator;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Acceleration;
+import com.tooflya.bubblefun.entities.AirBubble;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
@@ -70,6 +71,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
 
@@ -265,9 +267,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	/*public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5),
 			this.mBackground));*/
 
-	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "bonus.png", 800, 800, 1, 1), this.mBackground));
+	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bonus.png", 0, 0, 6, 1), this.mBackground));
 
-	public final EntityManager<AwesomeText> splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "splash-bonus.png", 860, 800, 1, 1), this.mBackground));
+	public final EntityManager<AwesomeText> splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 980, 800, 1, 1), this.mBackground));
 
 	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65,
 			6, 1), this.mBackground));
@@ -294,6 +296,23 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final AlphaModifier mAllFallDownModifier = new AlphaModifier(13.4f, 1f, 0f);
 	private final AlphaModifier mAllFallUpModifier = new AlphaModifier(13.4f, 0f, 1f);
 
+	private final AlphaModifier mDotterAirLineOn = new AlphaModifier(1f, 0f, 1f) {
+		@Override
+		public void onFinished() {
+			mDotterAirLineOff.reset();
+		}
+	};
+	private final AlphaModifier mDotterAirLineOff = new AlphaModifier(1f, 1f, 0f) {
+		@Override
+		public void onFinished() {
+			mDotterAirLineOn.reset();
+		}
+	};
+
+	private Sprite mSpecialButton = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bb-btn.png", 0, 100, 2, 1), this.mBackground);
+
+	public EntityManager<AirBubble> airs = new EntityManager<AirBubble>(100, new AirBubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "air-animation.png", 0, 200, 1, 6), this.mBackground));
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -305,7 +324,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		mDottedLine.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
 		mDottedLineAir.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
-		this.mDottedLineAir.setColor(1f, 0f, 1f);
+
+		this.mDottedLineAir.registerEntityModifier(this.mDotterAirLineOn);
+		this.mDottedLineAir.registerEntityModifier(this.mDotterAirLineOff);
+
+		this.mDotterAirLineOff.reset();
 
 		this.attachChild(shape);
 		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -378,6 +401,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
 			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallDownModifier);
 		}
+
+		this.mSpecialButton.create().setPosition(Options.cameraWidth - 60, Options.cameraHeight - 60);
 	}
 
 	// ===========================================================
@@ -411,6 +436,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		thorns.clear();
 		//electrods.clear();
 		mMarks.clear();
+		airs.clear();
+
 		generateChikies();
 
 		feathers.clear();
@@ -468,7 +495,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		}
 		for (int i = airgums.getCount() - 1; i >= 0; --i) {
-			airgum = (Bubble) airgums.getByIndex(i);
+			airgum = airgums.getByIndex(i);
 			if (airgum.isCanCollide()) {
 				for (int j = thorns.getCount() - 1; j >= 0; --j) {
 					if (this.isCollide(airgum, thorns.getByIndex(j), true)) {
@@ -490,13 +517,36 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 						airgum.isCollide();
 						bonus.isCollide();
+
+						this.mSpecialButton.setCurrentTileIndex(1);
 					}
 				}
-			}
-			if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
-				mBlueBird.particles();
-				if (!airgum.isAnimationRunning()) {
-					airgum.isCollide();
+
+				for (int k = 0; k < this.airs.getCount(); k++) {
+					final AirBubble air = this.airs.getByIndex(k);
+
+					if (air.getX() <= (airgum.getX() + airgum.getWidthScaled()) &&
+							airgum.getX() <= (air.getX() + air.getWidthScaled()) &&
+							air.getY() <= (airgum.getY() + airgum.getHeightScaled()) &&
+							airgum.getY() <= (air.getY() + air.getHeightScaled())) {
+						air.remove();
+					}
+
+					if (!air.mIsAlreadyFollow) {
+						if (air.getX() <= (airgum.getX() + airgum.getWidthScaled() * 1.1f) &&
+								(airgum.getX() - airgum.getWidthScaled()) <= (air.getX() + air.getWidthScaled()) &&
+								air.getY() <= (airgum.getY() + airgum.getHeightScaled() * 1.1f) &&
+								airgum.getY() - airgum.getHeightScaled() <= (air.getY() + air.getHeightScaled())) {
+							air.follow(airgum);
+						}
+					}
+				}
+
+				if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
+					mBlueBird.particles();
+					if (!airgum.isAnimationRunning()) {
+						airgum.isCollide();
+					}
 				}
 			}
 		}
@@ -555,9 +605,19 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.clouds.update();
 
+		/** AIR */
+		if (AIR >= 75) {
+			this.mDottedLineAir.setColor(0f, 1f, 0f);
+		} else if (AIR >= 25) {
+			this.mDottedLineAir.setColor(1f, 1f, 0f);
+		} else {
+			this.mDottedLineAir.setColor(1f, 0f, 0f);
+		}
+
 		if (chikies.getCount() == 0 && airgums.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && !this.mLevelEndRunning) {
 			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 			this.mLevelEndRunning = true;
+			AIR = 0;
 			this.mAllFallDownModifier.reset();
 		} else {
 
@@ -606,7 +666,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2);
+		Game.loadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2, mBackgroundTextureAtlas3);
 	}
 
 	/*
@@ -616,7 +676,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2);
+		Game.unloadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2, mBackgroundTextureAtlas3);
 	}
 
 	/*

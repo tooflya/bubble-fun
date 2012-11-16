@@ -42,13 +42,13 @@ public class Bonus extends Entity {
 			this.mY += this.getSpeedY();
 
 			if (this.reverseRotation) {
-				this.mRotation += 0.3f;
-				if (this.mRotation > 15) {
+				this.mRotation += 0.2f;
+				if (this.mRotation > 10) {
 					this.reverseRotation = false;
 				}
 			} else {
-				this.mRotation -= 0.3f;
-				if (this.mRotation < -15) {
+				this.mRotation -= 0.2f;
+				if (this.mRotation < -10) {
 					this.reverseRotation = true;
 				}
 			}

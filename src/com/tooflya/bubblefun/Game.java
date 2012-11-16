@@ -16,6 +16,8 @@ import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.util.FPSCounter;
+import org.anddev.andengine.extension.input.touch.controller.MultiTouchController;
+import org.anddev.andengine.extension.input.touch.exception.MultiTouchException;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
@@ -196,6 +198,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				super.onDrawScene(pGL);
 			}
 		};
+
+		try {
+			engine.setTouchController(new MultiTouchController());
+		} catch (final MultiTouchException e) {
+		}
 
 		/** */
 		db = new LevelsStorage();
