@@ -52,7 +52,7 @@ public class LevelChoiseScreen extends Screen {
 	private final LevelsManager<LevelIcon> levels = new LevelsManager<LevelIcon>(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level-btn.png", 0, 612, 1, 5), this.mBackground));
 	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 11)));
 
-	private final Sprite mPinkCloud = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "table-lvl-choose-for-star.png", 800, 800, 1, 1), this.mBackground);
+	private final Sprite mPinkCloud = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl-panel.png", 630, 900, 1, 1), this.mBackground);
 
 	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 11, 1), this.mBackground));
 
@@ -70,7 +70,7 @@ public class LevelChoiseScreen extends Screen {
 
 		this.mBackground.create().setBackgroundCenterPosition();
 
-		this.mPinkCloud.create().setPosition(Options.cameraWidth - (25 + this.mPinkCloud.getWidth() + this.mPinkCloud.getWidth()), 10);
+		this.mPinkCloud.create().setPosition(0,0);
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
@@ -89,7 +89,7 @@ public class LevelChoiseScreen extends Screen {
 			final Sprite sprite = this.mStars.create();
 
 			sprite.setCurrentTileIndex(i);
-			sprite.setPosition(Options.cameraWidth - 142f, 0f);
+			sprite.setPosition(Options.cameraWidth - 142f, -10f);
 			sprite.setScaleCenter(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			sprite.setScale(this.getScaleX() / 2f);
 		}
@@ -137,25 +137,23 @@ public class LevelChoiseScreen extends Screen {
 		Sprite sprite;
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 95f, 20f);
+		sprite.setPosition(Options.cameraWidth - 95f, 10f);
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 80f, 20f);
+		sprite.setPosition(Options.cameraWidth - 80f, 10f);
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 65f, 20f);
+		sprite.setPosition(Options.cameraWidth - 65f, 10f);
 		sprite.setCurrentTileIndex(10);
 
-		mPinkCloud.create().setCenterPosition(sprite.getCenterX(), sprite.getCenterY());
-
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 50f, 20f);
+		sprite.setPosition(Options.cameraWidth - 50f, 10f);
 		sprite.setCurrentTileIndex(7);
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 35f, 20f);
+		sprite.setPosition(Options.cameraWidth - 35f, 10f);
 		sprite.setCurrentTileIndex(5);
 	}
 

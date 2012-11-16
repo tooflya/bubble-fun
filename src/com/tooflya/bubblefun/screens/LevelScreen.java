@@ -97,24 +97,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final Sprite mDottedLine = new Sprite(mDottedLineTextureRegion, this.mBackground);
 	private final Sprite mDottedLineAir = new Sprite(mDottedLineTextureRegion, this.mBackground);
 
-	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 2), this.mBackground) {
-
-		@Override
-		public void onClick() {
-			Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
-		}
-	};
-
-	private final ButtonScaleable mResetButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "replay-btn.png", 0, 880, 1, 2), this.mBackground) {
-
-		@Override
-		public void onClick() {
-			if (!isResetAnimationRunning) {
-				reInit();
-			}
-		}
-	};
-
 	private final Sprite mTextTapHere = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-tap.png", 0, 950, 1, 1), this.mBackground) {
 		public boolean shake = false;
 		private float minS = -15, maxS = 15;
@@ -215,8 +197,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-level.png", 0, 980, 1, 1), this.shape);
 	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
-	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1),
-			this.mBackground));
 
 	private final MoveModifier move = new MoveModifier(0.5f, this.mBackground.getWidth() / 2 - mTextTapHere.getWidth() / 2, this.mBackground.getWidth() / 2 - mTextTapHere.getWidth() / 2, Options.cameraHeight * 2, Options.cameraHeight / 3 * 2
 			+ Options.cameraHeight / 3 / 2) {
@@ -276,8 +256,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public EntityManager<Mark> mMarks = new EntityManager<Mark>(100, new Mark(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 800, 700, 1, 1), this.mBackground));
 
-	private final Sprite mScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "score.png", 800, 770, 1, 1), this.mBackground);
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -313,11 +291,37 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public EntityManager<AirBubble> airs = new EntityManager<AirBubble>(100, new AirBubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "air-animation.png", 0, 200, 1, 6), this.mBackground));
 
+	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "game-panel.png", 630, 900, 1, 1), this.mBackground);
+
+	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 2), this.mBackground) {
+
+		@Override
+		public void onClick() {
+			Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
+		}
+	};
+
+	private final ButtonScaleable mResetButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "replay-btn.png", 0, 880, 1, 2), this.mBackground) {
+
+		@Override
+		public void onClick() {
+			if (!isResetAnimationRunning) {
+				reInit();
+			}
+		}
+	};
+
+	private final Sprite mScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "score.png", 800, 770, 1, 1), this.mBackground);
+
+	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1), this.mBackground));
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LevelScreen() {
+
+		this.mPanel.create().setPosition(0, 0);
 		this.setOnSceneTouchListener(this);
 
 		this.clouds.generateStartClouds();
@@ -347,9 +351,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
-		numbersSmall.create().setPosition(97, 13);
-		numbersSmall.create().setPosition(111, 13);
-		numbersSmall.create().setPosition(125, 13);
+		numbersSmall.create().setPosition(97, 8);
+		numbersSmall.create().setPosition(111, 8);
+		numbersSmall.create().setPosition(125, 8);
 
 		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
@@ -359,10 +363,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mTextTapHere.registerEntityModifier(move);
 		mTextTapHere.registerEntityModifier(moveDown);
 
-		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 10);
-		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 10);
+		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 3f);
+		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 3f);
 
-		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraCenterY - mResetText.getHeight() / 2);
+		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraCenterY - mResetText.getHeight() / 2f);
 		mResetText.registerEntityModifier(restartMove1);
 		mResetText.registerEntityModifier(restartMove2);
 		mResetText.registerEntityModifier(restartMove3);
@@ -370,7 +374,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOff);
 
-		mScoreText.create().setPosition(10, 10);
+		mScoreText.create().setPosition(10, 5);
 
 		this.mDottedLine.enableBlendFunction();
 		this.mDottedLineAir.enableBlendFunction();
@@ -378,6 +382,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mResetButton.enableBlendFunction();
 		this.mMenuButton.enableBlendFunction();
 		this.mScoreText.enableBlendFunction();
+		this.mPanel.enableBlendFunction();
 		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
 			this.numbersSmall.getByIndex(i).enableBlendFunction();
 		}
@@ -388,6 +393,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mResetButton.registerEntityModifier(this.mAllFallUpModifier);
 		this.mMenuButton.registerEntityModifier(this.mAllFallUpModifier);
 		this.mScoreText.registerEntityModifier(this.mAllFallUpModifier);
+		this.mPanel.registerEntityModifier(this.mAllFallUpModifier);
 		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
 			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallUpModifier);
 		}
@@ -398,6 +404,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mResetButton.registerEntityModifier(this.mAllFallDownModifier);
 		this.mMenuButton.registerEntityModifier(this.mAllFallDownModifier);
 		this.mScoreText.registerEntityModifier(this.mAllFallDownModifier);
+		this.mPanel.registerEntityModifier(this.mAllFallDownModifier);
 		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
 			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallDownModifier);
 		}
