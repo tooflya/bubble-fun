@@ -16,12 +16,13 @@ import android.os.Environment;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.database.Level;
-import com.tooflya.bubblefun.entities.AirBubble;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
@@ -226,10 +227,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
-		mLevelLoader.registerEntityLoader("air", new IEntityLoader() {
+		mLevelLoader.registerEntityLoader("coin", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final AirBubble air = screen.airs.create();
+				final Coin air = screen.airs.create();
 
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
@@ -263,10 +264,35 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
+		mLevelLoader.registerEntityLoader("tutorial", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+
+				final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0);
+				final float time = SAXUtils.getFloatAttribute(pAttributes, "time", 0);
+
+				final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
+
+				final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen);
+				sprite.create().setPosition(x, y);
+				
+				screen.mTutorialSprites.add(sprite);
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 
 		if (false) {
 			try {
-				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel + ".xml");
+				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel * (Options.boxNumber + 1) + ".xml");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -274,7 +300,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			System.out.println("TMXLevel: Loading level from SD");
 			InputStream inputStream;
 			String state = Environment.getExternalStorageState();
-			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel + ".xml"); // Can be done with 2 params : folder & file.
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel * (Options.boxNumber + 1) + ".xml"); // Can be done with 2 params : folder & file.
 			try {
 				inputStream = new FileInputStream(file);
 				mLevelLoader.loadLevelFromStream(inputStream);

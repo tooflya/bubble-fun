@@ -370,10 +370,10 @@ public class Chiky extends Entity {
 				break;
 			}
 
+			
 			if (this.mX - this.mX_ > 0) {
 				this.getTextureRegion().setFlippedHorizontal(false);
-			}
-			else {
+			} else {
 				this.getTextureRegion().setFlippedHorizontal(true);
 			}
 		}

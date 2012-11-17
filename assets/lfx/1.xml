@@ -2,10 +2,6 @@
 <level r1="24" g1="70" b1="243" r2="20" g2="247" b2="243" bluebird="false">
 	<chiky x="0" y="0.75" speed="0.5"/>
 
-	<bonus time="100" x="100"/>
-
-	<air x="100" y="100"/>
-	<air x="120" y="120"/>
-	<air x="140" y="140"/>
-	<air x="160" y="160"/>
+	<tutorial index="0" x="100" y="300" rotation="15" time="1"/>
+	<tutorial index="1" x="100" y="500" rotation="15" time="3"/>
 </level>

@@ -1,14 +1,15 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.modifiers.AlphaModifier;
 import com.tooflya.bubblefun.modifiers.MoveModifier;
 import com.tooflya.bubblefun.modifiers.ScaleModifier;
 
-public class AirBubble extends BubbleBase {
+public class Coin extends Entity {
+
+	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
+	private static final int[] pNormalMoveFrames = new int[] { 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 };
 
 	private final static float TIME_TO_FOLLOW = 0.4f;
 	private final static float TIME_TO_SCALE = 0.2f;
@@ -46,10 +47,12 @@ public class AirBubble extends BubbleBase {
 	public final float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
 	public float mOffsetY;
 
-	public AirBubble(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+	public Coin(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.enableBlendFunction();
+
+		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
 	}
 
 	// ===========================================================
