@@ -13,14 +13,22 @@ public class Gradient extends org.anddev.andengine.entity.sprite.Sprite {
 	public Gradient(float pX, float pY, float pWidth, float pHeight, TextureRegion pTextureRegion, final Screen mParent) {
 		super(pX, pY, pWidth, pHeight, pTextureRegion);
 
-		this.setPosition(pX, pY);
-
 		mParent.attachChild(this);
+
+		this.setPosition(pX, pY);
 	}
 
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/**
+	 * 
+	 */
+	public void setBackgroundCenterPosition() {
+		this.mX = Options.screenWidth / 2 - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
+		this.mY = Options.screenHeight / 2 - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.Entity#setPosition(float, float)
@@ -50,7 +58,7 @@ public class Gradient extends org.anddev.andengine.entity.sprite.Sprite {
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
-		
+
 		GLHelper.enableDither(pGL);
 	}
 }

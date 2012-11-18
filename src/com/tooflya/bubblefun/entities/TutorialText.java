@@ -1,14 +1,22 @@
 package com.tooflya.bubblefun.entities;
 
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.modifiers.AlphaModifier;
+import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 public class TutorialText extends Sprite {
 
 	public boolean finish;
 
 	private float mElapsedTime, mTime;
+
+	public int index;
 
 	private final AlphaModifier mAlphaModifier1 = new AlphaModifier(1.5f, 0f, 1f) {
 		@Override
@@ -73,12 +81,44 @@ public class TutorialText extends Sprite {
 			this.mAlphaModifier1.reset();
 		}
 	}
-	
-	
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Entity#onManagedDraw(javax.microedition.khronos.opengles.GL10, org.anddev.andengine.engine.camera.Camera)
+	 */
+	@Override
+	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
+		super.onManagedDraw(GL, pCamera);
+
+		if (this.mAlpha > 0) {
+			switch (this.index) {
+			case 1:
+
+				final Sprite sprite = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mTutorialAlert;
+				sprite.enableBlendFunction();
+				sprite.setAlpha(this.mAlpha);
+				sprite.setRotationCenter(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				sprite.setRotation(this.getRotation());
+				sprite.setCenterPosition(this.getCenterX(), this.getY() - sprite.getHeightScaled());
+
+				sprite.onManagedDraw(GL, pCamera);
+
+				final Sprite hand = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mTutorialHand;
+				hand.enableBlendFunction();
+				hand.setAlpha(this.mAlpha);
+				hand.setCenterPosition(this.getCenterX() - this.getWidth() - hand.getWidth(), this.getY());
+				hand.setRotationCenter(hand.getWidth() / 2, hand.getHeight() / 2);
+				hand.setRotation(this.getRotation());
+
+				hand.onManagedDraw(GL, pCamera);
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void destroy() {
 		super.destroy();
-		
+
 		this.detachSelf();
 	}
 }

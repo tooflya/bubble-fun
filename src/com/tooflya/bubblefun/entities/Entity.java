@@ -2,6 +2,7 @@ package com.tooflya.bubblefun.entities;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -356,6 +357,18 @@ public abstract class Entity extends AnimatedSprite {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.shape.Shape#onManagedDraw(javax.microedition.khronos.opengles.GL10, org.anddev.andengine.engine.camera.Camera)
+	 */
+	@Override
+	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
+		super.onManagedDraw(GL, pCamera);
+	}
+
+	public void doDraw(final GL10 pGL, final Camera pCamera) {
+		super.doDraw(pGL, pCamera);
 	}
 
 	/* (non-Javadoc)

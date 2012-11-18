@@ -21,6 +21,7 @@ import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
+import com.tooflya.bubblefun.entities.Sprike;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
@@ -264,6 +265,31 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
+		mLevelLoader.registerEntityLoader("sprike", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final Sprike sprike = screen.sprikes.create();
+
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				final float z = SAXUtils.getFloatAttributeOrThrow(pAttributes, "z");
+
+				final float speed = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
+
+				final int size = SAXUtils.getIntAttribute(pAttributes, "size", 1);
+
+				sprike.setCenterPosition(x, y);
+				sprike.setSpeedX(speed);
+				sprike.init(z, size);
+			}
+		});
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 		mLevelLoader.registerEntityLoader("tutorial", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
@@ -278,6 +304,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen);
 				sprite.create().setPosition(x, y);
+				sprite.index = index;
 				
 				screen.mTutorialSprites.add(sprite);
 			}

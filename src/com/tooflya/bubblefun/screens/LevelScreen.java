@@ -41,6 +41,7 @@ import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Parachute;
+import com.tooflya.bubblefun.entities.Sprike;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.managers.CloudsManager;
@@ -75,7 +76,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mTutorialTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mTutorialTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
 
@@ -226,6 +227,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public EntityManager<Coin> airs = new EntityManager<Coin>(100, new Coin(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "coin-sprite.png", 0, 200, 4, 4), this.mBackground));
 
+	public EntityManager<Sprike> sprikes = new EntityManager<Sprike>(100, new Sprike(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "sprike.png", 0, 300, 1, 1), this.mBackground));
+
 	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "game-panel.png", 630, 900, 1, 1), this.mBackground);
 
 	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 2), this.mBackground) {
@@ -258,17 +261,26 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public final ArrayList<TutorialText> mTutorialSprites = new ArrayList<TutorialText>();
 
+	public final Sprite mTutorialAlert = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/alert.png", 400, 400, 1, 1), this);
+	public final Sprite mTutorialHand = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/hand.png", 200, 400, 2, 1), this);
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LevelScreen() {
 
+		this.mBackground.setBackgroundCenterPosition();
+
 		// ===========================================================
 		// Tutorial
 
 		this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tired.png", 0, 0, 1, 1);
-		this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tap.png", 0, 20, 1, 1);
+		this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tap.png", 0, 40, 1, 1);
+
+		this.mTutorialHand.create().animate(new long[] { 500, 2000 }, new int[] { 0, 1 }, 9999);
+		this.mTutorialHand.enableBlendFunction();
+		this.mTutorialHand.setAlpha(0f);
 
 		// ===========================================================
 
@@ -386,6 +398,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		accelerators.clear();
 		thorns.clear();
 		//electrods.clear();
+		sprikes.clear();
 		mMarks.clear();
 		airs.clear();
 
@@ -394,8 +407,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		feathers.clear();
 
 		for (TutorialText sprite : mTutorialSprites) {
-			if(sprite.getAlpha() > 0)
-			sprite.destroy();
+			if (sprite.getAlpha() > 0)
+				sprite.destroy();
 		}
 
 		Options.bubbleSizePower = Options.bubbleMaxSizePower;
@@ -462,6 +475,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						airgum.isCollide();
 					}
 				}*/
+				for (int j = sprikes.getCount() - 1; j >= 0; --j) {
+					final Sprike sprike = sprikes.getByIndex(j);
+					if (this.isCollide(airgum, sprike, true)) {
+						airgum.isCollide();
+					}
+				}
 				for (int j = bonuses.getCount() - 1; j >= 0; --j) {
 					final Bonus bonus = bonuses.getByIndex(j);
 					if (this.isCollide(airgum, bonus, true)) {
