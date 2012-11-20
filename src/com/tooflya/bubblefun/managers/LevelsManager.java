@@ -192,6 +192,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 
 				chiky.initStartX(startX * Options.cameraWidth);
+				chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
+
+				chiky.initProperties(properties);
 
 				chiky.initNormalStepX(normalStepX);
 				chiky.initSpeedyStepX(speedyStepX);
@@ -202,9 +205,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				chiky.initScale(scale);
 
-				chiky.initProperties(properties);
-
-				chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
 			}
 		});
 

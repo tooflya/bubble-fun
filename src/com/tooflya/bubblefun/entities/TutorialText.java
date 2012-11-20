@@ -119,6 +119,6 @@ public class TutorialText extends Sprite {
 	public void destroy() {
 		super.destroy();
 
-		this.detachSelf();
+		//this.detachSelf();
 	}
 }

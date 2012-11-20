@@ -1,6 +1,7 @@
 package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.util.MathUtils;
 
 import android.util.FloatMath;
 
@@ -60,7 +61,8 @@ public class Chiky extends Entity {
 	private Acceleration mWind = null;
 	private Entity mParahute = null;
 
-	private float vectorX, vectorY;
+	private float vectorX, vectorY, vectorDistance, vectorDistanceNow;
+	private boolean vectorReverse;
 
 	// ===========================================================
 	// Constructors
@@ -84,6 +86,8 @@ public class Chiky extends Entity {
 		this.setRotation(0);
 
 		mState = States.NormalMove;
+
+		this.vectorReverse = false;
 
 		// Center of used region.
 		this.mStartX = Options.cameraWidth / 2;
@@ -147,6 +151,12 @@ public class Chiky extends Entity {
 	public void initVectorMoveSteps(final float pValueX, final float pValueY) {
 		this.vectorX = pValueX;
 		this.vectorY = pValueY;
+
+		this.setSpeed(1, 1);
+
+		if (this.IsProperty(isVectorFlag)) {
+			this.mState = States.Vector;
+		}
 	}
 
 	public void initProperties(final int properties) {
@@ -237,8 +247,11 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateVectorMovement(final float pSecondsElapsed) {
-		this.mX += this.vectorX;
-		this.mY += this.vectorY;
+		final float x = this.vectorX / (float) Math.sqrt(Math.pow(this.vectorX, 2) + Math.pow(this.vectorY, 2));
+		final float y = this.vectorY / (float) Math.sqrt(Math.pow(this.vectorX, 2) + Math.pow(this.vectorY, 2));
+
+		this.mX += x * 3;
+		this.mY += y * 3;
 	}
 
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
