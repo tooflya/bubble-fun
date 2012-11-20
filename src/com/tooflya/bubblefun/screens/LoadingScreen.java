@@ -3,10 +3,13 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.region.TextureRegionLibrary;
+import org.anddev.andengine.util.Debug;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -25,6 +28,10 @@ public class LoadingScreen extends Screen {
 	// Fields
 	// ===========================================================
 
+	
+	 private ITexture mSpritesheetTexture;
+     private TextureRegionLibrary mSpritesheetTextureRegionLibrary;
+     
 	/** Declare the necessary canvas in graphics memory, which then will be used to download images. */
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -54,6 +61,14 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 
 	public LoadingScreen() {
+		try {
+            final TexturePack spritesheetTexturePack = new TexturePackLoader(this, "gfx/spritesheets/").loadFromAsset(this, "texturepackerexample.xml");
+            this.mSpritesheetTexture = spritesheetTexturePack.getTexture();
+            this.mSpritesheetTextureRegionLibrary = spritesheetTexturePack.getTextureRegionLibrary();
+            this.mEngine.getTextureManager().loadTexture(this.mSpritesheetTexture);
+    } catch (final TexturePackParseException e) {
+            Debug.e(e);
+    }
 		this.loadResources();
 
 		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));

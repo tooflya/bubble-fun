@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="LoadingTextures.png" type="bitmap" width="512" height="512" pixelformat="RGBA_8888" minfilter="linear_mipmap_nearest" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="true">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!-- $TexturePacker:SmartUpdate:f17261b350e20207cfa4f7da041a347b$ -->
+    <textureregion id="0" src="preload-screen.png" x="2" y="2" width="300" height="482" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="300" srcheight="482"/>
+</texture>
