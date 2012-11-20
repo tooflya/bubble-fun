@@ -38,7 +38,7 @@ public class LevelChoiseScreen extends Screen {
 
 	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
-	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "back-btn.png", 100, 900, 1, 2), this.mBackground) {
+	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "back-btn.png", 100, 900, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()

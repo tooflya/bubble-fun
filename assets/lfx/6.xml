@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="true">
-	<chiky x="0" y="0.2" speed="1" properties="8"/>
-	<chiky x="0.5" y="0.5" speed="1" properties="8"/>
-	<chiky x="1" y="0.8" speed="1" properties="8"/>
+	<chiky x="0" y="0.2" speed="0.5" />
+	<chiky x="0.5" y="0.4" speed="1.5"/>
+	<chiky x="1" y="0.7" speed="0.5" properties="8"/>
+	<chiky x="1" y="0.9" speed="1" speedyStepX="2" properties="4"/>
+
+	<coin x="200" y="200"/>
+	<coin x="225" y="225"/>
+	<coin x="250" y="240"/>
+	<coin x="225" y="250"/>
+	<coin x="175" y="225"/>
+	<coin x="175" y="250"/>
+	<coin x="200" y="275"/>
+	<coin x="150" y="240"/>
 </level>

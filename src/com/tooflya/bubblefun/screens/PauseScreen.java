@@ -24,7 +24,7 @@ public class PauseScreen extends PopupScreen {
 
 	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-menu.png", 0, 0, 1, 1), this);
 
-	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 335, 0, 1, 2);
+	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 335, 0, 1, 1);
 
 	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
 

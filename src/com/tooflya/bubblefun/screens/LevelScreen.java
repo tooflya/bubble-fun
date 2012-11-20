@@ -231,7 +231,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "game-panel.png", 630, 900, 1, 1), this.mBackground);
 
-	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 2), this.mBackground) {
+	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 1), this.mBackground) {
 
 		@Override
 		public void onClick() {
@@ -239,7 +239,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final ButtonScaleable mResetButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "replay-btn.png", 0, 880, 1, 2), this.mBackground) {
+	private final ButtonScaleable mResetButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "replay-btn.png", 0, 880, 1, 1), this.mBackground) {
 
 		@Override
 		public void onClick() {

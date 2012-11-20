@@ -181,6 +181,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final float normalStepX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
 				final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
 				final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
+				
+				final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
+				final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
 
 				final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
 
@@ -193,6 +196,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				chiky.initNormalStepX(normalStepX);
 				chiky.initSpeedyStepX(speedyStepX);
 				chiky.initParashuteStepY(parashuteStepY);
+				chiky.initVectorMoveSteps(vectorX, vectorY);
 
 				chiky.initOffsetX(offsetX);
 

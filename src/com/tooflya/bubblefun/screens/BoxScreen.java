@@ -60,7 +60,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
-	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "back-btn.png", 100, 900, 1, 2), this.mBackground) {
+	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "back-btn.png", 100, 900, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -93,7 +93,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 		this.mBackground.attachChild(rectangle);
 		this.rectangle.setAlpha(0);
 
-		final TiledTextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box.png", 0, 0, 2, 3);
+		final TiledTextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box.png", 0, 0, 1, 3);
 
 		for (int i = 0; i < MENUITEMS; i++) {
 			final int bi = i;

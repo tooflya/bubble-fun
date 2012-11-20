@@ -26,7 +26,7 @@ public class Chiky extends Entity {
 	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
 
 	private enum States {
-		NormalMove, SpeedyMove, Fall, Parachute
+		NormalMove, SpeedyMove, Fall, Parachute, Vector
 	};
 
 	public static final int isPauseUpdateFlag = 1;
@@ -34,6 +34,7 @@ public class Chiky extends Entity {
 	public static final int isSpeedyFlag = 4;
 	public static final int isWavelyFlag = 8;
 	public static final int isParachuteFlag = 16;
+	public static final int isVectorFlag = 32;
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -58,6 +59,8 @@ public class Chiky extends Entity {
 	private Bubble mAirgum = null;
 	private Acceleration mWind = null;
 	private Entity mParahute = null;
+
+	private float vectorX, vectorY;
 
 	// ===========================================================
 	// Constructors
@@ -139,6 +142,11 @@ public class Chiky extends Entity {
 	public void initScale(final float scale) {
 		this.setWidth(this.mBaseWidth * scale);
 		this.setHeight(this.mBaseHeight * scale);
+	}
+
+	public void initVectorMoveSteps(final float pValueX, final float pValueY) {
+		this.vectorX = pValueX;
+		this.vectorY = pValueY;
 	}
 
 	public void initProperties(final int properties) {
@@ -228,13 +236,18 @@ public class Chiky extends Entity {
 		}
 	}
 
+	private void onManagedUpdateVectorMovement(final float pSecondsElapsed) {
+		this.mX += this.vectorX;
+		this.mY += this.vectorY;
+	}
+
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
 		float x = this.getCenterX() + this.getSpeedX();
 
 		boolean isBorder = false;
 		final float minX = 0 - this.mOffsetX + this.mWidth / 2;
 		if (x < minX) {
-			if(this.getSpeedX() < 0){
+			if (this.getSpeedX() < 0) {
 				x = 2 * minX - x;
 			}
 			this.setSpeedX(Math.abs(this.getSpeedX()));
@@ -242,7 +255,7 @@ public class Chiky extends Entity {
 		}
 		final float maxX = Options.cameraWidth + this.mOffsetX - this.mWidth / 2;
 		if (maxX < x) {
-			if(this.getSpeedX() > 0){
+			if (this.getSpeedX() > 0) {
 				x = 2 * maxX - x;
 			}
 			this.setSpeedX(-Math.abs(this.getSpeedX()));
@@ -368,9 +381,11 @@ public class Chiky extends Entity {
 			case Parachute:
 				this.onManagedUpdateParachute(pSecondsElapsed);
 				break;
+			case Vector:
+				this.onManagedUpdateVectorMovement(pSecondsElapsed);
+				break;
 			}
 
-			
 			if (this.mX - this.mX_ > 0) {
 				this.getTextureRegion().setFlippedHorizontal(false);
 			} else {

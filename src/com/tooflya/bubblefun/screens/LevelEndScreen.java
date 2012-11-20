@@ -29,7 +29,7 @@ public class LevelEndScreen extends PopupScreen {
 
 	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-lvl-popup.png", 0, 0, 1, 1), this);
 
-	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 2), this.mPanel) {
+	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 1), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -44,7 +44,7 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	};
 
-	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-replay.png", 65, 615, 1, 2), this.mPanel) {
+	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-replay.png", 65, 615, 1, 1), this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -58,7 +58,7 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	};
 
-	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-next.png", 130, 615, 1, 2), this.mPanel) {
+	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-next.png", 130, 615, 1, 1), this.mPanel) {
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */

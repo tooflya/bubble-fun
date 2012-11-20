@@ -48,7 +48,7 @@ public class MenuScreen extends Screen {
 
 	private final Sprite mLogoBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-name.png", 0, 620, 1, 1), this.mBackground);
 
-	private final ButtonScaleable mTwitterIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "tw-btn.png", 400, 0, 1, 2), this.mBackground) {
+	private final ButtonScaleable mTwitterIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "tw-btn.png", 400, 0, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -68,7 +68,7 @@ public class MenuScreen extends Screen {
 
 	};
 
-	private final ButtonScaleable mFacebookIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "fb-btn.png", 400, 90, 1, 2), this.mBackground) {
+	private final ButtonScaleable mFacebookIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "fb-btn.png", 400, 90, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -95,7 +95,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final ButtonScaleable mMoreIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "more-btn.png", 400, 180, 1, 2), this.mBackground) {
+	private final ButtonScaleable mMoreIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "more-btn.png", 400, 180, 1, 1), this.mBackground) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -165,7 +165,7 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final Sprite mSettingsIcon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "set-btn.png", 400, 350, 1, 2), this.mBackground, true) {
+	private final Sprite mSettingsIcon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "set.png", 400, 350, 1, 1), this.mBackground, true) {
 
 		private boolean rotation = false;
 
