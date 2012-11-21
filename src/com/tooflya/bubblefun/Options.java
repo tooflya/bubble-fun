@@ -48,7 +48,7 @@ public class Options {
 	public static float menuHeight;
 	// < Camera options.
 
-	public final static int particlesCount = 7;
+	public final static int particlesCount = 14;
 
 	// > Chiky options.
 	public final static int chikyEtalonSize = 64; // Pixels.

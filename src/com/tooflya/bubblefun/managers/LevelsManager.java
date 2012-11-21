@@ -65,14 +65,14 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
 
 	}
-
+	private static int temp;
 	public void generate(final EntityManager<Sprite> pNumbers) {
 		this.mNumbers = pNumbers;
 
 		this.generate();
 	}
 
-	public void generate() {
+	public void generate() {temp = 0;
 		this.mNumbers.clear();
 
 		for (int i = 0; i < this.getCapacity(); i++) {
@@ -178,12 +178,19 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				final float normalStepX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
+				final float normalStepX = SAXUtils.getFloatAttribute(pAttributes, "speed", 0);
 				final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
 				final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
-				
+
 				final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
 				final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
+				final float speedX = SAXUtils.getFloatAttribute(pAttributes, "speedX", 0);
+				final float speedY = SAXUtils.getFloatAttribute(pAttributes, "speedY", 0);
+
+				final float vectorLimit = SAXUtils.getFloatAttribute(pAttributes, "vectorLimit", 0);
+				final float vectorStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStopUpdates", 0);
+				final float vectorStartStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStartStopUpdates", 0);
+				final boolean stopSecond = SAXUtils.getBooleanAttribute(pAttributes, "stopSecond", false);
 
 				final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
 
@@ -191,20 +198,25 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 
+				final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
+
 				chiky.initStartX(startX * Options.cameraWidth);
 				chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
 
 				chiky.initProperties(properties);
-
-				chiky.initNormalStepX(normalStepX);
 				chiky.initSpeedyStepX(speedyStepX);
 				chiky.initParashuteStepY(parashuteStepY);
-				chiky.initVectorMoveSteps(vectorX, vectorY);
+				
+				chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
+
+				if (vectorLimit == 0)
+					chiky.initNormalStepX(normalStepX);
 
 				chiky.initOffsetX(offsetX);
 
 				chiky.initScale(scale);
 
+				chiky.getTextureRegion().setFlippedHorizontal(flip);
 			}
 		});
 
@@ -309,7 +321,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen);
 				sprite.create().setPosition(x, y);
 				sprite.index = index;
-				
+
 				screen.mTutorialSprites.add(sprite);
 			}
 		});

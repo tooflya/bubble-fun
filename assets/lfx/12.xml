@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="false">
-	<chiky startX="-0.10" startY="0.75" normalStepX="0.5"/>
+<level r1="129" g1="84" b1="243" r2="28" g2="230" b2="218" bluebird="true">
+	<chiky x="0.1" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="210" properties="32"/>
+	<chiky x="0.2" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="190" properties="32"/>
+	<chiky x="0.3" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="170" properties="32"/>
+	<chiky x="0.4" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="150" properties="32"/>
+	<chiky x="0.5" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="130" properties="32"/>
+	<chiky x="0.6" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="110" properties="32"/>
+	<chiky x="0.7" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="90" properties="32"/>
+	<chiky x="0.8" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="70" properties="32"/>
+	<chiky x="0.9" y="0" speedX="0" speedY="1" vectorX="0" vectorY="1000" vectorLimit="300" vectorStartStopUpdates="50" properties="32"/>
 </level>

@@ -62,10 +62,12 @@ public class BlueBird extends Entity {
 	public void particles() {
 		((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
 
-		Feather particle;
-		particle = ((Feather) mFeathersManager.create());
-		if (particle != null) {
-			particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+		for (int i = 0; i < Options.particlesCount; i++) {
+			Feather particle;
+			particle = ((Feather) mFeathersManager.create());
+			if (particle != null) {
+				particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+			}
 		}
 	}
 

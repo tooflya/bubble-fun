@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="24" g1="70" b1="243" r2="24" g2="207" b2="243" bluebird="false">
-	<chiky startX="-0.10" startY="0.75" normalStepX="0.5"/>
+<level r1="245" g1="177" b1="170" r2="24" g2="207" b2="243" bluebird="true">
+	<chiky x="0" y="0.15" speed="1.00" properties="8"/>
+	<chiky x="0" y="0.15" speed="1.10" properties="8"/>
+	<chiky x="0" y="0.15" speed="1.20" properties="8"/>
+	<chiky x="0" y="0.15" speed="1.30" properties="8"/>
+	<chiky x="0" y="0.15" speed="1.40" properties="8"/>
+	<chiky x="0" y="0.15" speed="1.50" properties="8"/>
+
+	<chiky x="0" y="0.4" speed="1.00" properties="8"/>
+	<chiky x="0" y="0.4" speed="1.10" properties="8"/>
+	<chiky x="0" y="0.4" speed="1.20" properties="8"/>
+	<chiky x="0" y="0.4" speed="1.30" properties="8"/>
+	<chiky x="0" y="0.4" speed="1.40" properties="8"/>
+	<chiky x="0" y="0.4" speed="1.50" properties="8"/>
+
+	<chiky x="0" y="0.6" speed="1.00" properties="8"/>
+	<chiky x="0" y="0.6" speed="1.10" properties="8"/>
+	<chiky x="0" y="0.6" speed="1.20" properties="8"/>
+	<chiky x="0" y="0.6" speed="1.30" properties="8"/>
+	<chiky x="0" y="0.6" speed="1.40" properties="8"/>
+	<chiky x="0" y="0.6" speed="1.50" properties="8"/>
+
+	<chiky x="0" y="0.85" speed="1.00" properties="8"/>
+	<chiky x="0" y="0.85" speed="1.10" properties="8"/>
+	<chiky x="0" y="0.85" speed="1.20" properties="8"/>
+	<chiky x="0" y="0.85" speed="1.30" properties="8"/>
+	<chiky x="0" y="0.85" speed="1.40" properties="8"/>
+	<chiky x="0" y="0.85" speed="1.50" properties="8"/>
 </level>

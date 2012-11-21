@@ -61,8 +61,8 @@ public class Chiky extends Entity {
 	private Acceleration mWind = null;
 	private Entity mParahute = null;
 
-	private float vectorX, vectorY, vectorDistance, vectorDistanceNow;
-	private boolean vectorReverse;
+	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
+	private boolean vectorReverse, vectorStopSecond;
 
 	// ===========================================================
 	// Constructors
@@ -88,6 +88,7 @@ public class Chiky extends Entity {
 		mState = States.NormalMove;
 
 		this.vectorReverse = false;
+		this.vectorUpdates = 0;
 
 		// Center of used region.
 		this.mStartX = Options.cameraWidth / 2;
@@ -148,11 +149,18 @@ public class Chiky extends Entity {
 		this.setHeight(this.mBaseHeight * scale);
 	}
 
-	public void initVectorMoveSteps(final float pValueX, final float pValueY) {
+	public void initVectorMoveSteps(final float pValueX, final float pValueY, final float pSpeedX, final float pSpeedY, final float pVectorStartStopUpdates, final float pStopUpdates, final float pVectorLimit, final boolean pStopSecond) {
 		this.vectorX = pValueX;
 		this.vectorY = pValueY;
 
-		this.setSpeed(1, 1);
+		this.vectorStopSecond = pStopSecond;
+
+		this.vectorLimit = pVectorLimit;
+
+		this.vectorStopUpdates = pStopUpdates;
+		this.vectorUpdates = -pVectorStartStopUpdates;
+
+		this.setSpeed(pSpeedX, pSpeedY);
 
 		if (this.IsProperty(isVectorFlag)) {
 			this.mState = States.Vector;
@@ -192,7 +200,7 @@ public class Chiky extends Entity {
 			this.mAirgum.mLastX = this.getCenterX();
 			this.mAirgum.mLastY = this.getCenterY();
 
-			if (this.mState == States.NormalMove) {
+			if (this.mState == States.NormalMove || this.mState == States.Vector) {
 				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 			}
 			else { // States.SpeedyMove.
@@ -228,9 +236,9 @@ public class Chiky extends Entity {
 
 			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
-				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 				airgum.setParent(mAirgum);
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
+				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
 			}
 
@@ -247,11 +255,38 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateVectorMovement(final float pSecondsElapsed) {
+		this.vectorUpdates++;
+
 		final float x = this.vectorX / (float) Math.sqrt(Math.pow(this.vectorX, 2) + Math.pow(this.vectorY, 2));
 		final float y = this.vectorY / (float) Math.sqrt(Math.pow(this.vectorX, 2) + Math.pow(this.vectorY, 2));
 
-		this.mX += x * 3;
-		this.mY += y * 3;
+		if (this.vectorUpdates >= this.vectorLimit) {
+			this.vectorReverse = !this.vectorReverse;
+
+			if (!this.vectorReverse) {
+				this.vectorUpdates = -this.vectorStopUpdates;
+			} else {
+				if (this.vectorStopSecond) {
+					this.vectorUpdates = -this.vectorStopUpdates;
+				} else {
+					this.vectorUpdates = 0;
+				}
+			}
+		}
+
+		if (this.vectorUpdates > 0) {
+			if (this.vectorReverse) {
+				this.mX -= x * this.getSpeedX();
+				this.mY -= y * this.getSpeedY();
+			} else {
+				this.mX += x * this.getSpeedX();
+				this.mY += y * this.getSpeedY();
+			}
+		}
+
+		if (this.mAirgum != null) {
+			this.onManagedUpdateWithGum(pSecondsElapsed);
+		}
 	}
 
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
@@ -401,7 +436,7 @@ public class Chiky extends Entity {
 
 			if (this.mX - this.mX_ > 0) {
 				this.getTextureRegion().setFlippedHorizontal(false);
-			} else {
+			} else if (this.mX - this.mX_ < 0) {
 				this.getTextureRegion().setFlippedHorizontal(true);
 			}
 		}
