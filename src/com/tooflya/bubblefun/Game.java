@@ -19,6 +19,8 @@ import org.anddev.andengine.entity.util.FPSCounter;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
+import org.anddev.andengine.util.user.AsyncTaskLoader;
+import org.anddev.andengine.util.user.IAsyncCallback;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -33,8 +35,6 @@ import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
 
-import com.tooflya.bubblefun.background.AsyncTaskLoader;
-import com.tooflya.bubblefun.background.IAsyncCallback;
 import com.tooflya.bubblefun.database.LevelsStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.Screen;

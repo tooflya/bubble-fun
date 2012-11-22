@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.modifier.AlphaModifier;
+import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -47,8 +49,6 @@ import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
-import com.tooflya.bubblefun.modifiers.AlphaModifier;
-import com.tooflya.bubblefun.modifiers.MoveModifier;
 
 /**
  * @author Tooflya.com
@@ -198,8 +198,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
+	public EntityManager<Coin> coins = new EntityManager<Coin>(100, new Coin(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "coin-sprite.png", 0, 200, 4, 4), this.mBackground));
+
 	public EntityManager<Parachute> parachutes = new EntityManager<Parachute>(5, new Parachute(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "parachute.png", 200, 200, 1, 1), this.mBackground));
-	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(30, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
+	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
 	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "gum-animation.png", 430, 280, 1, 6), this.mBackground));
 	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather.png", 730, 585, 1, 2), this.mBackground));
 	public EntityManager<Glint> glints = new EntityManager<Glint>(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blesk.png", 730, 900, 1, 3), this.mBackground));
@@ -224,8 +226,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	};
 
 	private Sprite mSpecialButton = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bb-btn.png", 0, 100, 2, 1), this.mBackground);
-
-	public EntityManager<Coin> airs = new EntityManager<Coin>(100, new Coin(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "coin-sprite.png", 0, 200, 4, 4), this.mBackground));
 
 	public EntityManager<Sprike> sprikes = new EntityManager<Sprike>(100, new Sprike(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "sprike.png", 0, 300, 1, 1), this.mBackground));
 
@@ -400,7 +400,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		//electrods.clear();
 		sprikes.clear();
 		mMarks.clear();
-		airs.clear();
+		coins.clear();
 
 		generateChikies();
 
@@ -495,8 +495,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					}
 				}
 
-				for (int k = 0; k < this.airs.getCount(); k++) {
-					final Coin air = this.airs.getByIndex(k);
+				for (int k = 0; k < this.coins.getCount(); k++) {
+					final Coin air = this.coins.getByIndex(k);
 
 					if (air.getX() <= (airgum.getX() + airgum.getWidthScaled()) &&
 							airgum.getX() <= (air.getX() + air.getWidthScaled()) &&
@@ -592,7 +592,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			this.mLevelEndRunning = true;
 
 			airgums.clear();
-			airs.clear();
+			coins.clear();
 			feathers.clear();
 
 			this.lastAirgum = null;

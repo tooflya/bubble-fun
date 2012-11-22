@@ -10,12 +10,12 @@ import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListe
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.util.modifier.IModifier;
+import org.anddev.andengine.util.user.AsyncTaskLoader;
+import org.anddev.andengine.util.user.IAsyncCallback;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.background.AsyncTaskLoader;
-import com.tooflya.bubblefun.background.IAsyncCallback;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.screens.BoxScreen;
 import com.tooflya.bubblefun.screens.ExitScreen;
@@ -55,12 +55,8 @@ public class ScreenManager implements IAsyncCallback {
 			screens[Z].onAttached();
 			Screen.screen = Z;
 
-			if (ao) {
-				ScreenManager.this.modifierOff.reset();
-			} else {
-				ScreenManager.this.rectangle.registerEntityModifier(ScreenManager.this.modifierOff);
-				ao = true;
-			}
+			ScreenManager.this.modifierOff.reset();
+
 		}
 
 		/**
@@ -297,6 +293,9 @@ public class ScreenManager implements IAsyncCallback {
 		r.setPosition(r.getX(), mBackground.getY() - d.getHeight());
 
 		d.create().setCenterPosition(mBackground.getWidth() / 2, mBackground.getHeight() + d.getHeight() / 2 - 1f);
+
+		ScreenManager.this.rectangle.registerEntityModifier(ScreenManager.this.modifierOn);
+		ScreenManager.this.rectangle.registerEntityModifier(ScreenManager.this.modifierOff);
 	}
 
 	// ===========================================================
@@ -316,9 +315,6 @@ public class ScreenManager implements IAsyncCallback {
 		coloredRect.setColor(pRed, pGreen, pBlue);
 		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
-		this.modifierOn.setRemoveWhenFinished(false);
-		this.modifierOff.setRemoveWhenFinished(false);
-
 		coloredRect.setAlpha(0f);
 
 		this.hud.attachChild(coloredRect);
@@ -328,21 +324,13 @@ public class ScreenManager implements IAsyncCallback {
 
 	private static int Z = 666;
 
-	private boolean ai = false;
-	private boolean ao = false;
-
 	public void set(final int pScreen) {
 		if (Z == pScreen)
 			return;
 
 		Z = pScreen;
 
-		if (ai) {
-			this.modifierOn.reset();
-		} else {
-			this.rectangle.registerEntityModifier(this.modifierOn);
-			ai = true;
-		}
+		this.modifierOn.reset();
 	}
 
 	public void set(final int pScreen, final boolean pNoAnimation) {

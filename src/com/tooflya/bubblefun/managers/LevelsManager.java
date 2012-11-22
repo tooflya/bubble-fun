@@ -247,7 +247,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("coin", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Coin air = screen.airs.create();
+				final Coin air = screen.coins.create();
 
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
@@ -333,7 +333,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 */
 
-		if (false) {
+		if (true) {
 			try {
 				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel * (Options.boxNumber + 1) + ".xml");
 			} catch (IOException e) {

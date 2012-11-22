@@ -11,4 +11,19 @@
 	<chiky x="0.7" y="0.5" speedX="1" speedY="1" vectorX="-1000" vectorY="600" vectorLimit="200" vectorStopUpdates="110" properties="32"/>
 	<chiky x="0.8" y="0.5" speedX="1" speedY="1" vectorX="-400" vectorY="-600" vectorLimit="200" vectorStopUpdates="110" properties="32"/>
 	<chiky x="0.9" y="0.5" speedX="1" speedY="1" vectorX="-1000" vectorY="-600" vectorLimit="200" vectorStopUpdates="110" properties="32"/>
+
+	<coin x="190" y="250"/>
+	<coin x="190" y="230"/>
+	<coin x="190" y="210"/>
+	<coin x="190" y="190"/>
+
+	<coin x="120" y="300"/>
+	<coin x="100" y="300"/>
+	<coin x="80" y="300"/>
+	<coin x="60" y="300"/>
+
+	<coin x="260" y="300"/>
+	<coin x="280" y="300"/>
+	<coin x="300" y="300"/>
+	<coin x="320" y="300"/>
 </level>

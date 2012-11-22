@@ -8,8 +8,6 @@ public class ButtonScaleable extends Button {
 
 	private ScaleModifier mScaleModifier;
 
-	private boolean mModifierAttached = false;
-
 	private float mWaitBeforeAction = 0.3f;
 	private boolean mDoAction = false;
 
@@ -32,9 +30,10 @@ public class ButtonScaleable extends Button {
 			this.mBaseScale = this.getScaleX();
 
 			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.1f);
-			this.mScaleModifier.setRemoveWhenFinished(false);
 
 			this.setScaleCenter(this.getBaseWidth() / 2, this.getBaseHeight() / 2);
+			
+			this.registerEntityModifier(this.mScaleModifier);
 		}
 
 		return super.create();
@@ -56,12 +55,7 @@ public class ButtonScaleable extends Button {
 		case TouchEvent.ACTION_UP:
 			if (this.isClicked) {
 				if (this.mWaitBeforeAction == 0.3f) {
-					if (this.mModifierAttached) {
-						this.mScaleModifier.reset();
-					} else {
-						this.registerEntityModifier(this.mScaleModifier);
-						this.mModifierAttached = true;
-					}
+					this.mScaleModifier.reset();
 
 					this.mDoAction = true;
 				}

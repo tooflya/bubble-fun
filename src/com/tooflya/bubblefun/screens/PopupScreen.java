@@ -2,10 +2,10 @@ package com.tooflya.bubblefun.screens;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.modifiers.ScaleModifier;
 
 public class PopupScreen extends Screen {
 

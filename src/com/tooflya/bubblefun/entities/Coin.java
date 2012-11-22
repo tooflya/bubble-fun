@@ -1,10 +1,9 @@
 package com.tooflya.bubblefun.entities;
 
+import org.anddev.andengine.entity.modifier.AlphaModifier;
+import org.anddev.andengine.entity.modifier.MoveModifier;
+import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-
-import com.tooflya.bubblefun.modifiers.AlphaModifier;
-import com.tooflya.bubblefun.modifiers.MoveModifier;
-import com.tooflya.bubblefun.modifiers.ScaleModifier;
 
 public class Coin extends Entity {
 

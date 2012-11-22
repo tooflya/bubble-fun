@@ -16,8 +16,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 
 public class Beta {

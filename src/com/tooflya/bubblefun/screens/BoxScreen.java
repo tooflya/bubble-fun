@@ -42,7 +42,6 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	protected static int PADDING = 50;
 
 	protected static int MENUITEMS = 4;
-	private static int CURRENTMENUITEM = 0;
 
 	private final BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -104,7 +103,7 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 					if (mPostScroll)
 						return;
 
-					if (bi > 0) {
+					if (bi > 1) {
 						boxes.get(bi).animation();
 						return;
 					}
@@ -115,17 +114,22 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY);
 			sprite.setCurrentTileIndex(0);
 
-			if (bi > 0 && bi != 3) {
-				sprite.setCurrentTileIndex(4);
+			if (bi > 1 && bi != 3) {
 
 				final Sprite lock = (Sprite) new Sprite(textureRegion, sprite).create();
-				lock.setCurrentTileIndex(5);
+				lock.setCurrentTileIndex(2);
 				lock.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			}
 
 			if (bi == 0) {
-				final Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-1.png", 512, 0, 1, 1), sprite).create();
+				Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-1.png", 512, 0, 1, 1), sprite).create();
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				
+				picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-name-1.png", 700, 700, 1, 1), this.rectangle).create();
+				picture.setCenterPosition(sprite.getX() + sprite.getWidth() / 2, 170);
+			} else if (bi == 1) {
+					final Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-2.png", 512, 712, 1, 1), sprite).create();
+					picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			} else if (bi == 3) {
 				final Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "coming-soon-01.png", 512, 512, 1, 1), sprite).create();
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
@@ -198,12 +202,12 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 					try {
 						for (Box box : boxes) {
 							//if (box != boxes.get((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1))
-								//box.modifier5.reset();
+							//box.modifier5.reset();
 						}
 					} catch (ArrayIndexOutOfBoundsException e) {
 						for (Box box : boxes) {
 							//if (box != boxes.get(0))
-								//box.modifier5.reset();
+							//box.modifier5.reset();
 						}
 					}
 

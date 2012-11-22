@@ -27,4 +27,27 @@
 	<chiky x="0.24" y="1" speedX="0" speedY="-1" vectorX="0" vectorY="1000" vectorLimit="340" vectorStartStopUpdates="60" vectorStopUpdates="80" scale="0.7" flip="true" properties="32"/>
 	<chiky x="0.17" y="1" speedX="0" speedY="-1" vectorX="0" vectorY="1000" vectorLimit="340" vectorStartStopUpdates="40" vectorStopUpdates="80" scale="0.7" flip="true" properties="32"/>
 	<chiky x="0.10" y="1" speedX="0" speedY="-1" vectorX="0" vectorY="1000" vectorLimit="340" vectorStartStopUpdates="20" vectorStopUpdates="80" scale="0.7" flip="true" properties="32"/>
+
+	<coin x="20" y="370"/>
+	<coin x="40" y="350"/>
+	<coin x="60" y="330"/>
+	<coin x="80" y="310"/>
+	<coin x="100" y="290"/>
+	<coin x="120" y="270"/>
+	<coin x="140" y="250"/>
+	<coin x="160" y="230"/>
+	<coin x="180" y="210"/>
+	<coin x="200" y="190"/>
+
+
+	<coin x="170" y="270"/>
+	<coin x="190" y="250"/>
+	<coin x="210" y="230"/>
+	<coin x="230" y="210"/>
+	<coin x="250" y="190"/>
+	<coin x="270" y="170"/>
+	<coin x="290" y="150"/>
+	<coin x="310" y="130"/>
+	<coin x="330" y="110"/>
+	<coin x="350" y="90"/>
 </level>

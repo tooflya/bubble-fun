@@ -3,10 +3,10 @@ package com.tooflya.bubblefun.entities;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.modifiers.AlphaModifier;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 

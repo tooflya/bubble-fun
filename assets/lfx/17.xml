@@ -27,4 +27,22 @@
 	<chiky x="0" y="0.85" speed="1.30" properties="8"/>
 	<chiky x="0" y="0.85" speed="1.40" properties="8"/>
 	<chiky x="0" y="0.85" speed="1.50" properties="8"/>
+
+	<coin x="180" y="170"/>
+	<coin x="180" y="190"/>
+	<coin x="180" y="210"/>
+	<coin x="180" y="230"/>
+	<coin x="180" y="250"/>
+
+	<coin x="310" y="270"/>
+	<coin x="310" y="290"/>
+	<coin x="310" y="210"/>
+	<coin x="310" y="230"/>
+	<coin x="310" y="250"/>
+
+	<coin x="110" y="370"/>
+	<coin x="110" y="390"/>
+	<coin x="110" y="310"/>
+	<coin x="110" y="330"/>
+	<coin x="110" y="350"/>
 </level>

@@ -2,6 +2,7 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
+import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -12,12 +13,12 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
-import com.tooflya.bubblefun.modifiers.AlphaModifier;
 
 public class LevelEndScreen extends PopupScreen {
 
@@ -108,6 +109,8 @@ public class LevelEndScreen extends PopupScreen {
 	private final EntityManager<Sprite> mStarsCountText = new EntityManager<Sprite>(1, new Sprite(numbersTextureRegion, this.mPanel));
 	private final EntityManager<Sprite> mScoreCountText = new EntityManager<Sprite>(4, new Sprite(numbersTextureRegion, this.mPanel));
 	private final EntityManager<Sprite> mTotalScoreCountText = new EntityManager<Sprite>(4, new Sprite(numbersTextureRegion, this.mPanel));
+
+	private final AwesomeText mLevelCompleteCapture = new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_text_complete.png", 512, 800, 1, 1), false, this.mPanel);
 
 	// ===========================================================
 	// Constructors
@@ -200,6 +203,8 @@ public class LevelEndScreen extends PopupScreen {
 
 		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount);
 		Game.db.updateLevel(Options.levelNumber + 1, 1); // TODO: Remove stars reset
+
+		mLevelCompleteCapture.create().setPosition(this.mPanel.getWidth() / 2 - this.mLevelCompleteCapture.getWidth() / 2, this.mPanel.getHeight() / 2 - 200 - this.mLevelCompleteCapture.getHeight() / 2);
 	}
 
 	@Override
@@ -230,6 +235,8 @@ public class LevelEndScreen extends PopupScreen {
 		this.unregisterUpdateHandler(mTimer);
 
 		stars.clear();
+		
+		mLevelCompleteCapture.destroy();
 	}
 
 	private int score, totalscore;

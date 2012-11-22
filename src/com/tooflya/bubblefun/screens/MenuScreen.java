@@ -1,5 +1,7 @@
 package com.tooflya.bubblefun.screens;
 
+import org.anddev.andengine.entity.modifier.MoveModifier;
+import org.anddev.andengine.entity.modifier.RotationModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -16,8 +18,6 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
-import com.tooflya.bubblefun.modifiers.MoveModifier;
-import com.tooflya.bubblefun.modifiers.RotationModifier;
 
 /**
  * @author Tooflya.com

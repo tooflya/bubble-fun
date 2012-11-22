@@ -1,12 +1,8 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.entity.Entity;
+import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-
-import com.tooflya.bubblefun.modifiers.AlphaModifier;
-import com.tooflya.bubblefun.modifiers.ScaleModifier;
 
 public class Box extends ButtonScaleable {
 

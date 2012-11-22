@@ -6,4 +6,18 @@
 	<chiky x="0.5" y="0.5" speed="1.5"  speedyStepX="3" properties="4"/>
 	<chiky x="1" y="1" speed="2" />
 
+	<coin x="350" y="350"/>
+	<coin x="330" y="330"/>
+	<coin x="310" y="310"/>
+	<coin x="290" y="290"/>
+	<coin x="270" y="270"/>
+	<coin x="250" y="250"/>
+	<coin x="230" y="230"/>
+
+	<coin x="50" y="250"/>
+	<coin x="70" y="230"/>
+	<coin x="90" y="210"/>
+	<coin x="110" y="190"/>
+	<coin x="130" y="170"/>
+
 </level>

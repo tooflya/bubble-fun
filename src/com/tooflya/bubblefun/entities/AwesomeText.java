@@ -17,15 +17,23 @@ public class AwesomeText extends Entity {
 	private float step = 3f;
 	private int mi = 40, i = 0;
 
+	private boolean mDisappear;
+
 	private boolean mNeedDeath;
 
-	public AwesomeText(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+	public AwesomeText(final TiledTextureRegion pTiledTextureRegion, final boolean pDisappear, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
+
+		this.mDisappear = pDisappear;
 
 		this.enableBlendFunction();
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
+	}
+
+	public AwesomeText(final TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+		this(pTiledTextureRegion, true, pParentScreen);
 	}
 
 	protected void onAnimationFinished() {
@@ -112,7 +120,7 @@ public class AwesomeText extends Entity {
 			}
 		}
 
-		if (this.mNeedDeath) {
+		if (this.mNeedDeath && this.mDisappear) {
 			if (this.getAlpha() >= 0) {
 				this.setAlpha(this.getAlpha() - 0.005f);
 			} else {
