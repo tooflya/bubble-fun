@@ -75,7 +75,7 @@ public class CreditsScreen extends Screen {
 
 		this.mCredits.enableBlendFunction();
 		this.mCredits.setAlpha(1f);
-		this.mCredits.create().setCenterPosition(this.mFrontRectangle.getWidth() / 2, 50);
+		this.mCredits.create().setCenterPosition(this.mFrontRectangle.getWidth() / 2, this.mFrontRectangle.getHeight() / 2);
 	}
 
 	// ===========================================================

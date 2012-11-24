@@ -225,7 +225,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private Sprite mSpecialButton = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bb-btn.png", 0, 100, 2, 1), this.mBackground);
+	//private Sprite mSpecialButton = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bb-btn.png", 0, 100, 2, 1), this.mBackground);
 
 	public EntityManager<Sprike> sprikes = new EntityManager<Sprike>(100, new Sprike(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "sprike.png", 0, 300, 1, 1), this.mBackground));
 
@@ -491,7 +491,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						airgum.isCollide();
 						bonus.isCollide();
 
-						this.mSpecialButton.setCurrentTileIndex(1);
+						//this.mSpecialButton.setCurrentTileIndex(1);
 					}
 				}
 
