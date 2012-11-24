@@ -9,7 +9,9 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
+import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.managers.CloudsManager;
 
 /**
  * @author Tooflya.com
@@ -29,6 +31,8 @@ public class MoreScreen extends Screen {
 
 	/** Declare the entity that acts as a background image of the screen. */
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "sb.png", 0, 0, 1, 1), this);
+
+	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
 
 	private final Sprite mTopPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "lvl-panel.png", 630, 900, 1, 1), this.mBackground);
 
@@ -73,6 +77,8 @@ public class MoreScreen extends Screen {
 	public MoreScreen() {
 		this.loadResources();
 
+		this.clouds.generateStartClouds();
+
 		this.mBackground.create().setBackgroundCenterPosition();
 
 		this.mTopPanel.create().setPosition(0, 0);
@@ -86,6 +92,18 @@ public class MoreScreen extends Screen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 */
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		this.clouds.update();
+	}
 
 	/*
 	 * (non-Javadoc)

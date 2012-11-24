@@ -27,7 +27,7 @@ public class CreditsScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(256, 64, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	/** Declare the entity that acts as a background image of the screen. */
 	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "sb.png", 0, 0, 1, 1), this);
@@ -73,6 +73,8 @@ public class CreditsScreen extends Screen {
 
 		this.mBaseRectangle.attachChild(this.mFrontRectangle);
 
+		this.mCredits.enableBlendFunction();
+		this.mCredits.setAlpha(1f);
 		this.mCredits.create().setCenterPosition(this.mFrontRectangle.getWidth() / 2, 50);
 	}
 
