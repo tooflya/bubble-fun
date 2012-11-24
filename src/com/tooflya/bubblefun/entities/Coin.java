@@ -50,8 +50,6 @@ public class Coin extends Entity {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.enableBlendFunction();
-
-		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
 	}
 
 	// ===========================================================
@@ -65,6 +63,9 @@ public class Coin extends Entity {
 	 */
 	@Override
 	public Entity create() {
+		this.stopAnimation();
+		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+		
 		this.clearEntityModifiers();
 
 		this.registerEntityModifier(mScaleModifier);

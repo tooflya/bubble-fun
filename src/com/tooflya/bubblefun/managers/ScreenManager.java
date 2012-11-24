@@ -18,11 +18,13 @@ import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.screens.BoxScreen;
+import com.tooflya.bubblefun.screens.CreditsScreen;
 import com.tooflya.bubblefun.screens.ExitScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.MenuScreen;
+import com.tooflya.bubblefun.screens.MoreScreen;
 import com.tooflya.bubblefun.screens.PauseScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
@@ -253,6 +255,8 @@ public class ScreenManager implements IAsyncCallback {
 		screens[Screen.EXIT] = new ExitScreen();
 		screens[Screen.PAUSE] = new PauseScreen();
 		screens[Screen.BOX] = new BoxScreen();
+		screens[Screen.MORE] = new MoreScreen();
+		screens[Screen.CREDITS] = new CreditsScreen();
 
 		Game.loadTextures(Screen.mCommonTextureAtlas, Screen.mCommonTextureAtlas2);
 
@@ -370,6 +374,8 @@ public class ScreenManager implements IAsyncCallback {
 	@Override
 	public void workToDo() {
 		if (mChangeAction == 0) {
+			Game.screens.get(Screen.CREDITS).unloadResources();
+			Game.screens.get(Screen.MORE).unloadResources();
 			Game.screens.get(Screen.EXIT).unloadResources();
 			Game.screens.get(Screen.MENU).unloadResources();
 			Game.screens.get(Screen.BOX).unloadResources();
@@ -381,6 +387,8 @@ public class ScreenManager implements IAsyncCallback {
 			Game.screens.get(Screen.PAUSE).unloadResources();
 			Game.screens.get(Screen.LEVEL).unloadResources();
 			Game.screens.get(Screen.LEVELEND).unloadResources();
+			Game.screens.get(Screen.CREDITS).loadResources();
+			Game.screens.get(Screen.MORE).loadResources();
 			Game.screens.get(Screen.MENU).loadResources();
 			Game.screens.get(Screen.BOX).loadResources();
 			Game.screens.get(Screen.CHOISE).loadResources();

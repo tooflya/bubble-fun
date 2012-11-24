@@ -37,8 +37,8 @@ import android.view.KeyEvent;
 
 import com.tooflya.bubblefun.database.LevelsStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
+import com.tooflya.bubblefun.screens.AndEngineScreen;
 import com.tooflya.bubblefun.screens.Screen;
-import com.tooflya.bubblefun.screens.SplashScreen;
 
 /**
  * @author Tooflya.com
@@ -362,7 +362,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		/**
 		 * Create loading screen and return her scene for attaching to the activity
 		 */
-		return new SplashScreen();
+		return new AndEngineScreen();
 	}
 
 	/*

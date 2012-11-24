@@ -28,7 +28,7 @@ public abstract class Screen extends Scene implements IScreen {
 
 	public static TiledTextureRegion cloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "cloud.png", 0, 0, 1, 4);
 
-	public static final int SCREENS_COUNT = 8;
+	public static final int SCREENS_COUNT = 10;
 
 	public static final int NO_SCREEN = -1;
 
@@ -39,6 +39,8 @@ public abstract class Screen extends Scene implements IScreen {
 	public static final int EXIT = 4;
 	public static final int PAUSE = 5;
 	public static final int BOX = 7;
+	public static final int MORE = 8;
+	public static final int CREDITS = 9;
 
 	// ===========================================================
 	// Fields
