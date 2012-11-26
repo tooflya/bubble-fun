@@ -76,7 +76,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	private final BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mTutorialTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final BitmapTextureAtlas mTutorialTextureAtlas = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
 
@@ -261,9 +261,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public final ArrayList<TutorialText> mTutorialSprites = new ArrayList<TutorialText>();
 
-	public final Sprite mTutorialAlert = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/alert.png", 400, 400, 1, 1), this);
-	public final Sprite mTutorialHand = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/hand.png", 200, 400, 2, 1), this);
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -275,12 +272,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		// ===========================================================
 		// Tutorial
 
-		this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tired.png", 0, 0, 1, 1);
-		this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tap.png", 0, 40, 1, 1);
-
-		this.mTutorialHand.create().animate(new long[] { 500, 2000 }, new int[] { 0, 1 }, 9999);
-		this.mTutorialHand.enableBlendFunction();
-		this.mTutorialHand.setAlpha(0f);
+		this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-1.png", 0, 0, 1, 1);
+		this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-2.png", 0, 40, 1, 1);
 
 		// ===========================================================
 

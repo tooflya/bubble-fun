@@ -253,7 +253,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@TargetApi(8)
 	@Override
 	public void onComplete() {
-		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 8) {
+		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 8 && false) {
 			// ====================================================================================
 			// FOR THE BETA VERSION ONLY
 			// TODO: Remove this before relise
@@ -356,6 +356,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				}
 			});
 		}
+		
 		/** Start background loader */
 		new AsyncTaskLoader().execute(this);
 

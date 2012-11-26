@@ -89,30 +89,8 @@ public class TutorialText extends Sprite {
 	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
 		super.onManagedDraw(GL, pCamera);
 
-		if (this.mAlpha > 0) {
-			switch (this.index) {
-			case 1:
-
-				final Sprite sprite = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mTutorialAlert;
-				sprite.enableBlendFunction();
-				sprite.setAlpha(this.mAlpha);
-				sprite.setRotationCenter(sprite.getWidth() / 2, sprite.getHeight() / 2);
-				sprite.setRotation(this.getRotation());
-				sprite.setCenterPosition(this.getCenterX(), this.getY() - sprite.getHeightScaled());
-
-				sprite.onManagedDraw(GL, pCamera);
-
-				final Sprite hand = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mTutorialHand;
-				hand.enableBlendFunction();
-				hand.setAlpha(this.mAlpha);
-				hand.setCenterPosition(this.getCenterX() - this.getWidth() - hand.getWidth(), this.getY());
-				hand.setRotationCenter(hand.getWidth() / 2, hand.getHeight() / 2);
-				hand.setRotation(this.getRotation());
-
-				hand.onManagedDraw(GL, pCamera);
-				break;
-			}
-		}
+		
+		
 	}
 
 	@Override
