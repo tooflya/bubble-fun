@@ -236,11 +236,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void workToDo() {
+		Resources.loadFirstResources();
 
 		/** Create screen manager */
 		screens = new ScreenManager();
 
-		/** White while progressbar is running */
+		/** Wait while progressbar is running */
 		while (!isGameLoaded) {
 		} // TODO: synchronized?
 	}
@@ -356,9 +357,6 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				}
 			});
 		}
-		
-		/** Start background loader */
-		new AsyncTaskLoader().execute(this);
 
 		/**
 		 * Create loading screen and return her scene for attaching to the activity

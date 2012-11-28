@@ -3,16 +3,13 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.modifier.RotationModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import android.content.Intent;
 import android.net.Uri;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -23,7 +20,7 @@ import com.tooflya.bubblefun.managers.ScreenManager;
  * @author Tooflya.com
  * @since
  */
-public class MenuScreen extends Screen {
+public class MenuScreen extends ReflectionScreen {
 
 	// ===========================================================
 	// Constants
@@ -37,93 +34,17 @@ public class MenuScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final Sprite mLogoBackground;
+	private final Sprite mSettingsIcon;
+
+	private final ButtonScaleable mTwitterIcon;
+	private final ButtonScaleable mFacebookIcon;
+	private final ButtonScaleable mPlayIcon;
+	private final ButtonScaleable mMoreIcon;
+	private final ButtonScaleable mSoundIcon;
 
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
-
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "mb.png", 0, 0, 1, 1), this);
-
-	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
-
-	private final Sprite mLogoBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "main-name.png", 0, 620, 1, 1), this.mBackground);
-
-	private final ButtonScaleable mTwitterIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "tw-btn.png", 400, 0, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			try {
-				Intent intent = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("twitter://user?screen_name=tooflya"));
-				Game.instance.startActivity(intent);
-
-			} catch (Exception e) {
-				Game.instance.startActivity(new Intent(Intent.ACTION_VIEW,
-						Uri.parse("https://twitter.com/#!/tooflya")));
-			}
-		}
-
-	};
-
-	private final ButtonScaleable mFacebookIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "fb-btn.png", 400, 90, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			try {
-				Game.context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
-				Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/386292514777918")));
-			} catch (Exception e) {
-				Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/386292514777918")));
-			}
-		}
-	};
-
-	private final ButtonScaleable mPlayIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "play.png", 0, 860, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.BOX);
-		}
-	};
-
-	private final ButtonScaleable mMoreIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "more-btn.png", 400, 180, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.MORE);
-		}
-	};
-
-	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 400, 250, 1, 2), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Options.isMusicEnabled = !Options.isMusicEnabled;
-
-			if (Options.isMusicEnabled) {
-				this.setCurrentTileIndex(0);
-				Options.mMainSound.play();
-			} else {
-				this.setCurrentTileIndex(1);
-				Options.mMainSound.pause();
-			}
-		}
-	};
 
 	private final MoveModifier mMoreMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 53f + ICONS_PADDING * 2, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
@@ -166,46 +87,134 @@ public class MenuScreen extends Screen {
 		}
 	};
 
-	private final Sprite mSettingsIcon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "set.png", 400, 350, 1, 1), this.mBackground, true) {
-
-		private boolean rotation = false;
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
-		 */
-		@Override
-		public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-			switch (pAreaTouchEvent.getAction()) {
-			case TouchEvent.ACTION_UP:
-				if (this.rotation) {
-					MenuScreen.this.mRotateOff.reset();
-					MenuScreen.this.mMoreMoveOff.reset();
-					MenuScreen.this.mSoundMoveOff.reset();
-				} else {
-					MenuScreen.this.mRotateOn.reset();
-					MenuScreen.this.mMoreMoveOn.reset();
-					MenuScreen.this.mSoundMoveOn.reset();
-				}
-				this.rotation = !this.rotation;
-				break;
-			}
-
-			return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-		}
-	};
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public MenuScreen() {
-		this.loadResources();
+		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
+		this.mBackgroundHouses = Resources.mBackgroundHouses1.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
-		this.clouds.generateStartClouds();
+		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
+
+		this.mLogoBackground = new Sprite(Resources.mBackgroundLogoNameTextureRegion, this.mBackground);
+
+		this.mTwitterIcon = new ButtonScaleable(Resources.mTwitterTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				try {
+					Intent intent = new Intent(Intent.ACTION_VIEW,
+							Uri.parse("twitter://user?screen_name=tooflya"));
+					Game.instance.startActivity(intent);
+
+				} catch (Exception e) {
+					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW,
+							Uri.parse("https://twitter.com/#!/tooflya")));
+				}
+			}
+
+		};
+
+		this.mFacebookIcon = new ButtonScaleable(Resources.mFacebookTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				try {
+					Game.context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
+					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/386292514777918")));
+				} catch (Exception e) {
+					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/386292514777918")));
+				}
+			}
+		};
+
+		this.mPlayIcon = new ButtonScaleable(Resources.mPlayIconTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.BOX);
+			}
+		};
+
+		this.mMoreIcon = new ButtonScaleable(Resources.mMoreIconTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.MORE);
+			}
+		};
+
+		this.mSoundIcon = new ButtonScaleable(Resources.mSoundIconTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Options.isMusicEnabled = !Options.isMusicEnabled;
+
+				if (Options.isMusicEnabled) {
+					this.setCurrentTileIndex(0);
+					Options.mMainSound.play();
+				} else {
+					this.setCurrentTileIndex(1);
+					Options.mMainSound.pause();
+				}
+			}
+		};
+
+		this.mSettingsIcon = new Sprite(Resources.mSettingsIconTextureRegion, this.mBackground, true) {
+
+			private boolean rotation = false;
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+			 */
+			@Override
+			public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				switch (pAreaTouchEvent.getAction()) {
+				case TouchEvent.ACTION_UP:
+					if (this.rotation) {
+						MenuScreen.this.mRotateOff.reset();
+						MenuScreen.this.mMoreMoveOff.reset();
+						MenuScreen.this.mSoundMoveOff.reset();
+					} else {
+						MenuScreen.this.mRotateOn.reset();
+						MenuScreen.this.mMoreMoveOn.reset();
+						MenuScreen.this.mSoundMoveOn.reset();
+					}
+					this.rotation = !this.rotation;
+					break;
+				}
+
+				return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+			}
+		};
+
+		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
+		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
+		this.mBackgroundGrass.create().setPosition(0, Options.cameraHeight - this.mBackgroundGrass.getHeight());
+		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
+
 		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 170f);
 
 		this.mTwitterIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
@@ -248,18 +257,6 @@ public class MenuScreen extends Screen {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
-	 */
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		this.clouds.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.tooflya.bouncekid.Screen#onDetached()
 	 */
 	@Override
@@ -290,7 +287,6 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -300,7 +296,6 @@ public class MenuScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*

@@ -86,6 +86,23 @@ public class LoadingScreen extends Screen {
 		this.unloadResources();
 	}
 
+	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		Game.instance.runOnUiThread(new Runnable() {
+			/* (non-Javadoc)
+			 * @see java.lang.Runnable#run()
+			 */
+			@Override
+			public void run() {
+				/** Start background loader */
+				new AsyncTaskLoader().execute((Game) Game.instance);
+			}
+
+		});
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

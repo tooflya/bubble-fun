@@ -27,6 +27,7 @@ import android.util.FloatMath;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.LinearGradientFillBitmapTextureAtlasSourceDecorator;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Acceleration;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
@@ -85,7 +86,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
 
-	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
+	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
 	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(20, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1,
 			1), this.mBackground));
@@ -310,10 +311,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbersSmall.create().setPosition(97, 8);
 		numbersSmall.create().setPosition(111, 8);
 		numbersSmall.create().setPosition(125, 8);
+		numbersSmall.create().setPosition(138, 8);
 
 		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(2).setCurrentTileIndex(0);
+		numbersSmall.getByIndex(3).setCurrentTileIndex(0);
 
 		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 3f);
 		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 3f);
@@ -434,7 +437,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private void generateChikies() {
-
 		LevelsManager.generateLevel(Options.levelNumber);
 	}
 
@@ -607,26 +609,38 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				isResetAnimationRunning = true;
 			}
 		}
-
+		
 		/* Score */
 		if (Score < 10) {
 			numbersSmall.getByIndex(0).setCurrentTileIndex(Score);
 			numbersSmall.getByIndex(0).setVisible(true);
 			numbersSmall.getByIndex(1).setVisible(false);
 			numbersSmall.getByIndex(2).setVisible(false);
+			numbersSmall.getByIndex(3).setVisible(false);
 		} else if (Score < 100) {
 			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 10));
 			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
 			numbersSmall.getByIndex(0).setVisible(true);
 			numbersSmall.getByIndex(1).setVisible(true);
 			numbersSmall.getByIndex(2).setVisible(false);
-		} else {
+			numbersSmall.getByIndex(3).setVisible(false);
+		} else if (Score < 1000) {
 			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 100));
 			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
 			numbersSmall.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
 			numbersSmall.getByIndex(0).setVisible(true);
 			numbersSmall.getByIndex(1).setVisible(true);
 			numbersSmall.getByIndex(2).setVisible(true);
+			numbersSmall.getByIndex(3).setVisible(false);
+		} else {
+			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 1000));
+			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 1000) * 1000) / 100));
+			numbersSmall.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
+			numbersSmall.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
+			numbersSmall.getByIndex(0).setVisible(true);
+			numbersSmall.getByIndex(1).setVisible(true);
+			numbersSmall.getByIndex(2).setVisible(true);
+			numbersSmall.getByIndex(3).setVisible(true);
 		}
 
 		/* AIR LINE */

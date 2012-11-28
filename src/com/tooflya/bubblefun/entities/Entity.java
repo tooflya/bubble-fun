@@ -193,13 +193,19 @@ public abstract class Entity extends AnimatedSprite {
 	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
 	public Entity deepCopy() {
 		try {
-			return (Entity) Class.forName(this.getClass().getName()).
-					getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class).newInstance(getTextureRegion(), this.mParentScreen);
+			return (Entity) Class.forName(this.getClass().getName()).getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class).newInstance(getTextureRegion(), this.mParentScreen);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	/**
+	 * 
+	 */
+	public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
+		throw new NullPointerException();
 	}
 
 	/**

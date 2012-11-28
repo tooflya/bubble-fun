@@ -21,6 +21,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Box;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
@@ -32,7 +33,7 @@ import com.tooflya.bubblefun.managers.EntityManager;
  * @author Tooflya.com
  * @since
  */
-public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollDetectorListener, IClickDetectorListener {
+public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener, IScrollDetectorListener, IClickDetectorListener {
 
 	// ===========================================================
 	// Constants
@@ -43,9 +44,6 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	protected static int MENUITEMS = 4;
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas1 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -55,26 +53,13 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 	private boolean mPostScroll = false;
 
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "lb.png", 0, 0, 1, 1), this);
-
-	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
-
-	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "back-btn.png", 100, 900, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.MENU);
-		}
-	};
+	private final ButtonScaleable mBackButton;
 
 	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
 
-	private final EntityManager<Sprite> mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas1, Game.context, "navi.png", 400, 900, 1, 2), this.mBackground));
+	private final EntityManager<Sprite> mPoints;
 
-	private final Sprite mTopPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "lvl-panel.png", 630, 900, 1, 1), this.mBackground);
+	private Sprite mTopPanel;
 
 	private ArrayList<Box> boxes = new ArrayList<Box>();
 
@@ -83,24 +68,42 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	// ===========================================================
 
 	public BoxScreen() {
-		this.loadResources();
+		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
+		this.mBackgroundHouses = Resources.mBackgroundHouses2.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
-		this.clouds.generateStartClouds();
+		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
+
+		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.MENU);
+			}
+		};
+
+		mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(Resources.mBoxesNavigationTextureRegion, this.mBackground));
 
 		this.mBackground.create().setBackgroundCenterPosition();
+		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
+		this.mBackgroundGrass.create().setPosition(0, Options.cameraHeight - this.mBackgroundGrass.getHeight());
+		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
 
-		this.mTopPanel.create().setPosition(0,0);
+		this.mTopPanel.create().setPosition(0, 0);
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
 		this.mBackground.attachChild(rectangle);
 		this.rectangle.setAlpha(0);
 
-		final TiledTextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box.png", 0, 0, 1, 2);
-
 		for (int i = 0; i < MENUITEMS; i++) {
 			final int bi = i;
-			final Box sprite = new Box(textureRegion, this.rectangle) {
+			final Box sprite = new Box(Resources.mBoxesTextureRegion, this.rectangle) {
 
 				@Override
 				public void onClick() {
@@ -120,32 +123,32 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 
 			if (bi != 3) {
 
-				final Sprite lock = (Sprite) new Sprite(textureRegion, sprite).create();
+				final Sprite lock = (Sprite) new Sprite(Resources.mBoxesTextureRegion, sprite).create();
 				lock.setCurrentTileIndex(2);
 				lock.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			}
 
 			if (bi == 0) {
-				Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-1.png", 512, 0, 1, 1), sprite).create();
+				Sprite picture = (Sprite) new Sprite(Resources.mBoxesPicture1TextureRegion, sprite).create();
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 
-				picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-name-1.png", 700, 700, 1, 1), this.rectangle).create();
+				picture = (Sprite) new Sprite(Resources.mBoxesLabel1TextureRegion, this.rectangle).create();
 				picture.setCenterPosition(sprite.getX() + sprite.getWidth() / 2, 170);
 			} else if (bi == 1) {
-				Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-2.png", 512, 712, 1, 1), sprite).create();
+				Sprite picture = (Sprite) new Sprite(Resources.mBoxesPicture2TextureRegion, sprite).create();
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 
-				picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-name-2.png", 700, 800, 1, 1), this.rectangle).create();
+				picture = (Sprite) new Sprite(Resources.mBoxesLabel2TextureRegion, this.rectangle).create();
 				picture.setCenterPosition(sprite.getX() + sprite.getWidth() / 2, 170);
 			} else if (bi == 2) {
-			Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-picture-3.png", 512, 872, 1, 1), sprite).create();
+				Sprite picture = (Sprite) new Sprite(Resources.mBoxesPicture3TextureRegion, sprite).create();
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 
-				picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "box-name-3.png", 700, 900, 1, 1), this.rectangle).create();
+				picture = (Sprite) new Sprite(Resources.mBoxesLabel3TextureRegion, this.rectangle).create();
 				picture.setCenterPosition(sprite.getX() + sprite.getWidth() / 2, 170);
 			}
 			else if (bi == 3) {
-				final Sprite picture = (Sprite) new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "coming-soon-01.png", 512, 512, 1, 1), sprite).create();
+				final Sprite picture = (Sprite) new Sprite(Resources.mBoxesComingSoonTextureRegion, sprite).create();
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 				sprite.setCurrentTileIndex(4);
 			}
@@ -178,8 +181,6 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-
-		this.clouds.update();
 
 		if (this.mPostScroll) {
 			this.rectangle.setPosition(this.rectangle.getX() + sx, 0);
@@ -254,7 +255,6 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas1, this.mBackgroundTextureAtlas2);
 	}
 
 	/*
@@ -264,7 +264,6 @@ public class BoxScreen extends Screen implements IOnSceneTouchListener, IScrollD
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas1, this.mBackgroundTextureAtlas2);
 	}
 
 	/*

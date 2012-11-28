@@ -205,6 +205,8 @@ public class Chiky extends Entity {
 			else { // States.SpeedyMove.
 				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
 			}
+
+			LevelScreen.Score += 50;
 		}
 	}
 

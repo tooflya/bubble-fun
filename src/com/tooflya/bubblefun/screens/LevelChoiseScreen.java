@@ -1,12 +1,8 @@
 package com.tooflya.bubblefun.screens;
 
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.LevelIcon;
@@ -20,7 +16,7 @@ import com.tooflya.bubblefun.managers.ScreenManager;
  * @author Tooflya.com
  * @since
  */
-public class LevelChoiseScreen extends Screen {
+public class LevelChoiseScreen extends ReflectionScreen {
 
 	// ===========================================================
 	// Constants
@@ -28,35 +24,19 @@ public class LevelChoiseScreen extends Screen {
 
 	public static int starsCollected;
 
-	public final static BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sb.png", 0, 0, 1, 1), this);
+	private final ButtonScaleable mBackButton;
 
-	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
+	private LevelsManager<LevelIcon> levels;
+	private EntityManager<Sprite> numbers;
 
-	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "back-btn.png", 100, 900, 1, 1), this.mBackground) {
+	private final Sprite mTopPanel;
 
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.BOX);
-		}
-	};
-
-	private final LevelsManager<LevelIcon> levels = new LevelsManager<LevelIcon>(25, new LevelIcon(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "level-btn.png", 0, 612, 1, 5), this.mBackground));
-	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(100, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 400, 600, 1, 11)));
-
-	private final Sprite mTopPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "lvl-panel.png", 630, 900, 1, 1), this.mBackground);
-
-	private final EntityManager<Sprite> mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 450, 900, 11, 1), this.mBackground));
-
-	private final EntityManager<Sprite> mStars = new EntityManager<Sprite>(2, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-stars.png", 200, 900, 1, 2), this.mBackground));
+	private final EntityManager<Sprite> mSmallnumbers;
+	private final EntityManager<Sprite> mStars;
 
 	// ===========================================================
 	// Constructors
@@ -64,13 +44,41 @@ public class LevelChoiseScreen extends Screen {
 	int g = -1;
 
 	public LevelChoiseScreen() {
-		this.loadResources();
+		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
+		this.mBackgroundHouses = Resources.mBackgroundHouses3.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
-		this.clouds.generateStartClouds();
+		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
+
+		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+
+		this.levels = new LevelsManager<LevelIcon>(25, new LevelIcon(Resources.mLevelsTextureRegion, this.mBackground));
+		this.numbers = new EntityManager<Sprite>(100, new Sprite(Resources.mNumbersTextureRegion));
+
+		this.mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(Resources.mSmallNumbersTextureRegion, this.mBackground));
+
+		this.mStars = new EntityManager<Sprite>(2, new Sprite(Resources.mStarsTextureRegion, this.mBackground));
+
+		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.BOX);
+			}
+		};
+
+		this.mBackground.create().setBackgroundCenterPosition();
+		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
+		this.mBackgroundGrass.create().setPosition(0, Options.cameraHeight - this.mBackgroundGrass.getHeight());
+		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
 
 		this.mBackground.create().setBackgroundCenterPosition();
 
-		this.mTopPanel.create().setPosition(0,0);
+		this.mTopPanel.create().setPosition(0, 0);
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
@@ -98,18 +106,6 @@ public class LevelChoiseScreen extends Screen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
-	 */
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		this.clouds.update();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -174,7 +170,6 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*
@@ -184,7 +179,6 @@ public class LevelChoiseScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
 	}
 
 	/*

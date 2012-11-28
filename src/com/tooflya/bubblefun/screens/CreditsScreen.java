@@ -10,6 +10,7 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Sprite;
 
@@ -17,7 +18,7 @@ import com.tooflya.bubblefun.entities.Sprite;
  * @author Tooflya.com
  * @since
  */
-public class CreditsScreen extends Screen {
+public class CreditsScreen extends ReflectionScreen {
 
 	// ===========================================================
 	// Constants
@@ -27,36 +28,37 @@ public class CreditsScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final Sprite mTopPanel;
 
-	/** Declare the entity that acts as a background image of the screen. */
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "sb.png", 0, 0, 1, 1), this);
-
-	private final Sprite mTopPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "lvl-panel.png", 630, 900, 1, 1), this.mBackground);
-
-	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "back-btn.png", 100, 900, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.MORE);
-		}
-	};
+	private final ButtonScaleable mBackButton;
 
 	private final Rectangle mBaseRectangle = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight);
 	private final Rectangle mFrontRectangle = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight);
 
-	private final Sprite mCredits = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "logo_small_zero.png", 0, 0, 1, 1), this.mFrontRectangle);
+	//private final Sprite mCredits = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "logo_small_zero.png", 0, 0, 1, 1), this.mFrontRectangle);
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public CreditsScreen() {
-		this.loadResources();
+		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
+		this.mBackgroundHouses = Resources.mBackgroundHouses3.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
+		mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+
+		mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.MORE);
+			}
+		};
 		this.mBackground.create().setBackgroundCenterPosition();
 
 		this.mTopPanel.create().setPosition(0, 0);
@@ -73,9 +75,9 @@ public class CreditsScreen extends Screen {
 
 		this.mBaseRectangle.attachChild(this.mFrontRectangle);
 
-		this.mCredits.enableBlendFunction();
-		this.mCredits.setAlpha(1f);
-		this.mCredits.create().setCenterPosition(this.mFrontRectangle.getWidth() / 2, this.mFrontRectangle.getHeight() / 2);
+		//this.mCredits.enableBlendFunction();
+		//this.mCredits.setAlpha(1f);
+		//this.mCredits.create().setCenterPosition(this.mFrontRectangle.getWidth() / 2, this.mFrontRectangle.getHeight() / 2);
 	}
 
 	// ===========================================================
@@ -101,7 +103,6 @@ public class CreditsScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mCommonTextureAtlas);
 	}
 
 	/*
@@ -111,7 +112,6 @@ public class CreditsScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mCommonTextureAtlas);
 	}
 
 	/*

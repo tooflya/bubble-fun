@@ -258,7 +258,7 @@ public class ScreenManager implements IAsyncCallback {
 		screens[Screen.MORE] = new MoreScreen();
 		screens[Screen.CREDITS] = new CreditsScreen();
 
-		Game.loadTextures(Screen.mCommonTextureAtlas, Screen.mCommonTextureAtlas2);
+		Game.loadTextures(Screen.mCommonTextureAtlas2);
 
 		this.mBackground.create();
 		this.mBackground.setScaleCenter(0, 0);

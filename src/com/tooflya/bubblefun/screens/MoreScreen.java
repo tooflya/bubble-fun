@@ -1,13 +1,8 @@
 package com.tooflya.bubblefun.screens;
 
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -17,7 +12,7 @@ import com.tooflya.bubblefun.managers.CloudsManager;
  * @author Tooflya.com
  * @since
  */
-public class MoreScreen extends Screen {
+public class MoreScreen extends ReflectionScreen {
 
 	// ===========================================================
 	// Constants
@@ -27,57 +22,63 @@ public class MoreScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(256, 64, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final Sprite mTopPanel;
 
-	/** Declare the entity that acts as a background image of the screen. */
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "sb.png", 0, 0, 1, 1), this);
+	private final ButtonScaleable mBackButton;
 
-	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Screen.cloudTextureRegion, this.mBackground));
-
-	private final Sprite mTopPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "lvl-panel.png", 630, 900, 1, 1), this.mBackground);
-
-	private final ButtonScaleable mBackButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(LevelChoiseScreen.mBackgroundTextureAtlas, Game.context, "back-btn.png", 100, 900, 1, 1), this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.entities.Button#onClick()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.MENU);
-		}
-	};
-
-	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "menu-big-btn.png", 0, 0, 1, 1);
-
-	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
-		 */
-		@Override
-		public void onClick() {
-		}
-	};
-
-	private final ButtonScaleable b2 = new ButtonScaleable(mButtonsTextureRegion, this.mBackground) {
-
-		/* (non-Javadoc)
-		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
-		 */
-		@Override
-		public void onClick() {
-			Game.screens.set(Screen.CREDITS);
-		}
-	};
+	private final ButtonScaleable b1;
+	private final ButtonScaleable b2;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public MoreScreen() {
-		this.loadResources();
+		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
+		this.mBackgroundHouses = Resources.mBackgroundHouses3.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
-		this.clouds.generateStartClouds();
+		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
+
+		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.MENU);
+			}
+		};
+
+		this.b1 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
+			 */
+			@Override
+			public void onClick() {
+			}
+		};
+
+		this.b2 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.CREDITS);
+			}
+		};
+		this.mClouds.generateStartClouds();
+
+		this.mBackground.create().setBackgroundCenterPosition();
+		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
+		this.mBackgroundGrass.create().setPosition(0, Options.cameraHeight - this.mBackgroundGrass.getHeight());
+		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
 
 		this.mBackground.create().setBackgroundCenterPosition();
 
@@ -92,18 +93,6 @@ public class MoreScreen extends Screen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
-	 */
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		this.clouds.update();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -124,7 +113,6 @@ public class MoreScreen extends Screen {
 	 */
 	@Override
 	public void loadResources() {
-		Game.loadTextures(mCommonTextureAtlas);
 	}
 
 	/*
@@ -134,7 +122,6 @@ public class MoreScreen extends Screen {
 	 */
 	@Override
 	public void unloadResources() {
-		Game.unloadTextures(mCommonTextureAtlas);
 	}
 
 	/*

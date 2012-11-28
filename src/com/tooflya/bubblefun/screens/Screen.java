@@ -6,11 +6,8 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 
 /**
@@ -23,10 +20,7 @@ public abstract class Screen extends Scene implements IScreen {
 	// Constants
 	// ===========================================================
 
-	public static final BitmapTextureAtlas mCommonTextureAtlas = new BitmapTextureAtlas(256, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mCommonTextureAtlas2 = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	public static TiledTextureRegion cloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "cloud.png", 0, 0, 1, 4);
 
 	public static final int SCREENS_COUNT = 10;
 
