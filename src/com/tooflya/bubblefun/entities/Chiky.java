@@ -26,15 +26,14 @@ public class Chiky extends Entity {
 	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
 
 	private enum States {
-		NormalMove, SpeedyMove, Fall, Parachute, Vector
+		NormalMove, SpeedyMove, Fall, Vector
 	};
 
 	public static final int isPauseUpdateFlag = 1;
 	public static final int isJumplyFlag = 2;
 	public static final int isSpeedyFlag = 4;
 	public static final int isWavelyFlag = 8;
-	public static final int isParachuteFlag = 16;
-	public static final int isVectorFlag = 32;
+	public static final int isVectorFlag = 16;
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -58,7 +57,6 @@ public class Chiky extends Entity {
 
 	private Bubble mAirgum = null;
 	private Acceleration mWind = null;
-	private Entity mParahute = null;
 
 	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
 	private boolean vectorReverse, vectorStopSecond;
@@ -341,9 +339,6 @@ public class Chiky extends Entity {
 				else {
 					this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
 				}
-			} else if (this.IsProperty(isParachuteFlag)) {
-				this.mState = States.Parachute;
-				this.mParahute = ((LevelScreen) Game.screens.get(Screen.LEVEL)).parachutes.create();
 			}
 			// !!! Maybe need use switch for another moving.
 		}
@@ -377,31 +372,6 @@ public class Chiky extends Entity {
 		}
 	}
 
-	private void onManagedUpdateParachute(final float pSecondsElapsed) {
-		this.onManagedUpdateMove(pSecondsElapsed);
-
-		this.mStartY += this.getSpeedY();
-
-		this.mParahute.setCenterPosition(this.getCenterX(), this.getY() - this.getHeight() / 2 + 12);
-
-		if (this.mY > Options.touchHeight * 2 - this.getHeight()) {
-			this.setSpeedY(-Math.abs(this.getSpeedY()));
-		}
-		if (this.mY < this.getHeight()) {
-			this.setSpeedY(Math.abs(this.getSpeedY()));
-		}
-
-		this.mParahute.getTextureRegion().setFlippedHorizontal(this.getTextureRegion().isFlippedHorizontal());
-
-		if (mTime >= Options.chickyMaxTimeParachute) {
-			this.mTime = 0;
-			this.mState = States.NormalMove;
-
-			this.mParahute.destroy();
-			this.mParahute = null;
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -426,9 +396,6 @@ public class Chiky extends Entity {
 				break;
 			case Fall:
 				this.onManagedUpdateFall(pSecondsElapsed);
-				break;
-			case Parachute:
-				this.onManagedUpdateParachute(pSecondsElapsed);
 				break;
 			case Vector:
 				this.onManagedUpdateVectorMovement(pSecondsElapsed);

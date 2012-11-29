@@ -11,21 +11,12 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
 
-import android.graphics.Color;
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.LinearGradientFillBitmapTextureAtlasSourceDecorator;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Acceleration;
@@ -43,7 +34,6 @@ import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.Mark;
-import com.tooflya.bubblefun.entities.Parachute;
 import com.tooflya.bubblefun.entities.Sprike;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
@@ -72,36 +62,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int Score;
 
-	public final BitmapTextureAtlas mBackgroundGradientTexture = new BitmapTextureAtlas(2, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mBackgroundTextureAtlas2 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mBackgroundTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	private final BitmapTextureAtlas mTutorialTextureAtlas = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	public final EmptyBitmapTextureAtlasSource bitmap = new EmptyBitmapTextureAtlasSource(2, 512);
-
-	public final LinearGradientFillBitmapTextureAtlasSourceDecorator gradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(bitmap,
-			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(0, 139, 69), Color.rgb(84, 255, 159), LinearGradientDirection.BOTTOM_TO_TOP);
-
-	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTexture, gradientSource, 0, 0), this);
-
-	private final CloudsManager<Cloud> clouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
-
-	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(20, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "awesome-kill.png", 800, 710, 1,
-			1), this.mBackground));
-	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "double-hit.png", 800, 740, 1, 1),
-			this.mBackground));
-	public EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "triple-hit.png", 0, 0, 1, 1),
-			this.mBackground));
-	public EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(20, new BonusText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "scores_bonuses.png", 0, 30, 1, 4),
-			this.mBackground));
+	private final CloudsManager<Cloud> mClouds;
+	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText1TextureRegion, this.mBackground));
+	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText2TextureRegion, this.mBackground));
+	public EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText3TextureRegion, this.mBackground));
+	public EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(20, new BonusText(Resources.mScoreBonusesTextTextureRegion, this.mBackground));
 
 	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 
-	private final TiledTextureRegion mDottedLineTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "dash-line.png", 0, 1019, 1, 1);
-	private final Sprite mDottedLine = new Sprite(mDottedLineTextureRegion, this.mBackground);
-	private final Sprite mDottedLineAir = new Sprite(mDottedLineTextureRegion, this.mBackground);
+	private final Sprite mDottedLine = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
+	private final Sprite mDottedLineAir = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
 
 	private final Rectangle shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
@@ -142,13 +114,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final Sprite mLevelWord = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-level.png", 0, 980, 1, 1), this.shape);
-	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-sprite.png", 385, 0, 1, 11), this.shape));
+	private final Sprite mLevelWord = new Sprite(Resources.mLevelWordTextureRegion, this.shape);
+	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(Resources.mNumbersTextureRegion, this.shape));
 
-	private final Sprite mResetText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context,
-			"text-restart.png", 430, 0, 1, 1), this.mRectangle);
+	private final Sprite mResetText = new Sprite(Resources.mRestartTextTextureRegion, this.mRectangle);
 
-	private final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY,
+	public final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY,
 			Options.cameraCenterY) {
 		@Override
 		public void onStarted() {
@@ -180,18 +151,13 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final EntityManager<Sprite> thorns = new EntityManager<Sprite>(10, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 430, 40, 1, 1), this.mBackground));
-	/*public final EntityManager<Electrod> electrods = new EntityManager<Electrod>(10, new Electrod(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "electrodes.png", 800, 800, 1, 5),
-			this.mBackground));*/
+	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(Resources.mBonusTextureRegion, this.mBackground));
 
-	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bonus.png", 0, 0, 6, 1), this.mBackground));
+	public final EntityManager<AwesomeText> splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(Resources.mBonusSplasheTextureRegion, this.mBackground));
 
-	public final EntityManager<AwesomeText> splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 980, 800, 1, 1), this.mBackground));
+	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(Resources.mAcceleratorsTextureRegion, this.mBackground));
 
-	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "speed-wind.png", 430, 65,
-			6, 1), this.mBackground));
-
-	public EntityManager<Mark> mMarks = new EntityManager<Mark>(100, new Mark(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "wind.png", 800, 700, 1, 1), this.mBackground));
+	public EntityManager<Mark> mMarks = new EntityManager<Mark>(100, new Mark(Resources.mMarkTextureRegion, this.mBackground));
 
 	// ===========================================================
 	// Fields
@@ -199,16 +165,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
-	public EntityManager<Coin> coins = new EntityManager<Coin>(100, new Coin(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "coin-sprite.png", 0, 200, 4, 4), this.mBackground));
+	public EntityManager<Coin> coins = new EntityManager<Coin>(100, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
 
-	public EntityManager<Parachute> parachutes = new EntityManager<Parachute>(5, new Parachute(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas2, Game.context, "parachute.png", 200, 200, 1, 1), this.mBackground));
-	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(100, new Chiky(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "small-bird.png", 430, 100, 6, 4), this.mBackground));
-	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "gum-animation.png", 430, 280, 1, 6), this.mBackground));
-	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather.png", 730, 585, 1, 2), this.mBackground));
-	public EntityManager<Glint> glints = new EntityManager<Glint>(100, new Glint(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blesk.png", 730, 900, 1, 3), this.mBackground));
+	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
+	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
+	public EntityManager<Glint> glints = new EntityManager<Glint>(100, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 
-	public BlueBird mBlueBird = new BlueBird(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "blue-bird.png", 430, 600, 6, 1),
-			new EntityManager<Feather>(100, new Feather(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "feather_new_blue.png", 430, 890, 1, 2), this.mBackground)), this.mBackground);
+	public BlueBird mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 
 	private final AlphaModifier mAllFallDownModifier = new AlphaModifier(13.4f, 1f, 0f);
 	private final AlphaModifier mAllFallUpModifier = new AlphaModifier(13.4f, 0f, 1f);
@@ -228,11 +192,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	//private Sprite mSpecialButton = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bb-btn.png", 0, 100, 2, 1), this.mBackground);
 
-	public EntityManager<Sprike> sprikes = new EntityManager<Sprike>(100, new Sprike(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "sprike.png", 0, 300, 1, 1), this.mBackground));
+	public EntityManager<Sprike> sprikes = new EntityManager<Sprike>(100, new Sprike(Resources.mSprikeTextureRegion, this.mBackground));
 
-	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "game-panel.png", 630, 900, 1, 1), this.mBackground);
+	private final Sprite mPanel = new Sprite(Resources.mTopGamePanelTextureRegion, this.mBackground);
 
-	private final ButtonScaleable mMenuButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-btn.png", 0, 805, 1, 1), this.mBackground) {
+	private final ButtonScaleable mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
 
 		@Override
 		public void onClick() {
@@ -240,7 +204,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final ButtonScaleable mResetButton = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "replay-btn.png", 0, 880, 1, 1), this.mBackground) {
+	private final ButtonScaleable mResetButton = new ButtonScaleable(Resources.mRestartButtonTextureRegion, this.mBackground) {
 
 		@Override
 		public void onClick() {
@@ -250,9 +214,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	};
 
-	private final Sprite mScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "score.png", 800, 770, 1, 1), this.mBackground);
+	private final Sprite mScoreText = new Sprite(Resources.mScoreTextTextureRegion, this.mBackground);
 
-	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "numbers-small.png", 800, 600, 11, 1), this.mBackground));
+	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(Resources.mSmallNumbersTextureRegion, this.mBackground));
 
 	// ===========================================================
 	// Tutorial
@@ -268,20 +232,22 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public LevelScreen() {
 
+		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
+
 		this.mBackground.setBackgroundCenterPosition();
 
 		// ===========================================================
 		// Tutorial
 
-		this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-1.png", 0, 0, 1, 1);
-		this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-2.png", 0, 40, 1, 1);
+		//this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-1.png", 0, 0, 1, 1);
+		//this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-2.png", 0, 40, 1, 1);
 
 		// ===========================================================
 
 		this.mPanel.create().setPosition(0, 0);
 		this.setOnSceneTouchListener(this);
 
-		this.clouds.generateStartClouds();
+		this.mClouds.generateStartClouds();
 
 		mDottedLine.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
 		mDottedLineAir.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
@@ -384,7 +350,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mTripleKillText.clear();
 		mBonusesText.clear();
 		bonuses.clear();
-		parachutes.clear();
 
 		mBlueBird.create();
 		mBlueBird.clear();
@@ -392,8 +357,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		chikies.clear();
 		glints.clear();
 		accelerators.clear();
-		thorns.clear();
-		//electrods.clear();
 		sprikes.clear();
 		mMarks.clear();
 		coins.clear();
@@ -459,17 +422,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		for (int i = airgums.getCount() - 1; i >= 0; --i) {
 			airgum = airgums.getByIndex(i);
 			if (airgum.isCanCollide()) {
-				for (int j = thorns.getCount() - 1; j >= 0; --j) {
-					if (this.isCollide(airgum, thorns.getByIndex(j), true)) {
-						airgum.isCollide();
-					}
-				}
-				/*for (int j = electrods.getCount() - 1; j >= 0; --j) {
-					Electrod electrod = ((Electrod) electrods.getByIndex(j));
-					if (electrod.isAnimationRunning() && this.isCollide(airgum, electrod, true)) {
-						airgum.isCollide();
-					}
-				}*/
 				for (int j = sprikes.getCount() - 1; j >= 0; --j) {
 					final Sprike sprike = sprikes.getByIndex(j);
 					if (this.isCollide(airgum, sprike, true)) {
@@ -571,7 +523,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.checkCollision();
 
-		this.clouds.update();
+		this.mClouds.update();
 
 		/** AIR */
 		if (AIR >= 75) {
@@ -609,7 +561,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				isResetAnimationRunning = true;
 			}
 		}
-		
+
 		/* Score */
 		if (Score < 10) {
 			numbersSmall.getByIndex(0).setCurrentTileIndex(Score);
@@ -647,26 +599,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		final float baseWidth = this.mDottedLineAir.getBaseWidth();
 		this.mDottedLineAir.setWidth((int) (baseWidth / 100 * AIR));
 		this.mDottedLineAir.getTextureRegion().setWidth((int) (baseWidth / 100 * AIR));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-		Game.loadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2, mBackgroundTextureAtlas3, mTutorialTextureAtlas);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
-		Game.unloadTextures(mBackgroundGradientTexture, mBackgroundTextureAtlas, mBackgroundTextureAtlas2, mBackgroundTextureAtlas3, mTutorialTextureAtlas);
 	}
 
 	/*

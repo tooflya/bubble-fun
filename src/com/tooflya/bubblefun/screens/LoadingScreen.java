@@ -73,22 +73,16 @@ public class LoadingScreen extends Screen {
 	// Virtual methods
 	// ===========================================================
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.Screen#onDetached()
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onAttached()
 	 */
-	@Override
-	public void onDetached() {
-		super.onDetached();
-
-		this.clearUpdateHandlers();
-		this.unloadResources();
-	}
-
 	@Override
 	public void onAttached() {
 		super.onAttached();
+	}
+
+	@Override
+	public void onPostAttached() {
 
 		Game.instance.runOnUiThread(new Runnable() {
 			/* (non-Javadoc)
@@ -102,25 +96,18 @@ public class LoadingScreen extends Screen {
 
 		});
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
+	 * @see com.tooflya.bouncekid.Screen#onDetached()
 	 */
 	@Override
-	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
-	}
+	public void onDetached() {
+		super.onDetached();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
+		this.clearUpdateHandlers();
+		this.unloadResources();
 	}
 
 	/*
@@ -135,5 +122,13 @@ public class LoadingScreen extends Screen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void loadResources() {
+		Game.loadTextures(this.mBackgroundTextureAtlas);
+	}
+
+	public void unloadResources() {
+		Game.unloadTextures(this.mBackgroundTextureAtlas);
+	}
 
 }

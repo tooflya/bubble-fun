@@ -35,12 +35,7 @@ public class SplashScreen extends Screen {
 	private final TimerHandler mTimer = new TimerHandler(2f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			final Screen screen = new LoadingScreen();
-			Game.engine.setScene(screen);
-
-			screen.onAttached();
-
-			onDetached();
+			Game.screens.set(new LoadingScreen());
 		}
 	});
 
@@ -63,6 +58,21 @@ public class SplashScreen extends Screen {
 	// Virtual methods
 	// ===========================================================
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onAttached()
+	 */
+	@Override
+	public void onAttached() {
+		super.onAttached();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -79,26 +89,6 @@ public class SplashScreen extends Screen {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
@@ -108,5 +98,13 @@ public class SplashScreen extends Screen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void loadResources() {
+		Game.loadTextures(this.mBackgroundTextureAtlas);
+	}
+
+	public void unloadResources() {
+		Game.unloadTextures(this.mBackgroundTextureAtlas);
+	}
 
 }

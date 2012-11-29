@@ -80,7 +80,7 @@ public class PopupScreen extends Screen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -93,6 +93,13 @@ public class PopupScreen extends Screen {
 		this.modifier1.reset();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -103,14 +110,6 @@ public class PopupScreen extends Screen {
 		if (!this.mAnimationRunning) {
 			this.modifier4.reset();
 		}
-	}
-
-	@Override
-	public void loadResources() {
-	}
-
-	@Override
-	public void unloadResources() {
 	}
 
 	@Override

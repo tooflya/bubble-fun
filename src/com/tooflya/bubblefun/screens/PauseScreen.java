@@ -8,6 +8,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -20,13 +21,9 @@ public class PauseScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	private final Sprite mPanel = new Sprite(Resources.mPopupPanelTextureRegion, this);
 
-	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "popup-menu.png", 0, 0, 1, 1), this);
-
-	private final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "menu-big-btn.png", 335, 0, 1, 1);
-
-	private final ButtonScaleable b1 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
+	private final ButtonScaleable b1 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
@@ -37,7 +34,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final ButtonScaleable b2 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
+	private final ButtonScaleable b2 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
@@ -51,7 +48,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final ButtonScaleable b3 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
+	private final ButtonScaleable b3 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
@@ -59,13 +56,13 @@ public class PauseScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			ScreenManager.mChangeAction = 2;
-			Game.screens.l();
+			Game.screens.set(Screen.PRELOAD);
 
 			modifier4.reset();
 		}
 	};
 
-	private final ButtonScaleable b4 = new ButtonScaleable(mButtonsTextureRegion, this.mPanel) {
+	private final ButtonScaleable b4 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
@@ -73,13 +70,13 @@ public class PauseScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			ScreenManager.mChangeAction = 1;
-			Game.screens.l();
+			Game.screens.set(Screen.PRELOAD);
 
 			modifier4.reset();
 		}
 	};
 
-	private final ButtonScaleable mSoundIcon = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "sound-btn.png", 335, 80, 1, 2), this.mPanel) {
+	private final ButtonScaleable mSoundIcon = new ButtonScaleable(Resources.mLevelSoundIconTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -98,7 +95,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final EntityManager<Sprite> mLables = new EntityManager<Sprite>(4, new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "text-big-btn.png", 0, 350, 1, 4)));
+	private final EntityManager<Sprite> mLables = new EntityManager<Sprite>(4, new Sprite(Resources.mButtonsLabelsTextureRegion));
 
 	// ===========================================================
 	// Constructors
@@ -151,22 +148,6 @@ public class PauseScreen extends PopupScreen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	@Override
-	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
-
-	}
-
-	@Override
-	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
-
-	}
-
-	@Override
-	public void onBackPressed() {
-	}
 
 	@Override
 	public void onClose() {

@@ -11,11 +11,6 @@ import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorLis
 import org.anddev.andengine.input.touch.detector.ScrollDetector;
 import org.anddev.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.anddev.andengine.input.touch.detector.SurfaceScrollDetector;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
 
@@ -173,6 +168,13 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	// Virtual methods
 	// ===========================================================
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -236,34 +238,6 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				}
 			}
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.Screen#onDetached()
-	 */
-	@Override
-	public void onDetached() {
-		super.onDetached();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
 	}
 
 	/*

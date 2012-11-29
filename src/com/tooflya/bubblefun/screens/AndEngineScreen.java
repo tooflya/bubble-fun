@@ -37,8 +37,7 @@ public class AndEngineScreen extends Screen {
 	private final TimerHandler mTimer = new TimerHandler(1.5f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			Game.engine.setScene(new SplashScreen());
-			onDetached();
+			Game.screens.set(new SplashScreen());
 		}
 	});
 
@@ -94,6 +93,13 @@ public class AndEngineScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -111,26 +117,6 @@ public class AndEngineScreen extends Screen {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-		Game.loadTextures(this.mBackgroundTextureAtlas);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
-		Game.unloadTextures(this.mBackgroundTextureAtlas);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.tooflya.bouncekid.Screen#onBackPressed()
 	 */
 	@Override
@@ -140,5 +126,13 @@ public class AndEngineScreen extends Screen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void loadResources() {
+		Game.loadTextures(this.mBackgroundTextureAtlas);
+	}
+
+	public void unloadResources() {
+		Game.unloadTextures(this.mBackgroundTextureAtlas);
+	}
 
 }

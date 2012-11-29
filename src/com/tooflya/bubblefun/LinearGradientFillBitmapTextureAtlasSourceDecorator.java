@@ -6,12 +6,10 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.I
 import android.graphics.LinearGradient;
 import android.graphics.Shader.TileMode;
 
-import com.tooflya.bubblefun.screens.LevelScreen;
-import com.tooflya.bubblefun.screens.Screen;
-
 public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator {
 
-	public LinearGradientFillBitmapTextureAtlasSourceDecorator(IBitmapTextureAtlasSource pBitmapTextureAtlasSource, IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, int pFromColor, int pToColor, org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection pLinearGradientDirection) {
+	public LinearGradientFillBitmapTextureAtlasSourceDecorator(IBitmapTextureAtlasSource pBitmapTextureAtlasSource, IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, int pFromColor, int pToColor,
+			org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection pLinearGradientDirection) {
 		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pFromColor, pToColor, pLinearGradientDirection);
 	}
 
@@ -28,7 +26,7 @@ public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends org.and
 		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, new int[] { pFromColor, pToColor }, null, TileMode.CLAMP));
 		this.mPaint.setDither(true);
 
-		((LevelScreen) Game.screens.get(Screen.LEVEL)).mBackgroundGradientTexture.setUpdateOnHardwareNeeded(true);
+		Resources.mBackgroundGradientTextureAtlas2.setUpdateOnHardwareNeeded(true);
 	}
 
 	public static enum LinearGradientDirection {

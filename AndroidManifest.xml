@@ -31,7 +31,7 @@
         android:installLocation="auto"
         android:label="@string/app" >
         <activity
-            android:name="com.tooflya.bubblefun.Game"
+            android:name=".Game"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.NoBackground" >

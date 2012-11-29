@@ -93,6 +93,13 @@ public class MoreScreen extends ReflectionScreen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+	
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -104,24 +111,6 @@ public class MoreScreen extends ReflectionScreen {
 		super.onDetached();
 
 		this.clearUpdateHandlers();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
 	}
 
 	/*

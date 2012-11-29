@@ -15,6 +15,7 @@ import android.os.Environment;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
@@ -65,14 +66,17 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
 
 	}
+
 	private static int temp;
+
 	public void generate(final EntityManager<Sprite> pNumbers) {
 		this.mNumbers = pNumbers;
 
 		this.generate();
 	}
 
-	public void generate() {temp = 0;
+	public void generate() {
+		temp = 0;
 		this.mNumbers.clear();
 
 		for (int i = 0; i < this.getCapacity(); i++) {
@@ -160,7 +164,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				screen.mBlueBird.setIgnoreUpdate(!isBlueBirdNeed);
 
-				screen.gradientSource.changeColors(screen.bitmap, Color.rgb(r1, g1, b1), Color.rgb(r2, g2, b2));
+				Resources.mLevelBackgroundGradientSource.changeColors(Resources.mLevelGradientBitmap, Color.rgb(r1, g1, b1), Color.rgb(r2, g2, b2));
 			}
 		});
 
@@ -206,7 +210,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				chiky.initProperties(properties);
 				chiky.initSpeedyStepX(speedyStepX);
 				chiky.initParashuteStepY(parashuteStepY);
-				
+
 				chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
 
 				if (vectorLimit == 0)
@@ -310,7 +314,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				/*final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
 				final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0);
@@ -322,7 +326,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				sprite.create().setPosition(x, y);
 				sprite.index = index;
 
-				screen.mTutorialSprites.add(sprite);
+				screen.mTutorialSprites.add(sprite);*/
 			}
 		});
 

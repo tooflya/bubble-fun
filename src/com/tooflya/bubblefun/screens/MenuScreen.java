@@ -253,7 +253,6 @@ public class MenuScreen extends ReflectionScreen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -269,6 +268,13 @@ public class MenuScreen extends ReflectionScreen {
 			Options.mMainSound.play();
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -279,25 +285,6 @@ public class MenuScreen extends ReflectionScreen {
 	public void onDetached() {
 		super.onDetached();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

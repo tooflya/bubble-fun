@@ -4,9 +4,6 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.bubblefun.Options;
 
@@ -14,15 +11,13 @@ import com.tooflya.bubblefun.Options;
  * @author Tooflya.com
  * @since
  */
-public abstract class Screen extends Scene implements IScreen {
+public abstract class Screen extends Scene {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	public static final BitmapTextureAtlas mCommonTextureAtlas2 = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-	public static final int SCREENS_COUNT = 10;
+	public static final int SCREENS_COUNT = 11;
 
 	public static final int NO_SCREEN = -1;
 
@@ -35,6 +30,7 @@ public abstract class Screen extends Scene implements IScreen {
 	public static final int BOX = 7;
 	public static final int MORE = 8;
 	public static final int CREDITS = 9;
+	public static final int PRELOAD = 10;
 
 	// ===========================================================
 	// Fields
@@ -52,6 +48,11 @@ public abstract class Screen extends Scene implements IScreen {
 	// Virtual methods
 	// ===========================================================
 
+	/** Must be overrided. */
+	public void onPostAttached() {
+		throw new IllegalStateException("Sorry, but this method must be overrided by child Class.");
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -83,7 +84,8 @@ public abstract class Screen extends Scene implements IScreen {
 		super.attachChild(pEntity);
 
 		/**
-		 * This section is scale object to the real size for adapt size of entity to the screen resolution.
+		 * This section is scale object to the real size for adapt size of
+		 * entity to the screen resolution.
 		 */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);
@@ -117,5 +119,8 @@ public abstract class Screen extends Scene implements IScreen {
 
 	public void setScene(final Engine pEngine) {
 		pEngine.setScene(this);
+	}
+
+	public void onBackPressed() {
 	}
 }

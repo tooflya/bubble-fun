@@ -107,6 +107,13 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	// Virtual methods
 	// ===========================================================
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -151,34 +158,6 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		sprite = (Sprite) this.mSmallnumbers.create();
 		sprite.setPosition(Options.cameraWidth - 35f, 10f);
 		sprite.setCurrentTileIndex(5);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.bouncekid.Screen#onDetached()
-	 */
-	@Override
-	public void onDetached() {
-		super.onDetached();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#loadResources()
-	 */
-	@Override
-	public void loadResources() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tooflya.airbubblegum.Screen#unloadResources()
-	 */
-	@Override
-	public void unloadResources() {
 	}
 
 	/*
