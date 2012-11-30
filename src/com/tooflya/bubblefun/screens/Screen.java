@@ -48,11 +48,6 @@ public abstract class Screen extends Scene {
 	// Virtual methods
 	// ===========================================================
 
-	/** Must be overrided. */
-	public void onPostAttached() {
-		throw new IllegalStateException("Sorry, but this method must be overrided by child Class.");
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -64,6 +59,11 @@ public abstract class Screen extends Scene {
 
 		this.setIgnoreUpdate(false);
 		this.setChildrenIgnoreUpdate(false);
+	}
+
+	/** Must be overrided. */
+	public void onPostAttached() {
+		throw new IllegalStateException("Sorry, but this method must be overrided by child Class.");
 	}
 
 	/*
@@ -79,14 +79,14 @@ public abstract class Screen extends Scene {
 		this.setChildrenIgnoreUpdate(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.Entity#attachChild(org.anddev.andengine.entity.IEntity)
+	 */
 	@Override
 	public void attachChild(final IEntity pEntity) {
 		super.attachChild(pEntity);
 
-		/**
-		 * This section is scale object to the real size for adapt size of
-		 * entity to the screen resolution.
-		 */
+		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
 		pEntity.setScaleCenter(0, 0);
 		pEntity.setScale(Options.cameraRatioFactor);
 

@@ -499,6 +499,13 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			Options.mLevelSound.play();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

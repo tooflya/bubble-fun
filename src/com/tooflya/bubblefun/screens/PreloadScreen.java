@@ -2,8 +2,8 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.util.user.AsyncTaskLoader;
+import org.anddev.andengine.util.user.IAsyncCallback;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
@@ -12,7 +12,7 @@ import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
-public class PreloadScreen extends Screen {
+public class PreloadScreen extends Screen implements IAsyncCallback {
 
 	private final Sprite mBackground;
 	public final Sprite mTextBar;
@@ -34,8 +34,7 @@ public class PreloadScreen extends Screen {
 
 				if (updates == 5) {
 					/** Start background loader */
-					//new AsyncTaskLoader().execute(ScreenManager.this);
-					loaded = true;
+					new AsyncTaskLoader().execute(PreloadScreen.this);
 				}
 
 				for (int i = 10; i > 5; i--) {
@@ -56,13 +55,13 @@ public class PreloadScreen extends Screen {
 				if (loaded) {
 					switch (ScreenManager.mChangeAction) {
 					case 0:
-						Game.screens.set(Screen.LEVEL, true);
+						Game.screens.set(Screen.LEVEL);
 						break;
 					case 1:
-						Game.screens.set(Screen.MENU, true);
+						Game.screens.set(Screen.MENU);
 						break;
 					default:
-						Game.screens.set(Screen.CHOISE, true);
+						Game.screens.set(Screen.CHOISE);
 					}
 
 					/** Register timer of loading progressbar changes */
@@ -86,6 +85,7 @@ public class PreloadScreen extends Screen {
 		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
 
 		this.circles.create().setVisible(false);
+
 		for (int i = 0; i < 5; i++) {
 			this.circles.create().setCenterPosition(Options.cameraCenterX - (35f * (i - 2)), Options.cameraCenterY);
 		}
@@ -117,7 +117,15 @@ public class PreloadScreen extends Screen {
 	@Override
 	public void onAttached() {
 		super.onAttached();
-		
+
+		updates = 0;
+
+		for (int i = 10; i > 5; i--) {
+			final Sprite sprite = circles.getByIndex(i);
+
+			sprite.setScale(0f);
+		}
+
 		this.registerUpdateHandler(mTimer);
 	}
 
@@ -136,7 +144,21 @@ public class PreloadScreen extends Screen {
 	@Override
 	public void onDetached() {
 		super.onDetached();
+	}
 
-		
+	@Override
+	public void onComplete() {
+		loaded = true;
+	}
+
+	@Override
+	public void workToDo() {
+		if (ScreenManager.mChangeAction > 0) {
+			Resources.unloadSecondResources();
+			Resources.loadFirstResources();
+		} else {
+			Resources.unloadFirstResources();
+			Resources.loadSecondResources();
+		}
 	}
 }

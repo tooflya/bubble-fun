@@ -3,16 +3,12 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.modifier.AlphaModifier;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Sprite;
@@ -22,15 +18,13 @@ import com.tooflya.bubblefun.managers.ScreenManager;
 
 public class LevelEndScreen extends PopupScreen {
 
-	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
 	private static int mStarsCount;
 
 	private static int mStarsAnimationCount = 0;
 
-	private final Sprite mPanel = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-lvl-popup.png", 0, 0, 1, 1), this);
+	private final Sprite mPanel = new Sprite(Resources.mLevelEndPanelTextureRegion, this);
 
-	public final ButtonScaleable mMenu = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-menu.png", 0, 615, 1, 1), this.mPanel) {
+	public final ButtonScaleable mMenu = new ButtonScaleable(Resources.mLevelEndReturnButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -45,7 +39,7 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	};
 
-	public final ButtonScaleable mRePlay = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-replay.png", 65, 615, 1, 1), this.mPanel) {
+	public final ButtonScaleable mRePlay = new ButtonScaleable(Resources.mLevelEndRestartButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -59,7 +53,8 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	};
 
-	public final ButtonScaleable mPlayNext = new ButtonScaleable(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "buttons-end-next.png", 130, 615, 1, 1), this.mPanel) {
+	public final ButtonScaleable mPlayNext = new ButtonScaleable(Resources.mLevelEndNextButtonTextureRegion, this.mPanel) {
+
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
 		 */
@@ -96,21 +91,19 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	});
 
-	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-stars.png", 230, 615, 1, 2), this.mPanel));
+	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(Resources.mStarsTextureRegion, this.mPanel));
 
 	private AlphaModifier mRectangleAlphaModifier = new AlphaModifier(0.1f, 0.4f, 0f);
 
-	private final Sprite mTotalScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-text-total-score.png", 512, 0, 1, 1), this.mPanel);
-	private final Sprite mScoreText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-text-score.png", 512, 30, 1, 1), this.mPanel);
-	private final Sprite mStarsText = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-text-star.png", 512, 60, 1, 1), this.mPanel);
+	private final Sprite mTotalScoreText = new Sprite(Resources.mLevelEndTotalScoreTextTextureRegion, this.mPanel);
+	private final Sprite mScoreText = new Sprite(Resources.mLevelEndScoreTextTextureRegion, this.mPanel);
+	private final Sprite mStarsText = new Sprite(Resources.mLevelEndStarsScoreTextTextureRegion, this.mPanel);
 
-	private final TiledTextureRegion numbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end-text-numbers.png", 512, 512, 10, 1);
+	private final EntityManager<Sprite> mStarsCountText = new EntityManager<Sprite>(1, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final EntityManager<Sprite> mScoreCountText = new EntityManager<Sprite>(4, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final EntityManager<Sprite> mTotalScoreCountText = new EntityManager<Sprite>(4, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 
-	private final EntityManager<Sprite> mStarsCountText = new EntityManager<Sprite>(1, new Sprite(numbersTextureRegion, this.mPanel));
-	private final EntityManager<Sprite> mScoreCountText = new EntityManager<Sprite>(4, new Sprite(numbersTextureRegion, this.mPanel));
-	private final EntityManager<Sprite> mTotalScoreCountText = new EntityManager<Sprite>(4, new Sprite(numbersTextureRegion, this.mPanel));
-
-	private final AwesomeText mLevelCompleteCapture = new AwesomeText(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "end_lvl_text_complete.png", 512, 800, 1, 1), false, this.mPanel);
+	private final AwesomeText mLevelCompleteCapture = new AwesomeText(Resources.mLevelEndCompleteCaptureTextureRegion, false, this.mPanel);
 
 	// ===========================================================
 	// Constructors
@@ -221,7 +214,7 @@ public class LevelEndScreen extends PopupScreen {
 		this.unregisterUpdateHandler(mTimer);
 
 		stars.clear();
-		
+
 		mLevelCompleteCapture.destroy();
 	}
 

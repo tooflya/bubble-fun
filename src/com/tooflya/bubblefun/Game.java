@@ -18,8 +18,6 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.util.FPSCounter;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
-import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.user.IAsyncCallback;
 
@@ -37,7 +35,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.tooflya.bubblefun.database.LevelsStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
@@ -49,7 +46,7 @@ import com.tooflya.bubblefun.screens.Screen;
  * @author Tooflya.com
  * @since
  */
-public class Game extends BaseGameActivity implements IAsyncCallback  {
+public class Game extends BaseGameActivity implements IAsyncCallback {
 
 	// ===========================================================
 	// Constants
@@ -81,7 +78,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback  {
 
 	/** */
 	public static float mCurrentFramesPerSecond;
-	
+
 	private SensorManager mSensorManager;
 	private ShakeEventListener mSensorListener;
 
@@ -104,16 +101,16 @@ public class Game extends BaseGameActivity implements IAsyncCallback  {
 	@Override
 	public void onLoadComplete() {
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-	    mSensorListener = new ShakeEventListener();   
+		mSensorListener = new ShakeEventListener();
 
-	    mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+		mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
 
-	      public void onShake() {
-	    	  if(LevelScreen.running) {
-	    		  ((LevelScreen)Game.screens.get(Screen.LEVEL)).restartMove1.reset();
-	    	  }
-	      }
-	    });
+			public void onShake() {
+				if (LevelScreen.running) {
+					((LevelScreen) Game.screens.get(Screen.LEVEL)).restartMove1.reset();
+				}
+			}
+		});
 	}
 
 	/*
@@ -191,14 +188,9 @@ public class Game extends BaseGameActivity implements IAsyncCallback  {
 				pGL.glFlush();
 
 				int error = pGL.glGetError();
-				
+
 				/**
-				 * 1280 GL_INVALID_ENUM
-				 * 1281 GL_INVALID_VALUE
-				 * 1282 GL_INVALID_OPERATION
-				 * 1283 GL_STACK_OVERFLOW
-				 * 1284 GL_STACK_UNDERFLOW
-				 * 1285 GL_OUT_OF_MEMORY
+				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
 				 */
 				if (error != GL10.GL_NO_ERROR) {
 					throw new GLException(error, "OpenGL ES has error occurred: " + error);
@@ -262,10 +254,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback  {
 	 */
 	@Override
 	public void workToDo() {
+		Resources.loadCommonResources();
 		Resources.loadFirstResources();
 
 		screens.createSurfaces();
-		
+
 		/** Wait while progressbar is running */
 		while (!isGameLoaded) {
 		} // TODO: synchronized?
@@ -401,14 +394,12 @@ public class Game extends BaseGameActivity implements IAsyncCallback  {
 		getTextureManager().unloadTextures();
 
 		/**
-		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues.
-		 * NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
+		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
 		 */
 		System.runFinalizersOnExit(true);
 
 		/**
-		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed.
-		 * The application will be completely created as a new application in a new process if the user starts the application again.
+		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again.
 		 */
 		System.exit(0);
 	}
@@ -421,7 +412,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback  {
 	@Override
 	public void onResumeGame() {
 		super.onResumeGame();
-		
+
 		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
 
 		if (Options.mLastPlayedMusic != null) {
