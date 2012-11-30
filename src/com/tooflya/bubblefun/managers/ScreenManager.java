@@ -11,6 +11,8 @@ import org.anddev.andengine.util.modifier.IModifier;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
+import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.screens.BoxScreen;
 import com.tooflya.bubblefun.screens.CreditsScreen;
 import com.tooflya.bubblefun.screens.ExitScreen;
@@ -46,11 +48,11 @@ public class ScreenManager {
 		@Override
 		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
 			Game.engine.getScene().onDetached();
-			
-			if(Z != 666) {
-			screens[Z].setScene(Game.engine);
-			screens[Z].onAttached();
-			Screen.screen = Z;
+
+			if (Z != 666) {
+				screens[Z].setScene(Game.engine);
+				screens[Z].onAttached();
+				Screen.screen = Z;
 			} else {
 				tempScreen.setScene(Game.engine);
 				tempScreen.onAttached();
@@ -79,7 +81,7 @@ public class ScreenManager {
 		@Override
 		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
 			ScreenManager.this.rectangle.setAlpha(0f);
-			
+
 			((Screen) Game.engine.getScene()).onPostAttached();
 		}
 
@@ -101,6 +103,8 @@ public class ScreenManager {
 	public Screen[] screens;
 
 	private Rectangle rectangle;
+
+	public static EntityManager<Feather> mFeathers;
 
 	// ===========================================================
 	// Constructors
@@ -133,6 +137,8 @@ public class ScreenManager {
 		screens[Screen.MORE] = new MoreScreen();
 		screens[Screen.CREDITS] = new CreditsScreen();
 		screens[Screen.PRELOAD] = new PreloadScreen();
+
+		mFeathers = new EntityManager<Feather>(100, new Feather(Resources.mCommonFeathersTextureRegion, hud));
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
@@ -170,7 +176,7 @@ public class ScreenManager {
 		screens[Z].onAttached();
 		Screen.screen = Z;
 	}
-	
+
 	public void set(final Screen pScreen) {
 		tempScreen = pScreen;
 

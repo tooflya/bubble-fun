@@ -93,7 +93,7 @@ public class Bubble extends BubbleBase {
 		else {
 			distance = distance > 6 ? 6 : distance;
 			distance /= this.mLostedSpeed;
-			distance = distance < Options.bubbleSpeedMinSpeed? Options.bubbleSpeedMinSpeed : distance;
+			distance = distance < Options.bubbleSpeedMinSpeed ? Options.bubbleSpeedMinSpeed : distance;
 			distance = distance > Options.bubbleSpeedMaxSpeed ? Options.bubbleSpeedMaxSpeed : distance;
 
 			if (0 < angle) {
@@ -191,7 +191,7 @@ public class Bubble extends BubbleBase {
 		return super.create();
 	}
 
-	private void onManagedUpdateCreating(final float pSecondsElapsed) {
+	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
 		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
 
 			this.mLostedSpeed += Options.bubbleStepSpeed;

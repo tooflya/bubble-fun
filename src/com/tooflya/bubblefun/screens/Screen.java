@@ -3,15 +3,18 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.input.touch.TouchEvent;
 
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com
  * @since
  */
-public abstract class Screen extends Scene {
+public abstract class Screen extends Scene implements IOnSceneTouchListener {
 
 	// ===========================================================
 	// Constants
@@ -43,6 +46,10 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public Screen() {
+		this.setOnSceneTouchListener(this);
+	}
 
 	// ===========================================================
 	// Virtual methods
@@ -111,6 +118,23 @@ public abstract class Screen extends Scene {
 				this.mDeltaTiming -= Options.framesPerSeconds;
 			}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener#onSceneTouchEvent(org.anddev.andengine.entity.scene.Scene, org.anddev.andengine.input.touch.TouchEvent)
+	 */
+	@Override
+	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+		if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP || pSceneTouchEvent.getAction() == TouchEvent.ACTION_MOVE) {
+			for (int i = 0; i < Options.particlesCount / 5; i++) {
+				try {
+					ScreenManager.mFeathers.create().Init().setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+				} catch (NullPointerException ex) {
+				}
+			}
+		}
+
+		return true;
 	}
 
 	// ===========================================================

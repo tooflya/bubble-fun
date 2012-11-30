@@ -25,8 +25,10 @@ import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.BubbleSnow;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.ChikySnow;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
@@ -34,12 +36,14 @@ import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.Mark;
+import com.tooflya.bubblefun.entities.Snowflake;
 import com.tooflya.bubblefun.entities.Sprike;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
+import com.tooflya.bubblefun.managers.SnowManager;
 
 /**
  * @author Tooflya.com
@@ -62,102 +66,43 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int Score;
 
-	private Gradient mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
+	private Gradient mBackground;
 
 	private final CloudsManager<Cloud> mClouds;
-	public EntityManager<AwesomeText> mAwesomeKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText1TextureRegion, this.mBackground));
-	public EntityManager<AwesomeText> mDoubleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText2TextureRegion, this.mBackground));
-	public EntityManager<AwesomeText> mTripleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText3TextureRegion, this.mBackground));
-	public EntityManager<BonusText> mBonusesText = new EntityManager<BonusText>(20, new BonusText(Resources.mScoreBonusesTextTextureRegion, this.mBackground));
+	private final SnowManager<Snowflake> mSnowflakes;
 
-	private final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
+	public EntityManager<AwesomeText> mAwesomeKillText;
+	public EntityManager<AwesomeText> mDoubleKillText;
+	public EntityManager<AwesomeText> mTripleKillText;
+	public EntityManager<BonusText> mBonusesText;
 
-	private final Sprite mDottedLine = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
-	private final Sprite mDottedLineAir = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
+	private final Rectangle mRectangle;
 
-	private final Rectangle shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
+	private final Sprite mDottedLine;
+	private final Sprite mDottedLineAir;
 
-		private float s = 0.005f;
+	private final Rectangle shape;
 
-		private boolean modifier = false;
+	private final Sprite mLevelWord;
+	private final EntityManager<Sprite> numbers;
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
-		 * (float)
-		 */
-		@Override
-		protected void onManagedUpdate(final float pSecondsElapsed) {
-			super.onManagedUpdate(pSecondsElapsed);
+	private Sprite mResetText;
 
-			boolean update = false;
-			for (int i = 0; i < this.getChildCount(); i++) {
-				if (this.getChild(i).getAlpha() > 0) {
-					this.getChild(i).setAlpha(this.getChild(i).getAlpha() - s);
-					update = true;
-				}
-			}
+	public final MoveModifier restartMove1;
 
-			if (!update && !modifier) {
-				modifier = true;
-			}
-		}
+	private final AlphaModifier rectangleAlphaModifierOn;
+	private final AlphaModifier rectangleAlphaModifierOff;
 
-		public void reset() {
+	private final MoveModifier restartMove2;
 
-			for (int i = 0; i < this.getChildCount(); i++) {
-				this.getChild(i).setAlpha(1f);
-			}
-			modifier = false;
-		}
-	};
+	private final MoveModifier restartMove3;
 
-	private final Sprite mLevelWord = new Sprite(Resources.mLevelWordTextureRegion, this.shape);
-	private final EntityManager<Sprite> numbers = new EntityManager<Sprite>(4, new Sprite(Resources.mNumbersTextureRegion, this.shape));
+	public final EntityManager<Bonus> bonuses;
+	public final EntityManager<AwesomeText> splashBonusesPicture;
 
-	private final Sprite mResetText = new Sprite(Resources.mRestartTextTextureRegion, this.mRectangle);
+	public final EntityManager<Acceleration> accelerators;
 
-	public final MoveModifier restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY,
-			Options.cameraCenterY) {
-		@Override
-		public void onStarted() {
-			rectangleAlphaModifierOn.reset();
-		}
-
-		@Override
-		public void onFinished() {
-			restartMove2.reset();
-		}
-	};
-
-	private final AlphaModifier rectangleAlphaModifierOn = new AlphaModifier(1f, 0f, 0.7f);
-	private final AlphaModifier rectangleAlphaModifierOff = new AlphaModifier(1f, 0.7f, 0f);
-
-	private final MoveModifier restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY,
-			Options.cameraCenterY) {
-		@Override
-		public void onFinished() {
-			restartMove3.reset();
-		}
-	};
-
-	private final MoveModifier restartMove3 = new MoveModifier(0.5f, Options.cameraWidth / 8 * 2, Options.cameraWidth, Options.cameraCenterY,
-			Options.cameraCenterY) {
-		@Override
-		public void onFinished() {
-			reInit();
-		}
-	};
-
-	public final EntityManager<Bonus> bonuses = new EntityManager<Bonus>(10, new Bonus(Resources.mBonusTextureRegion, this.mBackground));
-
-	public final EntityManager<AwesomeText> splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(Resources.mBonusSplasheTextureRegion, this.mBackground));
-
-	public final EntityManager<Acceleration> accelerators = new EntityManager<Acceleration>(10, new Acceleration(Resources.mAcceleratorsTextureRegion, this.mBackground));
-
-	public EntityManager<Mark> mMarks = new EntityManager<Mark>(100, new Mark(Resources.mMarkTextureRegion, this.mBackground));
+	public EntityManager<Mark> mMarks;
 
 	// ===========================================================
 	// Fields
@@ -165,58 +110,34 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
-	public EntityManager<Coin> coins = new EntityManager<Coin>(100, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
+	public EntityManager<Coin> coins;
 
-	public EntityManager<Chiky> chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
-	public EntityManager<Bubble> airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
-	public EntityManager<Feather> feathers = new EntityManager<Feather>(100, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
-	public EntityManager<Glint> glints = new EntityManager<Glint>(100, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
+	public EntityManager<Chiky> chikies;
+	public EntityManager<Bubble> airgums;
+	public EntityManager<Feather> feathers;
+	public EntityManager<Glint> glints;
 
-	public BlueBird mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
+	public BlueBird mBlueBird;
 
-	private final AlphaModifier mAllFallDownModifier = new AlphaModifier(13.4f, 1f, 0f);
-	private final AlphaModifier mAllFallUpModifier = new AlphaModifier(13.4f, 0f, 1f);
+	private final AlphaModifier mAllFallDownModifier;
+	private final AlphaModifier mAllFallUpModifier;
 
-	private final AlphaModifier mDotterAirLineOn = new AlphaModifier(1f, 0f, 1f) {
-		@Override
-		public void onFinished() {
-			mDotterAirLineOff.reset();
-		}
-	};
-	private final AlphaModifier mDotterAirLineOff = new AlphaModifier(1f, 1f, 0f) {
-		@Override
-		public void onFinished() {
-			mDotterAirLineOn.reset();
-		}
-	};
+	private final AlphaModifier mDotterAirLineOn;
+	private final AlphaModifier mDotterAirLineOff;
 
 	//private Sprite mSpecialButton = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas3, Game.context, "bb-btn.png", 0, 100, 2, 1), this.mBackground);
 
-	public EntityManager<Sprike> sprikes = new EntityManager<Sprike>(100, new Sprike(Resources.mSprikeTextureRegion, this.mBackground));
+	public EntityManager<Sprike> sprikes;
 
-	private final Sprite mPanel = new Sprite(Resources.mTopGamePanelTextureRegion, this.mBackground);
+	private final Sprite mPanel;
 
-	private final ButtonScaleable mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
+	private final ButtonScaleable mMenuButton;
 
-		@Override
-		public void onClick() {
-			Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
-		}
-	};
+	private final ButtonScaleable mResetButton;
 
-	private final ButtonScaleable mResetButton = new ButtonScaleable(Resources.mRestartButtonTextureRegion, this.mBackground) {
+	private final Sprite mScoreText;
 
-		@Override
-		public void onClick() {
-			if (!isResetAnimationRunning) {
-				reInit();
-			}
-		}
-	};
-
-	private final Sprite mScoreText = new Sprite(Resources.mScoreTextTextureRegion, this.mBackground);
-
-	private final EntityManager<Sprite> numbersSmall = new EntityManager<Sprite>(4, new Sprite(Resources.mSmallNumbersTextureRegion, this.mBackground));
+	private final EntityManager<Sprite> numbersSmall;
 
 	// ===========================================================
 	// Tutorial
@@ -231,8 +152,155 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	public LevelScreen() {
+		this.mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
+		this.mSnowflakes = new SnowManager<Snowflake>(100, new Snowflake(Resources.mSnowFlakesTextureRegion, this.mBackground));
+
+		this.mAwesomeKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText1TextureRegion, this.mBackground));
+		this.mDoubleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText2TextureRegion, this.mBackground));
+		this.mTripleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText3TextureRegion, this.mBackground));
+		this.mBonusesText = new EntityManager<BonusText>(20, new BonusText(Resources.mScoreBonusesTextTextureRegion, this.mBackground));
+
+		this.mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
+
+		this.mDottedLine = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
+		this.mDottedLineAir = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
+
+		shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
+
+			private float s = 0.005f;
+
+			private boolean modifier = false;
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
+			 * (float)
+			 */
+			@Override
+			protected void onManagedUpdate(final float pSecondsElapsed) {
+				super.onManagedUpdate(pSecondsElapsed);
+
+				boolean update = false;
+				for (int i = 0; i < this.getChildCount(); i++) {
+					if (this.getChild(i).getAlpha() > 0) {
+						this.getChild(i).setAlpha(this.getChild(i).getAlpha() - s);
+						update = true;
+					}
+				}
+
+				if (!update && !modifier) {
+					modifier = true;
+				}
+			}
+
+			public void reset() {
+
+				for (int i = 0; i < this.getChildCount(); i++) {
+					this.getChild(i).setAlpha(1f);
+				}
+				modifier = false;
+			}
+		};
+
+		mLevelWord = new Sprite(Resources.mLevelWordTextureRegion, this.shape);
+		numbers = new EntityManager<Sprite>(4, new Sprite(Resources.mNumbersTextureRegion, this.shape));
+
+		mResetText = new Sprite(Resources.mRestartTextTextureRegion, this.mRectangle);
+
+		bonuses = new EntityManager<Bonus>(10, new Bonus(Resources.mBonusTextureRegion, this.mBackground));
+
+		splashBonusesPicture = new EntityManager<AwesomeText>(10, new AwesomeText(Resources.mBonusSplasheTextureRegion, this.mBackground));
+
+		accelerators = new EntityManager<Acceleration>(10, new Acceleration(Resources.mAcceleratorsTextureRegion, this.mBackground));
+
+		mMarks = new EntityManager<Mark>(100, new Mark(Resources.mMarkTextureRegion, this.mBackground));
+
+		coins = new EntityManager<Coin>(100, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
+
+		airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+		feathers = new EntityManager<Feather>(100, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
+		glints = new EntityManager<Glint>(100, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
+		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
+
+		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
+
+		sprikes = new EntityManager<Sprike>(100, new Sprike(Resources.mSprikeTextureRegion, this.mBackground));
+
+		mPanel = new Sprite(Resources.mTopGamePanelTextureRegion, this.mBackground);
+
+		mScoreText = new Sprite(Resources.mScoreTextTextureRegion, this.mBackground);
+
+		numbersSmall = new EntityManager<Sprite>(4, new Sprite(Resources.mSmallNumbersTextureRegion, this.mBackground));
+
+		mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
+
+			@Override
+			public void onClick() {
+				Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
+			}
+		};
+
+		mResetButton = new ButtonScaleable(Resources.mRestartButtonTextureRegion, this.mBackground) {
+
+			@Override
+			public void onClick() {
+				if (!isResetAnimationRunning) {
+					reInit();
+				}
+			}
+		};
+
+		restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY,
+				Options.cameraCenterY) {
+			@Override
+			public void onStarted() {
+				rectangleAlphaModifierOn.reset();
+			}
+
+			@Override
+			public void onFinished() {
+				restartMove2.reset();
+			}
+		};
+
+		rectangleAlphaModifierOn = new AlphaModifier(1f, 0f, 0.7f);
+		rectangleAlphaModifierOff = new AlphaModifier(1f, 0.7f, 0f);
+
+		restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY,
+				Options.cameraCenterY) {
+			@Override
+			public void onFinished() {
+				restartMove3.reset();
+			}
+		};
+
+		restartMove3 = new MoveModifier(0.5f, Options.cameraWidth / 8 * 2, Options.cameraWidth, Options.cameraCenterY,
+				Options.cameraCenterY) {
+			@Override
+			public void onFinished() {
+				reInit();
+			}
+		};
+
+		mAllFallDownModifier = new AlphaModifier(13.4f, 1f, 0f);
+		mAllFallUpModifier = new AlphaModifier(13.4f, 0f, 1f);
+
+		mDotterAirLineOn = new AlphaModifier(1f, 0f, 1f) {
+			@Override
+			public void onFinished() {
+				mDotterAirLineOff.reset();
+			}
+		};
+		mDotterAirLineOff = new AlphaModifier(1f, 1f, 0f) {
+			@Override
+			public void onFinished() {
+				mDotterAirLineOn.reset();
+			}
+		};
 
 		this.mBackground.setBackgroundCenterPosition();
 
@@ -245,9 +313,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		// ===========================================================
 
 		this.mPanel.create().setPosition(0, 0);
-		this.setOnSceneTouchListener(this);
 
-		this.mClouds.generateStartClouds();
+		this.setOnSceneTouchListener(this);
 
 		mDottedLine.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
 		mDottedLineAir.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
@@ -495,6 +562,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public void onAttached() {
 		super.onAttached();
 
+		switch (Options.boxNumber) {
+		case 0:
+			this.onWOCBoxAttached();
+			break;
+		case 1:
+			this.onSDBoxAttached();
+			break;
+		case 2:
+			this.onSTBoxAttached();
+			break;
+		}
+
 		if (!Options.mLevelSound.isPlaying() && Options.isMusicEnabled)
 			Options.mLevelSound.play();
 	}
@@ -528,9 +607,19 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.checkCollision();
+		switch (Options.boxNumber) {
+		case 0:
+			this.onManagedUpdateWOCBox();
+			break;
+		case 1:
+			this.onManagedUpdateSDBox();
+			break;
+		case 2:
+			this.onManagedUpdateSTBox();
+			break;
+		}
 
-		this.mClouds.update();
+		this.checkCollision();
 
 		/** AIR */
 		if (AIR >= 75) {
@@ -713,6 +802,36 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private void onWOCBoxAttached() {
+		this.mClouds.generateStartClouds();
+		this.airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
+	}
+
+	private void onSDBoxAttached() {
+		this.mClouds.clear();
+		this.mSnowflakes.generateStartSnow();
+
+		this.airgums = new EntityManager<Bubble>(100, new BubbleSnow(Resources.mSnowyBubbleTextureRegion, this.mBackground));
+		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mSnowyBirdsTextureRegion, this.mBackground));
+	}
+
+	private void onSTBoxAttached() {
+		this.mClouds.clear();
+	}
+
+	private void onManagedUpdateWOCBox() {
+		this.mClouds.update();
+	}
+
+	private void onManagedUpdateSDBox() {
+		this.mSnowflakes.update();
+	}
+
+	private void onManagedUpdateSTBox() {
+
+	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
 		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);

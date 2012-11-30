@@ -25,7 +25,7 @@ public class Chiky extends Entity {
 	private static final int[] pSpeedyMoveFrames = new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 };
 	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
 
-	private enum States {
+	protected enum States {
 		NormalMove, SpeedyMove, Fall, Vector
 	};
 
@@ -33,21 +33,21 @@ public class Chiky extends Entity {
 	public static final int isJumplyFlag = 2;
 	public static final int isSpeedyFlag = 4;
 	public static final int isWavelyFlag = 8;
-	public static final int isVectorFlag = 16;
+	public static final int isVectorFlag = 32;
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private States mState = States.NormalMove;
+	protected States mState = States.NormalMove;
 
-	private float mTime = 0f; // Seconds.
-	private float mTimeWithGum = 0f; // Seconds.
+	protected float mTime = 0f; // Seconds.
+	protected float mTimeWithGum = 0f; // Seconds.
 	private float mAngle = 0f; // Degree.
 
 	@SuppressWarnings("unused")
-	private float mStartX = 0;
-	private float mStartY = 0;
-	private float mNormalStepX = 0;
+	protected float mStartX = 0;
+	protected float mStartY = 0;
+	protected float mNormalStepX = 0;
 	private float mSpeedyStepX = 0;
 	private float mOffsetX = 0;
 
@@ -55,8 +55,8 @@ public class Chiky extends Entity {
 
 	private float mX_ = 0; // Last (or old) x.
 
-	private Bubble mAirgum = null;
-	private Acceleration mWind = null;
+	protected Bubble mAirgum = null;
+	protected Acceleration mWind = null;
 
 	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
 	private boolean vectorReverse, vectorStopSecond;
@@ -216,7 +216,7 @@ public class Chiky extends Entity {
 	// Virtual methods
 	// ===========================================================
 
-	private void onManagedUpdateWithGum(final float pSecondsElapsed) {
+	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
 		this.mTimeWithGum += pSecondsElapsed;
 		if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
 			this.mTime = 0;

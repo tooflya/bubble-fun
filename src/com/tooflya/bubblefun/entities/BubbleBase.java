@@ -5,8 +5,8 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Options;
 
 public class BubbleBase extends Entity {
-	private float pScaleStepX = Options.bubbleBaseStepScale;
-	private float pScaleStepY = -Options.bubbleBaseStepScale;
+	protected float pScaleStepX = Options.bubbleBaseStepScale;
+	protected float pScaleStepY = -Options.bubbleBaseStepScale;
 
 	public BubbleBase(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);

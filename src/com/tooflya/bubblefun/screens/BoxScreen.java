@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.detector.ClickDetector;
 import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
@@ -28,7 +27,7 @@ import com.tooflya.bubblefun.managers.EntityManager;
  * @author Tooflya.com
  * @since
  */
-public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener, IScrollDetectorListener, IClickDetectorListener {
+public class BoxScreen extends ReflectionScreen implements IScrollDetectorListener, IClickDetectorListener {
 
 	// ===========================================================
 	// Constants
@@ -160,8 +159,6 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mClickDetector = new ClickDetector(this);
-
-		this.setOnSceneTouchListener(this);
 	}
 
 	// ===========================================================
@@ -174,7 +171,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	@Override
 	public void onPostAttached() {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -259,7 +256,8 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mClickDetector.onTouchEvent(pSceneTouchEvent);
 		this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
-		return false;
+
+		return super.onSceneTouchEvent(arg0, pSceneTouchEvent);
 	}
 
 	private float sx;
