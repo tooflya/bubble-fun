@@ -22,7 +22,7 @@ public class Chiky extends Entity {
 	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
 	private static final int[] pNormalMoveFrames = new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 };
 	private static final int[] pNormalMoveWithGumFrames = new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 };
-	private static final int[] pSpeedyMoveFrames = new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 };
+	protected static int[] pSpeedyMoveFrames = new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 };
 	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
 
 	protected enum States {
@@ -378,7 +378,7 @@ public class Chiky extends Entity {
 	 * @see com.tooflya.bouncekid.entity.Entity#onManagedUpdate(float)
 	 */
 	@Override
-	public void onManagedUpdate(final float pSecondsElapsed) {
+	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		if (!this.IsProperty(isPauseUpdateFlag)) {

@@ -1,6 +1,5 @@
 package com.tooflya.bubblefun.entities;
 
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;
@@ -12,8 +11,22 @@ import com.tooflya.bubblefun.screens.Screen;
 
 public class ChikySnow extends Chiky {
 
-	public ChikySnow(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
+	private Sprite heat;
+
+	public ChikySnow(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
+	}
+
+	public Entity create() {
+		this.heat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHeats.create();
+		return super.create();
+	}
+
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		this.heat.setCenterPosition(this.getCenterX(), this.getCenterY() - 10f);
 	}
 
 	@Override
@@ -55,7 +68,6 @@ public class ChikySnow extends Chiky {
 			}
 		}
 
-		this.stopAnimation(6);
-
+		this.stopAnimation(0);
 	}
 }

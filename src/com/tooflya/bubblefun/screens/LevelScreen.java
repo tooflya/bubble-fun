@@ -139,6 +139,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final EntityManager<Sprite> numbersSmall;
 
+	public final EntityManager<Sprite> mCristmasHeats;
+
 	// ===========================================================
 	// Tutorial
 	// ===========================================================
@@ -226,6 +228,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		glints = new EntityManager<Glint>(100, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 
+		mCristmasHeats = new EntityManager<Sprite>(100, new Sprite(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
 		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 
 		sprikes = new EntityManager<Sprike>(100, new Sprike(Resources.mSprikeTextureRegion, this.mBackground));
@@ -329,13 +332,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.shape.setAlpha(0f);
 
 		mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX - 30f, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX - 38f, Options.cameraCenterY);
 		numbers.create().setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX + 10f, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX + 30f, Options.cameraCenterY);
-
-		numbers.getByIndex(0).setCurrentTileIndex(1);
-		numbers.getByIndex(1).setCurrentTileIndex(10);
+		numbers.create().setCenterPosition(Options.cameraCenterX + 18f, Options.cameraCenterY);
+		numbers.create().setCenterPosition(Options.cameraCenterX + 43f, Options.cameraCenterY);
 
 		numbersSmall.create().setPosition(97, 8);
 		numbersSmall.create().setPosition(111, 8);
@@ -460,6 +460,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			numbers.getByIndex(3).setCurrentTileIndex(Options.levelNumber % 10);
 		}
 
+		numbers.getByIndex(1).setCurrentTileIndex(10);
 	}
 
 	// ===========================================================
@@ -833,7 +834,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.airgums = new EntityManager<Bubble>(100, new BubbleSnow(Resources.mSnowyBubbleTextureRegion, this.mBackground));
 
 		this.chikies.clear();
-		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mSnowyBirdsTextureRegion, this.mBackground));
+		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mRegularBirdsTextureRegion, this.mBackground));
 	}
 
 	private void onSTBoxAttached() {
