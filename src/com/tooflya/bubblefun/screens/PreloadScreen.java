@@ -126,6 +126,13 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 			sprite.setScale(0f);
 		}
 
+		if (Options.mMainSound.isPlaying()) {
+			Options.mMainSound.pause();
+		}
+		if (Options.mLevelSound.isPlaying()) {
+			Options.mLevelSound.pause();
+		}
+
 		this.registerUpdateHandler(mTimer);
 	}
 

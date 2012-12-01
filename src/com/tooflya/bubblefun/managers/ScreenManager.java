@@ -39,7 +39,7 @@ public class ScreenManager {
 
 	private final HUD hud = new HUD();
 
-	private final AlphaModifier modifierOn = new AlphaModifier(0.2f, 0f, 1f, new IEntityModifierListener() {
+	private final AlphaModifier modifierOn = new AlphaModifier(0.4f, 0f, 1f, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -72,7 +72,7 @@ public class ScreenManager {
 		}
 	});
 
-	private final AlphaModifier modifierOff = new AlphaModifier(0.2f, 1f, 0f, new IEntityModifierListener() {
+	private final AlphaModifier modifierOff = new AlphaModifier(0.4f, 1f, 0f, new IEntityModifierListener() {
 
 		/**
 		 * @param pEntityModifier
@@ -103,8 +103,6 @@ public class ScreenManager {
 	public Screen[] screens;
 
 	private Rectangle rectangle;
-
-	public static EntityManager<Feather> mFeathers;
 
 	// ===========================================================
 	// Constructors
@@ -137,8 +135,6 @@ public class ScreenManager {
 		screens[Screen.MORE] = new MoreScreen();
 		screens[Screen.CREDITS] = new CreditsScreen();
 		screens[Screen.PRELOAD] = new PreloadScreen();
-
-		mFeathers = new EntityManager<Feather>(100, new Feather(Resources.mCommonFeathersTextureRegion, hud));
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {

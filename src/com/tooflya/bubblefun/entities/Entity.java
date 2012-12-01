@@ -314,6 +314,10 @@ public abstract class Entity extends AnimatedSprite {
 		this.mEntityManager = pEntityManager;
 	}
 
+	public void changeTextureRegion(final TiledTextureRegion pTextureRegion) {
+		this.mTextureRegion = pTextureRegion.deepCopy();
+	}
+
 	// ===========================================================
 	// Getters
 	// ===========================================================

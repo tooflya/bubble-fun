@@ -14,7 +14,7 @@ import com.tooflya.bubblefun.managers.ScreenManager;
  * @author Tooflya.com
  * @since
  */
-public abstract class Screen extends Scene implements IOnSceneTouchListener {
+public abstract class Screen extends Scene {
 
 	// ===========================================================
 	// Constants
@@ -46,10 +46,6 @@ public abstract class Screen extends Scene implements IOnSceneTouchListener {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public Screen() {
-		this.setOnSceneTouchListener(this);
-	}
 
 	// ===========================================================
 	// Virtual methods
@@ -118,23 +114,6 @@ public abstract class Screen extends Scene implements IOnSceneTouchListener {
 				this.mDeltaTiming -= Options.framesPerSeconds;
 			}
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener#onSceneTouchEvent(org.anddev.andengine.entity.scene.Scene, org.anddev.andengine.input.touch.TouchEvent)
-	 */
-	@Override
-	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP || pSceneTouchEvent.getAction() == TouchEvent.ACTION_MOVE) {
-			for (int i = 0; i < Options.particlesCount / 5; i++) {
-				try {
-					ScreenManager.mFeathers.create().Init().setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
-				} catch (NullPointerException ex) {
-				}
-			}
-		}
-
-		return true;
 	}
 
 	// ===========================================================

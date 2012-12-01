@@ -13,6 +13,9 @@ public class BubbleSnow extends Bubble {
 		super(pTiledTextureRegion, pParentScreen);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Bubble#create()
+	 */
 	@Override
 	public Entity create() {
 		final Entity bubble = super.create();

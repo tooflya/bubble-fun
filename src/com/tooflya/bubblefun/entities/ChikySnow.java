@@ -32,7 +32,7 @@ public class ChikySnow extends Chiky {
 			this.setSpeedX(-this.mNormalStepX);
 		}
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.setParent(mAirgum);

@@ -1,5 +1,7 @@
 package com.tooflya.bubblefun.managers;
 
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+
 import com.tooflya.bubblefun.entities.Entity;
 
 /**
@@ -37,7 +39,7 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 		elements = new Entity[capacity];
 
 		for (int i = elements.length - 1; i > 0; --i) {
-			elements[i] =element.deepCopy();
+			elements[i] = element.deepCopy();
 			elements[i].setManager(this);
 			elements[i].setID(i);
 		}
@@ -111,6 +113,15 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	public void clear() {
 		for (int i = lastElementNumber; i >= 0; --i) {
 			elements[i].destroy();
+		}
+	}
+
+	/*
+	 * 
+	 */
+	public void changeTextureRegion(final TiledTextureRegion pTiledTextureRegion) {
+		for (int i = this.getCapacity() - 1; i >= 0; --i) {
+			elements[i].changeTextureRegion(pTiledTextureRegion);
 		}
 	}
 }

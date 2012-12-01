@@ -129,7 +129,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public EntityManager<Sprike> sprikes;
 
-	private final Sprite mPanel;
+	private Sprite mPanel;
 
 	private final ButtonScaleable mMenuButton;
 
@@ -154,8 +154,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public LevelScreen() {
 		this.mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
 
-		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 		this.mSnowflakes = new SnowManager<Snowflake>(100, new Snowflake(Resources.mSnowFlakesTextureRegion, this.mBackground));
+		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
 		this.mAwesomeKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText1TextureRegion, this.mBackground));
 		this.mDoubleKillText = new EntityManager<AwesomeText>(20, new AwesomeText(Resources.mAwesomeText2TextureRegion, this.mBackground));
@@ -334,10 +334,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbers.create().setCenterPosition(Options.cameraCenterX + 10f, Options.cameraCenterY);
 		numbers.create().setCenterPosition(Options.cameraCenterX + 30f, Options.cameraCenterY);
 
-		for (int i = 0; i < shape.getChildCount(); i++) {
-			((Shape) shape.getChild(i)).setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		}
-
 		numbers.getByIndex(0).setCurrentTileIndex(1);
 		numbers.getByIndex(1).setCurrentTileIndex(10);
 
@@ -350,6 +346,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(2).setCurrentTileIndex(0);
 		numbersSmall.getByIndex(3).setCurrentTileIndex(0);
+
+		for (int i = 0; i < shape.getChildCount(); i++) {
+			((Shape) shape.getChild(i)).setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		}
 
 		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 3f);
 		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 3f);
@@ -574,8 +574,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			break;
 		}
 
-		if (!Options.mLevelSound.isPlaying() && Options.isMusicEnabled)
+		this.reInit();
+
+		if (!Options.mLevelSound.isPlaying() && Options.isMusicEnabled) {
 			Options.mLevelSound.play();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -804,21 +807,36 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private void onWOCBoxAttached() {
+		this.mPanel.changeTextureRegion(Resources.mTopGamePanelTextureRegion);
+		this.mLevelWord.changeTextureRegion(Resources.mLevelWordTextureRegion);
+		this.numbers.changeTextureRegion(Resources.mSpecialNumbers1TextureRegion);
+
+		this.mClouds.clear();
 		this.mClouds.generateStartClouds();
+
+		this.airgums.clear();
 		this.airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+
+		this.chikies.clear();
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 	}
 
 	private void onSDBoxAttached() {
+		this.mPanel.changeTextureRegion(Resources.mSnowyTopGamePanelTextureRegion);
+		this.mLevelWord.changeTextureRegion(Resources.mLevelSnowyWordTextureRegion);
+		this.numbers.changeTextureRegion(Resources.mSpecialNumbers2TextureRegion);
+
 		this.mClouds.clear();
 		this.mSnowflakes.generateStartSnow();
 
+		this.airgums.clear();
 		this.airgums = new EntityManager<Bubble>(100, new BubbleSnow(Resources.mSnowyBubbleTextureRegion, this.mBackground));
+
+		this.chikies.clear();
 		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mSnowyBirdsTextureRegion, this.mBackground));
 	}
 
 	private void onSTBoxAttached() {
-		this.mClouds.clear();
 	}
 
 	private void onManagedUpdateWOCBox() {
@@ -826,6 +844,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private void onManagedUpdateSDBox() {
+		this.mClouds.update();
 		this.mSnowflakes.update();
 	}
 
