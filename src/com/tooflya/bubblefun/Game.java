@@ -239,7 +239,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
 			Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
 			Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W3.ogg");
-
+			Options.mAndEngineSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W4.ogg");
+			
 			Options.mMainSound.setLooping(true);
 			Options.mLevelSound.setLooping(true);
 		} catch (Exception e) {
@@ -376,7 +377,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				}
 			});
 		}
-
+		
 		/** Create loading screen and return her scene for attaching to the activity. */
 		return new AndEngineScreen();
 	}

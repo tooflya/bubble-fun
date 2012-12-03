@@ -96,5 +96,5 @@ public class Options {
 	// < Bubble options.
 
 	public static Music mMainSound, mLevelSound, mLastPlayedMusic;
-	public static Sound mButtonSound;
+	public static Sound mButtonSound, mAndEngineSound;
 }
