@@ -11,7 +11,7 @@ import com.tooflya.bubblefun.screens.Screen;
 
 public class ChikySnow extends Chiky {
 
-	private Sprite heat;
+	private CristmasHeat heat;
 
 	public ChikySnow(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
@@ -19,6 +19,7 @@ public class ChikySnow extends Chiky {
 
 	public Entity create() {
 		this.heat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHeats.create();
+		
 		return super.create();
 	}
 
@@ -26,9 +27,13 @@ public class ChikySnow extends Chiky {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.heat.setCenterPosition(this.getCenterX(), this.getCenterY() - 10f);
+		if(!this.heat.mIsParticle)
+		this.heat.setCenterPosition(this.getCenterX(), this.getCenterY() - 20f);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Chiky#onManagedUpdateWithGum(float)
+	 */
 	@Override
 	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
 		this.mTime = 0;
@@ -59,7 +64,7 @@ public class ChikySnow extends Chiky {
 				airgum.setRotation((float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI));
 			}
 		}
-
+/**
 		Feather particle;
 		for (int i = 0; i < Options.particlesCount; i++) {
 			particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
@@ -67,7 +72,9 @@ public class ChikySnow extends Chiky {
 				particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 			}
 		}
-
+**/
+		this.heat.Init();
+		
 		this.stopAnimation(0);
 	}
 }

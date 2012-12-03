@@ -31,6 +31,7 @@ import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.ChikySnow;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
+import com.tooflya.bubblefun.entities.CristmasHeat;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glint;
@@ -139,7 +140,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final EntityManager<Sprite> numbersSmall;
 
-	public final EntityManager<Sprite> mCristmasHeats;
+	public EntityManager<CristmasHeat> mCristmasHeats;
 
 	// ===========================================================
 	// Tutorial
@@ -228,7 +229,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		glints = new EntityManager<Glint>(100, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 
-		mCristmasHeats = new EntityManager<Sprite>(100, new Sprite(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
+		mCristmasHeats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
 		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 
 		sprikes = new EntityManager<Sprike>(100, new Sprike(Resources.mSprikeTextureRegion, this.mBackground));
@@ -422,6 +423,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mBlueBird.clear();
 		airgums.clear();
 		chikies.clear();
+		this.mCristmasHeats.clear();
 		glints.clear();
 		accelerators.clear();
 		sprikes.clear();
@@ -835,6 +837,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.chikies.clear();
 		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mRegularBirdsTextureRegion, this.mBackground));
+		
+		this.mCristmasHeats.clear();
+		this.mCristmasHeats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
 	}
 
 	private void onSTBoxAttached() {
