@@ -7,7 +7,9 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
-public class BubbleSnow extends Bubble {
+public class BubbleSnow extends BubbleGum {
+
+	private Sprite speed;
 
 	public BubbleSnow(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
@@ -45,6 +47,12 @@ public class BubbleSnow extends Bubble {
 	}
 
 	@Override
+	protected void onSpeedyLaunch() {
+		this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
+		this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
+	}
+
+	@Override
 	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
 
 	}
@@ -59,6 +67,20 @@ public class BubbleSnow extends Bubble {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.mRotation += 5;
+
+		if (this.speed != null) {
+			this.speed.setCenterPosition(this.getCenterX(), this.getCenterY() + this.getHeight());
+			this.speed.setRotation((float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI) + 90);
+		}
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+
+		if (this.speed != null) {
+			this.speed.destroy();
+			this.speed = null;
+		}
+	}
 }

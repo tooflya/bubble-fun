@@ -55,7 +55,7 @@ public class Chiky extends Entity {
 
 	private float mX_ = 0; // Last (or old) x.
 
-	protected Bubble mAirgum = null;
+	protected BubbleGum mAirgum = null;
 	protected Acceleration mWind = null;
 
 	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
@@ -188,7 +188,7 @@ public class Chiky extends Entity {
 	// Setters
 	// ===========================================================
 
-	public void setCollide(Bubble airgum) {
+	public void setCollide(BubbleGum airgum) {
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
 			this.mAirgum.AddChildCount();
@@ -233,7 +233,7 @@ public class Chiky extends Entity {
 				this.setSpeedX(-this.mNormalStepX);
 			}
 
-			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			final BubbleGum airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.setParent(mAirgum);
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());

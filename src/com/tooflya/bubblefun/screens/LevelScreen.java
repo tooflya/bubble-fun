@@ -24,7 +24,7 @@ import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.BonusText;
-import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.BubbleGum;
 import com.tooflya.bubblefun.entities.BubbleSnow;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
@@ -109,12 +109,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Fields
 	// ===========================================================
 
-	private Bubble lastAirgum = null;
+	private BubbleGum lastAirgum = null;
 
 	public EntityManager<Coin> coins;
 
 	public EntityManager<Chiky> chikies;
-	public EntityManager<Bubble> airgums;
+	public EntityManager<BubbleGum> airgums;
 	public EntityManager<Feather> feathers;
 	public EntityManager<Glint> glints;
 
@@ -141,6 +141,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final EntityManager<Sprite> numbersSmall;
 
 	public EntityManager<CristmasHeat> mCristmasHeats;
+	public EntityManager<Sprite> mSnowBallSpeed;
 
 	// ===========================================================
 	// Tutorial
@@ -224,11 +225,13 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		coins = new EntityManager<Coin>(100, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
 
-		airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+		airgums = new EntityManager<BubbleGum>(100, new BubbleGum(Resources.mBubbleTextureRegion, this.mBackground));
 		feathers = new EntityManager<Feather>(100, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
 		glints = new EntityManager<Glint>(100, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 
+		mSnowBallSpeed = new EntityManager<Sprite>(100, new Sprite(Resources.mSnowyBallSpeedTextureRegion, this.mBackground));
+		
 		mCristmasHeats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
 		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 
@@ -475,12 +478,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private void checkCollision() {
 		Chiky chiky;
-		Bubble airgum;
+		BubbleGum airgum;
 		for (int i = chikies.getCount() - 1; i >= 0; --i) {
 			chiky = chikies.getByIndex(i);
 			if (chiky.isCanCollide()) {
 				for (int j = airgums.getCount() - 1; j >= 0; --j) {
-					airgum = (Bubble) airgums.getByIndex(j);
+					airgum = (BubbleGum) airgums.getByIndex(j);
 					if (airgum.isCanCollide() && this.isCollide(chiky, airgum)) {
 						airgum.addBirdsKills();
 						chiky.setCollide(airgum);
@@ -730,7 +733,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
 			if (AIR > 0 && chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
-				this.lastAirgum = (Bubble) airgums.create();
+				this.lastAirgum = (BubbleGum) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
 				this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);
 			}
@@ -818,7 +821,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mClouds.generateStartClouds();
 
 		this.airgums.clear();
-		this.airgums = new EntityManager<Bubble>(100, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+		this.airgums = new EntityManager<BubbleGum>(100, new BubbleGum(Resources.mBubbleTextureRegion, this.mBackground));
 
 		this.chikies.clear();
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
@@ -833,7 +836,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mSnowflakes.generateStartSnow();
 
 		this.airgums.clear();
-		this.airgums = new EntityManager<Bubble>(100, new BubbleSnow(Resources.mSnowyBubbleTextureRegion, this.mBackground));
+		this.airgums = new EntityManager<BubbleGum>(100, new BubbleSnow(Resources.mSnowyBubbleTextureRegion, this.mBackground));
 
 		this.chikies.clear();
 		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mRegularBirdsTextureRegion, this.mBackground));

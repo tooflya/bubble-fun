@@ -51,7 +51,7 @@ public class ChikySnow extends Chiky {
 		}
 
 		for (int i = 0; i < 1; i++) {
-			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			final BubbleGum airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.setParent(mAirgum);
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());

@@ -10,7 +10,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
-public class Bubble extends BubbleBase {
+public class BubbleGum extends BubbleBase {
 
 	// ===========================================================
 	// Constants
@@ -30,7 +30,7 @@ public class Bubble extends BubbleBase {
 
 	public float mLostedSpeed = 0;
 
-	private Bubble mParent = null;
+	private BubbleGum mParent = null;
 	float mLastX = 0;
 	float mLastY = 0;
 	private int mChildCount = 0;
@@ -41,7 +41,7 @@ public class Bubble extends BubbleBase {
 	// Constructors
 	// ===========================================================
 
-	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
+	public BubbleGum(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
@@ -52,7 +52,7 @@ public class Bubble extends BubbleBase {
 	// Setters
 	// ===========================================================
 
-	public void setParent(Bubble pBubble) {
+	public void setParent(BubbleGum pBubble) {
 		this.mParent = pBubble.getParent();
 		this.mParent.mLastX = this.getCenterX();
 		this.mParent.mLastY = this.getCenterY();
@@ -63,7 +63,7 @@ public class Bubble extends BubbleBase {
 	// Getters
 	// ===========================================================
 
-	public Bubble getParent() {
+	public BubbleGum getParent() {
 		if (this.mParent == null) {
 			return this;
 		}
@@ -104,20 +104,25 @@ public class Bubble extends BubbleBase {
 			this.setSpeedY(distance * FloatMath.sin(angle));
 
 			if (Options.bubbleMinSpeed < distance) {
-				// TODO: (R) Is it needed here?
-				Glint particle;
-				for (int i = 0; i < 15; i++) {
-					particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
-					if (particle != null) {
-						particle.Init(i, this);
-					}
-				}
+				this.onSpeedyLaunch();
 			}
+			
 		}
 		this.mTime = 0;
 		this.mState = States.Moving;
 	}
 
+	protected void onSpeedyLaunch() {
+		// TODO: (R) Is it needed here?
+		Glint particle;
+		for (int i = 0; i < 15; i++) {
+			particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
+			if (particle != null) {
+				particle.Init(i, this);
+			}
+		}
+	}
+	
 	public void isCollide() {
 		this.animate(40, 0);
 		this.mState = States.Destroying;
