@@ -22,7 +22,7 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 	public int updates = 0;
 	private boolean loaded = false;
-	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
+	private final TimerHandler mTimer = new TimerHandler(0.05f, true, new ITimerCallback() {
 
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
@@ -30,7 +30,7 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 			updates++;
 
 			/** Changing size of progressbar */
-			if (updates < 70) {
+			if (updates < 50) {
 
 				if (updates == 5) {
 					/** Start background loader */
@@ -59,6 +59,9 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 						break;
 					case 1:
 						Game.screens.set(Screen.MENU);
+						break;
+					case 3:
+						Game.screens.set(Screen.BOX);
 						break;
 					default:
 						Game.screens.set(Screen.CHOISE);
@@ -125,7 +128,13 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 			sprite.setScale(0f);
 		}
+	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
 		if (Options.mMainSound.isPlaying()) {
 			Options.mMainSound.pause();
 		}
@@ -134,13 +143,6 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		}
 
 		this.registerUpdateHandler(mTimer);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
-	 */
-	@Override
-	public void onPostAttached() {
 	}
 
 	/*

@@ -35,10 +35,13 @@ public class BoxLabel extends Entity {
 
 		this.setCenterPosition(pX, pY);
 
-		this.modifier1 = new MoveModifier(0.2f, this.mX, this.mX, this.mY, this.mY + 100f);
-		this.modifier2 = new MoveModifier(0.2f, this.mX, this.mX, this.mY + 100f, this.mY);
+		this.mX = Math.round(this.mX);
+		this.mY = Math.round(this.mY);
 
 		this.mBasicY = this.mY;
+
+		this.modifier1 = new MoveModifier(0.2f, this.mX, this.mX, this.mY, this.mY + 100f);
+		this.modifier2 = new MoveModifier(0.2f, this.mX, this.mX, this.mY + 100f, this.mY);
 
 		this.modifier3 = new ScaleModifier(0.2f, 1f, 0f);
 		this.modifier4 = new ScaleModifier(0.2f, 0f, 1f) {
@@ -55,6 +58,8 @@ public class BoxLabel extends Entity {
 		this.registerEntityModifier(modifier5);
 		this.registerEntityModifier(modifier6);
 		this.registerEntityModifier(modifier7);
+
+		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 	}
 
 	public void up() {
@@ -70,12 +75,37 @@ public class BoxLabel extends Entity {
 	}
 
 	public void down() {
-		if (this.mBasicY == this.mY) {
+		if (this.mBasicY == Math.round(this.mY)) {
 			modifier2.stop();
 			modifier4.stop();
 
 			modifier1.reset();
 			modifier3.reset();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 */
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		if (this.mY > 170) {
+			this.mAlpha = 0f;
+		} else {
+			this.mAlpha = 1f;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.Entity#setPosition(float, float)
+	 */
+	@Override
+	public void setPosition(final float pX, final float pY) {
+		this.mX = pX;
+		this.mY = pY;
 	}
 }

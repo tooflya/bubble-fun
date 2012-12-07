@@ -32,7 +32,7 @@ public class ButtonScaleable extends Button {
 			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.1f);
 
 			this.setScaleCenter(this.getBaseWidth() / 2, this.getBaseHeight() / 2);
-			
+
 			this.registerEntityModifier(this.mScaleModifier);
 		}
 
@@ -59,9 +59,9 @@ public class ButtonScaleable extends Button {
 
 					this.mDoAction = true;
 				}
-
-				isClicked = false;
 			}
+
+			isClicked = false;
 			break;
 		case TouchEvent.ACTION_MOVE:
 			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 10 || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 10) {
@@ -93,6 +93,10 @@ public class ButtonScaleable extends Button {
 				this.onClick();
 			}
 		}
+	}
+
+	protected boolean prepare() {
+		return true;
 	}
 
 	@Override

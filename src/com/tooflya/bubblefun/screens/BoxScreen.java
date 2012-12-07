@@ -2,6 +2,8 @@ package com.tooflya.bubblefun.screens;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.entity.modifier.AlphaModifier;
+import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -25,6 +27,7 @@ import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com
@@ -54,12 +57,22 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
 
-	private final EntityManager<Sprite> mPoints;
+	private final EntityManager<Sprite> mPoints, mPoints2;
 
 	private Sprite mTopPanel;
 
 	private ArrayList<Box> boxes = new ArrayList<Box>();
 	private ArrayList<BoxLabel> labels = new ArrayList<BoxLabel>();
+	private ArrayList<Sprite> locks = new ArrayList<Sprite>();
+
+	private boolean mTimeToUnlockBox;
+
+	private Sprite mTotalScoreText;
+	private final EntityManager<Sprite> mTotalScoreCountText;
+
+	private int totalscore = 0;
+
+	private int SC = 0;
 
 	// ===========================================================
 	// Constructors
@@ -74,6 +87,9 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
 		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+
+		this.mTotalScoreText = new Sprite(Resources.mLevelEndTotalScoreTextTextureRegion, this.mBackground);
+
 		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
@@ -86,6 +102,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		};
 
 		mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(Resources.mBoxesNavigationTextureRegion, this.mBackground));
+		mPoints2 = new EntityManager<Sprite>(MENUITEMS, new Sprite(Resources.mBoxesNavigationTextureRegion, this.mBackground));
 
 		this.mBackground.create().setBackgroundCenterPosition();
 		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
@@ -102,16 +119,16 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		for (int i = 0; i < MENUITEMS; i++) {
 			final int bi = i;
 
-			final Box test = new Box(Resources.mBoxesTextureRegion, null);
+			BoxLabel picture1 = null;
 
 			if (bi == 0) {
-				final BoxLabel picture1 = (BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 170, Resources.mBoxesLabel1TextureRegion, this.rectangle).create();
+				picture1 = (BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 150, Resources.mBoxesLabel1TextureRegion, this.rectangle).create();
 				labels.add(picture1);
 			} else if (bi == 1) {
-				final BoxLabel picture1 = (BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 170, Resources.mBoxesLabel2TextureRegion, this.rectangle).create();
+				picture1 = (BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 150, Resources.mBoxesLabel2TextureRegion, this.rectangle).create();
 				labels.add(picture1);
 			} else if (bi == 2) {
-				final BoxLabel picture1 = (BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 170, Resources.mBoxesLabel3TextureRegion, this.rectangle).create();
+				picture1 = (BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 150, Resources.mBoxesLabel3TextureRegion, this.rectangle).create();
 				labels.add(picture1);
 			}
 
@@ -122,16 +139,27 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 					if (mPostScroll)
 						return;
 
-					if (bi == 2) {
+					if (!this.prepare()) {
 						boxes.get(bi).animation();
+
+						Game.screens.get(Screen.BOX).setChildScene(Game.screens.get(Screen.BL), false, false, true);
+						Game.screens.get(Screen.BL).onAttached();
+
 						return;
 					}
 					Options.boxNumber = bi;
 					Game.screens.set(Screen.CHOISE);
 				}
+
+				@Override
+				protected boolean prepare() {
+					return Game.db.getBox(bi + 1).isOpen();
+				}
 			};
+
 			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY);
 			sprite.setCurrentTileIndex(0);
+			sprite.enableBlendFunction();
 
 			Sprite picture = null;
 			if (bi == 0) {
@@ -149,10 +177,28 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			}
 
-			if (bi == 2) {
+			if (!Game.db.getBox(bi + 1).isOpen() && bi != 3) {
+				final Sprite chain = (Sprite) new Sprite(Resources.mChainTextureRegion, picture).create();
+				chain.setCenterPosition(picture.getWidth() / 2 + 5f, picture.getHeight() / 2 - 8f);
+				//chain.enableBlendFunction();
 
 				final Sprite lock = (Sprite) new Sprite(Resources.mBoxesLockTextureRegion, picture).create();
-				lock.setCenterPosition(picture.getWidth() / 2, picture.getHeight() / 2);
+				lock.setCenterPosition(picture.getWidth() / 2, picture.getHeight() / 2 + 14f);
+				//lock.enableBlendFunction();
+
+				locks.add(bi, lock);
+
+				if (bi == 1) {
+					Sprite l = new Sprite(Resources.mLockStars1TextureRegion, lock);
+					l.setCenterPosition(lock.getWidth() / 2, lock.getHeight() / 2 + 17f);
+					l.create();
+				} else if (bi == 2) {
+					Sprite l = new Sprite(Resources.mLockStars2TextureRegion, lock);
+					l.setCenterPosition(lock.getWidth() / 2, lock.getHeight() / 2 + 17f);
+					l.create();
+				}
+			} else {
+				locks.add(bi, null);
 			}
 
 			boxes.add(sprite);
@@ -171,7 +217,41 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		mPoints.create().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 205f);
 		mPoints.create().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 205f);
 
-		mPoints.getByIndex(0).setCurrentTileIndex(1);
+		Entity point;
+		point = mPoints2.create();
+		point.setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 205f);
+		point.setCurrentTileIndex(1);
+		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
+
+		point = mPoints2.create();
+		point.setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 205f);
+		point.setCurrentTileIndex(1);
+		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
+		point.setScale(0f);
+
+		point = mPoints2.create();
+		point.setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 205f);
+		point.setCurrentTileIndex(1);
+		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
+		point.setScale(0f);
+
+		point = mPoints2.create();
+		point.setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 205f);
+		point.setCurrentTileIndex(1);
+		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
+		point.setScale(0f);
+
+		for (int j = 0; j < mPoints2.getCount(); j++) {
+			mPoints.getByIndex(j).setScaleCenter(mPoints.getByIndex(j).getWidth() / 2, mPoints.getByIndex(j).getHeight() / 2);
+		}
+
+		this.mTotalScoreCountText = new EntityManager<Sprite>(10, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mBackground));
+
+		for (int a = 0; a < 5; a++) {
+			this.mTotalScoreCountText.create().setPosition(Options.cameraWidth - 100f + 18f * a, 8f);
+		}
+
+		this.mTotalScoreText.create().setCenterPosition(this.mTotalScoreCountText.getByIndex(0).getCenterX() - this.mTotalScoreText.getWidth() / 2 - 10f, this.mTotalScoreCountText.getByIndex(0).getCenterY());
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mClickDetector = new ClickDetector(this);
@@ -183,11 +263,29 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	// Virtual methods
 	// ===========================================================
 
+	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		SC = Game.db.getTotalCore();
+	}
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */
 	@Override
 	public void onPostAttached() {
+		if (ScreenManager.mChangeAction == 3) {
+			this.rectangle.setPosition(this.rectangle.getX() - 10f, 0);
+			sx = -8;
+
+			this.mPostScroll = true;
+			this.mTimeToUnlockBox = true;
+		}
+
+		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
+			Options.mMainSound.play();
+		}
 	}
 
 	/*
@@ -229,21 +327,39 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 					int G = ((int) Math.abs(FloatMath.floor(this.rectangle.getX() / 254)) - 1);
 
-					for (int i = mPoints.getCount() - 1; i >= 0; i--) {
-						mPoints.getByIndex(i).setCurrentTileIndex(0);
-					}
-
 					try {
-						mPoints.getByIndex(G).setCurrentTileIndex(1);
 						boxes.get(G).animation();
 						labels.get(G).up();
 					} catch (ArrayIndexOutOfBoundsException e) {
-						mPoints.getByIndex(0).setCurrentTileIndex(1);
 						boxes.get(0).animation();
 						labels.get(0).up();
 						G = 0;
 					} catch (IndexOutOfBoundsException e) {
 
+					}
+
+					final int A = G;
+
+					try {
+						if (this.mTimeToUnlockBox) {
+							this.mTimeToUnlockBox = false;
+
+							final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
+							final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
+								@Override
+								public void onFinished() {
+									Game.db.updateBox(A + 1, 1);
+									locks.get(A).destroy();
+								}
+							};
+
+							locks.get(G).registerEntityModifier(lockAnimationOutScale);
+							locks.get(G).registerEntityModifier(lockAnimationOutAlpha);
+
+							lockAnimationOutScale.reset();
+							lockAnimationOutAlpha.reset();
+						}
+					} catch (NullPointerException ex) {
 					}
 
 					int y = -1;
@@ -255,6 +371,80 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				}
 			}
 		}
+
+		int y = -1;
+		for (Box box : boxes) {
+			y++;
+
+			final float x = box.getX() + box.getParent().getX();
+			final float alpha = Math.max(0f, 66 / Math.abs(x));
+
+			float scale = Math.min(1f, 66 / Math.abs(x));
+			scale = scale < 0.4f ? 0f : scale;
+
+			box.setAlpha(alpha);
+
+			mPoints2.getByIndex(y).setScale(scale);
+		}
+
+		/* TOTAL Score */
+		if (totalscore < SC) {
+
+			if (SC - totalscore > 100) {
+				totalscore += 111;
+			} else if (SC - totalscore > 10) {
+				totalscore += 11;
+			} else {
+				totalscore++;
+			}
+		}
+
+		if (totalscore < 10) {
+			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex(totalscore);
+			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(1).setVisible(false);
+			this.mTotalScoreCountText.getByIndex(2).setVisible(false);
+			this.mTotalScoreCountText.getByIndex(3).setVisible(false);
+			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
+		} else if (totalscore < 100) {
+			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 10));
+			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(totalscore % 10));
+			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(1).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(2).setVisible(false);
+			this.mTotalScoreCountText.getByIndex(3).setVisible(false);
+			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
+		} else if (totalscore < 1000) {
+			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 100));
+			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((totalscore - FloatMath.floor(totalscore / 100) * 100) / 10));
+			this.mTotalScoreCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(totalscore % 10));
+			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(1).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(2).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(3).setVisible(false);
+			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
+		} else if (totalscore < 10000) {
+			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 1000));
+			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 1000) * 1000)) / 100)));
+			this.mTotalScoreCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 100) * 100)) / 10)));
+			this.mTotalScoreCountText.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(totalscore % 10));
+			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(1).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(2).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(3).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
+		} else {
+			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 10000));
+			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 10000) * 10000)) / 1000)));
+			this.mTotalScoreCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 1000) * 1000)) / 100)));
+			this.mTotalScoreCountText.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 100) * 100)) / 10)));
+			this.mTotalScoreCountText.getByIndex(4).setCurrentTileIndex((int) FloatMath.floor(totalscore % 10));
+			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(1).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(2).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(3).setVisible(true);
+			this.mTotalScoreCountText.getByIndex(4).setVisible(true);
+		}
 	}
 
 	/*
@@ -264,7 +454,11 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	 */
 	@Override
 	public void onBackPressed() {
-		Game.screens.set(Screen.MENU);
+		if (this.hasChildScene()) {
+			Game.screens.get(Screen.BL).onDetached();
+		} else {
+			Game.screens.set(Screen.MENU);
+		}
 	}
 
 	@Override
@@ -284,15 +478,15 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 	@Override
 	public void onScroll(ScrollDetector arg0, TouchEvent pTouchEvent, float pDistanceX, float pDistanceY) {
-			if (pTouchEvent.isActionMove()) {
-				sx = pDistanceX > 0 ? 8 : -8;
+		if (pTouchEvent.isActionMove()) {
+			sx = pDistanceX > 0 ? 8 : -8;
 
-				if (this.rectangle.getX() < Options.cameraCenterX / 2 && this.rectangle.getX() > -254 * 3.2f)
-					this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
-			} else if (pTouchEvent.isActionUp()) {
-				this.mPostScroll = true;
-			}
-		
+			if (this.rectangle.getX() < Options.cameraCenterX / 2 && this.rectangle.getX() > -254 * 3.2f)
+				this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
+		} else if (pTouchEvent.isActionUp()) {
+			this.mPostScroll = true;
+		}
+
 	}
 	// ===========================================================
 	// Methods

@@ -11,8 +11,7 @@ import org.anddev.andengine.util.modifier.IModifier;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.Resources;
-import com.tooflya.bubblefun.entities.Feather;
+import com.tooflya.bubblefun.screens.BoxLockedScreen;
 import com.tooflya.bubblefun.screens.BoxScreen;
 import com.tooflya.bubblefun.screens.CreditsScreen;
 import com.tooflya.bubblefun.screens.ExitScreen;
@@ -135,6 +134,7 @@ public class ScreenManager {
 		screens[Screen.MORE] = new MoreScreen();
 		screens[Screen.CREDITS] = new CreditsScreen();
 		screens[Screen.PRELOAD] = new PreloadScreen();
+		screens[Screen.BL] = new BoxLockedScreen();
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {

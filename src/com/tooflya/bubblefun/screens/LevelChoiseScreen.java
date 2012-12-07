@@ -112,6 +112,9 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onPostAttached() {
+		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
+			Options.mMainSound.play();
+		}
 	}
 	
 	/*
@@ -132,10 +135,6 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		this.mSmallnumbers.clear();
 
 		this.levels.generate();
-
-		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
-			Options.mMainSound.play();
-		}
 
 		Sprite sprite;
 

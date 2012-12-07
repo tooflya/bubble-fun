@@ -36,7 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
 
-import com.tooflya.bubblefun.database.LevelsStorage;
+import com.tooflya.bubblefun.database.DataStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.AndEngineScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -68,7 +68,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static Camera camera;
 
 	/** */
-	public static LevelsStorage db;
+	public static DataStorage db;
 
 	/**  */
 	public static boolean isGameLoaded = false;
@@ -213,7 +213,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		};
 
 		/** */
-		db = new LevelsStorage();
+		db = new DataStorage();
 
 		/** Create screen manager */
 		screens = new ScreenManager();

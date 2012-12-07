@@ -60,11 +60,16 @@ public class LevelEndScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			Options.levelNumber++;
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+			if (Options.levelNumber % 25 == 0) {
+				ScreenManager.mChangeAction = 3;
+				Game.screens.set(Screen.PRELOAD);
+			} else {
+				Options.levelNumber++;
+				((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
 
-			modifier4.reset();
-			mRectangleAlphaModifier.reset();
+				modifier4.reset();
+				mRectangleAlphaModifier.reset();
+			}
 		}
 	};
 
@@ -194,7 +199,7 @@ public class LevelEndScreen extends PopupScreen {
 		score = 0;
 		totalscore = 0;
 
-		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount);
+		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount, LevelScreen.Score);
 		Game.db.updateLevel(Options.levelNumber + 1, 1); // TODO: Remove stars reset
 
 		mLevelCompleteCapture.create().setPosition(this.mPanel.getWidth() / 2 - this.mLevelCompleteCapture.getWidth() / 2, this.mPanel.getHeight() / 2 - 200 - this.mLevelCompleteCapture.getHeight() / 2);

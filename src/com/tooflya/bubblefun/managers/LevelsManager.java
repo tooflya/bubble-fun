@@ -67,8 +67,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	}
 
-	private static int temp;
-
 	public void generate(final EntityManager<Sprite> pNumbers) {
 		this.mNumbers = pNumbers;
 
@@ -76,7 +74,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	}
 
 	public void generate() {
-		temp = 0;
 		this.mNumbers.clear();
 
 		for (int i = 0; i < this.getCapacity(); i++) {

@@ -140,7 +140,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final EntityManager<Sprite> numbersSmall;
 
-	public EntityManager<CristmasHeat> mCristmasHeats;
+	public EntityManager<CristmasHeat> mCristmasHats;
 	public EntityManager<Sprite> mSnowBallSpeed;
 
 	// ===========================================================
@@ -173,7 +173,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
-			private float s = 0.005f;
+			private float s = 0.015f;
 
 			private boolean modifier = false;
 
@@ -231,8 +231,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 
 		mSnowBallSpeed = new EntityManager<Sprite>(100, new Sprite(Resources.mSnowyBallSpeedTextureRegion, this.mBackground));
-		
-		mCristmasHeats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
+
+		mCristmasHats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 
 		sprikes = new EntityManager<Sprike>(100, new Sprike(Resources.mSprikeTextureRegion, this.mBackground));
@@ -426,7 +426,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mBlueBird.clear();
 		airgums.clear();
 		chikies.clear();
-		this.mCristmasHeats.clear();
+		this.mCristmasHats.clear();
 		glints.clear();
 		accelerators.clear();
 		sprikes.clear();
@@ -839,10 +839,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.airgums = new EntityManager<BubbleGum>(100, new BubbleSnow(Resources.mSnowyBubbleTextureRegion, this.mBackground));
 
 		this.chikies.clear();
-		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mRegularBirdsTextureRegion, this.mBackground));
-		
-		this.mCristmasHeats.clear();
-		this.mCristmasHeats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHeatTextureRegion, this.mBackground));
+		this.chikies = new EntityManager<Chiky>(100, new ChikySnow(Resources.mSnowyBirdsTextureRegion, this.mBackground));
+
+		this.mCristmasHats.clear();
+		this.mCristmasHats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 	}
 
 	private void onSTBoxAttached() {

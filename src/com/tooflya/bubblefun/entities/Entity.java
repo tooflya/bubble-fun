@@ -14,21 +14,9 @@ import com.tooflya.bubblefun.screens.Screen;
 /**
  * The basic essence of the project, inherited from <b>AnimatedSprite</b> base class. May have a few frames or just one, depending on the type of <b>TextureRegion</b>.
  * 
- * Example of instantinate:
- * 
- * <pre>
- * private final Entity mEntityExample = new Entity(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, &quot;sprite.png&quot;, 0, 660, 1, 1), this) {
- * 	&#064;Override
- * 	public Entity deepCopy() {
- * 		return null;
- * 	}
- * };
- * </pre>
- * 
  * Base this class is abstract class we necessarily need to override <i>deepCopy()</i> method.
  * 
  * @author Tooflya.com
- * @param <T>
  * @since
  */
 public abstract class Entity extends AnimatedSprite {
@@ -375,10 +363,12 @@ public abstract class Entity extends AnimatedSprite {
 	@Override
 	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
 		super.onManagedDraw(GL, pCamera);
+
 	}
 
 	public void doDraw(final GL10 pGL, final Camera pCamera) {
 		super.doDraw(pGL, pCamera);
+
 	}
 
 	/* (non-Javadoc)
