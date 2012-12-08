@@ -43,6 +43,8 @@ public abstract class Entity extends AnimatedSprite {
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object can be <b>null</b>. */
 	private EntityManager<?> mEntityManager;
 
+	private boolean mIsFullBlendingEnable = false;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -201,6 +203,17 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public void enableBlendFunction() {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+		this.mIsFullBlendingEnable = false;
+	}
+
+	/**
+	 * 
+	 */
+	public void enableFullBlendFunction() {
+		this.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+		this.mIsFullBlendingEnable = true;
 	}
 
 	// ===========================================================
@@ -210,7 +223,7 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * Method which checking if this entity is parent of some manager.
 	 * 
-	 * @return boolean Result of of inspection.
+	 * @return boolean Result of inspection.
 	 */
 	public boolean isManagerExist() {
 		return this.mEntityManager != null;
@@ -348,6 +361,20 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/* (non-Javadoc)
+	* @see org.anddev.andengine.entity.Entity#setAlpha(float)
+	*/
+	@Override
+	public void setAlpha(float pAlpha) {
+		pAlpha = pAlpha > 1f ? 1f : pAlpha;
+
+		super.setAlpha(pAlpha);
+
+		if (this.mIsFullBlendingEnable) {
+			super.setColor(pAlpha, pAlpha, pAlpha); // <-- This is the great trick !
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)

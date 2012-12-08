@@ -116,7 +116,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 			Options.mMainSound.play();
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -139,7 +139,18 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		Sprite sprite;
 
 		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 95f, 10f);
+		if (starsCollected < 10) {
+			sprite.destroy();
+			for (int i = 1; i >= 0; i--) {
+				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 130f, this.mStars.getByIndex(i).getY());
+			}
+		} else {
+			sprite.setPosition(Options.cameraWidth - 95f, 10f);
+			for (int i = 1; i >= 0; i--) {
+				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 142f, this.mStars.getByIndex(i).getY());
+			}
+		}
+
 		sprite.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
 
 		sprite = (Sprite) this.mSmallnumbers.create();

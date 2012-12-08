@@ -26,7 +26,7 @@ public class LevelIcon extends ButtonScaleable {
 	}
 	@Override
 	public void onClick() {
-		if (!this.blocked) {
+		if (!this.blocked || true) {
 			Options.levelNumber = this.id;
 			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.PRELOAD);

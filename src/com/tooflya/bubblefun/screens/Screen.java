@@ -20,7 +20,7 @@ public abstract class Screen extends Scene {
 	// Constants
 	// ===========================================================
 
-	public static final int SCREENS_COUNT = 12;
+	public static final int SCREENS_COUNT = 13;
 
 	public static final int NO_SCREEN = -1;
 
@@ -35,6 +35,7 @@ public abstract class Screen extends Scene {
 	public static final int CREDITS = 9;
 	public static final int PRELOAD = 10;
 	public static final int BL = 11;
+	public static final int BOXESUNLOCK = 12;
 
 	// ===========================================================
 	// Fields

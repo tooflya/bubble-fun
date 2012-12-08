@@ -15,7 +15,7 @@ public class PauseScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mPanel = new Sprite(Resources.mPopupPanelTextureRegion, this);
+	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
 
 	private final ButtonScaleable b1 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 

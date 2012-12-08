@@ -188,6 +188,19 @@ public class DataStorage extends SQLiteOpenHelper {
 		return value;
 	}
 
+	public int getTotalStars() {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.rawQuery("SELECT SUM(stars) FROM levels", null);
+
+		cursor.moveToFirst();
+		final int value = cursor.getInt(0);
+
+		cursor.close();
+
+		return value;
+	}
+
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================

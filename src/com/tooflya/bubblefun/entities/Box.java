@@ -29,7 +29,7 @@ public class Box extends ButtonScaleable {
 	public Box(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		this.enableBlendFunction();
+		this.enableFullBlendFunction();
 
 		this.registerEntityModifier(modifier1);
 		this.registerEntityModifier(modifier2);

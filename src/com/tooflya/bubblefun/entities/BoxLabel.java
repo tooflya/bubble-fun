@@ -30,7 +30,7 @@ public class BoxLabel extends Entity {
 
 	private float mBasicY;
 
-	public BoxLabel(final float pX, final float pY, TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+	public BoxLabel(final float pX, final float pY, TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen, final boolean reverse) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setCenterPosition(pX, pY);
@@ -40,8 +40,13 @@ public class BoxLabel extends Entity {
 
 		this.mBasicY = this.mY;
 
-		this.modifier1 = new MoveModifier(0.2f, this.mX, this.mX, this.mY, this.mY + 100f);
-		this.modifier2 = new MoveModifier(0.2f, this.mX, this.mX, this.mY + 100f, this.mY);
+		if(!reverse) {
+			this.modifier1 = new MoveModifier(0.2f, this.mX, this.mX, this.mY, this.mY + 100f);
+			this.modifier2 = new MoveModifier(0.2f, this.mX, this.mX, this.mY + 100f, this.mY);
+		} else {
+			this.modifier1 = new MoveModifier(0.2f, this.mX, this.mX, this.mY, this.mY - 100f);
+			this.modifier2 = new MoveModifier(0.4f, this.mX, this.mX, this.mY - 100f, this.mY);
+		}
 
 		this.modifier3 = new ScaleModifier(0.2f, 1f, 0f);
 		this.modifier4 = new ScaleModifier(0.2f, 0f, 1f) {
@@ -62,6 +67,11 @@ public class BoxLabel extends Entity {
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 	}
 
+
+	public BoxLabel(final float pX, final float pY, TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+		this(pX, pY, pTiledTextureRegion, pParentScreen, false);
+	}
+	
 	public void up() {
 		if (this.mBasicY != this.mY) {
 			modifier1.stop();
@@ -93,11 +103,7 @@ public class BoxLabel extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if (this.mY > 170) {
-			this.mAlpha = 0f;
-		} else {
-			this.mAlpha = 1f;
-		}
+
 	}
 
 	/* (non-Javadoc)

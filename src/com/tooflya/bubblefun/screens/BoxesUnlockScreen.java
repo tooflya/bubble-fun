@@ -10,7 +10,7 @@ import com.tooflya.bubblefun.entities.Sprite;
  * @author Tooflya.com
  * @since
  */
-public class ExitScreen extends PopupScreen {
+public class BoxesUnlockScreen extends PopupScreen {
 
 	// ===========================================================
 	// Constants
@@ -22,16 +22,16 @@ public class ExitScreen extends PopupScreen {
 
 	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
 
-	private final Sprite mText = new Sprite(Resources.mExitTextTextureRegion, this.mPanel);
+	private final Sprite mText = new Sprite(Resources.mBoxesUnlockTextTextureRegion, this.mPanel);
 
-	private final Button mYIcon = new Button(Resources.mExitYesbuttonTextureRegion, this.mPanel) {
+	private final Button mYIcon = new Button(Resources.mBoxPurchaseButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
 		 */
 		@Override
 		public void onClick() {
-			Game.close();
+		
 		}
 	};
 
@@ -50,7 +50,7 @@ public class ExitScreen extends PopupScreen {
 	// Constructors
 	// ===========================================================
 
-	public ExitScreen() {
+	public BoxesUnlockScreen() {
 		this.setBackgroundEnabled(false);
 
 		this.mPanel.create();
@@ -86,7 +86,7 @@ public class ExitScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.MENU).clearChildScene();
+		Game.screens.get(Screen.BOX).clearChildScene();
 	}
 
 }
