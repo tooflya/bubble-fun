@@ -152,6 +152,14 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 			if (!Game.db.getBox(bi + 1).isOpen() && bi != 3) {
 				collects.add((BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 400, Resources.mCollectTextTextureRegion, this.rectangle, true).create());
+				if (bi == 1) {
+					final Sprite n = new Sprite(Resources.mBoxCollect50TextureRegion, collects.get(bi));
+					n.create().setPosition(100f, 8f);
+				}
+				if (bi == 2) {
+					final Sprite n = new Sprite(Resources.mBoxCollect100TextureRegion, collects.get(bi));
+					n.create().setPosition(93f, 8f);
+				}
 			} else {
 				collects.add(bi, null);
 			}
@@ -299,16 +307,6 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.mTotalScoreCountText.create().setCenterPosition(this.mTotalScoreText.getX() + this.mTotalScoreText.getWidth() + 13f + 18f * a, 21f);
 		}
 
-		for (BoxLabel e : collects) {
-			if (e == null)
-				continue;
-
-			Sprite n = mTotalScoreCountText.create();
-			n.detachSelf();
-			e.attachChild(n);
-			n.setPosition(80f, 5f);
-		}
-		
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mClickDetector = new ClickDetector(this);
 
@@ -409,36 +407,58 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 						if (this.mTimeToUnlockBox) {
 							this.mTimeToUnlockBox = false;
 
-							final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
-							final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
-								@Override
-								public void onFinished() {
-									Game.db.updateBox(A + 1, 1);
-									locks.get(A).destroy();
-								}
-							};
-							final AlphaModifier chainAnimationOutAlpha = new AlphaModifier(0.2f, 1f, 0f) {
-								@Override
-								public void onFinished() {
-									chains.get(A).destroy();
-								}
-							};
-
-							locks.get(G).registerEntityModifier(lockAnimationOutScale);
-							locks.get(G).registerEntityModifier(lockAnimationOutAlpha);
-
-							collects.get(G).destroy();
-
-							for (int i = 0; i < locks.get(G).getChildCount(); i++) {
-								((Entity) locks.get(G).getChild(i)).detachSelf();
+							int l = 0;
+							switch (A) {
+							case 1:
+								l = 50;
+								break;
+							case 2:
+								l = 100;
+								break;
 							}
 
-							chains.get(G).registerEntityModifier(chainAnimationOutAlpha);
+							final int mStarsNeeded = l - Game.db.getTotalStars();
 
-							lockAnimationOutScale.reset();
-							lockAnimationOutAlpha.reset();
+							if (mStarsNeeded <= 0 || true) {
+								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
+								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
+									@Override
+									public void onFinished() {
+										Game.db.updateBox(A + 1, 1);
+										locks.get(A).destroy();
+									}
+								};
+								final AlphaModifier chainAnimationOutAlpha = new AlphaModifier(0.2f, 1f, 0f) {
+									@Override
+									public void onFinished() {
+										chains.get(A).destroy();
+									}
+								};
 
-							chainAnimationOutAlpha.reset();
+								locks.get(G).registerEntityModifier(lockAnimationOutScale);
+								locks.get(G).registerEntityModifier(lockAnimationOutAlpha);
+
+								collects.get(G).destroy();
+
+								for (int i = 0; i < locks.get(G).getChildCount(); i++) {
+									((Entity) locks.get(G).getChild(i)).detachSelf();
+								}
+
+								chains.get(G).registerEntityModifier(chainAnimationOutAlpha);
+
+								lockAnimationOutScale.reset();
+								lockAnimationOutAlpha.reset();
+
+								chainAnimationOutAlpha.reset();
+							} else {
+								this.mBoxUnlockPanel.up();
+
+								BOX_INDEX = A;
+								boxes.get(A).animation();
+
+								Game.screens.get(Screen.BOX).setChildScene(Game.screens.get(Screen.BL), false, false, true);
+								Game.screens.get(Screen.BL).onAttached();
+							}
 						}
 					} catch (NullPointerException ex) {
 					}

@@ -9,7 +9,6 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Sprite;
-import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
 public class PreloadScreen extends Screen implements IAsyncCallback {
@@ -17,12 +16,10 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 	private final Sprite mBackground;
 	public final Sprite mTextBar;
 
-	public EntityManager<Sprite> lines;
-	public EntityManager<Sprite> circles;
-
 	public int updates = 0;
+	public int temp = 0;
 	private boolean loaded = false;
-	private final TimerHandler mTimer = new TimerHandler(0.05f, true, new ITimerCallback() {
+	private final TimerHandler mTimer = new TimerHandler(0.2f, true, new ITimerCallback() {
 
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
@@ -30,27 +27,29 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 			updates++;
 
 			/** Changing size of progressbar */
-			if (updates < 50) {
+			if (updates < 15) {
+				switch (temp) {
+				case 0:
+					mTextBar.setWidth(85f);
+					mTextBar.getTextureRegion().setWidth(85);
+					break;
+				case 1:
+					mTextBar.setWidth(94f);
+					mTextBar.getTextureRegion().setWidth(94);
+					break;
+				case 2:
+					mTextBar.setWidth(102f);
+					mTextBar.getTextureRegion().setWidth(102);
+					break;
+				case 3:
+					mTextBar.setWidth(112f);
+					mTextBar.getTextureRegion().setWidth(112);
 
-				if (updates == 5) {
-					/** Start background loader */
-					new AsyncTaskLoader().execute(PreloadScreen.this);
+					temp = -1;
+					break;
 				}
 
-				for (int i = 10; i > 5; i--) {
-					final Sprite sprite = circles.getByIndex(i);
-
-					if (sprite.getScaleX() < 1f) {
-						sprite.setScale(sprite.getScaleX() + 0.16f);
-					}
-					else {
-						sprite.setScale(1f);
-					}
-
-					if (sprite.getScaleX() < 1f) {
-						break;
-					}
-				}
+				temp++;
 			} else {
 				if (loaded) {
 					switch (ScreenManager.mChangeAction) {
@@ -80,33 +79,9 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		this.mBackground = new Sprite(Resources.mPreloadBackgroundTextureRegion, this);
 		this.mTextBar = new Sprite(Resources.mPreloadTextTextureRegion, this.mBackground);
 
-		this.lines = new EntityManager<Sprite>(2, new Sprite(Resources.mPreloadLineTextureRegion, this.mBackground));
-		this.circles = new EntityManager<Sprite>(11, new Sprite(Resources.mPreloadCirclesTextureRegion, this.mBackground));
-
 		this.mBackground.create().setBackgroundCenterPosition();
 
 		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
-
-		this.circles.create().setVisible(false);
-
-		for (int i = 0; i < 5; i++) {
-			this.circles.create().setCenterPosition(Options.cameraCenterX - (35f * (i - 2)), Options.cameraCenterY);
-		}
-
-		for (int i = 0; i < 5; i++) {
-			final Sprite sprite = this.circles.create();
-			sprite.setCenterPosition(Options.cameraCenterX - (35f * (i - 2)), Options.cameraCenterY);
-			sprite.setCurrentTileIndex(1);
-			sprite.setScale(0f);
-		}
-
-		Sprite line;
-
-		line = this.lines.create();
-		line.setPosition(0, 0);
-
-		line = this.lines.create();
-		line.setPosition(this.mBackground.getWidth() - line.getWidth(), 0);
 
 	}
 
@@ -122,12 +97,10 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		super.onAttached();
 
 		updates = 0;
-
-		for (int i = 10; i > 5; i--) {
-			final Sprite sprite = circles.getByIndex(i);
-
-			sprite.setScale(0f);
-		}
+		temp = 0;
+		
+		mTextBar.setWidth(112f);
+		mTextBar.getTextureRegion().setWidth(112);
 	}
 
 	/* (non-Javadoc)
@@ -143,6 +116,9 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		}
 
 		this.registerUpdateHandler(mTimer);
+
+		/** Start background loader */
+		new AsyncTaskLoader().execute(PreloadScreen.this);
 	}
 
 	/*

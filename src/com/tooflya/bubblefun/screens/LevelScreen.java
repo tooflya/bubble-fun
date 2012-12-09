@@ -79,8 +79,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Rectangle mRectangle;
 
-	private final Sprite mDottedLine;
-	private final Sprite mDottedLineAir;
+	private final Sprite mSolidLine;
+	private final Sprite mSolidLineAir;
 
 	private final Rectangle shape;
 
@@ -167,9 +167,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBonusesText = new EntityManager<BonusText>(20, new BonusText(Resources.mScoreBonusesTextTextureRegion, this.mBackground));
 
 		this.mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
-
-		this.mDottedLine = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
-		this.mDottedLineAir = new Sprite(Resources.mDottedLineTextureRegion, this.mBackground);
+		this.mSolidLine = new Sprite(Resources.mAirOneTextureRegion, this.mBackground);
+		this.mSolidLineAir = new Sprite(Resources.mAirTwoTextureRegion, this.mBackground);
 
 		shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
@@ -323,33 +322,29 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.setOnSceneTouchListener(this);
 
-		mDottedLine.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
-		mDottedLineAir.create().setCenterPosition(Options.cameraWidth - this.mDottedLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
-
-		this.mDottedLineAir.registerEntityModifier(this.mDotterAirLineOn);
-		this.mDottedLineAir.registerEntityModifier(this.mDotterAirLineOff);
-
-		this.mDotterAirLineOff.reset();
+		mSolidLine.create().setCenterPosition(Options.cameraWidth - this.mSolidLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight);
+		mSolidLineAir.create().setCenterPosition(Options.cameraWidth - this.mSolidLine.getWidth() / 2, Options.cameraHeight - Options.touchHeight - 8f);
+		mSolidLine.enableFullBlendFunction();
 
 		this.attachChild(shape);
 		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.shape.setAlpha(0f);
 
-		mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX - 38f, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX + 18f, Options.cameraCenterY);
-		numbers.create().setCenterPosition(Options.cameraCenterX + 43f, Options.cameraCenterY);
+		this.mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.numbers.create().setCenterPosition(Options.cameraCenterX - 38f, Options.cameraCenterY);
+		this.numbers.create().setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY);
+		this.numbers.create().setCenterPosition(Options.cameraCenterX + 18f, Options.cameraCenterY);
+		this.numbers.create().setCenterPosition(Options.cameraCenterX + 43f, Options.cameraCenterY);
 
-		numbersSmall.create().setPosition(97, 8);
-		numbersSmall.create().setPosition(111, 8);
-		numbersSmall.create().setPosition(125, 8);
-		numbersSmall.create().setPosition(138, 8);
+		this.numbersSmall.create().setPosition(97, 8);
+		this.numbersSmall.create().setPosition(111, 8);
+		this.numbersSmall.create().setPosition(125, 8);
+		this.numbersSmall.create().setPosition(138, 8);
 
-		numbersSmall.getByIndex(0).setCurrentTileIndex(0);
-		numbersSmall.getByIndex(1).setCurrentTileIndex(0);
-		numbersSmall.getByIndex(2).setCurrentTileIndex(0);
-		numbersSmall.getByIndex(3).setCurrentTileIndex(0);
+		this.numbersSmall.getByIndex(0).setCurrentTileIndex(0);
+		this.numbersSmall.getByIndex(1).setCurrentTileIndex(0);
+		this.numbersSmall.getByIndex(2).setCurrentTileIndex(0);
+		this.numbersSmall.getByIndex(3).setCurrentTileIndex(0);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Shape) shape.getChild(i)).setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -358,28 +353,29 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 3f);
 		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 3f);
 
-		mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraCenterY - mResetText.getHeight() / 2f);
-		mResetText.registerEntityModifier(restartMove1);
-		mResetText.registerEntityModifier(restartMove2);
-		mResetText.registerEntityModifier(restartMove3);
+		this.mResetText.create().setPosition(-mResetText.getWidth(), Options.cameraCenterY - mResetText.getHeight() / 2f);
+		this.mResetText.registerEntityModifier(restartMove1);
+		this.mResetText.registerEntityModifier(restartMove2);
+		this.mResetText.registerEntityModifier(restartMove3);
 
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(rectangleAlphaModifierOff);
 
 		mScoreText.create().setPosition(10, 5);
 
-		this.mDottedLine.enableBlendFunction();
-		this.mDottedLineAir.enableBlendFunction();
+		this.mSolidLine.enableBlendFunction();
+		this.mSolidLineAir.enableBlendFunction();
 		this.mResetButton.enableBlendFunction();
 		this.mMenuButton.enableBlendFunction();
 		this.mScoreText.enableBlendFunction();
 		this.mPanel.enableBlendFunction();
+
 		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
 			this.numbersSmall.getByIndex(i).enableBlendFunction();
 		}
 
-		this.mDottedLine.registerEntityModifier(this.mAllFallUpModifier);
-		this.mDottedLineAir.registerEntityModifier(this.mAllFallUpModifier);
+		this.mSolidLine.registerEntityModifier(this.mAllFallUpModifier);
+		this.mSolidLineAir.registerEntityModifier(this.mAllFallUpModifier);
 		this.mResetButton.registerEntityModifier(this.mAllFallUpModifier);
 		this.mMenuButton.registerEntityModifier(this.mAllFallUpModifier);
 		this.mScoreText.registerEntityModifier(this.mAllFallUpModifier);
@@ -388,18 +384,27 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallUpModifier);
 		}
 
-		this.mDottedLine.registerEntityModifier(this.mAllFallDownModifier);
-		this.mDottedLineAir.registerEntityModifier(this.mAllFallDownModifier);
+		this.mSolidLine.registerEntityModifier(this.mAllFallDownModifier);
+		this.mSolidLineAir.registerEntityModifier(this.mAllFallDownModifier);
 		this.mResetButton.registerEntityModifier(this.mAllFallDownModifier);
 		this.mMenuButton.registerEntityModifier(this.mAllFallDownModifier);
 		this.mScoreText.registerEntityModifier(this.mAllFallDownModifier);
 		this.mPanel.registerEntityModifier(this.mAllFallDownModifier);
+
 		for (int i = 0; i < this.numbersSmall.getCount(); i++) {
 			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallDownModifier);
 		}
 
-		//this.mSpecialButton.create().setPosition(Options.cameraWidth - 60, Options.cameraHeight - 60);
+		this.mBonusPanel = new Sprite(Resources.mRegularBonusPanelTextureRegion, this.mBackground);
+		this.mBonusPanel.create();
+		this.mBonusPanel.setCenterPosition(Options.cameraWidth - this.mBonusPanel.getWidth() / 2, Options.cameraHeight - this.mBonusPanel.getHeight() / 2);
+		this.mBonusPanel.registerEntityModifier(this.mAllFallUpModifier);
+		this.mBonusPanel.registerEntityModifier(this.mAllFallDownModifier);
+		
+		
 	}
+
+	private final Sprite mBonusPanel;
 
 	// ===========================================================
 	// Virtual methods
@@ -630,15 +635,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.checkCollision();
 
-		/** AIR */
-		if (AIR >= 75) {
-			this.mDottedLineAir.setColor(0f, 1f, 0f);
-		} else if (AIR >= 25) {
-			this.mDottedLineAir.setColor(1f, 1f, 0f);
-		} else {
-			this.mDottedLineAir.setColor(1f, 0f, 0f);
-		}
-
 		if (chikies.getCount() == 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && !this.mLevelEndRunning) {
 			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 			this.mLevelEndRunning = true;
@@ -701,9 +697,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 
 		/* AIR LINE */
-		final float baseWidth = this.mDottedLineAir.getBaseWidth();
-		this.mDottedLineAir.setWidth((int) (baseWidth / 100 * AIR));
-		this.mDottedLineAir.getTextureRegion().setWidth((int) (baseWidth / 100 * AIR));
+		final float baseWidth = this.mSolidLineAir.getBaseWidth();
+		this.mSolidLineAir.setWidth((int) (baseWidth / 100 * AIR));
+		this.mSolidLineAir.getTextureRegion().setWidth((int) (baseWidth / 100 * AIR));
 	}
 
 	/*
@@ -825,6 +821,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.chikies.clear();
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
+
+		this.mBonusPanel.changeTextureRegion(Resources.mRegularBonusPanelTextureRegion);
 	}
 
 	private void onSDBoxAttached() {
@@ -843,6 +841,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mCristmasHats.clear();
 		this.mCristmasHats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
+
+		this.mBonusPanel.changeTextureRegion(Resources.mSnowBonusPanelTextureRegion);
 	}
 
 	private void onSTBoxAttached() {
