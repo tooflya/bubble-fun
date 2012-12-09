@@ -151,6 +151,8 @@ public class Resources {
 	public static final TiledTextureRegion mAirTwoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas4, Game.context, "air-fill.png", 512, 26, 1, 1);
 	public static final TiledTextureRegion mRegularBonusPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas4, Game.context, "bonus-panel.png", 512, 60, 1, 1);
 	public static final TiledTextureRegion mSnowBonusPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas4, Game.context, "bonus-panel-snow.png", 512, 161, 1, 1);
+	public static final TiledTextureRegion mBonusButton1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas4, Game.context, "bonus-1-button.png", 512, 262, 1, 1);
+	public static final TiledTextureRegion mBonusButton1SnowTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas4, Game.context, "bonus-1-button-snow.png", 512, 294, 1, 1);
 
 	// ===========================================================
 	// Entities

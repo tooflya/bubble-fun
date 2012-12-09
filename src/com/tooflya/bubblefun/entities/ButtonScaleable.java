@@ -52,12 +52,15 @@ public class ButtonScaleable extends Button {
 			this.mLastClickedX = pTouchAreaLocalX;
 			this.mLastClickedY = pTouchAreaLocalY;
 			break;
+
 		case TouchEvent.ACTION_UP:
 			if (this.isClicked) {
 				if (this.mWaitBeforeAction == 0.3f) {
 					this.mScaleModifier.reset();
 
 					this.mDoAction = true;
+
+					return true;
 				}
 			}
 

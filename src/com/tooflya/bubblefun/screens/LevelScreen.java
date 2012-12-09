@@ -56,6 +56,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Constants
 	// ===========================================================
 
+	protected static final EntityManager<Cloud> birds = null;
+
 	public static boolean isTutorialNeeded = false;
 
 	public static int mBubblesCount;
@@ -400,11 +402,24 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBonusPanel.setCenterPosition(Options.cameraWidth - this.mBonusPanel.getWidth() / 2, Options.cameraHeight - this.mBonusPanel.getHeight() / 2);
 		this.mBonusPanel.registerEntityModifier(this.mAllFallUpModifier);
 		this.mBonusPanel.registerEntityModifier(this.mAllFallDownModifier);
-		
-		
+
+		this.mBonusButton1 = new ButtonScaleable(Resources.mBonusButton1TextureRegion, this.mBonusPanel) {
+			@Override
+			public void onClick() {
+				for (int i = 0; i < chikies.getCount(); i++) {
+					Chiky bird = chikies.getByIndex(i);
+					BubbleGum bubble = airgums.create();
+					bubble.setPosition(bird.getX(), Options.cameraHeight);
+					bubble.initFinishPosition(bubble.getX(), 0);
+				}
+			}
+		};
+		this.mBonusButton1.create().setPosition(2f, 61f);
+
 	}
 
 	private final Sprite mBonusPanel;
+	private final ButtonScaleable mBonusButton1;
 
 	// ===========================================================
 	// Virtual methods
@@ -823,6 +838,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.chikies = new EntityManager<Chiky>(100, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 
 		this.mBonusPanel.changeTextureRegion(Resources.mRegularBonusPanelTextureRegion);
+		this.mBonusButton1.changeTextureRegion(Resources.mBonusButton1TextureRegion);
 	}
 
 	private void onSDBoxAttached() {
@@ -843,6 +859,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mCristmasHats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 
 		this.mBonusPanel.changeTextureRegion(Resources.mSnowBonusPanelTextureRegion);
+		this.mBonusButton1.changeTextureRegion(Resources.mBonusButton1SnowTextureRegion);
 	}
 
 	private void onSTBoxAttached() {
