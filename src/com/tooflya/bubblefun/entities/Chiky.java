@@ -205,6 +205,12 @@ public class Chiky extends Entity {
 			}
 
 			LevelScreen.Score += 50;
+
+			if (Game.random.nextInt(2) == 1) {
+				Options.mBirdsShotted1.play();
+			} else {
+				Options.mBirdsShotted2.play();
+			}
 		}
 	}
 
@@ -250,6 +256,14 @@ public class Chiky extends Entity {
 			}
 
 			this.stopAnimation(6);
+
+			if (Game.random.nextInt(3) == 1) {
+				Options.mBirdsDeath1.play();
+			} else if (Game.random.nextInt(3) == 2) {
+				Options.mBirdsDeath2.play();
+			} else {
+				Options.mBirdsDeath3.play();
+			}
 		}
 	}
 
