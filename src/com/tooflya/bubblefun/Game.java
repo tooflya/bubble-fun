@@ -238,7 +238,15 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		try {
 			Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
 			Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
-			Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W3.ogg");
+			Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "button_click.wav");
+			Options.mBirdsDeath1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_1.wav");
+			Options.mBirdsDeath2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_2.wav");
+			Options.mBirdsDeath3 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_3.wav");
+			Options.mBirdsShotted1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_shooted_1.wav");
+			Options.mBirdsShotted2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_shooted_2.wav");
+			Options.mBubbleDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_death.wav");
+			Options.mBubbleFastCreate1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create1.wav");
+			Options.mBubbleFastCreate2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create2.wav");
 
 			Options.mMainSound.setLooping(true);
 			Options.mLevelSound.setLooping(true);

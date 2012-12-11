@@ -59,8 +59,6 @@ public class ButtonScaleable extends Button {
 					this.mScaleModifier.reset();
 
 					this.mDoAction = true;
-
-					return true;
 				}
 			}
 
@@ -73,7 +71,7 @@ public class ButtonScaleable extends Button {
 			break;
 		}
 
-		return false;
+		return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 	}
 
 	/*

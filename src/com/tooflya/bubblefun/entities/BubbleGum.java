@@ -106,7 +106,7 @@ public class BubbleGum extends BubbleBase {
 			if (Options.bubbleMinSpeed < distance) {
 				this.onSpeedyLaunch();
 			}
-			
+
 		}
 		this.mTime = 0;
 		this.mState = States.Moving;
@@ -121,8 +121,14 @@ public class BubbleGum extends BubbleBase {
 				particle.Init(i, this);
 			}
 		}
+
+		if (Game.random.nextInt(2) == 1) {
+			Options.mBubbleFastCreate1.play();
+		} else {
+			Options.mBubbleFastCreate2.play();
+		}
 	}
-	
+
 	public void isCollide() {
 		this.animate(40, 0);
 		this.mState = States.Destroying;
@@ -240,6 +246,16 @@ public class BubbleGum extends BubbleBase {
 				destroy();
 			}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Entity#destroy()
+	 */
+	@Override
+	public void destroy() {
+		super.destroy();
+
+		Options.mBubbleDeath.play();
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {

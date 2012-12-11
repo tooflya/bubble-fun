@@ -21,6 +21,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Acceleration;
 import com.tooflya.bubblefun.entities.AwesomeText;
+import com.tooflya.bubblefun.entities.BaseSwarm;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.BonusText;
@@ -36,6 +37,7 @@ import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glint;
 import com.tooflya.bubblefun.entities.Gradient;
+import com.tooflya.bubblefun.entities.LightingSwarm;
 import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Snowflake;
 import com.tooflya.bubblefun.entities.Sprike;
@@ -416,10 +418,17 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		};
 		this.mBonusButton1.create().setPosition(2f, 61f);
 
+		this.mLightings = new EntityManager<Sprite>(10, new Sprite(Resources.mLighingTextureRegion, this.mBackground));
+
+		this.mLightingSwarms = new EntityManager<LightingSwarm>(3, new LightingSwarm(Resources.mAngryCloudTextureRegion, this.mBackground));
+		this.mLightingSwarms.create().setCenterPosition(150, 150);
 	}
 
 	private final Sprite mBonusPanel;
 	private final ButtonScaleable mBonusButton1;
+
+	private final EntityManager<LightingSwarm> mLightingSwarms;
+	public final EntityManager<Sprite> mLightings;
 
 	// ===========================================================
 	// Virtual methods
@@ -551,6 +560,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 								air.getY() <= (airgum.getY() + airgum.getHeightScaled() * 1.1f) &&
 								airgum.getY() - airgum.getHeightScaled() <= (air.getY() + air.getHeightScaled())) {
 							air.follow(airgum);
+						}
+					}
+				}
+
+				for (int k = 0; k < this.mLightingSwarms.getCount(); k++) {
+					final LightingSwarm swarm = this.mLightingSwarms.getByIndex(k);
+					if (airgum.isCanCollide()) {
+						if (swarm.getX() <= (airgum.getX() + airgum.getWidthScaled() * 1.1f) &&
+								(airgum.getX() - airgum.getWidthScaled()) <= (swarm.getX() + swarm.getWidthScaled()) &&
+								swarm.getY() <= (airgum.getY() + airgum.getHeightScaled() * 1.1f) &&
+								airgum.getY() - airgum.getHeightScaled() <= (swarm.getY() + swarm.getHeightScaled())) {
+							airgum.isCollide();
 						}
 					}
 				}
