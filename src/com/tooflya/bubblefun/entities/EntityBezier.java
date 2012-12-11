@@ -33,8 +33,8 @@ public class EntityBezier extends Entity {
 	public static float mKoefSpeedTime = 1;
 
 
-	private final byte mListBX[] = new byte[mListCapacity];
-	private final byte mListBY[] = new byte[mListCapacity];
+	private final short mListBX[] = new short[mListCapacity];
+	private final short mListBY[] = new short[mListCapacity];
 	private byte mListCount = 0;
 	
 	// ===========================================================
@@ -82,7 +82,7 @@ public class EntityBezier extends Entity {
 		this.mIsReverseTime = pIsReverseTime;
 	}
 	
-	public void Add(final byte x, final byte y) {
+	public void addControlPoint(final short x, final short y) {
 		if(this.mListCount < mListCapacity) {
 			this.mListBX[this.mListCount] = x;
 			this.mListBY[this.mListCount] = y;
