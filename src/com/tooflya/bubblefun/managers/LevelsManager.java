@@ -19,6 +19,7 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.ChikyBezier;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
@@ -33,6 +34,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private float PADDING, PADDING_B;
 	private float X, Y;
+	
+	private static ChikyBezier chikyBezier = null;
 
 	private EntityManager<Sprite> mNumbers;
 
@@ -218,6 +221,42 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				chiky.initScale(scale);
 
 				chiky.getTextureRegion().setFlippedHorizontal(flip);
+			}
+		});
+
+		// Example:
+		// <chikyBezier minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true">
+		//    <ctrPoint x="10", y="50"/>
+	    //    <ctrPoint x="90", y="50"/>
+		// </chikyBezier>
+		mLevelLoader.registerEntityLoader("chikyBezier", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				chikyBezier = null; // TODO: Add screen.chikyBeziers.create();
+				if(chikyBezier != null)
+				{
+					final float minTime = SAXUtils.getFloatAttribute(pAttributes, "minTime", 0);
+					chikyBezier.initMinTime(minTime);
+					final float maxTime = SAXUtils.getFloatAttribute(pAttributes, "maxTime", 1);
+					chikyBezier.initMaxTime(maxTime);
+					final float speedTime = SAXUtils.getFloatAttribute(pAttributes, "speedTime", 1);
+					chikyBezier.initSpeedTime(speedTime);
+					final float offsetTime = SAXUtils.getFloatAttribute(pAttributes, "offsetTime", 0);
+					chikyBezier.initOffsetTime(offsetTime);
+					final boolean isRTime = SAXUtils.getBooleanAttribute(pAttributes, "isRTime", true);
+					chikyBezier.initIsReverseTime(isRTime);
+				}
+			}
+		});
+		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				if(chikyBezier != null)
+				{
+					final int x = SAXUtils.getIntAttribute(pAttributes, "x", 50);
+					final int y = SAXUtils.getIntAttribute(pAttributes, "y", 50);
+					chikyBezier.addControlPoint((short)x, (short)y);
+				}
 			}
 		});
 
