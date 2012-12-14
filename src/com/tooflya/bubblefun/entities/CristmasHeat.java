@@ -112,7 +112,6 @@ public class CristmasHeat extends Entity {
 			this.time++;
 			if (this.time > this.maxTime) {
 				this.destroy();
-				return;
 			}
 		}
 	}

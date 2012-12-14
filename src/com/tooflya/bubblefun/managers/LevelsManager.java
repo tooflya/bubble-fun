@@ -321,31 +321,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
-		mLevelLoader.registerEntityLoader("sprike", new IEntityLoader() {
-			@Override
-			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Sprike sprike = screen.sprikes.create();
-
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-				final float z = SAXUtils.getFloatAttributeOrThrow(pAttributes, "z");
-
-				final float speed = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
-
-				final int size = SAXUtils.getIntAttribute(pAttributes, "size", 1);
-
-				sprike.setCenterPosition(x, y);
-				sprike.setSpeedX(speed);
-				sprike.init(z, size);
-			}
-		});
-
-		/**
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
 		mLevelLoader.registerEntityLoader("tutorial", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {

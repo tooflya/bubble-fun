@@ -31,7 +31,7 @@ public class BoxUnlockPanel extends Rectangle {
 		this.mBasicY = this.mY;
 
 		this.mPanel = new Sprite(Resources.mBoxUnlockPanelTextureRegion, this);
-		this.mPanel.setPosition(0, 10);
+		this.mPanel.setPosition(0, 10, true);
 		this.mPanel.enableFullBlendFunction();
 		this.mPanel.create();
 
@@ -43,7 +43,7 @@ public class BoxUnlockPanel extends Rectangle {
 				Game.screens.get(Screen.BOXESUNLOCK).onAttached();
 			}
 		};
-		this.mButton.setPosition(this.mPanel.getX() + this.mPanel.getWidth() - 40f, 5f);
+		this.mButton.setPosition(this.mPanel.getX() + this.mPanel.getWidth() - 30f, 5f, true);
 		this.mButton.create();
 
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);

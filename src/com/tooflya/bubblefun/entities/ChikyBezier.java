@@ -33,7 +33,7 @@ public class ChikyBezier extends EntityBezier {
 	private float mX_ = 0; // Last (or old) x.
 	private float mTimeWithGum = 0f; // Seconds.
 
-	protected BubbleGum mAirgum = null;
+	protected Bubble mAirgum = null;
 
 	// ===========================================================
 	// Constructors
@@ -81,7 +81,7 @@ public class ChikyBezier extends EntityBezier {
 			}
 			super.initMaxTime(Float.MAX_VALUE);			
 
-			final BubbleGum airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
 				airgum.setParent(mAirgum);
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
@@ -120,7 +120,7 @@ public class ChikyBezier extends EntityBezier {
 	// Setters
 	// ===========================================================
 
-	public void setCollide(BubbleGum airgum) {
+	public void setCollide(Bubble airgum) {
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
 			this.mAirgum.AddChildCount();

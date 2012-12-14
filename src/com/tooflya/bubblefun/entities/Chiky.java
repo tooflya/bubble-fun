@@ -6,6 +6,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
@@ -24,6 +25,10 @@ public class Chiky extends Entity {
 	protected static final int[] pNormalMoveWithGumFrames = new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 };
 	protected static int[] pSpeedyMoveFrames = new int[] { 12, 13, 14, 15, 16, 17, 16, 15, 14, 13 };
 	private static final int[] pSpeedyMoveWithGumFrames = new int[] { 18, 19, 20, 21, 22, 23, 22, 21, 20, 19 };
+
+	protected static final long[] pSpaceFrameDuration = new long[] { 50, 50, 50, 300, 50, 50 };
+	protected static final int[] pSpaceNormalMoveFrames = new int[] { 0, 1, 2, 3, 2, 1 };
+	protected static final int[] pSpaceWithGumFrames = new int[] { 4, 5, 6, 7, 6, 5 };
 
 	protected enum States {
 		NormalMove, SpeedyMove, Fall, Vector
@@ -55,11 +60,13 @@ public class Chiky extends Entity {
 
 	private float mX_ = 0; // Last (or old) x.
 
-	protected BubbleGum mAirgum = null;
+	private Bubble mAirgum = null;
 	protected Acceleration mWind = null;
 
 	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
 	private boolean vectorReverse, vectorStopSecond;
+
+	private CristmasHeat hat;
 
 	// ===========================================================
 	// Constructors
@@ -109,7 +116,17 @@ public class Chiky extends Entity {
 		this.mAirgum = null;
 		this.mWind = null;
 
-		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
+			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+		} else if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+			this.animate(pSpaceFrameDuration, pSpaceNormalMoveFrames, 9999);
+		}
+
+		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+			this.hat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
+		}
 
 		return super.create();
 	}
@@ -188,7 +205,7 @@ public class Chiky extends Entity {
 	// Setters
 	// ===========================================================
 
-	public void setCollide(BubbleGum airgum) {
+	public void setCollide(Bubble airgum) {
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
 			this.mAirgum.AddChildCount();
@@ -202,6 +219,16 @@ public class Chiky extends Entity {
 			}
 			else { // States.SpeedyMove.
 				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+			}
+
+			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+				Glass particle;
+				for (int i = 0; i < Options.particlesCount; i++) {
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
+				}
 			}
 
 			LevelScreen.Score += 50;
@@ -223,8 +250,58 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
-		this.mTimeWithGum += pSecondsElapsed;
-		if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
+		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+			this.mTimeWithGum += pSecondsElapsed;
+			if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
+				this.mTime = 0;
+				if (this.mState == States.SpeedyMove) {
+					this.mWind.destroy();
+				}
+				this.mState = States.Fall;
+				this.mStartX = this.getCenterX();
+				this.mStartY = this.getCenterY();
+				if (this.getCenterX() < Options.cameraWidth / 2) {
+					this.setSpeedX(this.mNormalStepX);
+				}
+				else {
+					this.setSpeedX(-this.mNormalStepX);
+				}
+
+				final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+				if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
+					if (airgum != null) {
+						airgum.setParent(mAirgum);
+						airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
+						airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+						airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
+					}
+				} else {
+					airgum.setParent(mAirgum);
+					airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+					airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
+				}
+
+				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
+					Feather particle;
+					for (int i = 0; i < Options.particlesCount; i++) {
+						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+						if (particle != null) {
+							particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+						}
+					}
+				}
+
+				this.stopAnimation(6);
+
+				if (Game.random.nextInt(3) == 1) {
+					Options.mBirdsDeath1.play();
+				} else if (Game.random.nextInt(3) == 2) {
+					Options.mBirdsDeath2.play();
+				} else {
+					Options.mBirdsDeath3.play();
+				}
+			}
+		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
 			this.mTime = 0;
 			if (this.mState == States.SpeedyMove) {
 				this.mWind.destroy();
@@ -239,23 +316,26 @@ public class Chiky extends Entity {
 				this.setSpeedX(-this.mNormalStepX);
 			}
 
-			final BubbleGum airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
-			if (airgum != null) {
-				airgum.setParent(mAirgum);
-				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
-				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
-			}
+			for (int i = 0; i < 1; i++) {
+				final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+				if (airgum != null) {
+					airgum.setParent(mAirgum);
+					airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+					airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
 
-			Feather particle;
-			for (int i = 0; i < Options.particlesCount; i++) {
-				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
-				if (particle != null) {
-					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					final int a = Game.random.nextInt(10);
+					airgum.setSpeedX(mAirgum.getSpeedY() * FloatMath.sin(i * a * Options.PI / 4));
+					airgum.setSpeedY(mAirgum.getSpeedY() * FloatMath.cos(i * a * Options.PI / 4));
+
+					airgum.setRotation((float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI));
 				}
 			}
+			/**
+			 * Feather particle; for (int i = 0; i < Options.particlesCount; i++) { particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create(); if (particle != null) { particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY()); } }
+			 **/
+			this.hat.Init();
 
-			this.stopAnimation(6);
+			this.stopAnimation(0);
 
 			if (Game.random.nextInt(3) == 1) {
 				Options.mBirdsDeath1.play();
@@ -347,11 +427,14 @@ public class Chiky extends Entity {
 				this.mState = States.SpeedyMove;
 				this.mWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
 				this.mWind.mFollowEntity = this;
-				if (this.mAirgum == null) {
-					this.animate(pFrameDuration, pSpeedyMoveFrames, 9999);
-				}
-				else {
-					this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+
+				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+					if (this.mAirgum == null) {
+						this.animate(pFrameDuration, pSpeedyMoveFrames, 9999);
+					}
+					else {
+						this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+					}
 				}
 			}
 			// !!! Maybe need use switch for another moving.
@@ -366,11 +449,20 @@ public class Chiky extends Entity {
 			this.mState = States.NormalMove;
 			this.mWind.destroy();
 			this.mWind = null;
+
 			if (this.mAirgum == null) {
-				this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion) || this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+					this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+				} else {
+					this.animate(pSpaceFrameDuration, pSpaceNormalMoveFrames, 9999);
+				}
 			}
 			else {
-				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion) || this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+					this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+				} else {
+					this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+				}
 			}
 			// !!! Maybe need use switch for another moving.
 		}
@@ -420,6 +512,14 @@ public class Chiky extends Entity {
 				this.getTextureRegion().setFlippedHorizontal(false);
 			} else if (this.mX - this.mX_ < 0) {
 				this.getTextureRegion().setFlippedHorizontal(true);
+			}
+		}
+
+		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+			if (!this.hat.mIsParticle) {
+				this.hat.setScale(this.mWidth / this.mBaseWidth);
+				this.hat.setCenterPosition(this.getCenterX(), this.getCenterY() - this.mWidth / 2);
+				this.hat.getTextureRegion().setFlippedHorizontal(this.getTextureRegion().isFlippedHorizontal());
 			}
 		}
 	}

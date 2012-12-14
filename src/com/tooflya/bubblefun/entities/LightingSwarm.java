@@ -2,8 +2,13 @@ package com.tooflya.bubblefun.entities;
 
 import java.util.ArrayList;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.opengl.util.GLHelper;
+
+import android.opengl.GLES10;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -34,16 +39,16 @@ public class LightingSwarm extends BaseSwarm {
 		screen.mLightings.clear();
 		mLights.clear();
 
-		final int count = Game.random.nextInt(10);
+		final int count = Game.random.nextInt(7);
 		for (int i = 0; i < count; i++) {
 			final Sprite light = screen.mLightings.create();
 
 			if (light != null) {
 				light.setRotationCenter(light.getWidth() / 2, -10f);
-				light.setPosition(this.getCenterX() - 10f, this.getCenterY(), true);
+				light.setPosition(this.getCenterX() - 10f, this.getCenterY() + 10f, true);
 				light.setRotation(360f / count * i);
-				light.enableBlendFunction();
-				light.setAlpha(0.5f);
+				//light.enableBlendFunction();
+				//light.setAlpha(0.5f);
 
 				mLights.add(light);
 			}
@@ -72,7 +77,7 @@ public class LightingSwarm extends BaseSwarm {
 		}
 
 		for (Sprite light : mLights) {
-			light.setPosition(this.getCenterX() - 10f, this.getCenterY(), true);
+			light.setPosition(this.getCenterX() - 10f, this.getCenterY() + 10f, true);
 		}
 
 		if (this.mLightSecondsElapsed >= 0.5f) {

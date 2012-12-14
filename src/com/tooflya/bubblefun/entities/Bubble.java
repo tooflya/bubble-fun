@@ -7,10 +7,11 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
-public class BubbleGum extends BubbleBase {
+public class Bubble extends BubbleBase {
 
 	// ===========================================================
 	// Constants
@@ -24,35 +25,36 @@ public class BubbleGum extends BubbleBase {
 	// Fields
 	// ===========================================================
 
+	private Sprite speed;
 	private States mState = States.Creating;
 
 	private float mTime = 0f; // Seconds.
 
 	public float mLostedSpeed = 0;
 
-	private BubbleGum mParent = null;
+	private Bubble mParent = null;
 	float mLastX = 0;
 	float mLastY = 0;
 	private int mChildCount = 0;
 
-	private int mBirdsKills;
+	public int mBirdsKills;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BubbleGum(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
+	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
-		this.setRotationCenter(this.mWidth / 2, this.mHeight / 2);
+		this.setRotationCenter(Options.bubbleMinSize / 2, Options.bubbleMinSize / 2);
 	}
 
 	// ===========================================================
 	// Setters
 	// ===========================================================
 
-	public void setParent(BubbleGum pBubble) {
+	public void setParent(Bubble pBubble) {
 		this.mParent = pBubble.getParent();
 		this.mParent.mLastX = this.getCenterX();
 		this.mParent.mLastY = this.getCenterY();
@@ -63,7 +65,7 @@ public class BubbleGum extends BubbleBase {
 	// Getters
 	// ===========================================================
 
-	public BubbleGum getParent() {
+	public Bubble getParent() {
 		if (this.mParent == null) {
 			return this;
 		}
@@ -80,7 +82,6 @@ public class BubbleGum extends BubbleBase {
 	}
 
 	public void initFinishPosition(final float x, final float y) {
-
 		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
 		if (distance < Options.eps) {
@@ -110,27 +111,46 @@ public class BubbleGum extends BubbleBase {
 		}
 		this.mTime = 0;
 		this.mState = States.Moving;
+
+		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.clear();
+		}
 	}
 
 	protected void onSpeedyLaunch() {
-		// TODO: (R) Is it needed here?
-		Glint particle;
-		for (int i = 0; i < 15; i++) {
-			particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
-			if (particle != null) {
-				particle.Init(i, this);
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+			// TODO: (R) Is it needed here?
+			Glint particle;
+			for (int i = 0; i < 15; i++) {
+				particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
+				if (particle != null) {
+					particle.Init(i, this);
+				}
 			}
-		}
 
-		if (Game.random.nextInt(2) == 1) {
-			Options.mBubbleFastCreate1.play();
-		} else {
-			Options.mBubbleFastCreate2.play();
+			if (Game.random.nextInt(2) == 1) {
+				Options.mBubbleFastCreate1.play();
+			} else {
+				Options.mBubbleFastCreate2.play();
+			}
+		} else if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
+			this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
+
+			if (Game.random.nextInt(2) == 1) {
+				Options.mBubbleFastCreate1.play();
+			} else {
+				Options.mBubbleFastCreate2.play();
+			}
 		}
 	}
 
 	public void isCollide() {
-		this.animate(40, 0);
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+			this.animate(40, 0);
+		} else {
+			this.destroy();
+		}
 		this.mState = States.Destroying;
 	}
 
@@ -189,8 +209,8 @@ public class BubbleGum extends BubbleBase {
 		this.setSpeedY(0);
 		this.mLostedSpeed = 0;
 
-		this.mWidth = Options.bubbleMinSize;
-		this.mHeight = Options.bubbleMinSize;
+		this.setWidth(Options.bubbleMinSize);
+		this.setHeight(Options.bubbleMinSize);
 
 		this.mBirdsKills = 0;
 
@@ -199,22 +219,36 @@ public class BubbleGum extends BubbleBase {
 		this.mLastY = 0;
 		this.mChildCount = 0;
 
+		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+			this.pScaleStepX = 0;
+			this.pScaleStepY = 0;
+
+			this.mScaleX = Options.bubbleBaseMinScale;
+			this.mScaleY = Options.bubbleBaseMinScale;
+
+			this.show();
+
+			return this;
+		}
+
 		return super.create();
 	}
 
 	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
-		if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+			if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
 
-			this.mLostedSpeed += Options.bubbleStepSpeed;
+				this.mLostedSpeed += Options.bubbleStepSpeed;
 
-			this.setWidth(mWidth + Options.bubbleStepSize);
-			this.setHeight(mHeight + Options.bubbleStepSize);
-			this.mX -= Options.bubbleStepSize / 2;
-			this.mY -= Options.bubbleStepSize / 2;
+				this.setWidth(mWidth + Options.bubbleStepSize);
+				this.setHeight(mHeight + Options.bubbleStepSize);
+				this.mX -= Options.bubbleStepSize / 2;
+				this.mY -= Options.bubbleStepSize / 2;
 
-			Options.bubbleSizePower -= Options.bubbleStepSize;
+				Options.bubbleSizePower -= Options.bubbleStepSize;
 
-			LevelScreen.AIR--;
+				LevelScreen.AIR--;
+			}
 		}
 	}
 
@@ -224,7 +258,11 @@ public class BubbleGum extends BubbleBase {
 		this.mY += this.getSpeedY();
 
 		if (this.mTime > Options.bubbleMaxTimeMove) {
-			this.animate(40, 0);
+			if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+				this.animate(40, 0);
+			} else {
+				this.destroy();
+			}
 			this.mState = States.Destroying;
 		}
 		else if (this.mY + this.getHeightScaled() < 0) {
@@ -256,6 +294,11 @@ public class BubbleGum extends BubbleBase {
 		super.destroy();
 
 		Options.mBubbleDeath.play();
+
+		if (this.speed != null) {
+			this.speed.destroy();
+			this.speed = null;
+		}
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
@@ -274,7 +317,9 @@ public class BubbleGum extends BubbleBase {
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+			super.onManagedUpdate(pSecondsElapsed);
+		}
 
 		this.mTime += pSecondsElapsed;
 
@@ -296,6 +341,15 @@ public class BubbleGum extends BubbleBase {
 		final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
 		if (this.mChildCount == 0 || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0)) {
 			this.writeText();
+		}
+
+		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+			this.mRotation += 5;
+
+			if (this.speed != null) {
+				this.speed.setCenterPosition(this.getCenterX(), this.getCenterY() + this.getHeight());
+				this.speed.setRotation((float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI) + 90);
+			}
 		}
 	}
 }

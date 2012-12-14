@@ -65,13 +65,13 @@ public class BaseSwarm extends Entity {
 		if (this.mMoveReverse) {
 			this.mX -= 1f;
 
-			if (this.mX <= 0) {
+			if (this.mX <= this.getWidth()) {
 				this.mMoveReverse = false;
 			}
 		} else {
 			this.mX += 1f;
 
-			if (this.mX >= Options.cameraWidth - this.getWidth()) {
+			if (this.mX >= Options.cameraWidth + this.getWidth()) {
 				this.mMoveReverse = true;
 			}
 		}

@@ -131,7 +131,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		this.mBackground.attachChild(rectangle);
 		this.rectangle.setAlpha(0);
 
-		this.mBoxUnlockPanel = new BoxUnlockPanel(Options.cameraWidth - 190f, Options.cameraHeight - 70f, this.mBackground);
+		this.mBoxUnlockPanel = new BoxUnlockPanel(Options.cameraWidth - 200f, Options.cameraHeight - 70f, this.mBackground);
 		this.mBoxUnlockPanel.down();
 
 		for (int i = 0; i < MENUITEMS; i++) {
@@ -154,11 +154,11 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				collects.add((BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 400, Resources.mCollectTextTextureRegion, this.rectangle, true).create());
 				if (bi == 1) {
 					final Sprite n = new Sprite(Resources.mBoxCollect50TextureRegion, collects.get(bi));
-					n.create().setPosition(100f, 8f);
+					n.create().setPosition(105f, 8f, true);
 				}
 				if (bi == 2) {
 					final Sprite n = new Sprite(Resources.mBoxCollect100TextureRegion, collects.get(bi));
-					n.create().setPosition(93f, 8f);
+					n.create().setPosition(98f, 8f, true);
 				}
 			} else {
 				collects.add(bi, null);
@@ -174,13 +174,16 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 					BOX_INDEX = bi;
 
 					if (!this.prepare()) {
+
 						boxes.get(bi).animation();
 
 						Game.screens.get(Screen.BOX).setChildScene(Game.screens.get(Screen.BL), false, false, true);
 						Game.screens.get(Screen.BL).onAttached();
 
 						return;
+
 					}
+
 					Options.boxNumber = bi;
 					Game.screens.set(Screen.CHOISE);
 				}
@@ -395,19 +398,71 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 					}
 
+					final int A = G;
+
+					int l = 0;
+					switch (A) {
+					case 1:
+						l = 50;
+						break;
+					case 2:
+						l = 100;
+						break;
+					}
+
+					int mStarsNeeded = l - Game.db.getTotalStars();
+
+					if (!Game.db.getBox(G + 1).isOpen()) {
+						try {
+							if (mStarsNeeded <= 0 || true) {
+								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
+								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
+									@Override
+									public void onFinished() {
+										Game.db.updateBox(A + 1, 1);
+										locks.get(A).destroy();
+
+										mBoxUnlockPanel.down();
+									}
+								};
+								final AlphaModifier chainAnimationOutAlpha = new AlphaModifier(0.2f, 1f, 0f) {
+									@Override
+									public void onFinished() {
+										chains.get(A).destroy();
+									}
+								};
+
+								locks.get(G).registerEntityModifier(lockAnimationOutScale);
+								locks.get(G).registerEntityModifier(lockAnimationOutAlpha);
+
+								collects.get(G).destroy();
+
+								for (int i = 0; i < locks.get(G).getChildCount(); i++) {
+									((Entity) locks.get(G).getChild(i)).detachSelf();
+								}
+
+								chains.get(G).registerEntityModifier(chainAnimationOutAlpha);
+
+								lockAnimationOutScale.reset();
+								lockAnimationOutAlpha.reset();
+
+								chainAnimationOutAlpha.reset();
+							}
+						} catch (NullPointerException ex) {
+						}
+					}
+
 					if (!Game.db.getBox(G + 1).isOpen() && G != 3 && !this.mTimeToUnlockBox) {
 						this.mBoxUnlockPanel.up();
 					} else {
 						this.mBoxUnlockPanel.down();
 					}
 
-					final int A = G;
-
 					try {
 						if (this.mTimeToUnlockBox) {
 							this.mTimeToUnlockBox = false;
 
-							int l = 0;
+							l = 0;
 							switch (A) {
 							case 1:
 								l = 50;
@@ -417,9 +472,9 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 								break;
 							}
 
-							final int mStarsNeeded = l - Game.db.getTotalStars();
+							mStarsNeeded = l - Game.db.getTotalStars();
 
-							if (mStarsNeeded <= 0 || true) {
+							if (mStarsNeeded <= 0) {
 								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
 								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
 									@Override
@@ -511,7 +566,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		}
 
 		if (totalscore < 10) {
-			this.mScoreHolder.setPosition(Options.cameraWidth - 165f, this.mScoreHolder.getY());
+			this.mScoreHolder.setPosition(Options.cameraWidth - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2 - 165f, this.mScoreHolder.getY());
 			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex(totalscore);
 			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
 			this.mTotalScoreCountText.getByIndex(1).setVisible(false);
@@ -519,7 +574,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.mTotalScoreCountText.getByIndex(3).setVisible(false);
 			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
 		} else if (totalscore < 100) {
-			this.mScoreHolder.setPosition(Options.cameraWidth - 180f, this.mScoreHolder.getY());
+			this.mScoreHolder.setPosition(Options.cameraWidth - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2 - 180f, this.mScoreHolder.getY());
 			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 10));
 			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(totalscore % 10));
 			this.mTotalScoreCountText.getByIndex(0).setVisible(true);
@@ -528,7 +583,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.mTotalScoreCountText.getByIndex(3).setVisible(false);
 			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
 		} else if (totalscore < 1000) {
-			this.mScoreHolder.setPosition(Options.cameraWidth - 200f, this.mScoreHolder.getY());
+			this.mScoreHolder.setPosition(Options.cameraWidth - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2 - 200f, this.mScoreHolder.getY());
 			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 100));
 			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((totalscore - FloatMath.floor(totalscore / 100) * 100) / 10));
 			this.mTotalScoreCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(totalscore % 10));
@@ -538,7 +593,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.mTotalScoreCountText.getByIndex(3).setVisible(false);
 			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
 		} else if (totalscore < 10000) {
-			this.mScoreHolder.setPosition(Options.cameraWidth - 220f, this.mScoreHolder.getY());
+			this.mScoreHolder.setPosition(Options.cameraWidth - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2 - 220f, this.mScoreHolder.getY());
 			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 1000));
 			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 1000) * 1000)) / 100)));
 			this.mTotalScoreCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 100) * 100)) / 10)));
@@ -549,7 +604,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.mTotalScoreCountText.getByIndex(3).setVisible(true);
 			this.mTotalScoreCountText.getByIndex(4).setVisible(false);
 		} else {
-			this.mScoreHolder.setPosition(Options.cameraWidth - 240f, this.mScoreHolder.getY());
+			this.mScoreHolder.setPosition(Options.cameraWidth - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2 - 240f, this.mScoreHolder.getY());
 			this.mTotalScoreCountText.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(totalscore / 10000));
 			this.mTotalScoreCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 10000) * 10000)) / 1000)));
 			this.mTotalScoreCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(((totalscore - ((int) FloatMath.floor(totalscore / 1000) * 1000)) / 100)));
