@@ -34,7 +34,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private float PADDING, PADDING_B;
 	private float X, Y;
-	
+
 	private static ChikyBezier chikyBezier = null;
 
 	private EntityManager<Sprite> mNumbers;
@@ -227,13 +227,13 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		// Example:
 		// <chikyBezier minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true">
 		//    <ctrPoint x="10", y="50"/>
-	    //    <ctrPoint x="90", y="50"/>
+		//    <ctrPoint x="90", y="50"/>
 		// </chikyBezier>
 		mLevelLoader.registerEntityLoader("chikyBezier", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 				chikyBezier = null; // TODO: Add screen.chikyBeziers.create();
-				if(chikyBezier != null)
+				if (chikyBezier != null)
 				{
 					final float minTime = SAXUtils.getFloatAttribute(pAttributes, "minTime", 0);
 					chikyBezier.initMinTime(minTime);
@@ -251,11 +251,11 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				if(chikyBezier != null)
+				if (chikyBezier != null)
 				{
 					final int x = SAXUtils.getIntAttribute(pAttributes, "x", 50);
 					final int y = SAXUtils.getIntAttribute(pAttributes, "y", 50);
-					chikyBezier.addControlPoint((short)x, (short)y);
+					chikyBezier.addControlPoint((short) x, (short) y);
 				}
 			}
 		});
@@ -350,7 +350,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 		if (true) {
 			try {
-				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel * (Options.boxNumber + 1) + ".xml");
+				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

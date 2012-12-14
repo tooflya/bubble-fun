@@ -66,7 +66,7 @@ public class Chiky extends Entity {
 	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
 	private boolean vectorReverse, vectorStopSecond;
 
-	private CristmasHeat hat;
+	private CristmasHat hat;
 
 	// ===========================================================
 	// Constructors
@@ -250,7 +250,7 @@ public class Chiky extends Entity {
 	// ===========================================================
 
 	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
-		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 			this.mTimeWithGum += pSecondsElapsed;
 			if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
 				this.mTime = 0;
@@ -281,13 +281,11 @@ public class Chiky extends Entity {
 					airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
 				}
 
-				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
-					Feather particle;
-					for (int i = 0; i < Options.particlesCount; i++) {
-						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
-						if (particle != null) {
-							particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-						}
+				Feather particle;
+				for (int i = 0; i < Options.particlesCount; i++) {
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
 				}
 
@@ -316,26 +314,17 @@ public class Chiky extends Entity {
 				this.setSpeedX(-this.mNormalStepX);
 			}
 
-			for (int i = 0; i < 1; i++) {
-				final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
-				if (airgum != null) {
-					airgum.setParent(mAirgum);
-					airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-					airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
-
-					final int a = Game.random.nextInt(10);
-					airgum.setSpeedX(mAirgum.getSpeedY() * FloatMath.sin(i * a * Options.PI / 4));
-					airgum.setSpeedY(mAirgum.getSpeedY() * FloatMath.cos(i * a * Options.PI / 4));
-
-					airgum.setRotation((float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI));
+			Feather particle;
+			for (int i = 0; i < Options.particlesCount; i++) {
+				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+				if (particle != null) {
+					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 				}
 			}
-			/**
-			 * Feather particle; for (int i = 0; i < Options.particlesCount; i++) { particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create(); if (particle != null) { particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY()); } }
-			 **/
-			this.hat.Init();
 
-			this.stopAnimation(0);
+			this.stopAnimation(6);
+
+			this.hat.Init();
 
 			if (Game.random.nextInt(3) == 1) {
 				Options.mBirdsDeath1.play();
@@ -343,6 +332,45 @@ public class Chiky extends Entity {
 				Options.mBirdsDeath2.play();
 			} else {
 				Options.mBirdsDeath3.play();
+			}
+
+		}
+		else if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+			this.mTimeWithGum += pSecondsElapsed;
+			if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
+				this.mTime = 0;
+				if (this.mState == States.SpeedyMove) {
+					this.mWind.destroy();
+				}
+				this.mState = States.Fall;
+				this.mStartX = this.getCenterX();
+				this.mStartY = this.getCenterY();
+				if (this.getCenterX() < Options.cameraWidth / 2) {
+					this.setSpeedX(this.mNormalStepX);
+				}
+				else {
+					this.setSpeedX(-this.mNormalStepX);
+				}
+
+				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
+					Feather particle;
+					for (int i = 0; i < Options.particlesCount; i++) {
+						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+						if (particle != null) {
+							particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+						}
+					}
+				}
+
+				this.stopAnimation(6);
+
+				if (Game.random.nextInt(3) == 1) {
+					Options.mBirdsDeath1.play();
+				} else if (Game.random.nextInt(3) == 2) {
+					Options.mBirdsDeath2.play();
+				} else {
+					Options.mBirdsDeath3.play();
+				}
 			}
 		}
 	}

@@ -5,7 +5,9 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Options;
 
 public class BubbleBase extends Entity {
-	protected float pScaleStepX, pScaleStepY;
+	protected float mScaleStepX, mScaleStepY;
+
+	private boolean mStartScaleY;
 
 	public BubbleBase(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
@@ -14,10 +16,14 @@ public class BubbleBase extends Entity {
 	@Override
 	public Entity create() {
 		this.mScaleX = Options.bubbleBaseMinScale;
-		this.mScaleY = Options.bubbleBaseMaxScale;
+		this.mScaleY = Options.bubbleBaseMinScale;
 
-		this.pScaleStepX = Options.bubbleBaseStepScale;
-		this.pScaleStepY = -Options.bubbleBaseStepScale;
+		this.mScaleStepX = Options.bubbleBaseStepScale;
+		this.mScaleStepY = -Options.bubbleBaseStepScale;
+
+		this.mStartScaleY = false;
+
+		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
 
 		return super.create();
 	}
@@ -31,23 +37,26 @@ public class BubbleBase extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
+		this.mScaleX += this.mScaleStepX;
+		if (this.mStartScaleY)
+			this.mScaleY += this.mScaleStepY;
 
-		this.mScaleX += this.pScaleStepX;
-		this.mScaleY += this.pScaleStepY;
+		if (this.mScaleX + this.mScaleStepX < Options.bubbleBaseMinScale) {
+			this.mScaleStepX = Options.bubbleBaseStepScale;
+		}
+		if (Options.bubbleBaseMaxScale < this.mScaleX + this.mScaleStepX) {
+			this.mScaleStepX = -Options.bubbleBaseStepScale;
 
-		if (this.mScaleX + this.pScaleStepX < Options.bubbleBaseMinScale) {
-			this.pScaleStepX = Options.bubbleBaseStepScale;
+			this.mStartScaleY = true;
 		}
-		if (Options.bubbleBaseMaxScale < this.mScaleX + this.pScaleStepX) {
-			this.pScaleStepX = -Options.bubbleBaseStepScale;
+
+		if (this.mScaleY + this.mScaleStepY < Options.bubbleBaseMinScale) {
+			this.mScaleStepY = Options.bubbleBaseStepScale;
 		}
-		if (this.mScaleY + this.pScaleStepY < Options.bubbleBaseMinScale) {
-			this.pScaleStepY = Options.bubbleBaseStepScale;
+		if (Options.bubbleBaseMaxScale < this.mScaleY + this.mScaleStepY) {
+			this.mScaleStepY = -Options.bubbleBaseStepScale;
 		}
-		if (Options.bubbleBaseMaxScale < this.mScaleY + this.pScaleStepY) {
-			this.pScaleStepY = -Options.bubbleBaseStepScale;
-		}
+
 	}
 
 }

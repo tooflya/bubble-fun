@@ -163,6 +163,12 @@ public class Resources {
 	public static final TiledTextureRegion mSpaceBlueBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "blue-bird-space.png", 0, 0, 4, 1);
 	public static final TiledTextureRegion mSpaceAcceleratorsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-fast.png", 0, 70, 6, 1);
 	public static final TiledTextureRegion mAirIndicatorGlintsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "air-indicator-blesk-fill.png", 241, 0, 6, 1);
+	public static final TiledTextureRegion mSpaceTopGamePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "game-panel-space.png", 0, 100, 1, 1);
+	public static final TiledTextureRegion mSpaceBubbleTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-asteroid.png", 0, 180, 1, 1);
+	public static final TiledTextureRegion mSpaceBallSpeedTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "asteroid-fast.png", 0, 230, 5, 1);
+	public static final TiledTextureRegion mSpaceStarsBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-stars.png", 512, 0, 1, 1);
+	public static final TiledTextureRegion mSpacePlanetTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "planet.png", 512, 611, 1, 1);
+	public static final TiledTextureRegion mAirSpaceOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-indicator.png", 512, 900, 1, 1);
 
 	// ===========================================================
 	// Entities

@@ -46,7 +46,6 @@ public class Bubble extends BubbleBase {
 	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
 		this.setRotationCenter(Options.bubbleMinSize / 2, Options.bubbleMinSize / 2);
 	}
 
@@ -133,7 +132,7 @@ public class Bubble extends BubbleBase {
 			} else {
 				Options.mBubbleFastCreate2.play();
 			}
-		} else if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+		} else if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
 			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
 			this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
 
@@ -218,18 +217,6 @@ public class Bubble extends BubbleBase {
 		this.mLastX = 0;
 		this.mLastY = 0;
 		this.mChildCount = 0;
-
-		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
-			this.pScaleStepX = 0;
-			this.pScaleStepY = 0;
-
-			this.mScaleX = Options.bubbleBaseMinScale;
-			this.mScaleY = Options.bubbleBaseMinScale;
-
-			this.show();
-
-			return this;
-		}
 
 		return super.create();
 	}
@@ -317,7 +304,7 @@ public class Bubble extends BubbleBase {
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion) && this.mState != States.Creating) {
 			super.onManagedUpdate(pSecondsElapsed);
 		}
 
@@ -343,7 +330,7 @@ public class Bubble extends BubbleBase {
 			this.writeText();
 		}
 
-		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
 			this.mRotation += 5;
 
 			if (this.speed != null) {

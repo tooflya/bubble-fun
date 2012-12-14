@@ -8,7 +8,7 @@ import com.tooflya.bubblefun.Game;
  * @author Tooflya.com
  * @since
  */
-public class CristmasHeat extends Entity {
+public class CristmasHat extends Entity {
 
 	// ===========================================================
 	// Constants
@@ -30,7 +30,7 @@ public class CristmasHeat extends Entity {
 	// Constructors
 	// ===========================================================
 
-	public CristmasHeat(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
+	public CristmasHat(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.enableBlendFunction();
@@ -40,7 +40,7 @@ public class CristmasHeat extends Entity {
 	// Methods
 	// ===========================================================
 
-	public CristmasHeat Init() {
+	public CristmasHat Init() {
 		this.setSpeedX(Game.random.nextFloat() * 2 - 1);
 		this.setSpeedY(Game.random.nextFloat() * 2 - 1);
 

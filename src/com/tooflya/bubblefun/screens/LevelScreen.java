@@ -29,7 +29,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
-import com.tooflya.bubblefun.entities.CristmasHeat;
+import com.tooflya.bubblefun.entities.CristmasHat;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glass;
@@ -55,6 +55,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private final Sprite mSpaceBackground;
+	private final Sprite mSpacePlanet;
 
 	protected static final EntityManager<Cloud> birds = null;
 
@@ -138,7 +141,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final EntityManager<Sprite> numbersSmall;
 
-	public EntityManager<CristmasHeat> mCristmasHats;
+	public EntityManager<CristmasHat> mCristmasHats;
 	public EntityManager<Sprite> mSnowBallSpeed;
 
 	private final Sprite mAirGlint;
@@ -157,6 +160,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public LevelScreen() {
 		this.mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
+
+		this.mSpaceBackground = new Sprite(Resources.mSpaceStarsBackgroundTextureRegion, this.mBackground);
+		this.mSpaceBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mSpaceBackground.enableFullBlendFunction();
+
+		this.mSpacePlanet = new Sprite(Resources.mSpacePlanetTextureRegion, this.mBackground);
+		this.mSpacePlanet.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mSpacePlanet.enableFullBlendFunction();
 
 		this.mSnowflakes = new SnowManager<Snowflake>(100, new Snowflake(Resources.mSnowFlakesTextureRegion, this.mBackground));
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
@@ -227,9 +238,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		glasses = new EntityManager<Glass>(200, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
 		glints = new EntityManager<Glint>(200, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.chikies = new EntityManager<Chiky>(200, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
-		mCristmasHats = new EntityManager<CristmasHeat>(100, new CristmasHeat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
+		mCristmasHats = new EntityManager<CristmasHat>(100, new CristmasHat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 
-		mSnowBallSpeed = new EntityManager<Sprite>(100, new Sprite(Resources.mSnowyBallSpeedTextureRegion, this.mBackground));
+		mSnowBallSpeed = new EntityManager<Sprite>(100, new Sprite(Resources.mSpaceBallSpeedTextureRegion, this.mBackground));
 
 		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 
@@ -762,7 +773,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		final float baseWidth = this.mSolidLineAir.getBaseWidth();
 		this.mSolidLineAir.setWidth((int) (baseWidth / 100 * AIR));
 		this.mSolidLineAir.getTextureRegion().setWidth((int) (baseWidth / 100 * AIR));
-		
+
 		this.mAirGlint.show();
 		this.mAirGlint.setPosition(this.mSolidLineAir.getX() + this.mSolidLineAir.getWidth(), this.mSolidLineAir.getY(), true);
 	}
@@ -796,7 +807,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (AIR > 0 && chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 				this.lastAirgum = (Bubble) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
-				this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);
+				//this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);
 			}
 			break;
 		case TouchEvent.ACTION_UP:
@@ -839,7 +850,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					float dx = mSpeedX / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
 					float dy = mSpeedY / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
 
-					float x = this.lastAirgum.getX() + this.lastAirgum.getWidthScaled() / 2, y = this.lastAirgum.getY() + this.lastAirgum.getHeightScaled() / 2;
+					float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
 					while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
 						Entity w = mMarks.create();
 						w.setSpeed(dx, dy);
@@ -884,6 +895,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBlueBird.changeTextureRegion(Resources.mBlueBirdTextureRegion);
 
 		this.accelerators.changeTextureRegion(Resources.mAcceleratorsTextureRegion);
+
+		this.mSpaceBackground.hide();
+		this.mSpacePlanet.hide();
 	}
 
 	private void onSDBoxAttached() {
@@ -908,16 +922,35 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBlueBird.changeTextureRegion(Resources.mBlueBirdTextureRegion);
 
 		this.accelerators.changeTextureRegion(Resources.mAcceleratorsTextureRegion);
+
+		mSnowBallSpeed.changeTextureRegion(Resources.mSnowyBallSpeedTextureRegion);
+
+		this.mSpaceBackground.hide();
+		this.mSpacePlanet.hide();
 	}
 
 	private void onSTBoxAttached() {
+		this.mPanel.changeTextureRegion(Resources.mSpaceTopGamePanelTextureRegion);
 
 		this.chikies.clear();
 		this.chikies.changeTextureRegion(Resources.mSpaceBirdsTextureRegion);
 
+		this.airgums.clear();
+		this.airgums.changeTextureRegion(Resources.mSpaceBubbleTextureRegion);
+
 		this.mBlueBird.changeTextureRegion(Resources.mSpaceBlueBirdTextureRegion);
 
 		this.accelerators.changeTextureRegion(Resources.mSpaceAcceleratorsTextureRegion);
+
+		mSnowBallSpeed.changeTextureRegion(Resources.mSpaceBallSpeedTextureRegion);
+
+		this.mSpaceBackground.show();
+		this.mSpacePlanet.show();
+
+		this.mSolidLine.changeTextureRegion(Resources.mAirSpaceOneTextureRegion);
+
+		this.mClouds.clear();
+		this.mSnowflakes.clear();
 	}
 
 	private void onManagedUpdateWOCBox() {
