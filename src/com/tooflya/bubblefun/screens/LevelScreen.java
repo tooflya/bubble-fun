@@ -27,7 +27,6 @@ import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
-import com.tooflya.bubblefun.entities.ChikyBezier;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.CristmasHat;

@@ -62,7 +62,7 @@ public class Chiky extends EntityBezier {
 	private Bubble mAirgum = null;
 	protected Acceleration mWind = null;
 
-	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStartStopUpdates, vectorStopUpdates;
+	private float vectorX, vectorY, vectorLimit, vectorUpdates, vectorStopUpdates;
 	private boolean vectorReverse, vectorStopSecond;
 
 	private CristmasHat hat;
