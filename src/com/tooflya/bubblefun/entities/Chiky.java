@@ -221,14 +221,6 @@ public class Chiky extends EntityBezier {
 				this.setSpeedX(-this.mNormalStepX);
 			}
 
-			Feather particle;
-			for (int i = 0; i < Options.particlesCount; i++) {
-				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
-				if (particle != null) {
-					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-				}
-			}
-
 			this.stopAnimation(6);
 
 			this.hat.Init();

@@ -205,6 +205,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 					final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
 
+					chiky.initState(true);
+
 					chiky.initStartX(startX * Options.cameraWidth);
 					chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
 
@@ -223,7 +225,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					chiky.initScale(scale);
 
 					chiky.getTextureRegion().setFlippedHorizontal(flip);
-					chiky.initState(true);
 				}
 			}
 		});
