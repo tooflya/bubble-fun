@@ -14,7 +14,7 @@ import com.tooflya.bubblefun.screens.Screen;
  * @author Tooflya.com
  * @since
  */
-public class Chiky extends Entity {
+public class Chiky extends EntityBezier {
 
 	// ===========================================================
 	// Constants
@@ -31,7 +31,7 @@ public class Chiky extends Entity {
 	protected static final int[] pSpaceWithGumFrames = new int[] { 4, 5, 6, 7, 6, 5 };
 
 	protected enum States {
-		NormalMove, SpeedyMove, Fall, Vector
+		NormalMove, SpeedyMove, Fall, Vector, Move, MoveWithGum
 	};
 
 	public static final int isPauseUpdateFlag = 1;
@@ -49,7 +49,6 @@ public class Chiky extends Entity {
 	protected float mTimeWithGum = 0f; // Seconds.
 	private float mAngle = 0f; // Degree.
 
-	@SuppressWarnings("unused")
 	protected float mStartX = 0;
 	protected float mStartY = 0;
 	protected float mNormalStepX = 0;
@@ -85,50 +84,13 @@ public class Chiky extends Entity {
 	// Methods
 	// ===========================================================
 
-	@Override
-	public Entity create() {
-		this.setRotation(0);
-
-		mState = States.NormalMove;
-
-		this.vectorReverse = false;
-		this.vectorUpdates = 0;
-
-		// Center of used region.
-		this.mStartX = Options.cameraWidth / 2;
-		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
-
-		this.mNormalStepX = Game.random.nextFloat() * (Options.chikyMaxStepX - Options.chikyMinStepX) + Options.chikyMinStepX;
-		this.mSpeedyStepX = this.mNormalStepX * Options.chikySpeedCoeficient;
-		this.setSpeedX(this.mNormalStepX);
-
-		this.mOffsetX = 0;
-
-		this.mProperties = 0;
-
-		this.mX_ = 0;
-
-		this.mTime = 0f;
-		this.mTimeWithGum = 0f;
-
-		this.mAngle = 0f; // Degree.
-
-		this.mAirgum = null;
-		this.mWind = null;
-
-		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
-			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
-		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
-			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
-		} else if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
-			this.animate(pSpaceFrameDuration, pSpaceNormalMoveFrames, 9999);
+	public void initState(final boolean isOldStyle) {
+		if (isOldStyle) {
+			this.mState = States.NormalMove;
 		}
-
-		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
-			this.hat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
+		else {
+			this.mState = States.Move;
 		}
-
-		return super.create();
 	}
 
 	public void initStartX(final float startX) {
@@ -201,54 +163,6 @@ public class Chiky extends Entity {
 		return this.mAirgum == null && !this.IsProperty(isPauseUpdateFlag);
 	}
 
-	// ===========================================================
-	// Setters
-	// ===========================================================
-
-	public void setCollide(Bubble airgum) {
-		if (this.mAirgum == null) {
-			this.mAirgum = airgum.getParent();
-			this.mAirgum.AddChildCount();
-			this.mTimeWithGum = 0;
-
-			this.mAirgum.mLastX = this.getCenterX();
-			this.mAirgum.mLastY = this.getCenterY();
-
-			if (this.mState == States.NormalMove || this.mState == States.Vector) {
-				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
-			}
-			else { // States.SpeedyMove.
-				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
-			}
-
-			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
-				Glass particle;
-				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
-					if (particle != null) {
-						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-					}
-				}
-			}
-
-			LevelScreen.Score += 50;
-
-			if (Game.random.nextInt(2) == 1) {
-				Options.mBirdsShotted1.play();
-			} else {
-				Options.mBirdsShotted2.play();
-			}
-		}
-	}
-
-	// ===========================================================
-	// Getters
-	// ===========================================================
-
-	// ===========================================================
-	// Virtual methods
-	// ===========================================================
-
 	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
 		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 			this.mTimeWithGum += pSecondsElapsed;
@@ -257,15 +171,7 @@ public class Chiky extends Entity {
 				if (this.mState == States.SpeedyMove) {
 					this.mWind.destroy();
 				}
-				this.mState = States.Fall;
-				this.mStartX = this.getCenterX();
-				this.mStartY = this.getCenterY();
-				if (this.getCenterX() < Options.cameraWidth / 2) {
-					this.setSpeedX(this.mNormalStepX);
-				}
-				else {
-					this.setSpeedX(-this.mNormalStepX);
-				}
+				this.prepareToFall();
 
 				final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 				if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
@@ -378,8 +284,9 @@ public class Chiky extends Entity {
 	private void onManagedUpdateVectorMovement(final float pSecondsElapsed) {
 		this.vectorUpdates++;
 
-		final float x = this.vectorX / (float) Math.sqrt(Math.pow(this.vectorX, 2) + Math.pow(this.vectorY, 2));
-		final float y = this.vectorY / (float) Math.sqrt(Math.pow(this.vectorX, 2) + Math.pow(this.vectorY, 2));
+		final float convertedDistance = 1 / FloatMath.sqrt(this.vectorX * this.vectorX + this.vectorY * this.vectorY);
+		final float x = this.vectorX * convertedDistance;
+		final float y = this.vectorY * convertedDistance;
 
 		if (this.vectorUpdates >= this.vectorLimit) {
 			this.vectorReverse = !this.vectorReverse;
@@ -410,7 +317,7 @@ public class Chiky extends Entity {
 		}
 	}
 
-	private void onManagedUpdateMove(final float pSecondsElapsed) {
+	private void onManagedUpdateMoveHelper(final float pSecondsElapsed) {
 		float x = this.getCenterX() + this.getSpeedX();
 
 		boolean isBorder = false;
@@ -447,7 +354,7 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateNormal(final float pSecondsElapsed) {
-		this.onManagedUpdateMove(pSecondsElapsed);
+		this.onManagedUpdateMoveHelper(pSecondsElapsed);
 		if (this.mTime >= Options.chikyMaxTimeNormal) {
 			this.mTime = 0;
 			if (this.IsProperty(isSpeedyFlag)) {
@@ -470,7 +377,7 @@ public class Chiky extends Entity {
 	}
 
 	private void onManagedUpdateSpeedy(final float pSecondsElapsed) {
-		this.onManagedUpdateMove(pSecondsElapsed);
+		this.onManagedUpdateMoveHelper(pSecondsElapsed);
 		if (this.mTime >= Options.chikyMaxTimeSpeedy) {
 			this.mTime = 0;
 			this.setSpeedX(Math.signum(this.getSpeedX()) * this.mNormalStepX);
@@ -496,14 +403,165 @@ public class Chiky extends Entity {
 		}
 	}
 
+	private void prepareToFall() {
+		this.mState = States.Fall;
+		super.init();
+		final float x = (this.getCenterX() - this.mWidth / 2) / (Options.cameraWidth - this.mWidth) * 100;
+		final float y = (this.getCenterY() - this.mHeight / 2 - Options.menuHeight) / (Options.cameraHeight - Options.touchHeight - Options.menuHeight - this.mHeight) * 100;
+		super.addControlPoint((short) x, (short) y);
+		if (x > 50) {
+			super.addControlPoint((short) (x - 20), (short) (y - 40));
+			super.addControlPoint((short) (x - 40), (short) y);
+		}
+		else {
+			super.addControlPoint((short) (x + 20), (short) (y - 40));
+			super.addControlPoint((short) (x + 40), (short) y);
+		}
+		super.initMaxTime(Float.MAX_VALUE);
+		super.initSpeedTime(0.1f);
+	}
+
+	private void onManagedUpdateMove(final float pSecondsElapsed) {
+		if (this.mAirgum != null) {
+			this.mState = States.MoveWithGum;
+			this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+		}
+	}
+
+	private void onManagedUpdateMoveWithGum(final float pSecondsElapsed) {
+		this.mTimeWithGum += pSecondsElapsed;
+		if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
+			this.prepareToFall();
+
+			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			if (airgum != null) {
+				airgum.setParent(mAirgum);
+				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
+				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
+			}
+
+			Feather particle;
+			for (int i = 0; i < Options.particlesCount; i++) {
+				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+				if (particle != null) {
+					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
+			}
+
+			this.stopAnimation(6);
+
+			if (Game.random.nextInt(3) == 1) {
+				Options.mBirdsDeath1.play();
+			} else if (Game.random.nextInt(3) == 2) {
+				Options.mBirdsDeath2.play();
+			} else {
+				Options.mBirdsDeath3.play();
+			}
+		}
+	}
+
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
-		this.mY += Options.chikyFallSpeed;
-
 		this.setRotation(this.getRotation() + 5); // Rotate at 1 degree. Maybe need to correct.
-
 		if (this.mY > Options.cameraHeight) {
 			this.destroy();
 		}
+	}
+
+	// ===========================================================
+	// Setters
+	// ===========================================================
+
+	public void setCollide(Bubble airgum) {
+		if (this.mAirgum == null) {
+			this.mAirgum = airgum.getParent();
+			this.mAirgum.AddChildCount();
+			this.mTimeWithGum = 0;
+
+			this.mAirgum.mLastX = this.getCenterX();
+			this.mAirgum.mLastY = this.getCenterY();
+
+			if (this.mState == States.NormalMove || this.mState == States.Vector) {
+				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+			}
+			else { // States.SpeedyMove.
+				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+			}
+
+			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+				Glass particle;
+				for (int i = 0; i < Options.particlesCount; i++) {
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
+				}
+			}
+
+			LevelScreen.Score += 50;
+
+			if (Game.random.nextInt(2) == 1) {
+				Options.mBirdsShotted1.play();
+			} else {
+				Options.mBirdsShotted2.play();
+			}
+		}
+	}
+
+	// ===========================================================
+	// Getters
+	// ===========================================================
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
+
+	@Override
+	public Entity create() {
+		super.init();
+
+		this.setRotation(0);
+
+		mState = States.NormalMove;
+
+		this.vectorReverse = false;
+		this.vectorUpdates = 0;
+
+		// Center of used region.
+		this.mStartX = Options.cameraWidth / 2;
+		this.mStartY = Options.chikyEtalonSize / 2 + Options.chikyOffsetY + (Options.cameraHeight - Options.touchHeight - Options.chikyEtalonSize - 2 * Options.chikyOffsetY) / 2;
+
+		this.mNormalStepX = Game.random.nextFloat() * (Options.chikyMaxStepX - Options.chikyMinStepX) + Options.chikyMinStepX;
+		this.mSpeedyStepX = this.mNormalStepX * Options.chikySpeedCoeficient;
+		this.setSpeedX(this.mNormalStepX);
+
+		this.mOffsetX = 0;
+
+		this.mProperties = 0;
+
+		this.mX_ = 0;
+
+		this.mTime = 0f;
+		this.mTimeWithGum = 0f;
+
+		this.mAngle = 0f; // Degree.
+
+		this.mAirgum = null;
+		this.mWind = null;
+
+		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
+			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+		} else if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+			this.animate(pSpaceFrameDuration, pSpaceNormalMoveFrames, 9999);
+		}
+
+		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
+			this.hat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
+		}
+
+		return super.create();
 	}
 
 	/*
@@ -533,6 +591,12 @@ public class Chiky extends Entity {
 				break;
 			case Vector:
 				this.onManagedUpdateVectorMovement(pSecondsElapsed);
+				break;
+			case Move:
+				this.onManagedUpdateMove(pSecondsElapsed);
+				break;
+			case MoveWithGum:
+				this.onManagedUpdateMoveWithGum(pSecondsElapsed);
 				break;
 			}
 
