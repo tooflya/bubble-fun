@@ -970,7 +970,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private void onManagedUpdateSTBox() {
-		this.mSpacePlanet.setRotation(this.mSpacePlanet.getRotation() + 0.01f);
+		this.mSpacePlanet.setRotation(this.mSpacePlanet.getRotation() + 0.1f);
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
