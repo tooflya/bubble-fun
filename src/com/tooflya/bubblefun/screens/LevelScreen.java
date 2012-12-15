@@ -923,7 +923,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.accelerators.changeTextureRegion(Resources.mAcceleratorsTextureRegion);
 
-		mSnowBallSpeed.changeTextureRegion(Resources.mSnowyBallSpeedTextureRegion);
+		this.mSnowBallSpeed.changeTextureRegion(Resources.mSnowyBallSpeedTextureRegion);
 
 		this.mSpaceBackground.hide();
 		this.mSpacePlanet.hide();
@@ -931,6 +931,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private void onSTBoxAttached() {
 		this.mPanel.changeTextureRegion(Resources.mSpaceTopGamePanelTextureRegion);
+		this.mLevelWord.changeTextureRegion(Resources.mLevelSpaceWordTextureRegion);
+		this.numbers.changeTextureRegion(Resources.mSpecialNumbers3TextureRegion);
 
 		this.chikies.clear();
 		this.chikies.changeTextureRegion(Resources.mSpaceBirdsTextureRegion);
@@ -942,7 +944,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.accelerators.changeTextureRegion(Resources.mSpaceAcceleratorsTextureRegion);
 
-		mSnowBallSpeed.changeTextureRegion(Resources.mSpaceBallSpeedTextureRegion);
+		this.mSnowBallSpeed.changeTextureRegion(Resources.mSpaceBallSpeedTextureRegion);
 
 		this.mSpaceBackground.show();
 		this.mSpacePlanet.show();
@@ -963,7 +965,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private void onManagedUpdateSTBox() {
-
+		this.mSpacePlanet.setRotation(this.mSpacePlanet.getRotation() + 0.01f);
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {

@@ -240,7 +240,6 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateMoving(final float pSecondsElapsed) {
-
 		this.mX += this.getSpeedX();
 		this.mY += this.getSpeedY();
 

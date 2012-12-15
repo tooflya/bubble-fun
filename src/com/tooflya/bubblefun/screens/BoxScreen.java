@@ -303,7 +303,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			mPoints.getByIndex(j).setScaleCenter(mPoints.getByIndex(j).getWidth() / 2, mPoints.getByIndex(j).getHeight() / 2);
 		}
 
-		this.mTotalScoreText.create().setPosition(0, 7f);
+		this.mTotalScoreText.create().setPosition(0, 7f, true);
 
 		this.mTotalScoreCountText = new EntityManager<Sprite>(10, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mScoreHolder));
 		for (int a = 0; a < 5; a++) {

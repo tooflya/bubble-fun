@@ -169,6 +169,8 @@ public class Resources {
 	public static final TiledTextureRegion mSpaceStarsBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-stars.png", 512, 0, 1, 1);
 	public static final TiledTextureRegion mSpacePlanetTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "planet.png", 512, 611, 1, 1);
 	public static final TiledTextureRegion mAirSpaceOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-indicator.png", 512, 900, 1, 1);
+	public static final TiledTextureRegion mLevelSpaceWordTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "text-level-space.png", 0, 260, 1, 1);
+	public static final TiledTextureRegion mSpecialNumbers3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "numbers-sprite-space.png", 0, 290, 11, 1);
 
 	// ===========================================================
 	// Entities
