@@ -177,7 +177,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Chiky chiky = screen.chikies.create();
+				// TODO: Old code. final Chiky chiky = screen.chikies.create();
+				final Chiky chiky = null;
 
 				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
@@ -226,13 +227,15 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 		// Example:
 		// <chikyBezier minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true">
-		//    <ctrPoint x="10", y="50"/>
-		//    <ctrPoint x="90", y="50"/>
+		// <ctrPoint x="10", y="50"/>
+		// <ctrPoint x="90", y="50"/>
 		// </chikyBezier>
 		mLevelLoader.registerEntityLoader("chikyBezier", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				chikyBezier = null; // TODO: Add screen.chikyBeziers.create();
+				// TODO: Old code. chikyBezier = null;
+				System.out.println("Start read...");
+				chikyBezier = screen.chikies.create();
 				if (chikyBezier != null)
 				{
 					final float minTime = SAXUtils.getFloatAttribute(pAttributes, "minTime", 0);
@@ -246,6 +249,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					final boolean isRTime = SAXUtils.getBooleanAttribute(pAttributes, "isRTime", true);
 					chikyBezier.initIsReverseTime(isRTime);
 				}
+				System.out.println("Stop read...");
 			}
 		});
 		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
@@ -269,12 +273,13 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("electrod", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				/*final Electrod electrod = screen.electrods.create();
-
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-
-				electrod.setPosition(x, y);*/
+				/*
+				 * final Electrod electrod = screen.electrods.create();
+				 * 
+				 * final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x"); final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				 * 
+				 * electrod.setPosition(x, y);
+				 */
 			}
 		});
 
@@ -325,19 +330,17 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 
-				/*final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-
-				final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0);
-				final float time = SAXUtils.getFloatAttribute(pAttributes, "time", 0);
-
-				final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
-
-				final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen);
-				sprite.create().setPosition(x, y);
-				sprite.index = index;
-
-				screen.mTutorialSprites.add(sprite);*/
+				/*
+				 * final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x"); final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				 * 
+				 * final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0); final float time = SAXUtils.getFloatAttribute(pAttributes, "time", 0);
+				 * 
+				 * final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
+				 * 
+				 * final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen); sprite.create().setPosition(x, y); sprite.index = index;
+				 * 
+				 * screen.mTutorialSprites.add(sprite);
+				 */
 			}
 		});
 

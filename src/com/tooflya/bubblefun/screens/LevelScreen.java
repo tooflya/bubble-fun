@@ -27,6 +27,7 @@ import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.ChikyBezier;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.CristmasHat;
@@ -117,7 +118,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public EntityManager<Coin> coins;
 
-	public EntityManager<Chiky> chikies;
+	// TODO: Old code. public EntityManager<Chiky> chikies;
+	public EntityManager<ChikyBezier> chikies;
 	public EntityManager<Bubble> airgums;
 	public EntityManager<Feather> feathers;
 	public EntityManager<Glass> glasses;
@@ -237,7 +239,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		feathers = new EntityManager<Feather>(200, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
 		glasses = new EntityManager<Glass>(200, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
 		glints = new EntityManager<Glint>(200, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
-		this.chikies = new EntityManager<Chiky>(200, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
+		// TODO: Old code. this.chikies = new EntityManager<Chiky>(200, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
+		this.chikies = new EntityManager<ChikyBezier>(200, new ChikyBezier(Resources.mRegularBirdsTextureRegion, this.mBackground));
 		mCristmasHats = new EntityManager<CristmasHat>(100, new CristmasHat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 
 		mSnowBallSpeed = new EntityManager<Sprite>(100, new Sprite(Resources.mSpaceBallSpeedTextureRegion, this.mBackground));
@@ -431,7 +434,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			@Override
 			public void onClick() {
 				for (int i = 0; i < chikies.getCount(); i++) {
-					Chiky bird = chikies.getByIndex(i);
+					// TODO: Old code. Chiky bird = chikies.getByIndex(i);
+					ChikyBezier bird = chikies.getByIndex(i);
 					Bubble bubble = airgums.create();
 					bubble.setPosition(bird.getX(), Options.cameraHeight);
 					bubble.initFinishPosition(bubble.getX(), -100f);
@@ -545,7 +549,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private void checkCollision() {
-		Chiky chiky;
+		// TODO: Old code. Chiky chiky;
+		ChikyBezier chiky;
 		Bubble airgum;
 		for (int i = chikies.getCount() - 1; i >= 0; --i) {
 			chiky = chikies.getByIndex(i);
