@@ -210,6 +210,7 @@ public class Chiky extends EntityBezier {
 			if (this.mState == States.SpeedyMove) {
 				this.mWind.destroy();
 			}
+			this.prepareToFall();
 			this.mState = States.Fall;
 			this.mStartX = this.getCenterX();
 			this.mStartY = this.getCenterY();
@@ -248,6 +249,7 @@ public class Chiky extends EntityBezier {
 				if (this.mState == States.SpeedyMove) {
 					this.mWind.destroy();
 				}
+				this.prepareToFall();
 				this.mState = States.Fall;
 				this.mStartX = this.getCenterX();
 				this.mStartY = this.getCenterY();
@@ -418,7 +420,7 @@ public class Chiky extends EntityBezier {
 			super.addControlPoint((short) (x + 40), (short) y);
 		}
 		super.initMaxTime(Float.MAX_VALUE);
-		super.initSpeedTime(0.1f);
+		super.initSpeedTime(1f);
 	}
 
 	private void onManagedUpdateMove(final float pSecondsElapsed) {
@@ -577,8 +579,6 @@ public class Chiky extends EntityBezier {
 			this.mTime += pSecondsElapsed;
 			this.mAngle += Options.chikyAngleStep;
 
-			this.mX_ = this.mX;
-
 			switch (this.mState) {
 			case NormalMove:
 				this.onManagedUpdateNormal(pSecondsElapsed);
@@ -600,11 +600,8 @@ public class Chiky extends EntityBezier {
 				break;
 			}
 
-			if (this.mX - this.mX_ > 0) {
-				this.getTextureRegion().setFlippedHorizontal(false);
-			} else if (this.mX - this.mX_ < 0) {
-				this.getTextureRegion().setFlippedHorizontal(true);
-			}
+			this.getTextureRegion().setFlippedHorizontal(this.mX - this.mX_ < 0);
+			this.mX_ = this.mX;
 		}
 
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {

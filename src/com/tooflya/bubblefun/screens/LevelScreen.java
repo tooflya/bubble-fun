@@ -494,6 +494,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		accelerators.clear();
 		mMarks.clear();
 		coins.clear();
+		glasses.clear();
 
 		this.mLightingSwarms.clear();
 		this.mHoldSwarms.clear();
@@ -807,7 +808,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (AIR > 0 && chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 				this.lastAirgum = (Bubble) airgums.create();
 				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
-				//this.lastAirgum.setScaleCenter(this.lastAirgum.getWidth() / 2, this.lastAirgum.getHeight() / 2);
 			}
 			break;
 		case TouchEvent.ACTION_UP:

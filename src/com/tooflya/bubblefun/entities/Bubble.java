@@ -210,6 +210,8 @@ public class Bubble extends BubbleBase {
 
 		this.setWidth(Options.bubbleMinSize);
 		this.setHeight(Options.bubbleMinSize);
+		
+		this.setScale(1f);
 
 		this.mBirdsKills = 0;
 
@@ -229,8 +231,11 @@ public class Bubble extends BubbleBase {
 
 				this.setWidth(mWidth + Options.bubbleStepSize);
 				this.setHeight(mHeight + Options.bubbleStepSize);
+
 				this.mX -= Options.bubbleStepSize / 2;
 				this.mY -= Options.bubbleStepSize / 2;
+				
+				this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
 
 				Options.bubbleSizePower -= Options.bubbleStepSize;
 
@@ -251,7 +256,7 @@ public class Bubble extends BubbleBase {
 			}
 			this.mState = States.Destroying;
 		}
-		else if (this.mY + this.getHeightScaled() < 0) {
+		else if (this.mY + this.getHeight() < 0) {
 			this.mState = States.Destroying;
 		}
 	}

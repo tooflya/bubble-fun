@@ -326,6 +326,11 @@ public abstract class Entity extends AnimatedSprite {
 		this.mBaseWidth = pTextureRegion.getTileWidth();
 		this.mBaseHeight = pTextureRegion.getTileHeight();
 		
+		this.mScaleX = 1;
+		this.mScaleY = 1;
+		
+		this.mRotation = 0;
+		
 		this.setBaseSize();
 	}
 

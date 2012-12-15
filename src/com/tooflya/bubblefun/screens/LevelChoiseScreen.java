@@ -142,12 +142,12 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		if (starsCollected < 10) {
 			sprite.destroy();
 			for (int i = 1; i >= 0; i--) {
-				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 135f, this.mStars.getByIndex(i).getY(), true);
+				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 110f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, this.mStars.getByIndex(i).getY(), true);
 			}
 		} else {
 			sprite.setPosition(Options.cameraWidth - 95f, 10f);
 			for (int i = 1; i >= 0; i--) {
-				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 147f, this.mStars.getByIndex(i).getY(), true);
+				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 122f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, this.mStars.getByIndex(i).getY(), true);
 			}
 		}
 
