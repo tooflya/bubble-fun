@@ -97,9 +97,9 @@ public class LevelChoiseScreen extends ReflectionScreen {
 			final Sprite sprite = this.mStars.create();
 
 			sprite.setCurrentTileIndex(i);
-			sprite.setPosition(Options.cameraWidth - 142f, -10f);
-			sprite.setScaleCenter(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			sprite.setScale(this.getScaleX() / 2f);
+			sprite.setScaleCenter(sprite.getWidthScaled() / 2, sprite.getHeightScaled() / 2);
+			sprite.setPosition(Options.cameraWidth - 142f, -10f);
 		}
 	}
 
@@ -142,12 +142,12 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		if (starsCollected < 10) {
 			sprite.destroy();
 			for (int i = 1; i >= 0; i--) {
-				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 110f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, this.mStars.getByIndex(i).getY(), true);
+				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 130f, 0f);
 			}
 		} else {
 			sprite.setPosition(Options.cameraWidth - 95f, 10f);
 			for (int i = 1; i >= 0; i--) {
-				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 122f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, this.mStars.getByIndex(i).getY(), true);
+				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 142f, 0f);
 			}
 		}
 
