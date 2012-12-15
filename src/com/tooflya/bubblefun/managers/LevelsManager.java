@@ -35,7 +35,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	private float PADDING, PADDING_B;
 	private float X, Y;
 
-	private static ChikyBezier chikyBezier = null;
+	private static Chiky chikyBezier = null;
 
 	private EntityManager<Sprite> mNumbers;
 
@@ -177,51 +177,54 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				// TODO: Old code. final Chiky chiky = screen.chikies.create();
-				final Chiky chiky = null;
+				final Chiky chiky = screen.chikies.create();
 
-				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				if (chiky != null) {
+					final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+					final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				final float normalStepX = SAXUtils.getFloatAttribute(pAttributes, "speed", 0);
-				final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
-				final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
+					final float normalStepX = SAXUtils.getFloatAttribute(pAttributes, "speed", 0);
+					final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
+					final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
 
-				final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
-				final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
-				final float speedX = SAXUtils.getFloatAttribute(pAttributes, "speedX", 0);
-				final float speedY = SAXUtils.getFloatAttribute(pAttributes, "speedY", 0);
+					final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
+					final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
+					final float speedX = SAXUtils.getFloatAttribute(pAttributes, "speedX", 0);
+					final float speedY = SAXUtils.getFloatAttribute(pAttributes, "speedY", 0);
 
-				final float vectorLimit = SAXUtils.getFloatAttribute(pAttributes, "vectorLimit", 0);
-				final float vectorStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStopUpdates", 0);
-				final float vectorStartStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStartStopUpdates", 0);
-				final boolean stopSecond = SAXUtils.getBooleanAttribute(pAttributes, "stopSecond", false);
+					final float vectorLimit = SAXUtils.getFloatAttribute(pAttributes, "vectorLimit", 0);
+					final float vectorStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStopUpdates", 0);
+					final float vectorStartStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStartStopUpdates", 0);
+					final boolean stopSecond = SAXUtils.getBooleanAttribute(pAttributes, "stopSecond", false);
 
-				final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
+					final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
 
-				final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
+					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
 
-				final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
+					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 
-				final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
+					final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
 
-				chiky.initStartX(startX * Options.cameraWidth);
-				chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
+					chiky.initStartX(startX * Options.cameraWidth);
+					chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
 
-				chiky.initProperties(properties);
-				chiky.initSpeedyStepX(speedyStepX);
-				chiky.initParashuteStepY(parashuteStepY);
+					chiky.initProperties(properties);
+					chiky.initSpeedyStepX(speedyStepX);
+					chiky.initParashuteStepY(parashuteStepY);
 
-				chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
+					chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
 
-				if (vectorLimit == 0)
-					chiky.initNormalStepX(normalStepX);
+					if (vectorLimit == 0) {
+						chiky.initNormalStepX(normalStepX);
+					}
 
-				chiky.initOffsetX(offsetX);
+					chiky.initOffsetX(offsetX);
 
-				chiky.initScale(scale);
+					chiky.initScale(scale);
 
-				chiky.getTextureRegion().setFlippedHorizontal(flip);
+					chiky.getTextureRegion().setFlippedHorizontal(flip);
+					chiky.initState(true);
+				}
 			}
 		});
 
@@ -233,8 +236,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("chikyBezier", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				// TODO: Old code. chikyBezier = null;
-				System.out.println("Start read...");
 				chikyBezier = screen.chikies.create();
 				if (chikyBezier != null)
 				{
@@ -248,8 +249,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					chikyBezier.initOffsetTime(offsetTime);
 					final boolean isRTime = SAXUtils.getBooleanAttribute(pAttributes, "isRTime", true);
 					chikyBezier.initIsReverseTime(isRTime);
+					chikyBezier.initState(false);
 				}
-				System.out.println("Stop read...");
 			}
 		});
 		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
