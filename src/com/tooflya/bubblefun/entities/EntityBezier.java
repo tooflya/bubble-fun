@@ -108,7 +108,9 @@ public class EntityBezier extends Entity {
 					mListY[i] = mListY[i] + (mListY[i + 1] - mListY[i]) * this.mTime;
 				}
 			}
-			this.setCenterPosition(this.mWidth / 2 + mListX[0] / 100 * (Options.screenWidth - this.mWidth), this.mHeight / 2 + mListY[0] / 100 * (Options.screenHeight - Options.touchHeight - Options.menuHeight - this.mHeight)); // TODO: Correct using scaled size.
+			this.setCenterPosition(
+					this.mWidth / 2 + mListX[0] / 100 * (Options.cameraWidth - this.mWidth), 
+					this.mHeight / 2 + mListY[0] / 100 * (Options.cameraHeight - Options.touchHeight - Options.menuHeight - this.mHeight) + Options.menuHeight); // TODO: Correct using scaled size.
 		}	
 	}
 

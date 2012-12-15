@@ -69,7 +69,7 @@ public class ChikyBezier extends EntityBezier {
 			this.mState = States.Fall;
 			super.init();
 			final float x = (this.getCenterX() - this.mWidth / 2) / (Options.screenWidth - this.mWidth) * 100;
-			final float y = (this.getCenterY() - this.mHeight / 2) / (Options.screenHeight - Options.touchHeight - Options.menuHeight - this.mHeight) * 100;
+			final float y = (this.getCenterY() - this.mHeight / 2 - Options.menuHeight) / (Options.screenHeight - Options.touchHeight - Options.menuHeight - this.mHeight) * 100;
 			super.addControlPoint((short)x, (short)y);
 			if(x > 50) {
 				super.addControlPoint((short)(x + 20), (short)(y - 40));
@@ -79,7 +79,8 @@ public class ChikyBezier extends EntityBezier {
 				super.addControlPoint((short)(x - 20), (short)(y - 40));
 				super.addControlPoint((short)(x - 40), (short)y);
 			}
-			super.initMaxTime(Float.MAX_VALUE);			
+			super.initMaxTime(Float.MAX_VALUE);
+			super.initSpeedTime(1);
 
 			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
 			if (airgum != null) {
@@ -173,8 +174,6 @@ public class ChikyBezier extends EntityBezier {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.mX_ = this.mX;
-
 		switch (this.mState) {
 		case Move:
 			this.onManagedUpdateMove(pSecondsElapsed);
@@ -187,7 +186,8 @@ public class ChikyBezier extends EntityBezier {
 			break;
 		}
 
-		this.getTextureRegion().setFlippedHorizontal(this.mX - this.mX_ < 0);
+		this.getTextureRegion().setFlippedHorizontal(this.mX - this.mX_ < 0);		
+		this.mX_ = this.mX;
 	}
 
 	@Override
