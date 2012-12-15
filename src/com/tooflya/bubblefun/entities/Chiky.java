@@ -252,16 +252,6 @@ public class Chiky extends EntityBezier {
 					this.setSpeedX(-this.mNormalStepX);
 				}
 
-				if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
-					Feather particle;
-					for (int i = 0; i < Options.particlesCount; i++) {
-						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
-						if (particle != null) {
-							particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-						}
-					}
-				}
-
 				this.stopAnimation(6);
 
 				if (Game.random.nextInt(3) == 1) {
@@ -422,39 +412,6 @@ public class Chiky extends EntityBezier {
 		}
 	}
 
-	private void onManagedUpdateMoveWithGum(final float pSecondsElapsed) {
-		this.mTimeWithGum += pSecondsElapsed;
-		if (this.mTimeWithGum >= Options.chikyMaxTimeWithGum) {
-			this.prepareToFall();
-
-			final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
-			if (airgum != null) {
-				airgum.setParent(mAirgum);
-				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
-				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
-			}
-
-			Feather particle;
-			for (int i = 0; i < Options.particlesCount; i++) {
-				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
-				if (particle != null) {
-					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-				}
-			}
-
-			this.stopAnimation(6);
-
-			if (Game.random.nextInt(3) == 1) {
-				Options.mBirdsDeath1.play();
-			} else if (Game.random.nextInt(3) == 2) {
-				Options.mBirdsDeath2.play();
-			} else {
-				Options.mBirdsDeath3.play();
-			}
-		}
-	}
-
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
 		this.setRotation(this.getRotation() + 5); // Rotate at 1 degree. Maybe need to correct.
 		if (this.mY > Options.cameraHeight) {
@@ -588,7 +545,7 @@ public class Chiky extends EntityBezier {
 				this.onManagedUpdateMove(pSecondsElapsed);
 				break;
 			case MoveWithGum:
-				this.onManagedUpdateMoveWithGum(pSecondsElapsed);
+				this.onManagedUpdateWithGum(pSecondsElapsed);
 				break;
 			}
 

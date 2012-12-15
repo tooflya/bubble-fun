@@ -38,9 +38,12 @@ import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.HoldSwarm;
 import com.tooflya.bubblefun.entities.LightingSwarm;
 import com.tooflya.bubblefun.entities.Mark;
+import com.tooflya.bubblefun.entities.Meteorit;
+import com.tooflya.bubblefun.entities.SmallMeteorit;
 import com.tooflya.bubblefun.entities.Snowflake;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
+import com.tooflya.bubblefun.entities.Ufo;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
@@ -165,9 +168,13 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mSpaceBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.mSpaceBackground.enableFullBlendFunction();
 
+		this.mSmallMeteorits = new EntityManager<SmallMeteorit>(10, new SmallMeteorit(Resources.mMeteoritTextureRegion, this.mBackground));
+
 		this.mSpacePlanet = new Sprite(Resources.mSpacePlanetTextureRegion, this.mBackground);
 		this.mSpacePlanet.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.mSpacePlanet.enableFullBlendFunction();
+
+		this.mMeteorits = new EntityManager<Meteorit>(10, new Meteorit(Resources.mMeteoritTextureRegion, this.mBackground));
 
 		this.mSnowflakes = new SnowManager<Snowflake>(100, new Snowflake(Resources.mSnowFlakesTextureRegion, this.mBackground));
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
@@ -183,7 +190,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
-			private float s = 0.015f;
+			private float s = 0.005f;
 
 			private boolean modifier = false;
 
@@ -453,6 +460,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mAirGlint.enableFullBlendFunction();
 		this.mAirGlint.animate(50);
 		this.mAirGlint.hide();
+
+		this.mUfos = new EntityManager<Ufo>(10, new Ufo(Resources.mUfoTextureRegion, this.mBackground));
+		this.mUfos.create().setCenterPosition(150, 150);
 	}
 
 	private final Sprite mBonusPanel;
@@ -461,6 +471,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final EntityManager<LightingSwarm> mLightingSwarms;
 	private final EntityManager<HoldSwarm> mHoldSwarms;
 	public final EntityManager<Sprite> mLightings;
+
+	public final EntityManager<Ufo> mUfos;
+
+	public final EntityManager<Meteorit> mMeteorits;
+	public final EntityManager<SmallMeteorit> mSmallMeteorits;
 
 	// ===========================================================
 	// Virtual methods
@@ -548,22 +563,21 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private void checkCollision() {
 		Chiky chiky;
 		Bubble airgum;
-		for (int i = chikies.getCount() - 1; i >= 0; --i) {
-			chiky = chikies.getByIndex(i);
-			if (chiky.isCanCollide()) {
-				for (int j = airgums.getCount() - 1; j >= 0; --j) {
-					airgum = (Bubble) airgums.getByIndex(j);
-					if (airgum.isCanCollide() && this.isCollide(chiky, airgum)) {
-						airgum.addBirdsKills();
-						chiky.setCollide(airgum);
-						deadBirds++;
-					}
-				}
-			}
-		}
+
 		for (int i = airgums.getCount() - 1; i >= 0; --i) {
 			airgum = airgums.getByIndex(i);
 			if (airgum.isCanCollide()) {
+
+				for (int h = chikies.getCount() - 1; h >= 0; --h) {
+					chiky = chikies.getByIndex(h);
+					if (chiky.isCanCollide()) {
+						if (this.isCollide(chiky, airgum)) {
+							airgum.addBirdsKills();
+							chiky.setCollide(airgum);
+							deadBirds++;
+						}
+					}
+				}
 
 				for (int j = bonuses.getCount() - 1; j >= 0; --j) {
 					final Bonus bonus = bonuses.getByIndex(j);
@@ -700,7 +714,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.checkCollision();
 
-		if (chikies.getCount() <= 0 && mAwesomeKillText.getCount() == 0 && mDoubleKillText.getCount() == 0 && mTripleKillText.getCount() == 0 && !this.mLevelEndRunning) {
+		if (chikies.getCount() <= 0 && !this.mLevelEndRunning) {
 			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 			this.mLevelEndRunning = true;
 
@@ -966,6 +980,30 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private void onManagedUpdateSTBox() {
 		this.mSpacePlanet.setRotation(this.mSpacePlanet.getRotation() + 0.1f);
+
+		if (this.mMeteorits.getCount() <= 1) {
+			if (Game.random.nextInt(20) == 2) {
+				final Meteorit m = this.mMeteorits.create();
+				if (m != null) {
+					m.setCenterPosition(Game.random.nextInt(Options.cameraWidth * 3) - Options.cameraWidth, Game.random.nextInt(Options.cameraHeight * 2) - Options.cameraHeight);
+					if (m.getCenterX() > 0) {
+						m.setCenterPosition(-m.getWidth(), m.getCenterY());
+					}
+				}
+			}
+		}
+
+		if (this.mMeteorits.getCount() <= 5) {
+			if (Game.random.nextInt(20) == 2) {
+				final SmallMeteorit m = this.mSmallMeteorits.create();
+				if (m != null) {
+					m.setCenterPosition(Game.random.nextInt(Options.cameraWidth * 3) - Options.cameraWidth, Game.random.nextInt(Options.cameraHeight * 2) - Options.cameraHeight);
+					if (m.getCenterX() > 0) {
+						m.setCenterPosition(-m.getWidth(), m.getCenterY());
+					}
+				}
+			}
+		}
 	}
 
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {

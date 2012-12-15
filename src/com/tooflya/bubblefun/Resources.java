@@ -165,12 +165,14 @@ public class Resources {
 	public static final TiledTextureRegion mAirIndicatorGlintsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "air-indicator-blesk-fill.png", 241, 0, 6, 1);
 	public static final TiledTextureRegion mSpaceTopGamePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "game-panel-space.png", 0, 100, 1, 1);
 	public static final TiledTextureRegion mSpaceBubbleTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-asteroid.png", 0, 180, 1, 1);
-	public static final TiledTextureRegion mSpaceBallSpeedTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "asteroid-fast.png", 0, 230, 5, 1);
+	public static final TiledTextureRegion mSpaceBallSpeedTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "asteroid-fast.png", 0, 230, 1, 1);
 	public static final TiledTextureRegion mSpaceStarsBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-stars.png", 512, 0, 1, 1);
 	public static final TiledTextureRegion mSpacePlanetTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "planet.png", 512, 611, 1, 1);
 	public static final TiledTextureRegion mAirSpaceOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "space-indicator.png", 512, 900, 1, 1);
-	public static final TiledTextureRegion mLevelSpaceWordTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "text-level-space.png", 0, 260, 1, 1);
-	public static final TiledTextureRegion mSpecialNumbers3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "numbers-sprite-space.png", 0, 290, 11, 1);
+	public static final TiledTextureRegion mLevelSpaceWordTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "text-level-space.png", 0, 290, 1, 1);
+	public static final TiledTextureRegion mSpecialNumbers3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "numbers-sprite-space.png", 0, 320, 11, 1);
+	public static final TiledTextureRegion mUfoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "ufo.png", 0, 360, 6, 1);
+	public static final TiledTextureRegion mMeteoritTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas6, Game.context, "meteorit.png", 0, 461, 3, 2);
 
 	// ===========================================================
 	// Entities

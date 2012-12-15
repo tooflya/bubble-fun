@@ -159,7 +159,7 @@ public class Bubble extends BubbleBase {
 
 	private void writeText() {
 		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-		if (this.mBirdsKills == 1 && screen.chikies.getCount() <= 1) {
+		if (this.mBirdsKills == 1 && screen.chikies.getCount() <= 1 && LevelScreen.deadBirds <= 0) {
 			this.mBirdsKills--;
 			final Entity text = screen.mAwesomeKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);
@@ -210,7 +210,7 @@ public class Bubble extends BubbleBase {
 
 		this.setWidth(Options.bubbleMinSize);
 		this.setHeight(Options.bubbleMinSize);
-		
+
 		this.setScale(1f);
 
 		this.mBirdsKills = 0;
@@ -234,7 +234,7 @@ public class Bubble extends BubbleBase {
 
 				this.mX -= Options.bubbleStepSize / 2;
 				this.mY -= Options.bubbleStepSize / 2;
-				
+
 				this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
 
 				Options.bubbleSizePower -= Options.bubbleStepSize;
@@ -267,7 +267,6 @@ public class Bubble extends BubbleBase {
 
 		if (!this.isAnimationRunning()) {
 			if (this.mParent == null) {
-				this.mY = -this.mHeight;
 				this.mState = States.WaitingForText;
 			}
 			else {
@@ -293,9 +292,14 @@ public class Bubble extends BubbleBase {
 	}
 
 	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
-		final boolean isNoChikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
-		final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
-		if (this.mChildCount == 0 || isNoChikies || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0)) {
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
+			final boolean isNoChikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
+			final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
+			if (this.mChildCount == 0 || isNoChikies || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0) || b <= 2) {
+				this.writeText();
+				this.destroy(); // TODO: (R) Can be lost memory.
+			}
+		} else {
 			this.writeText();
 			this.destroy(); // TODO: (R) Can be lost memory.
 		}

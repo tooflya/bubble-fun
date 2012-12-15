@@ -7,8 +7,6 @@ import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
-import android.opengl.GLES10;
-
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.Screen;
@@ -325,12 +323,12 @@ public abstract class Entity extends AnimatedSprite {
 
 		this.mBaseWidth = pTextureRegion.getTileWidth();
 		this.mBaseHeight = pTextureRegion.getTileHeight();
-		
+
 		this.mScaleX = 1;
 		this.mScaleY = 1;
-		
+
 		this.mRotation = 0;
-		
+
 		this.setBaseSize();
 	}
 
@@ -458,14 +456,6 @@ public abstract class Entity extends AnimatedSprite {
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
 
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
 		GLHelper.enableDither(pGL);
-		GLHelper.enableDepthTest(pGL);
-		GLHelper.enableBlend(pGL);
-
-		GLHelper.disableCulling(pGL);
-
-		GLES10.glEnable(GL10.GL_ALPHA_TEST);
 	}
 }
