@@ -63,22 +63,24 @@ public class BlueBird extends Entity {
 	 * 
 	 */
 	public void particles() {
-		((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
+		if (!this.isSleep()) {
+			((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
 
-		if (this.mTextureRegion.e(Resources.mBlueBirdTextureRegion)) {
-			for (int i = 0; i < Options.particlesCount; i++) {
-				Feather particle;
-				particle = ((Feather) mFeathersManager.create());
-				if (particle != null) {
-					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+			if (this.mTextureRegion.e(Resources.mBlueBirdTextureRegion)) {
+				for (int i = 0; i < Options.particlesCount; i++) {
+					Feather particle;
+					particle = ((Feather) mFeathersManager.create());
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
 				}
-			}
-		} else if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
-			Glass particle;
-			for (int i = 0; i < Options.particlesCount; i++) {
-				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
-				if (particle != null) {
-					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+			} else if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
+				Glass particle;
+				for (int i = 0; i < Options.particlesCount; i++) {
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
 				}
 			}
 		}

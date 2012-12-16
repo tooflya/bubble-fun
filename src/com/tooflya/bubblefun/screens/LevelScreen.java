@@ -190,7 +190,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
-			private float s = 0.005f;
+			private float s = 0.015f;
+			private float l = 1f;
 
 			private boolean modifier = false;
 
@@ -205,25 +206,33 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			protected void onManagedUpdate(final float pSecondsElapsed) {
 				super.onManagedUpdate(pSecondsElapsed);
 
-				boolean update = false;
-				for (int i = 0; i < this.getChildCount(); i++) {
-					if (this.getChild(i).getAlpha() > 0) {
-						this.getChild(i).setAlpha(this.getChild(i).getAlpha() - s);
-						update = true;
-					}
-				}
+				l -= pSecondsElapsed;
 
-				if (!update && !modifier) {
-					modifier = true;
+				if (l <= 0) {
+					boolean update = false;
+					for (int i = 0; i < this.getChildCount(); i++) {
+						if (this.getChild(i).getAlpha() > 0) {
+							this.getChild(i).setAlpha(this.getChild(i).getAlpha() - s);
+							update = true;
+						} else {
+							this.getChild(i).setVisible(false);
+						}
+					}
+
+					if (!update && !modifier) {
+						modifier = true;
+					}
 				}
 			}
 
 			public void reset() {
 
 				for (int i = 0; i < this.getChildCount(); i++) {
+					this.getChild(i).setVisible(true);
 					this.getChild(i).setAlpha(1f);
 				}
 				modifier = false;
+				l = 1f;
 			}
 		};
 
@@ -517,6 +526,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		//this.mLightingSwarms.create().setCenterPosition(150, 150);
 		//this.mHoldSwarms.create().setCenterPosition(350, 350);
 
+		this.mMeteorits.clear();
+		this.mSmallMeteorits.clear();
+		this.mUfos.clear();
+
 		generateChikies();
 
 		feathers.clear();
@@ -666,8 +679,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.reInit();
 
-		if (!Options.mLevelSound.isPlaying() && Options.isMusicEnabled) {
-			Options.mLevelSound.play();
+		if (!Options.DEBUG) {
+			if (!Options.mLevelSound.isPlaying() && Options.isMusicEnabled) {
+				Options.mLevelSound.play();
+			}
 		}
 	}
 
@@ -993,8 +1008,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		}
 
-		if (this.mMeteorits.getCount() <= 5) {
-			if (Game.random.nextInt(20) == 2) {
+		if (this.mSmallMeteorits.getCount() <= 5) {
+			if (Game.random.nextInt(10) == 2) {
 				final SmallMeteorit m = this.mSmallMeteorits.create();
 				if (m != null) {
 					m.setCenterPosition(Game.random.nextInt(Options.cameraWidth * 3) - Options.cameraWidth, Game.random.nextInt(Options.cameraHeight * 2) - Options.cameraHeight);

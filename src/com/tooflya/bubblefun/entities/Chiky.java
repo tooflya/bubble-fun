@@ -39,6 +39,9 @@ public class Chiky extends EntityBezier {
 	public static final int isSpeedyFlag = 4;
 	public static final int isWavelyFlag = 8;
 	public static final int isVectorFlag = 32;
+
+	private final Text mName = new Text(0, 0, Resources.mFont, "1234567890123456");
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -76,8 +79,13 @@ public class Chiky extends EntityBezier {
 	 */
 	public Chiky(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
+
 		this.mRotationCenterX = this.mWidth / 2;
 		this.mRotationCenterY = this.mHeight / 2;
+
+		pParentScreen.attachChild(this.mName);
+
+		this.mName.setVisible(false);
 	}
 
 	// ===========================================================
@@ -197,12 +205,14 @@ public class Chiky extends EntityBezier {
 
 				this.stopAnimation(6);
 
-				if (Game.random.nextInt(3) == 1) {
-					Options.mBirdsDeath1.play();
-				} else if (Game.random.nextInt(3) == 2) {
-					Options.mBirdsDeath2.play();
-				} else {
-					Options.mBirdsDeath3.play();
+				if (!Options.DEBUG) {
+					if (Game.random.nextInt(3) == 1) {
+						Options.mBirdsDeath1.play();
+					} else if (Game.random.nextInt(3) == 2) {
+						Options.mBirdsDeath2.play();
+					} else {
+						Options.mBirdsDeath3.play();
+					}
 				}
 			}
 		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
@@ -225,12 +235,14 @@ public class Chiky extends EntityBezier {
 
 			this.hat.Init();
 
-			if (Game.random.nextInt(3) == 1) {
-				Options.mBirdsDeath1.play();
-			} else if (Game.random.nextInt(3) == 2) {
-				Options.mBirdsDeath2.play();
-			} else {
-				Options.mBirdsDeath3.play();
+			if (!Options.DEBUG) {
+				if (Game.random.nextInt(3) == 1) {
+					Options.mBirdsDeath1.play();
+				} else if (Game.random.nextInt(3) == 2) {
+					Options.mBirdsDeath2.play();
+				} else {
+					Options.mBirdsDeath3.play();
+				}
 			}
 
 		}
@@ -254,12 +266,14 @@ public class Chiky extends EntityBezier {
 
 				this.stopAnimation(6);
 
-				if (Game.random.nextInt(3) == 1) {
-					Options.mBirdsDeath1.play();
-				} else if (Game.random.nextInt(3) == 2) {
-					Options.mBirdsDeath2.play();
-				} else {
-					Options.mBirdsDeath3.play();
+				if (!Options.DEBUG) {
+					if (Game.random.nextInt(3) == 1) {
+						Options.mBirdsDeath1.play();
+					} else if (Game.random.nextInt(3) == 2) {
+						Options.mBirdsDeath2.play();
+					} else {
+						Options.mBirdsDeath3.play();
+					}
 				}
 			}
 		}
@@ -451,10 +465,12 @@ public class Chiky extends EntityBezier {
 
 			LevelScreen.Score += 50;
 
-			if (Game.random.nextInt(2) == 1) {
-				Options.mBirdsShotted1.play();
-			} else {
-				Options.mBirdsShotted2.play();
+			if (!Options.DEBUG) {
+				if (Game.random.nextInt(2) == 1) {
+					Options.mBirdsShotted1.play();
+				} else {
+					Options.mBirdsShotted2.play();
+				}
 			}
 		}
 	}
@@ -470,6 +486,10 @@ public class Chiky extends EntityBezier {
 	@Override
 	public Entity create() {
 		super.init();
+
+		this.mName.setText("www.tooflya.com");
+
+		this.mName.setVisible(true);
 
 		this.setRotation(0);
 
@@ -553,6 +573,8 @@ public class Chiky extends EntityBezier {
 			this.mX_ = this.mX;
 		}
 
+		this.mName.setPosition(this.getCenterX(), this.getY() - 10f);
+
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
 			if (!this.hat.mIsParticle) {
 				this.hat.setScale(this.mWidth / this.mBaseWidth);
@@ -565,6 +587,8 @@ public class Chiky extends EntityBezier {
 	@Override
 	public void destroy() {
 		super.destroy();
+
+		this.mName.setVisible(false);
 
 		LevelScreen.deadBirds--;
 	}

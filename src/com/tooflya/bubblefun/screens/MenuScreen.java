@@ -264,11 +264,13 @@ public class MenuScreen extends ReflectionScreen {
 
 		ScreenManager.mChangeAction = 0;
 
-		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
-			Options.mMainSound.play();
+		if (!Options.DEBUG) {
+			if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
+				Options.mMainSound.play();
+			}
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */
@@ -285,6 +287,7 @@ public class MenuScreen extends ReflectionScreen {
 	public void onDetached() {
 		super.onDetached();
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

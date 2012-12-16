@@ -340,8 +340,10 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.mTimeToUnlockBox = true;
 		}
 
-		if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
-			Options.mMainSound.play();
+		if (!Options.DEBUG) {
+			if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
+				Options.mMainSound.play();
+			}
 		}
 	}
 
