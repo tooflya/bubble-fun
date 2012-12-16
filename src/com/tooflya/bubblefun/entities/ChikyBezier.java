@@ -87,7 +87,7 @@ public class ChikyBezier extends EntityBezier {
 				airgum.setParent(mAirgum);
 				airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
 				airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-				airgum.initFinishPosition(airgum.getCenterX(), airgum.getCenterY());
+				airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
 			}
 
 			Feather particle;

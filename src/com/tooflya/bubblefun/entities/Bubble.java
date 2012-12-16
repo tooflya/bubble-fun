@@ -83,6 +83,25 @@ public class Bubble extends BubbleBase {
 	public void initFinishPosition(final float x, final float y) {
 		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
 		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
+
+		this.setSpeedX(distance * FloatMath.cos(angle));
+		this.setSpeedY(distance * FloatMath.sin(angle));
+
+		if (Options.bubbleMinSpeed < distance) {
+			this.onSpeedyLaunch();
+		}
+
+		this.mTime = 0;
+		this.mState = States.Moving;
+
+		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.clear();
+		}
+	}
+
+	public void initFinishPositionWithCorrection(final float x, final float y) {
+		float angle = (float) Math.atan2(y - this.getCenterY(), x - this.getCenterX());
+		float distance = MathUtils.distance(this.getCenterX(), this.getCenterY(), x, y);
 		if (distance < Options.eps) {
 			this.setSpeedX(0);
 			this.setSpeedY((Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 / this.mLostedSpeed);
@@ -189,7 +208,7 @@ public class Bubble extends BubbleBase {
 	}
 
 	public void AddChildCount() {
-		this.getParent().mChildCount++; // TODO: (R) Need raise at setParent(). How?		
+		this.getParent().mChildCount++; // TODO: (R) Need raise at setParent(). How?
 	}
 
 	// ===========================================================
@@ -276,7 +295,9 @@ public class Bubble extends BubbleBase {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.tooflya.bubblefun.entities.Entity#destroy()
 	 */
 	@Override
