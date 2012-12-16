@@ -68,6 +68,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int mBubblesCount;
 	public static int AIR;
+	public static int mPicupedCoins;
 	public static boolean running;
 	public static int deadBirds;
 	private static boolean isResetAnimationRunning;
@@ -496,6 +497,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mAllFallUpModifier.reset();
 
 		Score = 0;
+		mPicupedCoins = 0;
 		rectangleAlphaModifierOff.reset();
 
 		running = true;
@@ -603,33 +605,30 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				for (int k = 0; k < this.coins.getCount(); k++) {
 					final Coin air = this.coins.getByIndex(k);
 
-					if (air.getX() <= (airgum.getX() + airgum.getWidthScaled()) &&
-							airgum.getX() <= (air.getX() + air.getWidthScaled()) &&
-							air.getY() <= (airgum.getY() + airgum.getHeightScaled()) &&
-							airgum.getY() <= (air.getY() + air.getHeightScaled())) {
+					if (this.isCollide(airgum, air)) {
 						air.remove();
 					}
 
-					if (!air.mIsAlreadyFollow) {
+					/*if (!air.mIsAlreadyFollow) {
 						if (air.getX() <= (airgum.getX() + airgum.getWidthScaled() * 1.1f) &&
 								(airgum.getX() - airgum.getWidthScaled()) <= (air.getX() + air.getWidthScaled()) &&
 								air.getY() <= (airgum.getY() + airgum.getHeightScaled() * 1.1f) &&
 								airgum.getY() - airgum.getHeightScaled() <= (air.getY() + air.getHeightScaled())) {
 							air.follow(airgum);
 						}
-					}
+					}*/
 				}
 
 				for (int k = 0; k < this.mLightingSwarms.getCount(); k++) {
 					final LightingSwarm swarm = this.mLightingSwarms.getByIndex(k);
-					if (airgum.isCanCollide()) {
+
 						if (swarm.getX() <= (airgum.getX() + airgum.getWidth() * 1.1f) &&
 								(airgum.getX() - airgum.getWidth()) <= (swarm.getX() + swarm.getWidthScaled()) &&
 								swarm.getY() <= (airgum.getY() + airgum.getHeight() * 1.1f) &&
 								airgum.getY() - airgum.getHeight() <= (swarm.getY() + swarm.getHeightScaled())) {
 							airgum.isCollide();
 						}
-					}
+					
 				}
 
 				if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
