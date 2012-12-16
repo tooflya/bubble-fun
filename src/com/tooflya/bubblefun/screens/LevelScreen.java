@@ -44,6 +44,7 @@ import com.tooflya.bubblefun.entities.Snowflake;
 import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.entities.Ufo;
+import com.tooflya.bubblefun.factories.BubbleFactory;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
@@ -150,6 +151,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Sprite mAirGlint;
 
+	private int mBonusType = 0;
+
 	// ===========================================================
 	// Tutorial
 	// ===========================================================
@@ -199,9 +202,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see
-			 * org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
-			 * (float)
+			 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
 			 */
 			@Override
 			protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -338,8 +339,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		// ===========================================================
 		// Tutorial
 
-		//this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-1.png", 0, 0, 1, 1);
-		//this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-2.png", 0, 40, 1, 1);
+		// this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-1.png", 0, 0, 1, 1);
+		// this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-2.png", 0, 40, 1, 1);
 
 		// ===========================================================
 
@@ -451,7 +452,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					Chiky bird = chikies.getByIndex(i);
 					Bubble bubble = airgums.create();
 					bubble.setPosition(bird.getX(), Options.cameraHeight);
-					bubble.initFinishPosition(bubble.getX(), -100f);
+					bubble.initFinishPositionWithCorrection(bubble.getX(), -100f);
 					bubble.mBirdsKills = -100;
 				}
 			}
@@ -525,8 +526,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mLightingSwarms.clear();
 		this.mHoldSwarms.clear();
 
-		//this.mLightingSwarms.create().setCenterPosition(150, 150);
-		//this.mHoldSwarms.create().setCenterPosition(350, 350);
+		this.mBonusType = 18;
+
+		// this.mLightingSwarms.create().setCenterPosition(150, 150);
+		// this.mHoldSwarms.create().setCenterPosition(350, 350);
 
 		this.mMeteorits.clear();
 		this.mSmallMeteorits.clear();
@@ -685,7 +688,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */
 	@Override
@@ -707,8 +712,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate
-	 * (float)
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -823,7 +827,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener#onSceneTouchEvent(org.anddev.andengine.entity.scene.Scene, org.anddev.andengine.input.touch.TouchEvent)
 	 */
 	@Override
@@ -833,14 +839,20 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
-			if (AIR > 0 && chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
-				this.lastAirgum = (Bubble) airgums.create();
-				this.lastAirgum.initStartPosition(pTouchX, pTouchY);
+			if (this.mBonusType == 0) {
+				if (AIR > 0 && chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
+					this.lastAirgum = (Bubble) airgums.create();
+					this.lastAirgum.initStartPosition(pTouchX, pTouchY);
+				}
+			}
+			else {
+				BubbleFactory.BubbleBonus(pTouchX, pTouchY, this.mBonusType);
+				this.mBonusType = 0;
 			}
 			break;
 		case TouchEvent.ACTION_UP:
 			if (this.lastAirgum != null) {
-				this.lastAirgum.initFinishPosition(pTouchX, pTouchY);
+				this.lastAirgum.initFinishPositionWithCorrection(pTouchX, pTouchY);
 
 				this.lastAirgum = null;
 
