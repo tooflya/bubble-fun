@@ -98,7 +98,7 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 		updates = 0;
 		temp = 0;
-		
+
 		mTextBar.setWidth(112f);
 		mTextBar.getTextureRegion().setWidth(112);
 	}
@@ -108,11 +108,13 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 	 */
 	@Override
 	public void onPostAttached() {
-		if (Options.mMainSound.isPlaying()) {
-			Options.mMainSound.pause();
-		}
-		if (Options.mLevelSound.isPlaying()) {
-			Options.mLevelSound.pause();
+		if (!Options.DEBUG) {
+			if (Options.mMainSound.isPlaying()) {
+				Options.mMainSound.pause();
+			}
+			if (Options.mLevelSound.isPlaying()) {
+				Options.mLevelSound.pause();
+			}
 		}
 
 		this.registerUpdateHandler(mTimer);

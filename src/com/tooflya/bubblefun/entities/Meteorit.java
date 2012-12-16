@@ -26,8 +26,6 @@ public class Meteorit extends Sprite {
 	 */
 	@Override
 	public void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
 		this.mX += this.getSpeedX();
 		this.mY += this.getSpeedY();
 

@@ -34,7 +34,7 @@ public class Options {
 
 	public final static float framesPerSeconds = 0.0125f;
 
-	public static boolean isMusicEnabled = true;
+	public static boolean isMusicEnabled = false;
 
 	public static String CR;
 

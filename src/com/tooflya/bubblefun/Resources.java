@@ -1,5 +1,7 @@
 package com.tooflya.bubblefun;
 
+import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -34,6 +36,9 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas4 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas5 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas6 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+	public static final BitmapTextureAtlas mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final Font mFont = FontFactory.createFromAsset(mFontTexture, Game.context, "font/casual.ttf", 6, true, Color.BLACK);
 
 	// ===========================================================
 	// Texture Regions
@@ -247,6 +252,8 @@ public class Resources {
 		}
 	};
 
+	private static boolean isFontLoaded = false;
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -265,6 +272,11 @@ public class Resources {
 
 	public static final void loadSecondResources() {
 		Game.loadTextures(mBackgroundGradientTextureAtlas2, mElementsTextureAtlas3, mElementsTextureAtlas4, mElementsTextureAtlas6);
+		if (!isFontLoaded) {
+			isFontLoaded = true;
+			Game.engine.getFontManager().loadFont(mFont);
+			Game.loadTextures(mFontTexture);
+		}
 	}
 
 	public static final void unloadSecondResources() {

@@ -15,7 +15,7 @@ public class SmallMeteorit extends Meteorit {
 	public Entity create() {
 		this.setCurrentTileIndex(Game.random.nextInt(5) + 1);
 
-		final float speed = Game.random.nextInt(this.getCurrentTileIndex() + 1);
+		final float speed = Game.random.nextInt(this.getCurrentTileIndex() + 1) + 1;
 		
 		this.setSpeedX(speed);
 		this.setSpeedY(speed);
@@ -32,8 +32,6 @@ public class SmallMeteorit extends Meteorit {
 	 */
 	@Override
 	public void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
 		this.mX += this.getSpeedX();
 		this.mY += this.getSpeedY();
 

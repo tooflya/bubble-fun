@@ -146,19 +146,23 @@ public class Bubble extends BubbleBase {
 				}
 			}
 
-			if (Game.random.nextInt(2) == 1) {
-				Options.mBubbleFastCreate1.play();
-			} else {
-				Options.mBubbleFastCreate2.play();
+			if (!Options.DEBUG) {
+				if (Game.random.nextInt(2) == 1) {
+					Options.mBubbleFastCreate1.play();
+				} else {
+					Options.mBubbleFastCreate2.play();
+				}
 			}
 		} else if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
 			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
 			this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
 
-			if (Game.random.nextInt(2) == 1) {
-				Options.mBubbleFastCreate1.play();
-			} else {
-				Options.mBubbleFastCreate2.play();
+			if (!Options.DEBUG) {
+				if (Game.random.nextInt(2) == 1) {
+					Options.mBubbleFastCreate1.play();
+				} else {
+					Options.mBubbleFastCreate2.play();
+				}
 			}
 		}
 	}
@@ -304,7 +308,9 @@ public class Bubble extends BubbleBase {
 	public void destroy() {
 		super.destroy();
 
-		Options.mBubbleDeath.play();
+		if (!Options.DEBUG) {
+			Options.mBubbleDeath.play();
+		}
 
 		if (this.speed != null) {
 			this.speed.destroy();
