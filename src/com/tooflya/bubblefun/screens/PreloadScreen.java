@@ -108,7 +108,7 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 	 */
 	@Override
 	public void onPostAttached() {
-		if (!Options.DEBUG) {
+		if (Options.isMusicEnabled) {
 			if (Options.mMainSound.isPlaying()) {
 				Options.mMainSound.pause();
 			}

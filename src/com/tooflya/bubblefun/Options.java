@@ -9,7 +9,7 @@ import org.anddev.andengine.audio.sound.Sound;
  */
 public class Options {
 	// > Compile options.
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	// < Compile options.
 
 	// > Math options.
@@ -34,7 +34,7 @@ public class Options {
 
 	public final static float framesPerSeconds = 0.0125f;
 
-	public static boolean isMusicEnabled = false;
+	public static boolean isMusicEnabled;
 
 	public static String CR;
 
@@ -99,4 +99,5 @@ public class Options {
 	public static Sound mButtonSound, mBirdsDeath1, mBirdsDeath2, mBirdsDeath3, mBirdsShotted1, mBirdsShotted2;
 	public static Sound mBubbleDeath;
 	public static Sound mBubbleFastCreate1, mBubbleFastCreate2;
+	public static Sound mLaser;
 }

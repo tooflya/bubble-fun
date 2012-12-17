@@ -4,6 +4,7 @@ import android.util.FloatMath;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
@@ -33,9 +34,9 @@ public class BubbleFactory {
 				bubble.initStartPosition(x, y);
 				bubble.initFinishPosition(x, y - 2 * speed);
 			}
-		}		
+		}
 	}
-	
+
 	private static void BubblesRainControl(final float pX, final float pY, final int pCount) {
 		Bubble bubble;
 		for (int i = 0; i < pCount; i++) {
@@ -46,11 +47,19 @@ public class BubbleFactory {
 				bubble.initStartPosition(x, pY);
 				bubble.initFinishPosition(x, pY - 2 * speed);
 			}
-		}		
+		}
+	}
+
+	public static void BubbleBonus(final int type) {
+		BubbleBonus(Game.random.nextInt(Options.cameraWidth), Game.random.nextInt(Options.cameraHeight), type);
+	}
+
+	public static void BonusAirplane() {
+		((Airplane) ((LevelScreen) Game.screens.get(Screen.LEVEL)).mAirplane.create()).init();
 	}
 
 	public static void BubbleBonus(final float pX, final float pY, final int type) {
-		switch(type) {
+		switch (type) {
 		case 1:
 			BubblesBoom(pX, pY, 3, 5);
 			break;
@@ -75,7 +84,7 @@ public class BubbleFactory {
 		case 8:
 			BubblesBoom(pX, pY, 9, 1);
 			break;
-			
+
 		case 11:
 			BubblesRainRandom(pX, pY, 3);
 			break;
@@ -87,7 +96,7 @@ public class BubbleFactory {
 			break;
 		case 14:
 			BubblesRainRandom(pX, pY, 9);
-			break;			
+			break;
 		case 15:
 			BubblesRainRandom(pX, pY, 11);
 			break;
@@ -100,7 +109,7 @@ public class BubbleFactory {
 		case 18:
 			BubblesRainRandom(pX, pY, 17);
 			break;
-			
+
 		case 21:
 			BubblesRainControl(pX, pY, 2);
 			break;
@@ -112,19 +121,23 @@ public class BubbleFactory {
 			break;
 		case 24:
 			BubblesRainControl(pX, pY, 5);
-			break;			
+			break;
 		case 25:
 			BubblesRainControl(pX, pY, 6);
-			break;			
+			break;
 		case 26:
 			BubblesRainControl(pX, pY, 7);
-			break;			
+			break;
 		case 27:
 			BubblesRainControl(pX, pY, 8);
-			break;			
+			break;
 		case 28:
 			BubblesRainControl(pX, pY, 9);
-			break;			
+			break;
+
+		case 29:
+			BonusAirplane();
+			break;
 		}
 	}
 }

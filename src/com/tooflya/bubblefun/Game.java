@@ -233,7 +233,13 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/" + Options.CR);
 
-		if (!Options.DEBUG) {
+		if (Options.DEBUG) {
+			Options.isMusicEnabled = false;
+		} else {
+			Options.isMusicEnabled = true;
+		}
+
+		if (Options.isMusicEnabled) {
 			SoundFactory.setAssetBasePath("mfx/");
 			MusicFactory.setAssetBasePath("mfx/");
 
@@ -249,6 +255,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				Options.mBubbleDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_death.wav");
 				Options.mBubbleFastCreate1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create1.wav");
 				Options.mBubbleFastCreate2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create2.wav");
+				Options.mLaser = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "laser.ogg");
 
 				Options.mMainSound.setLooping(true);
 				Options.mLevelSound.setLooping(true);
@@ -447,7 +454,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onPauseGame() {
 		super.onPauseGame();
 
-		if (!Options.DEBUG) {
+		if (Options.isMusicEnabled) {
 			Options.mLastPlayedMusic = null;
 
 			if (Options.mMainSound.isPlaying()) {
@@ -485,10 +492,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 			screenChangeTime = System.currentTimeMillis();
 
-			if (!Options.DEBUG) {
+			if (Options.isMusicEnabled) {
 				Options.mButtonSound.play();
 			}
-			
+
 			screens.get(Screen.screen).onBackPressed();
 
 			return true;

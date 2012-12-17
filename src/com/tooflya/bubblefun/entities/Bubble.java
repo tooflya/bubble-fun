@@ -78,6 +78,10 @@ public class Bubble extends BubbleBase {
 	public void initStartPosition(final float x, final float y) {
 		this.setCenterPosition(x, y);
 		this.mLostedSpeed = 0;
+
+		if (this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
+			LevelScreen.AIR -= 10;
+		}
 	}
 
 	public void initFinishPosition(final float x, final float y) {
@@ -146,7 +150,7 @@ public class Bubble extends BubbleBase {
 				}
 			}
 
-			if (!Options.DEBUG) {
+			if (Options.isMusicEnabled) {
 				if (Game.random.nextInt(2) == 1) {
 					Options.mBubbleFastCreate1.play();
 				} else {
@@ -157,7 +161,7 @@ public class Bubble extends BubbleBase {
 			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
 			this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
 
-			if (!Options.DEBUG) {
+			if (Options.isMusicEnabled) {
 				if (Game.random.nextInt(2) == 1) {
 					Options.mBubbleFastCreate1.play();
 				} else {
@@ -271,7 +275,7 @@ public class Bubble extends BubbleBase {
 		this.mX += this.getSpeedX();
 		this.mY += this.getSpeedY();
 
-		if (this.mTime > Options.bubbleMaxTimeMove) {
+		if (this.mTime > Options.bubbleMaxTimeMove && this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
 			if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
 				this.animate(40, 0);
 			} else {
@@ -308,13 +312,19 @@ public class Bubble extends BubbleBase {
 	public void destroy() {
 		super.destroy();
 
-		if (!Options.DEBUG) {
+		if (Options.isMusicEnabled) {
 			Options.mBubbleDeath.play();
 		}
 
 		if (this.speed != null) {
 			this.speed.destroy();
 			this.speed = null;
+		}
+
+		if (this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
+			for (int i = 0; i < 3; i++) {
+				((LevelScreen) Game.screens.get(Screen.LEVEL)).mBubbleBrokes.create().init(this.getCenterX(), this.getCenterY());
+			}
 		}
 	}
 

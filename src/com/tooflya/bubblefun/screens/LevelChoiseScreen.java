@@ -112,7 +112,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onPostAttached() {
-		if (!Options.DEBUG) {
+		if (Options.isMusicEnabled) {
 			if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
 				Options.mMainSound.play();
 			}

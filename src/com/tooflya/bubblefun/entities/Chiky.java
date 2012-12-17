@@ -205,7 +205,7 @@ public class Chiky extends EntityBezier {
 
 				this.stopAnimation(6);
 
-				if (!Options.DEBUG) {
+				if (Options.isMusicEnabled) {
 					if (Game.random.nextInt(3) == 1) {
 						Options.mBirdsDeath1.play();
 					} else if (Game.random.nextInt(3) == 2) {
@@ -235,7 +235,7 @@ public class Chiky extends EntityBezier {
 
 			this.hat.Init();
 
-			if (!Options.DEBUG) {
+			if (Options.isMusicEnabled) {
 				if (Game.random.nextInt(3) == 1) {
 					Options.mBirdsDeath1.play();
 				} else if (Game.random.nextInt(3) == 2) {
@@ -266,7 +266,7 @@ public class Chiky extends EntityBezier {
 
 				this.stopAnimation(6);
 
-				if (!Options.DEBUG) {
+				if (Options.isMusicEnabled) {
 					if (Game.random.nextInt(3) == 1) {
 						Options.mBirdsDeath1.play();
 					} else if (Game.random.nextInt(3) == 2) {
@@ -437,6 +437,37 @@ public class Chiky extends EntityBezier {
 	// Setters
 	// ===========================================================
 
+	public void setCollide() {
+		this.mTimeWithGum = 0;
+
+		if (this.mState == States.NormalMove || this.mState == States.Vector) {
+			this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+		}
+		else { // States.SpeedyMove.
+			this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+		}
+
+		if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+			Glass particle;
+			for (int i = 0; i < Options.particlesCount; i++) {
+				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+				if (particle != null) {
+					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
+			}
+		}
+
+		LevelScreen.Score += 50;
+
+		if (Options.isMusicEnabled) {
+			if (Game.random.nextInt(2) == 1) {
+				Options.mBirdsShotted1.play();
+			} else {
+				Options.mBirdsShotted2.play();
+			}
+		}
+	}
+
 	public void setCollide(Bubble airgum) {
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
@@ -465,7 +496,7 @@ public class Chiky extends EntityBezier {
 
 			LevelScreen.Score += 50;
 
-			if (!Options.DEBUG) {
+			if (Options.isMusicEnabled) {
 				if (Game.random.nextInt(2) == 1) {
 					Options.mBirdsShotted1.play();
 				} else {
@@ -473,6 +504,10 @@ public class Chiky extends EntityBezier {
 				}
 			}
 		}
+	}
+
+	public void changeName(final String pName) {
+		this.mName.setText(pName);
 	}
 
 	// ===========================================================
@@ -487,8 +522,7 @@ public class Chiky extends EntityBezier {
 	public Entity create() {
 		super.init();
 
-		this.mName.setText("www.tooflya.com");
-
+		this.mName.setText("");
 		this.mName.setVisible(true);
 
 		this.setRotation(0);

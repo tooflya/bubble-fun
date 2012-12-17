@@ -64,7 +64,8 @@ public class Coin extends Entity {
 		this.mIsAlreadyFollow = false;
 		this.mOffsetY = -1.0f;
 
-		this.setAlpha(1);
+		this.setAlpha(1f);
+		this.setScale(1f);
 
 		return super.create();
 	}
@@ -101,9 +102,11 @@ public class Coin extends Entity {
 	 * 
 	 */
 	public void remove() {
-		this.mFinishMoveModifier = new MoveModifier(1f, this.getX(), 0, this.getY(), 0) {
+		this.mFinishMoveModifier = new MoveModifier(0.6f, this.getX(), 0, this.getY(), 0) {
 			@Override
 			public void onFinished() {
+				mFinishScaleModifier.stop();
+
 				destroy();
 			}
 		};

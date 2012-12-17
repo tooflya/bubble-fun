@@ -264,7 +264,7 @@ public class MenuScreen extends ReflectionScreen {
 
 		ScreenManager.mChangeAction = 0;
 
-		if (!Options.DEBUG) {
+		if (Options.isMusicEnabled) {
 			if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
 				Options.mMainSound.play();
 			}
