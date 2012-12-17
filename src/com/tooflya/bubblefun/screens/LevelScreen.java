@@ -608,6 +608,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		for (int k = 0; k < this.mRedLasers.getCount(); k++) {
 			final Laser laser = this.mRedLasers.getByIndex(k);
+
 			for (int h = chikies.getCount() - 1; h >= 0; --h) {
 				chiky = chikies.getByIndex(h);
 				if (chiky.isCanCollide()) {
@@ -684,6 +685,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 					if (this.isCollide(airgum, laser)) {
 						airgum.isCollide();
+
+						if (Options.isMusicEnabled) {
+							Options.mAsteroidDeath.play();
+						}
 					}
 				}
 

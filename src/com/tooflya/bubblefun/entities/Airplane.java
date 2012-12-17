@@ -65,13 +65,15 @@ public class Airplane extends Entity {
 			final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
 			final Chiky chiky = screen.chikies.getByIndex(Game.random.nextInt(screen.chikies.getCount() + 1));
 
-			screen.mRedLasers.create().init(this.getCenterX(), this.getCenterY(), chiky.getCenterX(), chiky.getCenterY());
+			if (chiky.isCanCollide()) {
+				screen.mRedLasers.create().init(this.getCenterX(), this.getCenterY(), chiky.getCenterX(), chiky.getCenterY());
+
+				if (Options.isMusicEnabled) {
+					Options.mLaser.play();
+				}
+			}
 
 			this.mShootTime = 0.2f;
-
-			if (Options.isMusicEnabled) {
-				Options.mLaser.play();
-			}
 		}
 	}
 }

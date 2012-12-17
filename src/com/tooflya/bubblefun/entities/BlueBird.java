@@ -83,6 +83,14 @@ public class BlueBird extends Entity {
 					}
 				}
 			}
+
+			if (Options.isMusicEnabled) {
+				if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
+					Options.mGlassBroke.play();
+				} else {
+
+				}
+			}
 		}
 	}
 

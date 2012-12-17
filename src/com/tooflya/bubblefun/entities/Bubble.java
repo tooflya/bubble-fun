@@ -312,8 +312,10 @@ public class Bubble extends BubbleBase {
 	public void destroy() {
 		super.destroy();
 
-		if (Options.isMusicEnabled) {
-			Options.mBubbleDeath.play();
+		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
+			if (Options.isMusicEnabled) {
+				Options.mBubbleDeath.play();
+			}
 		}
 
 		if (this.speed != null) {

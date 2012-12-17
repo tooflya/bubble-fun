@@ -168,7 +168,7 @@ public class Chiky extends EntityBezier {
 	}
 
 	public boolean isCanCollide() {
-		return this.mAirgum == null && !this.IsProperty(isPauseUpdateFlag);
+		return this.mAirgum == null && !this.IsProperty(isPauseUpdateFlag) && (this.mState == States.Move || this.mState == States.Vector);
 	}
 
 	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
@@ -181,18 +181,20 @@ public class Chiky extends EntityBezier {
 				}
 				this.prepareToFall();
 
-				final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
-				if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
-					if (airgum != null) {
+				if (this.mAirgum != null) {
+					final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+					if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
+						if (airgum != null) {
+							airgum.setParent(mAirgum);
+							airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
+							airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+							airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
+						}
+					} else {
 						airgum.setParent(mAirgum);
-						airgum.setSize(this.mAirgum.getWidth(), this.mAirgum.getHeight());
 						airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 						airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
 					}
-				} else {
-					airgum.setParent(mAirgum);
-					airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-					airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
 				}
 
 				Feather particle;
@@ -438,14 +440,12 @@ public class Chiky extends EntityBezier {
 	// ===========================================================
 
 	public void setCollide() {
-		this.mTimeWithGum = 0;
+		this.stopAnimation(6);
 
-		if (this.mState == States.NormalMove || this.mState == States.Vector) {
-			this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
-		}
-		else { // States.SpeedyMove.
-			this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
-		}
+		this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+
+		this.mState = States.MoveWithGum;
+		this.mTimeWithGum = 0;
 
 		if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 			Glass particle;
@@ -460,10 +460,14 @@ public class Chiky extends EntityBezier {
 		LevelScreen.Score += 50;
 
 		if (Options.isMusicEnabled) {
-			if (Game.random.nextInt(2) == 1) {
-				Options.mBirdsShotted1.play();
+			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+				Options.mGlassBroke.play();
 			} else {
-				Options.mBirdsShotted2.play();
+				if (Game.random.nextInt(2) == 1) {
+					Options.mBirdsShotted1.play();
+				} else {
+					Options.mBirdsShotted2.play();
+				}
 			}
 		}
 	}
@@ -497,10 +501,14 @@ public class Chiky extends EntityBezier {
 			LevelScreen.Score += 50;
 
 			if (Options.isMusicEnabled) {
-				if (Game.random.nextInt(2) == 1) {
-					Options.mBirdsShotted1.play();
+				if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+					Options.mGlassBroke.play();
 				} else {
-					Options.mBirdsShotted2.play();
+					if (Game.random.nextInt(2) == 1) {
+						Options.mBirdsShotted1.play();
+					} else {
+						Options.mBirdsShotted2.play();
+					}
 				}
 			}
 		}

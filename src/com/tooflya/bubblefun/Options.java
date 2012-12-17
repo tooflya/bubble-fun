@@ -100,4 +100,6 @@ public class Options {
 	public static Sound mBubbleDeath;
 	public static Sound mBubbleFastCreate1, mBubbleFastCreate2;
 	public static Sound mLaser;
+	public static Sound mGlassBroke;
+	public static Sound mAsteroidDeath;
 }
