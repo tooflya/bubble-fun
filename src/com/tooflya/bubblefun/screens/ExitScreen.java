@@ -72,6 +72,9 @@ public class ExitScreen extends PopupScreen {
 		this.registerTouchArea(this.mYIcon);
 		this.registerTouchArea(this.mNIcon);
 
+		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
+		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
+		
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);

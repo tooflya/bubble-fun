@@ -63,6 +63,9 @@ public class BoxLockedScreen extends PopupScreen {
 
 		this.registerTouchArea(this.mOkIcon);
 
+		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
+		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
+		
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);

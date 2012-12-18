@@ -417,7 +417,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 					if (!Game.db.getBox(G + 1).isOpen()) {
 						try {
-							if (mStarsNeeded <= 0 || true) {
+							if (mStarsNeeded <= 0) {
 								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
 								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
 									@Override

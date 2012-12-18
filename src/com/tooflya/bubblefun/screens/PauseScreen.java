@@ -137,6 +137,9 @@ public class PauseScreen extends PopupScreen {
 		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
 		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
 
+		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
+		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
+		
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);

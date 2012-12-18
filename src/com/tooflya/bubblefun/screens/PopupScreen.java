@@ -2,6 +2,7 @@ package com.tooflya.bubblefun.screens;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 
@@ -21,6 +22,9 @@ public class PopupScreen extends Screen {
 
 	protected final Rectangle mRectangle = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
 
+	protected final AlphaModifier mRectangleAlphaModifierOn = new AlphaModifier(0.7f, 0f, 0.6f);
+	protected final AlphaModifier mRectangleAlphaModifierOff = new AlphaModifier(0.2f, 0.6f, 0f);
+
 	protected final ScaleModifier modifier1 = new ScaleModifier(0.3f, 0f, Options.cameraRatioFactor + 0.1f * Options.cameraRatioFactor) {
 
 		/* (non-Javadoc)
@@ -38,6 +42,7 @@ public class PopupScreen extends Screen {
 		public void reset() {
 			super.reset();
 
+			mRectangleAlphaModifierOn.reset();
 			mAnimationRunning = true;
 		}
 	};
@@ -75,12 +80,26 @@ public class PopupScreen extends Screen {
 		public void onFinished() {
 			onClose();
 		}
+
+		/* (non-Javadoc)
+		 * @see org.anddev.andengine.util.modifier.BaseDurationModifier#reset()
+		 */
+		@Override
+		public void reset() {
+			super.reset();
+
+			mRectangleAlphaModifierOff.reset();
+		}
 	};
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -132,7 +151,7 @@ public class PopupScreen extends Screen {
 		final Rectangle coloredRect = new Rectangle(pX, pY, Options.cameraWidth, Options.cameraHeight);
 		coloredRect.setColor(pRed, pGreen, pBlue);
 		coloredRect.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		coloredRect.setAlpha(0.4f);
+		coloredRect.setAlpha(0f);
 
 		this.attachChild(coloredRect);
 
