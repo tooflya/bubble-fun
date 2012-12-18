@@ -1,7 +1,5 @@
 package com.tooflya.bubblefun.screens;
 
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
@@ -22,7 +20,9 @@ public class ExitScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mPanel = new Sprite(Resources.mExitBackgroundTextureRegion, this);
+	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
+
+	private final Sprite mText = new Sprite(Resources.mExitTextTextureRegion, this.mPanel);
 
 	private final Button mYIcon = new Button(Resources.mExitYesbuttonTextureRegion, this.mPanel) {
 
@@ -56,6 +56,10 @@ public class ExitScreen extends PopupScreen {
 		this.mPanel.create();
 		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
 		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
+
+		this.mText.create();
+		this.mText.setScaleCenter(this.mText.getWidth() / 2, this.mText.getHeight() / 2);
+		this.mText.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
 
 		this.mYIcon.create();
 		this.mYIcon.setScaleCenter(this.mYIcon.getWidth() / 2, this.mYIcon.getHeight() / 2);

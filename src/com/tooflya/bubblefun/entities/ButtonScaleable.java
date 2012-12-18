@@ -13,12 +13,16 @@ public class ButtonScaleable extends Button {
 
 	private float mBaseScale = -1;
 
-	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+	private boolean mModalTouch;
+
+	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen, final boolean isModalTouch) {
 		super(pTiledTextureRegion, pParentScreen);
+
+		this.mModalTouch = isModalTouch;
 	}
 
-	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen, final boolean isTouchArea) {
-		super(pTiledTextureRegion, pParentScreen, false);
+	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+		this(pTiledTextureRegion, pParentScreen, false);
 	}
 
 	/* (non-Javadoc)
@@ -32,7 +36,7 @@ public class ButtonScaleable extends Button {
 			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.1f);
 
 			this.setScaleCenter(this.getBaseWidth() / 2, this.getBaseHeight() / 2);
-			
+
 			this.registerEntityModifier(this.mScaleModifier);
 		}
 
@@ -51,7 +55,9 @@ public class ButtonScaleable extends Button {
 			this.isClicked = true;
 			this.mLastClickedX = pTouchAreaLocalX;
 			this.mLastClickedY = pTouchAreaLocalY;
-			break;
+
+			return this.mModalTouch;
+
 		case TouchEvent.ACTION_UP:
 			if (this.isClicked) {
 				if (this.mWaitBeforeAction == 0.3f) {
@@ -59,18 +65,19 @@ public class ButtonScaleable extends Button {
 
 					this.mDoAction = true;
 				}
-
-				isClicked = false;
 			}
-			break;
+
+			isClicked = false;
+			return this.mModalTouch;
 		case TouchEvent.ACTION_MOVE:
 			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 10 || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 10) {
 				this.isClicked = false;
 			}
-			break;
+
+			return this.mModalTouch;
 		}
 
-		return false;
+		return this.mModalTouch;
 	}
 
 	/*
@@ -93,6 +100,10 @@ public class ButtonScaleable extends Button {
 				this.onClick();
 			}
 		}
+	}
+
+	protected boolean prepare() {
+		return true;
 	}
 
 	@Override

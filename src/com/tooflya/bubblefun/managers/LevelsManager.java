@@ -19,6 +19,7 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
+import com.tooflya.bubblefun.entities.ChikyBezier;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
@@ -33,6 +34,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private float PADDING, PADDING_B;
 	private float X, Y;
+
+	private static Chiky chikyBezier = null;
 
 	private EntityManager<Sprite> mNumbers;
 
@@ -67,8 +70,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	}
 
-	private static int temp;
-
 	public void generate(final EntityManager<Sprite> pNumbers) {
 		this.mNumbers = pNumbers;
 
@@ -76,7 +77,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	}
 
 	public void generate() {
-		temp = 0;
 		this.mNumbers.clear();
 
 		for (int i = 0; i < this.getCapacity(); i++) {
@@ -179,48 +179,90 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 				final Chiky chiky = screen.chikies.create();
 
-				final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				if (chiky != null) {
+					final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+					final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				final float normalStepX = SAXUtils.getFloatAttribute(pAttributes, "speed", 0);
-				final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
-				final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
+					final float normalStepX = SAXUtils.getFloatAttribute(pAttributes, "speed", 0);
+					final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
+					final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
 
-				final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
-				final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
-				final float speedX = SAXUtils.getFloatAttribute(pAttributes, "speedX", 0);
-				final float speedY = SAXUtils.getFloatAttribute(pAttributes, "speedY", 0);
+					final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
+					final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
+					final float speedX = SAXUtils.getFloatAttribute(pAttributes, "speedX", 0);
+					final float speedY = SAXUtils.getFloatAttribute(pAttributes, "speedY", 0);
 
-				final float vectorLimit = SAXUtils.getFloatAttribute(pAttributes, "vectorLimit", 0);
-				final float vectorStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStopUpdates", 0);
-				final float vectorStartStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStartStopUpdates", 0);
-				final boolean stopSecond = SAXUtils.getBooleanAttribute(pAttributes, "stopSecond", false);
+					final float vectorLimit = SAXUtils.getFloatAttribute(pAttributes, "vectorLimit", 0);
+					final float vectorStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStopUpdates", 0);
+					final float vectorStartStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStartStopUpdates", 0);
+					final boolean stopSecond = SAXUtils.getBooleanAttribute(pAttributes, "stopSecond", false);
 
-				final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
+					final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
 
-				final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
+					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
 
-				final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
+					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 
-				final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
+					final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
 
-				chiky.initStartX(startX * Options.cameraWidth);
-				chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
+					chiky.initState(true);
 
-				chiky.initProperties(properties);
-				chiky.initSpeedyStepX(speedyStepX);
-				chiky.initParashuteStepY(parashuteStepY);
+					chiky.initStartX(startX * Options.cameraWidth);
+					chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
 
-				chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
+					chiky.initProperties(properties);
+					chiky.initSpeedyStepX(speedyStepX);
+					chiky.initParashuteStepY(parashuteStepY);
 
-				if (vectorLimit == 0)
-					chiky.initNormalStepX(normalStepX);
+					chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
 
-				chiky.initOffsetX(offsetX);
+					if (vectorLimit == 0) {
+						chiky.initNormalStepX(normalStepX);
+					}
 
-				chiky.initScale(scale);
+					chiky.initOffsetX(offsetX);
 
-				chiky.getTextureRegion().setFlippedHorizontal(flip);
+					chiky.initScale(scale);
+
+					chiky.getTextureRegion().setFlippedHorizontal(flip);
+				}
+			}
+		});
+
+		// Example:
+		// <chikyBezier minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true">
+		// <ctrPoint x="10", y="50"/>
+		// <ctrPoint x="90", y="50"/>
+		// </chikyBezier>
+		mLevelLoader.registerEntityLoader("chikyBezier", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				chikyBezier = screen.chikies.create();
+				if (chikyBezier != null)
+				{
+					final float minTime = SAXUtils.getFloatAttribute(pAttributes, "minTime", 0);
+					chikyBezier.initMinTime(minTime);
+					final float maxTime = SAXUtils.getFloatAttribute(pAttributes, "maxTime", 1);
+					chikyBezier.initMaxTime(maxTime);
+					final float speedTime = SAXUtils.getFloatAttribute(pAttributes, "speedTime", 1);
+					chikyBezier.initSpeedTime(speedTime);
+					final float offsetTime = SAXUtils.getFloatAttribute(pAttributes, "offsetTime", 0);
+					chikyBezier.initOffsetTime(offsetTime);
+					final boolean isRTime = SAXUtils.getBooleanAttribute(pAttributes, "isRTime", true);
+					chikyBezier.initIsReverseTime(isRTime);
+					chikyBezier.initState(false);
+				}
+			}
+		});
+		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
+			@Override
+			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				if (chikyBezier != null)
+				{
+					final int x = SAXUtils.getIntAttribute(pAttributes, "x", 50);
+					final int y = SAXUtils.getIntAttribute(pAttributes, "y", 50);
+					chikyBezier.addControlPoint((short) x, (short) y);
+				}
 			}
 		});
 
@@ -233,12 +275,13 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("electrod", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				/*final Electrod electrod = screen.electrods.create();
-
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-
-				electrod.setPosition(x, y);*/
+				/*
+				 * final Electrod electrod = screen.electrods.create();
+				 * 
+				 * final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x"); final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				 * 
+				 * electrod.setPosition(x, y);
+				 */
 			}
 		});
 
@@ -285,48 +328,21 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 * 
 		 */
-		mLevelLoader.registerEntityLoader("sprike", new IEntityLoader() {
-			@Override
-			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Sprike sprike = screen.sprikes.create();
-
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-				final float z = SAXUtils.getFloatAttributeOrThrow(pAttributes, "z");
-
-				final float speed = SAXUtils.getFloatAttributeOrThrow(pAttributes, "speed");
-
-				final int size = SAXUtils.getIntAttribute(pAttributes, "size", 1);
-
-				sprike.setCenterPosition(x, y);
-				sprike.setSpeedX(speed);
-				sprike.init(z, size);
-			}
-		});
-
-		/**
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
 		mLevelLoader.registerEntityLoader("tutorial", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 
-				/*final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-
-				final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0);
-				final float time = SAXUtils.getFloatAttribute(pAttributes, "time", 0);
-
-				final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
-
-				final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen);
-				sprite.create().setPosition(x, y);
-				sprite.index = index;
-
-				screen.mTutorialSprites.add(sprite);*/
+				/*
+				 * final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x"); final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
+				 * 
+				 * final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0); final float time = SAXUtils.getFloatAttribute(pAttributes, "time", 0);
+				 * 
+				 * final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
+				 * 
+				 * final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen); sprite.create().setPosition(x, y); sprite.index = index;
+				 * 
+				 * screen.mTutorialSprites.add(sprite);
+				 */
 			}
 		});
 
@@ -339,7 +355,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 		if (true) {
 			try {
-				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + pLevel * (Options.boxNumber + 1) + ".xml");
+				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

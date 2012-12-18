@@ -36,7 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
 
-import com.tooflya.bubblefun.database.LevelsStorage;
+import com.tooflya.bubblefun.database.DataStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.AndEngineScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -68,7 +68,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public static Camera camera;
 
 	/** */
-	public static LevelsStorage db;
+	public static DataStorage db;
 
 	/**  */
 	public static boolean isGameLoaded = false;
@@ -213,7 +213,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		};
 
 		/** */
-		db = new LevelsStorage();
+		db = new DataStorage();
 
 		/** Create screen manager */
 		screens = new ScreenManager();
@@ -232,19 +232,39 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	@Override
 	public void onLoadResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/" + Options.CR);
-		SoundFactory.setAssetBasePath("mfx/");
-		MusicFactory.setAssetBasePath("mfx/");
 
-		try {
-			Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
-			Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
-			Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W3.ogg");
-			Options.mAndEngineSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W4.ogg");
-			
-			Options.mMainSound.setLooping(true);
-			Options.mLevelSound.setLooping(true);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (Options.DEBUG) {
+			Options.isMusicEnabled = false;
+		} else {
+			Options.isMusicEnabled = true;
+		}
+
+		if (Options.isMusicEnabled) {
+			SoundFactory.setAssetBasePath("mfx/");
+			MusicFactory.setAssetBasePath("mfx/");
+
+			try {
+				Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
+				Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
+				Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "button_click.wav");
+				Options.mAndEngineSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W4.ogg");
+				Options.mBirdsDeath1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_1.wav");
+				Options.mBirdsDeath2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_2.wav");
+				Options.mBirdsDeath3 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_3.wav");
+				Options.mBirdsShotted1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_shooted_1.wav");
+				Options.mBirdsShotted2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_shooted_2.wav");
+				Options.mBubbleDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_death.wav");
+				Options.mBubbleFastCreate1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create1.wav");
+				Options.mBubbleFastCreate2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create2.wav");
+				Options.mLaser = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "laser.ogg");
+				Options.mGlassBroke = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "glass-broke.ogg");
+				Options.mAsteroidDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "asteroid-boom.ogg");
+
+				Options.mMainSound.setLooping(true);
+				Options.mLevelSound.setLooping(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -365,6 +385,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 						this.mTime = 0;
 
 						System.out.println("Avg FPS: " + Debug.deltaFPS);
+						System.out.println("Current FPS: " + mCurrentFramesPerSecond);
 						System.out.println("GPU Memory Allocated: " + Debug.mGraphicsHeapAllocation);
 						System.out.println("GL Max Textures Size: " + Debug.mGLMaxTextureParams[0]);
 						System.out.println("GL Max TexturesUnits: " + Debug.mGLMaxTextureParams[1]);
@@ -436,15 +457,17 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	public void onPauseGame() {
 		super.onPauseGame();
 
-		Options.mLastPlayedMusic = null;
+		if (Options.isMusicEnabled) {
+			Options.mLastPlayedMusic = null;
 
-		if (Options.mMainSound.isPlaying()) {
-			Options.mMainSound.pause();
-			Options.mLastPlayedMusic = Options.mMainSound;
-		}
-		if (Options.mLevelSound.isPlaying()) {
-			Options.mLevelSound.pause();
-			Options.mLastPlayedMusic = Options.mLevelSound;
+			if (Options.mMainSound.isPlaying()) {
+				Options.mMainSound.pause();
+				Options.mLastPlayedMusic = Options.mMainSound;
+			}
+			if (Options.mLevelSound.isPlaying()) {
+				Options.mLevelSound.pause();
+				Options.mLastPlayedMusic = Options.mLevelSound;
+			}
 		}
 
 		try {
@@ -472,7 +495,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 
 			screenChangeTime = System.currentTimeMillis();
 
-			Options.mButtonSound.play();
+			if (Options.isMusicEnabled) {
+				Options.mButtonSound.play();
+			}
+
 			screens.get(Screen.screen).onBackPressed();
 
 			return true;

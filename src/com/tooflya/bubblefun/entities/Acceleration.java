@@ -24,13 +24,13 @@ public class Acceleration extends Entity {
 		if (mFollowEntity != null) {
 			float position;
 			if (mFollowEntity.getTextureRegion().isFlippedHorizontal()) {
-				position = mFollowEntity.getWidth();
+				position = mFollowEntity.getWidth() - 5f;
 				this.getTextureRegion().setFlippedHorizontal(true);
 			} else {
-				position = -this.getWidth();
+				position = -this.getWidth() + 5f;
 				this.getTextureRegion().setFlippedHorizontal(false);
 			}
-			this.setPosition(mFollowEntity.getX() + position, mFollowEntity.getY());
+			this.setPosition(mFollowEntity.getX() + position, mFollowEntity.getY() + 15f, true);
 		}
 	}
 

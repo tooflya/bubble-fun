@@ -7,7 +7,10 @@ import android.os.Vibrator;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
 
 /**
  * @author Tooflya.com
@@ -60,13 +63,33 @@ public class BlueBird extends Entity {
 	 * 
 	 */
 	public void particles() {
-		((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
+		if (!this.isSleep()) {
+			((Vibrator) Game.instance.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(10);
 
-		for (int i = 0; i < Options.particlesCount; i++) {
-			Feather particle;
-			particle = ((Feather) mFeathersManager.create());
-			if (particle != null) {
-				particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+			if (this.mTextureRegion.e(Resources.mBlueBirdTextureRegion)) {
+				for (int i = 0; i < Options.particlesCount; i++) {
+					Feather particle;
+					particle = ((Feather) mFeathersManager.create());
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
+				}
+			} else if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
+				Glass particle;
+				for (int i = 0; i < Options.particlesCount; i++) {
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+					if (particle != null) {
+						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+					}
+				}
+			}
+
+			if (Options.isMusicEnabled) {
+				if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
+					Options.mGlassBroke.play();
+				} else {
+
+				}
 			}
 		}
 	}
@@ -127,7 +150,9 @@ public class BlueBird extends Entity {
 		}
 
 		if (this.mIsSleep) {
-			this.mSleepTime--;
+			if (LevelScreen.running) {
+				this.mSleepTime--;
+			}
 		} else {
 			if (this.getTextureRegion().isFlippedHorizontal()) {
 				if (this.mX + this.mWidth < 0) {

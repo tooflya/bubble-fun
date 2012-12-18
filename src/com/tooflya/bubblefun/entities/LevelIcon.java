@@ -21,14 +21,15 @@ public class LevelIcon extends ButtonScaleable {
 	public Entity create() {
 		this.id = 0;
 		this.blocked = true;
-		
+
 		return super.create();
 	}
+
 	@Override
 	public void onClick() {
 		if (!this.blocked) {
 			Options.levelNumber = this.id;
-			((LevelScreen)Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
 			Game.screens.set(Screen.PRELOAD);
 		}
 	}

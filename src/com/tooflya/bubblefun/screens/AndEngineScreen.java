@@ -78,6 +78,7 @@ public class AndEngineScreen extends Screen {
 
 		this.mAndengineIcon.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2);
 		this.mAndengineIcon.setScaleCenter(this.mAndengineIcon.getWidth() / 2, this.mAndengineIcon.getHeight() / 2);
+		this.mAndengineIcon.enableFullBlendFunction();
 		this.mAndengineIcon.setScale(0f);
 
 		this.mAndengineIcon.registerEntityModifier(this.modifier1);

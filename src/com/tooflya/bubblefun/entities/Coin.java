@@ -5,6 +5,8 @@ import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.screens.LevelScreen;
+
 public class Coin extends Entity {
 
 	private static final long[] pFrameDuration = new long[] { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
@@ -22,22 +24,6 @@ public class Coin extends Entity {
 	// Fields
 	// ===========================================================
 
-	private final ScaleModifier mScaleModifier = new ScaleModifier(
-			TIME_TO_SCALE,
-			1f,
-			1f + SCALE_FACTOR) {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.anddev.andengine.util.modifier.BaseModifier#onModifierFinished(java.lang.Object)
-		 */
-		@Override
-		public void onFinished() {
-			destroy();
-		}
-	};
-
 	private final AlphaModifier mAlphaModifier = new AlphaModifier(TIME_TO_ALPHA, 1f, ALPHA_FACTOR);
 
 	public boolean mIsAnimationReverse;
@@ -45,6 +31,9 @@ public class Coin extends Entity {
 
 	public final float mMaxOffsetY = 1.0f, mMinOffsetY = -1.0f;
 	public float mOffsetY;
+
+	private final ScaleModifier mFinishScaleModifier = new ScaleModifier(1f, 1f, 2f);
+	private MoveModifier mFinishMoveModifier;
 
 	public Coin(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
@@ -65,17 +54,18 @@ public class Coin extends Entity {
 	public Entity create() {
 		this.stopAnimation();
 		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
-		
+
 		this.clearEntityModifiers();
 
-		this.registerEntityModifier(mScaleModifier);
+		this.registerEntityModifier(this.mFinishScaleModifier);
 		this.registerEntityModifier(mAlphaModifier);
 
 		this.mIsAnimationReverse = true;
 		this.mIsAlreadyFollow = false;
 		this.mOffsetY = -1.0f;
 
-		this.setAlpha(1);
+		this.setAlpha(1f);
+		this.setScale(1f);
 
 		return super.create();
 	}
@@ -112,10 +102,19 @@ public class Coin extends Entity {
 	 * 
 	 */
 	public void remove() {
-		if (mScaleModifier.isFinished()) {
-			mScaleModifier.reset();
-			mAlphaModifier.reset();
-		}
+		this.mFinishMoveModifier = new MoveModifier(0.6f, this.getX(), 0, this.getY(), 0) {
+			@Override
+			public void onFinished() {
+				mFinishScaleModifier.stop();
+
+				destroy();
+			}
+		};
+
+		this.registerEntityModifier(this.mFinishMoveModifier);
+
+		this.mFinishScaleModifier.reset();
+		this.mFinishMoveModifier.reset();
 	}
 
 	/**
@@ -130,5 +129,12 @@ public class Coin extends Entity {
 
 			move.reset();
 		}
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+
+		LevelScreen.mPicupedCoins++;
 	}
 }

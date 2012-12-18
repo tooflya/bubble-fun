@@ -15,7 +15,7 @@ public class PauseScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mPanel = new Sprite(Resources.mPopupPanelTextureRegion, this);
+	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
 
 	private final ButtonScaleable b1 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 
@@ -35,10 +35,17 @@ public class PauseScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			Options.levelNumber++;
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+			Game.db.updateLevel(Options.levelNumber, 1, 0);
 
-			modifier4.reset();
+			if (Options.levelNumber % 25 == 0) {
+				ScreenManager.mChangeAction = 3;
+				Game.screens.set(Screen.PRELOAD);
+			} else {
+				Options.levelNumber++;
+				((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+
+				modifier4.reset();
+			}
 		}
 	};
 

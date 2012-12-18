@@ -17,7 +17,6 @@ import com.tooflya.bubblefun.screens.Screen;
  * Base this class is abstract class we necessarily need to override <i>deepCopy()</i> method.
  * 
  * @author Tooflya.com
- * @param <T>
  * @since
  */
 public abstract class Entity extends AnimatedSprite {
@@ -43,6 +42,8 @@ public abstract class Entity extends AnimatedSprite {
 
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object can be <b>null</b>. */
 	private EntityManager<?> mEntityManager;
+
+	private boolean mIsFullBlendingEnable = false;
 
 	// ===========================================================
 	// Constructors
@@ -202,6 +203,17 @@ public abstract class Entity extends AnimatedSprite {
 	 */
 	public void enableBlendFunction() {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+		this.mIsFullBlendingEnable = false;
+	}
+
+	/**
+	 * 
+	 */
+	public void enableFullBlendFunction() {
+		this.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+		this.mIsFullBlendingEnable = true;
 	}
 
 	// ===========================================================
@@ -211,7 +223,7 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * Method which checking if this entity is parent of some manager.
 	 * 
-	 * @return boolean Result of of inspection.
+	 * @return boolean Result of inspection.
 	 */
 	public boolean isManagerExist() {
 		return this.mEntityManager != null;
@@ -303,8 +315,32 @@ public abstract class Entity extends AnimatedSprite {
 		this.mEntityManager = pEntityManager;
 	}
 
+	/**
+	 * @param pTextureRegion
+	 */
 	public void changeTextureRegion(final TiledTextureRegion pTextureRegion) {
 		this.mTextureRegion = pTextureRegion.deepCopy();
+
+		this.mBaseWidth = pTextureRegion.getTileWidth();
+		this.mBaseHeight = pTextureRegion.getTileHeight();
+
+		this.mScaleX = 1;
+		this.mScaleY = 1;
+
+		this.mRotation = 0;
+
+		this.setBaseSize();
+	}
+
+	/**
+	 * 
+	 * @param pX
+	 * @param pY
+	 * @param pSetWithoutChecks
+	 */
+	public void setPosition(final float pX, final float pY, final boolean pSetWithoutChecks) {
+		this.mX = pX;
+		this.mY = pY;
 	}
 
 	// ===========================================================
@@ -351,6 +387,20 @@ public abstract class Entity extends AnimatedSprite {
 	// ===========================================================
 
 	/* (non-Javadoc)
+	* @see org.anddev.andengine.entity.Entity#setAlpha(float)
+	*/
+	@Override
+	public void setAlpha(float pAlpha) {
+		pAlpha = pAlpha > 1f ? 1f : pAlpha;
+
+		super.setAlpha(pAlpha);
+
+		if (this.mIsFullBlendingEnable) {
+			super.setColor(pAlpha, pAlpha, pAlpha); // <-- This is the great trick !
+		}
+	}
+
+	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
 	 */
 	protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -364,10 +414,12 @@ public abstract class Entity extends AnimatedSprite {
 	@Override
 	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
 		super.onManagedDraw(GL, pCamera);
+
 	}
 
 	public void doDraw(final GL10 pGL, final Camera pCamera) {
 		super.doDraw(pGL, pCamera);
+
 	}
 
 	/* (non-Javadoc)
