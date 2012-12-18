@@ -2,21 +2,20 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 
-public class Meteorit extends Sprite {
+public class Meteorit extends Entity {
 
 	public Meteorit(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.setSpeedX(3f);
 		this.setSpeedY(3f);
-
-		return super.create();
 	}
 
 	/*

@@ -2,10 +2,8 @@ package com.tooflya.bubblefun.entities;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-import org.anddev.andengine.opengl.util.GLHelper;
 
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.managers.EntityManager;
@@ -14,12 +12,10 @@ import com.tooflya.bubblefun.screens.Screen;
 /**
  * The basic essence of the project, inherited from <b>AnimatedSprite</b> base class. May have a few frames or just one, depending on the type of <b>TextureRegion</b>.
  * 
- * Base this class is abstract class we necessarily need to override <i>deepCopy()</i> method.
- * 
  * @author Tooflya.com
  * @since
  */
-public abstract class Entity extends AnimatedSprite {
+public class Entity extends AnimatedSprite {
 
 	// ===========================================================
 	// Constants
@@ -43,7 +39,11 @@ public abstract class Entity extends AnimatedSprite {
 	/** <b>EntityManager</b> which is parent manager of this <b>Entity</b>. This object can be <b>null</b>. */
 	private EntityManager<?> mEntityManager;
 
+	/** Variable to know is full alpha blending is enable for this texture. */
 	private boolean mIsFullBlendingEnable = false;
+
+	/** */
+	protected boolean mIsCanCollide;
 
 	// ===========================================================
 	// Constructors
@@ -52,12 +52,9 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * Base constructor for instantinate this Entity class.
 	 * 
-	 * @param pTiledTextureRegion
-	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
-	 * @param pParentScreen
-	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
-	 * @param pRegisterTouchArea
-	 *            boolean value for know if you are want to register this entity as clickable.
+	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pRegisterTouchArea boolean value for know if you are want to register this entity as clickable.
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
@@ -88,12 +85,25 @@ public abstract class Entity extends AnimatedSprite {
 	}
 
 	/**
+	 * @param pWidth
+	 * @param pHeight
+	 * @param pTiledTextureRegion
+	 * @param pParentScreen
+	 */
+	public Entity(final int pWidth, final int pHeight, final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
+		this(pTiledTextureRegion.deepCopy(), pParentScreen);
+
+		this.setWidth(pWidth);
+		this.setHeight(pHeight);
+
+		this.create();
+	}
+
+	/**
 	 * Constructor that allows you to not specify the need to register this entity as clickable.
 	 * 
-	 * @param pTiledTextureRegion
-	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
-	 * @param pParentScreen
-	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion.deepCopy(), pParentScreen, false);
@@ -102,12 +112,9 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * Constructor that takes a value on the screen location of this entity. Do not attach an entity to the screen and does not register her as clickable.
 	 * 
-	 * @param pX
-	 *            Coordinate of this entity on the X-axis
-	 * @param pY
-	 *            Coordinate of this entity on the Y-axis
-	 * @param pTiledTextureRegion
-	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pX Coordinate of this entity on the X-axis
+	 * @param pY Coordinate of this entity on the Y-axis
+	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
 	 */
 	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
 		this(pTiledTextureRegion, null);
@@ -118,14 +125,10 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * Constructor that takes a value on the screen location of this entity. Do not register entity as clickable.
 	 * 
-	 * @param pX
-	 *            Coordinate of this entity on the X-axis
-	 * @param pY
-	 *            Coordinate of this entity on the Y-axis
-	 * @param pTiledTextureRegion
-	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
-	 * @param pParentScreen
-	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pX Coordinate of this entity on the X-axis
+	 * @param pY Coordinate of this entity on the Y-axis
+	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
 	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion, pParentScreen);
@@ -136,8 +139,7 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * Simple constructor which takes only one parameter.
 	 * 
-	 * @param pTiledTextureRegion
-	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion) {
 		this(pTiledTextureRegion, null);
@@ -152,36 +154,44 @@ public abstract class Entity extends AnimatedSprite {
 	 * 
 	 * @return <b>Entity</b> Instance of this class.
 	 */
-	public Entity create() {
-		this.show();
+	public final Entity create() {
+		this.onCreate();
 
 		return this;
 	}
 
 	/** The method, which is similar to the method <i>destroySelf()</i>. If <i>mEntityManager</i> is defined call them to destroy element with ID <i>mId</i>. Else do nothing. */
-	public void destroy() {
+	public final void destroy() {
 		if (this.isManagerExist()) {
 			this.mEntityManager.destroy(this.mId);
 		}
 
 		/** Let's hide this entity. */
-		this.hide();
+		this.onDestroy();
+	}
+
+	public final void collide() {
+		this.onCollide();
+	}
+
+	public final void collide(final Entity pEntity) {
+		this.onCollide(pEntity);
 	}
 
 	/** Method wich used only for apper (setting visible to true) this entity and set ignore to false. */
-	public void show() {
+	private final void show() {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
-	public void hide() {
+	private final void hide() {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
 	}
 
 	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
-	public Entity deepCopy() {
+	public final Entity deepCopy() {
 		try {
 			return (Entity) Class.forName(this.getClass().getName()).getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class).newInstance(getTextureRegion(), this.mParentScreen);
 		} catch (Exception e) {
@@ -201,7 +211,7 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * 
 	 */
-	public void enableBlendFunction() {
+	public final void enableBlendFunction() {
 		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		this.mIsFullBlendingEnable = false;
@@ -210,10 +220,46 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * 
 	 */
-	public void enableFullBlendFunction() {
+	public final void enableFullBlendFunction() {
 		this.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		this.mIsFullBlendingEnable = true;
+	}
+
+	// ===========================================================
+	// Events
+	// ===========================================================
+
+	/**
+	 * 
+	 */
+	protected void onCreate() {
+		this.show();
+
+		this.mIsCanCollide = true;
+	}
+
+	/**
+	 * 
+	 */
+	protected void onDestroy() {
+		this.hide();
+
+		this.mIsCanCollide = false;
+	}
+
+	/**
+	 * 
+	 */
+	protected void onCollide() {
+		this.mIsCanCollide = false;
+	}
+
+	/**
+	 * @param pEntity
+	 */
+	protected void onCollide(final Entity pEntity) {
+		this.mIsCanCollide = false;
 	}
 
 	// ===========================================================
@@ -225,8 +271,15 @@ public abstract class Entity extends AnimatedSprite {
 	 * 
 	 * @return boolean Result of inspection.
 	 */
-	public boolean isManagerExist() {
+	public final boolean isManagerExist() {
 		return this.mEntityManager != null;
+	}
+
+	/**
+	 * @return
+	 */
+	public final boolean isCanCollide() {
+		return this.mIsCanCollide;
 	}
 
 	// ===========================================================
@@ -236,21 +289,21 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * @param id
 	 */
-	public void setID(final int id) {
+	public final void setID(final int id) {
 		this.mId = id;
 	}
 
 	/**
 	 * @param pSpeedX
 	 */
-	public void setSpeedX(final float pSpeedX) {
+	public final void setSpeedX(final float pSpeedX) {
 		this.mSpeedX = pSpeedX;
 	}
 
 	/**
 	 * @param pSpeedY
 	 */
-	public void setSpeedY(final float pSpeedY) {
+	public final void setSpeedY(final float pSpeedY) {
 		this.mSpeedY = pSpeedY;
 	}
 
@@ -258,7 +311,7 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pSpeedX
 	 * @param pSpeedY
 	 */
-	public void setSpeed(final float pSpeedX, final float pSpeedY) {
+	public final void setSpeed(final float pSpeedX, final float pSpeedY) {
 		this.mSpeedX = pSpeedX;
 		this.mSpeedY = pSpeedY;
 	}
@@ -266,28 +319,28 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * @param centerX
 	 */
-	public void setCenterX(final float pCenterX) {
+	public final void setCenterX(final float pCenterX) {
 		this.mX = pCenterX - this.mWidth / 2;
 	}
 
 	/**
 	 * @param pCenterY
 	 */
-	public void setCenterY(final float pCenterY) {
+	public final void setCenterY(final float pCenterY) {
 		this.mY = pCenterY - this.mHeight / 2;
 	}
 
 	/**
 	 * @param pCenterX
 	 */
-	public void setBackgroundCenterX(final float pCenterX) {
+	public final void setBackgroundCenterX(final float pCenterX) {
 		this.mX = pCenterX - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
 	}
 
 	/**
 	 * @param pCenterY
 	 */
-	public void setBackgroundCenterY(final float pCenterY) {
+	public final void setBackgroundCenterY(final float pCenterY) {
 		this.mY = pCenterY - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
 
@@ -303,7 +356,7 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * 
 	 */
-	public void setBackgroundCenterPosition() {
+	public final void setBackgroundCenterPosition() {
 		this.mX = Options.screenWidth / 2 - this.mScaleCenterX - (this.mWidth / 2 - this.mScaleCenterX) * this.mScaleX;
 		this.mY = Options.screenHeight / 2 - this.mScaleCenterY - (this.mHeight / 2 - this.mScaleCenterY) * this.mScaleY;
 	}
@@ -311,14 +364,14 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * @param pEntityManager
 	 */
-	public void setManager(final EntityManager<?> pEntityManager) {
+	public final void setManager(final EntityManager<?> pEntityManager) {
 		this.mEntityManager = pEntityManager;
 	}
 
 	/**
 	 * @param pTextureRegion
 	 */
-	public void changeTextureRegion(final TiledTextureRegion pTextureRegion) {
+	public final void changeTextureRegion(final TiledTextureRegion pTextureRegion) {
 		this.mTextureRegion = pTextureRegion.deepCopy();
 
 		this.mBaseWidth = pTextureRegion.getTileWidth();
@@ -338,7 +391,7 @@ public abstract class Entity extends AnimatedSprite {
 	 * @param pY
 	 * @param pSetWithoutChecks
 	 */
-	public void setPosition(final float pX, final float pY, final boolean pSetWithoutChecks) {
+	public final void setPosition(final float pX, final float pY, final boolean pSetWithoutChecks) {
 		this.mX = pX;
 		this.mY = pY;
 	}
@@ -350,35 +403,35 @@ public abstract class Entity extends AnimatedSprite {
 	/**
 	 * @return
 	 */
-	public int getID() {
+	public final int getID() {
 		return mId;
 	}
 
 	/**
 	 * @return
 	 */
-	public float getSpeedX() {
+	public final float getSpeedX() {
 		return this.mSpeedX;
 	}
 
 	/**
 	 * @return
 	 */
-	public float getSpeedY() {
+	public final float getSpeedY() {
 		return this.mSpeedY;
 	}
 
 	/**
 	 * @return
 	 */
-	public float getCenterX() {
+	public final float getCenterX() {
 		return this.mX + this.mWidth / 2;
 	}
 
 	/**
 	 * @return
 	 */
-	public float getCenterY() {
+	public final float getCenterY() {
 		return this.mY + this.mHeight / 2;
 	}
 
@@ -398,28 +451,6 @@ public abstract class Entity extends AnimatedSprite {
 		if (this.mIsFullBlendingEnable) {
 			super.setColor(pAlpha, pAlpha, pAlpha); // <-- This is the great trick !
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
-	 */
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.shape.Shape#onManagedDraw(javax.microedition.khronos.opengles.GL10, org.anddev.andengine.engine.camera.Camera)
-	 */
-	@Override
-	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
-		super.onManagedDraw(GL, pCamera);
-
-	}
-
-	public void doDraw(final GL10 pGL, final Camera pCamera) {
-		super.doDraw(pGL, pCamera);
-
 	}
 
 	/* (non-Javadoc)
@@ -445,17 +476,5 @@ public abstract class Entity extends AnimatedSprite {
 
 		this.mX += factorX / Options.cameraRatioFactor;
 		this.mY += factorY / Options.cameraRatioFactor;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.anddev.andengine.entity.sprite.BaseSprite#onInitDraw(javax.microedition.khronos.opengles.GL10)
-	 */
-	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
-
-		GLHelper.enableDither(pGL);
 	}
 }

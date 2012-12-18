@@ -11,30 +11,45 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
-public class Bubble extends BubbleBase {
+/**
+ * @author Tooflya.com
+ * @since
+ */
+public class Bubble extends Entity {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private enum States {
-		Creating, Moving, Destroying, WaitingForText
+	/**
+	 *
+	 */
+	private static enum States {
+		Creating,
+		Moving,
+		Destroying,
+		WaitingForText
 	};
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private Sprite speed;
-	private States mState = States.Creating;
+	private float mScaleStepX;
+	private float mScaleStepY;
 
-	private float mTime = 0f; // Seconds.
+	public float mLastX = 0;
+	public float mLastY = 0;
+
+	private States mCurrentState;
+
+	private float mTime;
+
+	private Entity speed;
 
 	public float mLostedSpeed = 0;
 
 	private Bubble mParent = null;
-	float mLastX = 0;
-	float mLastY = 0;
 	private int mChildCount = 0;
 
 	public int mBirdsKills;
@@ -43,6 +58,10 @@ public class Bubble extends BubbleBase {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param pTiledTextureRegion
+	 * @param pParentScreen
+	 */
 	public Bubble(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
@@ -50,8 +69,67 @@ public class Bubble extends BubbleBase {
 	}
 
 	// ===========================================================
-	// Setters
+	// Virtual methods
 	// ===========================================================
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.BubbleBase#create()
+	 */
+	@Override
+	public void onCreate() {
+		super.onCreate();
+
+		this.mScaleStepX = Options.bubbleBaseStepScale;
+		this.mScaleStepY = -Options.bubbleBaseStepScale;
+
+		this.stopAnimation();
+		this.setCurrentTileIndex(0);
+
+		this.mCurrentState = States.Creating;
+		this.mTime = 0f;
+
+		this.setSpeedX(0);
+		this.setSpeedY(0);
+		this.mLostedSpeed = 0;
+
+		this.setWidth(Options.bubbleMinSize);
+		this.setHeight(Options.bubbleMinSize);
+
+		this.setScale(1f);
+
+		this.mBirdsKills = 0;
+
+		this.mParent = null;
+		this.mLastX = 0;
+		this.mLastY = 0;
+		this.mChildCount = 0;
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	/**
+	 * 
+	 */
+	private void updateBubbleScaleState() {
+		this.mScaleX += this.mScaleStepX;
+		this.mScaleY += this.mScaleStepY;
+
+		if (this.mScaleX + this.mScaleStepX < Options.bubbleBaseMinScale) {
+			this.mScaleStepX = Options.bubbleBaseStepScale;
+		}
+		if (Options.bubbleBaseMaxScale < this.mScaleX + this.mScaleStepX) {
+			this.mScaleStepX = -Options.bubbleBaseStepScale;
+		}
+
+		if (this.mScaleY + this.mScaleStepY < Options.bubbleBaseMinScale) {
+			this.mScaleStepY = Options.bubbleBaseStepScale;
+		}
+		if (Options.bubbleBaseMaxScale < this.mScaleY + this.mScaleStepY) {
+			this.mScaleStepY = -Options.bubbleBaseStepScale;
+		}
+	}
 
 	public void setParent(Bubble pBubble) {
 		this.mParent = pBubble.getParent();
@@ -60,20 +138,12 @@ public class Bubble extends BubbleBase {
 		this.mLostedSpeed = this.mParent.mLostedSpeed;
 	}
 
-	// ===========================================================
-	// Getters
-	// ===========================================================
-
 	public Bubble getParent() {
 		if (this.mParent == null) {
 			return this;
 		}
 		return this.mParent;
 	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	public void initStartPosition(final float x, final float y) {
 		this.setCenterPosition(x, y);
@@ -96,7 +166,7 @@ public class Bubble extends BubbleBase {
 		}
 
 		this.mTime = 0;
-		this.mState = States.Moving;
+		this.mCurrentState = States.Moving;
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.clear();
@@ -132,7 +202,7 @@ public class Bubble extends BubbleBase {
 
 		}
 		this.mTime = 0;
-		this.mState = States.Moving;
+		this.mCurrentState = States.Moving;
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.clear();
@@ -171,17 +241,16 @@ public class Bubble extends BubbleBase {
 		}
 	}
 
-	public void isCollide() {
+	@Override
+	public void onCollide() {
+		super.onCollide();
+
 		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
 			this.animate(40, 0);
 		} else {
 			this.destroy();
 		}
-		this.mState = States.Destroying;
-	}
-
-	public boolean isCanCollide() {
-		return this.mState == States.Moving;
+		this.mCurrentState = States.Destroying;
 	}
 
 	private void writeText() {
@@ -219,37 +288,6 @@ public class Bubble extends BubbleBase {
 		this.getParent().mChildCount++; // TODO: (R) Need raise at setParent(). How?
 	}
 
-	// ===========================================================
-	// Virtual Methods
-	// ===========================================================
-
-	@Override
-	public Entity create() {
-		this.stopAnimation();
-		this.setCurrentTileIndex(0);
-
-		this.mState = States.Creating;
-		this.mTime = 0f; // Seconds.
-
-		this.setSpeedX(0);
-		this.setSpeedY(0);
-		this.mLostedSpeed = 0;
-
-		this.setWidth(Options.bubbleMinSize);
-		this.setHeight(Options.bubbleMinSize);
-
-		this.setScale(1f);
-
-		this.mBirdsKills = 0;
-
-		this.mParent = null;
-		this.mLastX = 0;
-		this.mLastY = 0;
-		this.mChildCount = 0;
-
-		return super.create();
-	}
-
 	protected void onManagedUpdateCreating(final float pSecondsElapsed) {
 		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
 			if (this.mWidth + Options.bubbleStepSize < Math.min(Options.bubbleMaxSize, Options.bubbleSizePower)) {
@@ -281,10 +319,10 @@ public class Bubble extends BubbleBase {
 			} else {
 				this.destroy();
 			}
-			this.mState = States.Destroying;
+			this.mCurrentState = States.Destroying;
 		}
 		else if (this.mY + this.getHeight() < 0) {
-			this.mState = States.Destroying;
+			this.mCurrentState = States.Destroying;
 		}
 	}
 
@@ -294,7 +332,7 @@ public class Bubble extends BubbleBase {
 
 		if (!this.isAnimationRunning()) {
 			if (this.mParent == null) {
-				this.mState = States.WaitingForText;
+				this.mCurrentState = States.WaitingForText;
 			}
 			else {
 				this.mParent.mChildCount--;
@@ -309,8 +347,8 @@ public class Bubble extends BubbleBase {
 	 * @see com.tooflya.bubblefun.entities.Entity#destroy()
 	 */
 	@Override
-	public void destroy() {
-		super.destroy();
+	public void onDestroy() {
+		super.onDestroy();
 
 		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 			if (Options.isMusicEnabled) {
@@ -351,13 +389,11 @@ public class Bubble extends BubbleBase {
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion) && this.mState != States.Creating) {
-			super.onManagedUpdate(pSecondsElapsed);
-		}
+		super.onManagedUpdate(pSecondsElapsed);
 
 		this.mTime += pSecondsElapsed;
 
-		switch (this.mState) {
+		switch (this.mCurrentState) {
 		case Creating:
 			this.onManagedUpdateCreating(pSecondsElapsed);
 			break;
@@ -384,6 +420,10 @@ public class Bubble extends BubbleBase {
 				this.speed.setCenterPosition(this.getCenterX(), this.getCenterY() + this.getHeight());
 				this.speed.setRotation((float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI) + 90);
 			}
+		}
+
+		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion) && this.mCurrentState != States.Creating) {
+			this.updateBubbleScaleState();
 		}
 	}
 }

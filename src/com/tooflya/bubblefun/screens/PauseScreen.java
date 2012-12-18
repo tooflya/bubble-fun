@@ -5,7 +5,6 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
@@ -15,7 +14,7 @@ public class PauseScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
+	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
 
 	private final ButtonScaleable b1 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mPanel) {
 
@@ -96,7 +95,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final EntityManager<Sprite> mLables = new EntityManager<Sprite>(4, new Sprite(Resources.mButtonsLabelsTextureRegion));
+	private final EntityManager<Entity> mLables = new EntityManager<Entity>(4, new Entity(Resources.mButtonsLabelsTextureRegion));
 
 	// ===========================================================
 	// Constructors
@@ -110,27 +109,27 @@ public class PauseScreen extends PopupScreen {
 
 		this.mSoundIcon.create().setCenterPosition(0 + 35f, this.mPanel.getHeight() - 40f);
 
-		Entity sprite;
+		Entity Entity;
 
-		sprite = mLables.create();
-		sprite.setCenterPosition(this.b1.getWidth() / 2, this.b1.getHeight() / 2);
-		sprite.setCurrentTileIndex(0);
-		this.b1.attachChild(sprite);
+		Entity = mLables.create();
+		Entity.setCenterPosition(this.b1.getWidth() / 2, this.b1.getHeight() / 2);
+		Entity.setCurrentTileIndex(0);
+		this.b1.attachChild(Entity);
 
-		sprite = mLables.create();
-		sprite.setCenterPosition(this.b2.getWidth() / 2, this.b2.getHeight() / 2);
-		sprite.setCurrentTileIndex(1);
-		this.b2.attachChild(sprite);
+		Entity = mLables.create();
+		Entity.setCenterPosition(this.b2.getWidth() / 2, this.b2.getHeight() / 2);
+		Entity.setCurrentTileIndex(1);
+		this.b2.attachChild(Entity);
 
-		sprite = mLables.create();
-		sprite.setCenterPosition(this.b3.getWidth() / 2, this.b3.getHeight() / 2);
-		sprite.setCurrentTileIndex(2);
-		this.b3.attachChild(sprite);
+		Entity = mLables.create();
+		Entity.setCenterPosition(this.b3.getWidth() / 2, this.b3.getHeight() / 2);
+		Entity.setCurrentTileIndex(2);
+		this.b3.attachChild(Entity);
 
-		sprite = mLables.create();
-		sprite.setCenterPosition(this.b4.getWidth() / 2, this.b4.getHeight() / 2);
-		sprite.setCurrentTileIndex(3);
-		this.b4.attachChild(sprite);
+		Entity = mLables.create();
+		Entity.setCenterPosition(this.b4.getWidth() / 2, this.b4.getHeight() / 2);
+		Entity.setCurrentTileIndex(3);
+		this.b4.attachChild(Entity);
 
 		this.setBackgroundEnabled(false);
 

@@ -28,12 +28,6 @@ public class Ufo extends EntityBezier {
 		this.initIsReverseTime(true);
 	}
 
-	@Override
-	public Entity create() {
-		this.show();
-
-		return this;
-	}
 
 	public void isCollide(final float pX, final float pY) {
 		if (this.mTime <= 0) {

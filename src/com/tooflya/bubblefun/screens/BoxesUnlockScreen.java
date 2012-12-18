@@ -4,7 +4,7 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Button;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 
 /**
  * @author Tooflya.com
@@ -20,9 +20,9 @@ public class BoxesUnlockScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
+	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
 
-	private final Sprite mText = new Sprite(Resources.mBoxesUnlockTextTextureRegion, this.mPanel);
+	private final Entity mText = new Entity(Resources.mBoxesUnlockTextTextureRegion, this.mPanel);
 
 	private final Button mYIcon = new Button(Resources.mBoxPurchaseButtonTextureRegion, this.mPanel) {
 
@@ -31,7 +31,7 @@ public class BoxesUnlockScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-		
+
 		}
 	};
 

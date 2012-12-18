@@ -48,7 +48,9 @@ public class AwesomeText extends Entity {
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+
 		mIsAnimationScaleRunning = true;
 		this.mIsAnimationReverse = false;
 		mNeedDeath = false;
@@ -58,8 +60,6 @@ public class AwesomeText extends Entity {
 		this.setAlpha(0f);
 
 		this.setRotation(-5 + Game.random.nextInt(10));
-
-		return super.create();
 	}
 
 	/*

@@ -18,11 +18,11 @@ public class LevelIcon extends ButtonScaleable {
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.id = 0;
 		this.blocked = true;
-
-		return super.create();
 	}
 
 	@Override

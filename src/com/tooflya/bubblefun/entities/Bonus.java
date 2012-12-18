@@ -28,10 +28,10 @@ public class Bonus extends Entity {
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.mRotation = 0f;
-
-		return super.create();
 	}
 
 	@Override

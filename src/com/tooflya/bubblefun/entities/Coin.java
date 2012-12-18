@@ -51,7 +51,9 @@ public class Coin extends Entity {
 	 * @see com.tooflya.bouncekid.entity.Entity#create()
 	 */
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.stopAnimation();
 		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
 
@@ -66,8 +68,6 @@ public class Coin extends Entity {
 
 		this.setAlpha(1f);
 		this.setScale(1f);
-
-		return super.create();
 	}
 
 	/*
@@ -132,8 +132,8 @@ public class Coin extends Entity {
 	}
 
 	@Override
-	public void destroy() {
-		super.destroy();
+	public void onDestroy() {
+		super.onDestroy();
 
 		LevelScreen.mPicupedCoins++;
 	}

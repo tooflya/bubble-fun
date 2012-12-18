@@ -9,7 +9,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 
 /**
  * @author Tooflya.com
@@ -29,7 +29,7 @@ public class SplashScreen extends Screen {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	/** Declare the entity that acts as a background image of the screen. */
-	private final Sprite mBackground = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen.png", 0, 0, 1, 1), this);
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen.png", 0, 0, 1, 1), this);
 
 	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
 	private final TimerHandler mTimer = new TimerHandler(2f, true, new ITimerCallback() {
@@ -65,14 +65,14 @@ public class SplashScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */
 	@Override
 	public void onPostAttached() {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 

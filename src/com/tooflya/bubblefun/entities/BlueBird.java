@@ -125,13 +125,13 @@ public class BlueBird extends Entity {
 	 * @see com.tooflya.airbubblegum.entities.Entity#create()
 	 */
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.setSpeedX(mSpeed);
 
 		this.mX = Game.random.nextInt(2) == 0 ? 0 - this.mWidth : Options.cameraWidth + this.mWidth;
 		this.mY = this.generateNewHeight();
-
-		return super.create();
 	}
 
 	/*

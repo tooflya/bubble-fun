@@ -8,7 +8,7 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 
 /**
  * @author Tooflya.com
@@ -24,14 +24,14 @@ public class CreditsScreen extends ReflectionScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mTopPanel;
+	private final Entity mTopPanel;
 
 	private final ButtonScaleable mBackButton;
 
 	private final Rectangle mBaseRectangle = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight);
 	private final Rectangle mFrontRectangle = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight);
 
-	//private final Sprite mCredits = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "logo_small_zero.png", 0, 0, 1, 1), this.mFrontRectangle);
+	//private final Entity mCredits = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "logo_small_zero.png", 0, 0, 1, 1), this.mFrontRectangle);
 
 	// ===========================================================
 	// Constructors
@@ -43,7 +43,7 @@ public class CreditsScreen extends ReflectionScreen {
 		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
-		mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+		mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
 
 		mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
@@ -83,7 +83,7 @@ public class CreditsScreen extends ReflectionScreen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-	
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */

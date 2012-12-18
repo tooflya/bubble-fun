@@ -21,10 +21,10 @@ public class Mark extends Entity {
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		modifier.reset();
-
-		return super.create();
 	}
 
 	@Override

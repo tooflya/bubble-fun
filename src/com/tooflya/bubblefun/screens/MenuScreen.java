@@ -12,7 +12,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
@@ -34,8 +34,8 @@ public class MenuScreen extends ReflectionScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mLogoBackground;
-	private final Sprite mSettingsIcon;
+	private final Entity mLogoBackground;
+	private final Entity mSettingsIcon;
 
 	private final ButtonScaleable mTwitterIcon;
 	private final ButtonScaleable mFacebookIcon;
@@ -99,7 +99,7 @@ public class MenuScreen extends ReflectionScreen {
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
-		this.mLogoBackground = new Sprite(Resources.mBackgroundLogoNameTextureRegion, this.mBackground);
+		this.mLogoBackground = new Entity(Resources.mBackgroundLogoNameTextureRegion, this.mBackground);
 
 		this.mTwitterIcon = new ButtonScaleable(Resources.mTwitterTextureRegion, this.mBackground) {
 
@@ -178,7 +178,7 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
-		this.mSettingsIcon = new Sprite(Resources.mSettingsIconTextureRegion, this.mBackground, true) {
+		this.mSettingsIcon = new Entity(Resources.mSettingsIconTextureRegion, this.mBackground, true) {
 
 			private boolean rotation = false;
 

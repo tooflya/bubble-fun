@@ -167,10 +167,6 @@ public class Chiky extends EntityBezier {
 		return (this.mProperties & flag) == flag;
 	}
 
-	public boolean isCanCollide() {
-		return this.mAirgum == null && !this.IsProperty(isPauseUpdateFlag) && (this.mState == States.Move || this.mState == States.Vector);
-	}
-
 	protected void onManagedUpdateWithGum(final float pSecondsElapsed) {
 		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 			this.mTimeWithGum += pSecondsElapsed;
@@ -439,12 +435,15 @@ public class Chiky extends EntityBezier {
 	// Setters
 	// ===========================================================
 
-	public void setCollide() {
+	@Override
+	public void onCollide() {
+		super.onCollide();
+
 		this.stopAnimation(6);
 
 		this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 
-		this.mState = States.MoveWithGum;
+		//this.mState = States.MoveWithGum;
 		this.mTimeWithGum = 0;
 
 		if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
@@ -472,7 +471,12 @@ public class Chiky extends EntityBezier {
 		}
 	}
 
-	public void setCollide(Bubble airgum) {
+	@Override
+	public void onCollide(final Entity pEntity) {
+		super.onCollide(pEntity);
+
+		final Bubble airgum = (Bubble) pEntity;
+
 		if (this.mAirgum == null) {
 			this.mAirgum = airgum.getParent();
 			this.mAirgum.AddChildCount();
@@ -527,7 +531,9 @@ public class Chiky extends EntityBezier {
 	// ===========================================================
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+
 		super.init();
 
 		this.mName.setText("");
@@ -573,8 +579,6 @@ public class Chiky extends EntityBezier {
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
 			this.hat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
 		}
-
-		return super.create();
 	}
 
 	/*
@@ -627,8 +631,8 @@ public class Chiky extends EntityBezier {
 	}
 
 	@Override
-	public void destroy() {
-		super.destroy();
+	public void onDestroy() {
+		super.onDestroy();
 
 		this.mName.setVisible(false);
 

@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 
 /**
  * @author Tooflya.com
@@ -27,14 +27,20 @@ public class AndEngineScreen extends Screen {
 	// Fields
 	// ===========================================================
 
-	/** Declare the necessary canvas in graphics memory, which then will be used to download images. */
+	/**
+	 * Declare the necessary canvas in graphics memory, which then will be used
+	 * to download images.
+	 */
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	private final Rectangle mBackground = new Rectangle(0, 0, 380, 610);
 
-	private final Sprite mAndengineIcon = new Sprite(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "andengine.png", 0, 0, 1, 1), this.mBackground);
+	private final Entity mAndengineIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "andengine.png", 0, 0, 1, 1), this.mBackground);
 
-	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
+	/**
+	 * Set the timer, which will change the size of the loading bar, depending
+	 * on the load time.
+	 */
 	private final TimerHandler mTimer = new TimerHandler(2.8f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
@@ -98,7 +104,7 @@ public class AndEngineScreen extends Screen {
 	public void onAttached() {
 		super.onAttached();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */
@@ -117,30 +123,34 @@ public class AndEngineScreen extends Screen {
 
 		this.clearUpdateHandlers();
 		this.unloadResources();
-		
-		Options.mAndEngineSound.release();
+
+		if (Options.isMusicEnabled) {
+			Options.mAndEngineSound.release();
+		}
 	}
 
 	private float mTimeToWaitMusicLoaded = 0;
 	private boolean mIsMusicLoaded = false;
-	
+
 	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
 	 */
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(this.mTimeToWaitMusicLoaded >1f) {
-			if(!this.mIsMusicLoaded) {
+		if (this.mTimeToWaitMusicLoaded > 1f) {
+			if (!this.mIsMusicLoaded) {
 				this.modifier1.reset();
-				
-				Options.mAndEngineSound.play();
-				
+
+				if (Options.isMusicEnabled) {
+					Options.mAndEngineSound.play();
+				}
+
 				/** Register timer of loading progressbar changes */
 				this.registerUpdateHandler(mTimer);
 			}
 			this.mIsMusicLoaded = true;
 			super.onManagedUpdate(pSecondsElapsed);
 		}
-		
+
 		this.mTimeToWaitMusicLoaded += pSecondsElapsed;
 	}
 

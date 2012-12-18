@@ -3,12 +3,9 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.input.touch.TouchEvent;
 
 import com.tooflya.bubblefun.Options;
-import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com

@@ -27,7 +27,6 @@ import com.tooflya.bubblefun.entities.BoxUnlockPanel;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
@@ -62,21 +61,21 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
 	private final Rectangle mScoreHolder;
-	private final EntityManager<Sprite> mPoints, mPoints2;
+	private final EntityManager<Entity> mPoints, mPoints2;
 
-	private Sprite mTopPanel;
+	private Entity mTopPanel;
 
 	private ArrayList<Box> boxes = new ArrayList<Box>();
-	private ArrayList<Sprite> pictures = new ArrayList<Sprite>();
+	private ArrayList<Entity> pictures = new ArrayList<Entity>();
 	private ArrayList<BoxLabel> labels = new ArrayList<BoxLabel>();
-	private ArrayList<Sprite> locks = new ArrayList<Sprite>();
-	private ArrayList<Sprite> chains = new ArrayList<Sprite>();
+	private ArrayList<Entity> locks = new ArrayList<Entity>();
+	private ArrayList<Entity> chains = new ArrayList<Entity>();
 	private ArrayList<BoxLabel> collects = new ArrayList<BoxLabel>();
 
 	private boolean mTimeToUnlockBox;
 
-	private Sprite mTotalScoreText;
-	private final EntityManager<Sprite> mTotalScoreCountText;
+	private Entity mTotalScoreText;
+	private final EntityManager<Entity> mTotalScoreCountText;
 
 	private int totalscore = 0;
 
@@ -96,14 +95,14 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
-		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
 
 		this.mScoreHolder = new Rectangle(0, 0, Options.cameraWidth, 100);
 		this.mScoreHolder.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreHolder.setAlpha(0f);
 		this.mTopPanel.attachChild(this.mScoreHolder);
 
-		this.mTotalScoreText = new Sprite(Resources.mLevelEndTotalScoreTextTextureRegion, this.mScoreHolder);
+		this.mTotalScoreText = new Entity(Resources.mLevelEndTotalScoreTextTextureRegion, this.mScoreHolder);
 
 		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
@@ -116,8 +115,10 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			}
 		};
 
-		mPoints = new EntityManager<Sprite>(MENUITEMS, new Sprite(Resources.mBoxesNavigationTextureRegion, this.mBackground));
-		mPoints2 = new EntityManager<Sprite>(MENUITEMS, new Sprite(Resources.mBoxesNavigationTextureRegion, this.mBackground));
+		mPoints = new EntityManager<Entity>(MENUITEMS, new Entity(Resources.mBoxesNavigationTextureRegion, this.mBackground));
+		mPoints2 = new EntityManager<Entity>(MENUITEMS, new Entity(Resources.mBoxesNavigationTextureRegion, this.mBackground));
+
+		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
 		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
@@ -153,18 +154,18 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			if (!Game.db.getBox(bi + 1).isOpen() && bi != 3) {
 				collects.add((BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 400, Resources.mCollectTextTextureRegion, this.rectangle, true).create());
 				if (bi == 1) {
-					final Sprite n = new Sprite(Resources.mBoxCollect50TextureRegion, collects.get(bi));
+					final Entity n = new Entity(Resources.mBoxCollect50TextureRegion, collects.get(bi));
 					n.create().setPosition(105f, 8f, true);
 				}
 				if (bi == 2) {
-					final Sprite n = new Sprite(Resources.mBoxCollect100TextureRegion, collects.get(bi));
+					final Entity n = new Entity(Resources.mBoxCollect100TextureRegion, collects.get(bi));
 					n.create().setPosition(98f, 8f, true);
 				}
 			} else {
 				collects.add(bi, null);
 			}
 
-			final Box sprite = new Box(Resources.mBoxesTextureRegion, this.rectangle) {
+			final Box Entity = new Box(Resources.mBoxesTextureRegion, this.rectangle) {
 
 				@Override
 				public void onClick() {
@@ -194,37 +195,37 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				}
 			};
 
-			sprite.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY - 50f);
-			sprite.setCurrentTileIndex(0);
+			Entity.create().setCenterPosition(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, Options.cameraCenterY - 50f);
+			Entity.setCurrentTileIndex(0);
 
-			Sprite picture = null;
+			Entity picture = null;
 			if (bi == 0) {
-				picture = (Sprite) new Sprite(Resources.mBoxesPicture1TextureRegion, sprite).create();
-				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				picture = (Entity) new Entity(Resources.mBoxesPicture1TextureRegion, Entity).create();
+				picture.setCenterPosition(Entity.getWidth() / 2, Entity.getHeight() / 2);
 				picture.enableFullBlendFunction();
 			} else if (bi == 1) {
-				picture = (Sprite) new Sprite(Resources.mBoxesPicture2TextureRegion, sprite).create();
-				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				picture = (Entity) new Entity(Resources.mBoxesPicture2TextureRegion, Entity).create();
+				picture.setCenterPosition(Entity.getWidth() / 2, Entity.getHeight() / 2);
 				picture.enableFullBlendFunction();
 			} else if (bi == 2) {
-				picture = (Sprite) new Sprite(Resources.mBoxesPicture3TextureRegion, sprite).create();
-				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				picture = (Entity) new Entity(Resources.mBoxesPicture3TextureRegion, Entity).create();
+				picture.setCenterPosition(Entity.getWidth() / 2, Entity.getHeight() / 2);
 				picture.enableFullBlendFunction();
 			}
 			else if (bi == 3) {
-				picture = (Sprite) new Sprite(Resources.mBoxesComingSoonTextureRegion, sprite).create();
-				picture.setCenterPosition(sprite.getWidth() / 2, sprite.getHeight() / 2);
+				picture = (Entity) new Entity(Resources.mBoxesComingSoonTextureRegion, Entity).create();
+				picture.setCenterPosition(Entity.getWidth() / 2, Entity.getHeight() / 2);
 				picture.enableFullBlendFunction();
 			}
 
 			pictures.add(picture);
 
 			if (!Game.db.getBox(bi + 1).isOpen() && bi != 3) {
-				final Sprite chain = (Sprite) new Sprite(Resources.mChainTextureRegion, picture).create();
+				final Entity chain = (Entity) new Entity(Resources.mChainTextureRegion, picture).create();
 				chain.setCenterPosition(picture.getWidth() / 2 + 5f, picture.getHeight() / 2 - 8f);
 				chain.enableFullBlendFunction();
 
-				final Sprite lock = (Sprite) new Sprite(Resources.mBoxesLockTextureRegion, picture) {
+				final Entity lock = (Entity) new Entity(Resources.mBoxesLockTextureRegion, picture) {
 					@Override
 					public void setAlpha(final float pAlpha) {
 						super.setAlpha(pAlpha);
@@ -240,11 +241,11 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				chains.add(bi, chain);
 
 				if (bi == 1) {
-					Sprite l = new Sprite(Resources.mLockStars1TextureRegion, lock);
+					Entity l = new Entity(Resources.mLockStars1TextureRegion, lock);
 					l.setCenterPosition(lock.getWidth() / 2, lock.getHeight() / 2 + 17f);
 					l.create();
 				} else if (bi == 2) {
-					Sprite l = new Sprite(Resources.mLockStars2TextureRegion, lock);
+					Entity l = new Entity(Resources.mLockStars2TextureRegion, lock);
 					l.setCenterPosition(lock.getWidth() / 2, lock.getHeight() / 2 + 17f);
 					l.create();
 				}
@@ -253,7 +254,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				chains.add(bi, null);
 			}
 
-			boxes.add(sprite);
+			boxes.add(Entity);
 		}
 
 		int i = -1;
@@ -305,7 +306,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mTotalScoreText.create().setPosition(0, 7f, true);
 
-		this.mTotalScoreCountText = new EntityManager<Sprite>(10, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mScoreHolder));
+		this.mTotalScoreCountText = new EntityManager<Entity>(10, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mScoreHolder));
 		for (int a = 0; a < 5; a++) {
 			this.mTotalScoreCountText.create().setCenterPosition(this.mTotalScoreText.getX() + this.mTotalScoreText.getWidth() + 13f + 18f * a, 21f);
 		}
@@ -350,7 +351,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 * @see org.anddev.andengine.entity.Entity.AnimatedEntity#onManagedUpdate (float)
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {

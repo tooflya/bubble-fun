@@ -73,10 +73,10 @@ public class Feather extends Entity {
 	// ===========================================================
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.setCurrentTileIndex(Game.random.nextInt(3));
-
-		return super.create();
 	}
 
 	/*

@@ -35,7 +35,6 @@ import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glass;
 import com.tooflya.bubblefun.entities.Glint;
-import com.tooflya.bubblefun.entities.Gradient;
 import com.tooflya.bubblefun.entities.HoldSwarm;
 import com.tooflya.bubblefun.entities.Laser;
 import com.tooflya.bubblefun.entities.LightingSwarm;
@@ -43,7 +42,6 @@ import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Meteorit;
 import com.tooflya.bubblefun.entities.SmallMeteorit;
 import com.tooflya.bubblefun.entities.Snowflake;
-import com.tooflya.bubblefun.entities.Sprite;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.entities.Ufo;
 import com.tooflya.bubblefun.factories.BubbleFactory;
@@ -70,8 +68,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			{ "Bird9", "Bird10", "Bird11" }
 	};
 
-	private final Sprite mSpaceBackground;
-	private final Sprite mSpacePlanet;
+	private final Entity mSpaceBackground;
+	private final Entity mSpacePlanet;
 
 	protected static final EntityManager<Cloud> birds = null;
 
@@ -87,7 +85,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public static int Score;
 
-	private Gradient mBackground;
+	private Entity mBackground;
 
 	private final CloudsManager<Cloud> mClouds;
 	private final SnowManager<Snowflake> mSnowflakes;
@@ -99,15 +97,15 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Rectangle mRectangle;
 
-	private final Sprite mSolidLine;
-	private final Sprite mSolidLineAir;
+	private final Entity mSolidLine;
+	private final Entity mSolidLineAir;
 
 	private final Rectangle shape;
 
-	private final Sprite mLevelWord;
-	private final EntityManager<Sprite> numbers;
+	private final Entity mLevelWord;
+	private final EntityManager<Entity> numbers;
 
-	private Sprite mResetText;
+	private Entity mResetText;
 
 	public final MoveModifier restartMove1;
 
@@ -150,18 +148,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final AlphaModifier mDotterAirLineOn;
 	private final AlphaModifier mDotterAirLineOff;
 
-	private Sprite mPanel;
+	private Entity mPanel;
 
 	private final ButtonScaleable mMenuButton;
 
 	private final ButtonScaleable mResetButton;
 
-	private final Sprite mScoreText;
+	private final Entity mScoreText;
 
-	private final EntityManager<Sprite> numbersSmall;
+	private final EntityManager<Entity> numbersSmall;
 
 	public EntityManager<CristmasHat> mCristmasHats;
-	public EntityManager<Sprite> mSnowBallSpeed;
+	public EntityManager<Entity> mSnowBallSpeed;
 
 	private int mBonusType = 0;
 
@@ -173,7 +171,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	public final TiledTextureRegion[] mTutorialTextureRegion = new TiledTextureRegion[10];
 
-	public final ArrayList<TutorialText> mTutorialSprites = new ArrayList<TutorialText>();
+	public final ArrayList<TutorialText> mTutorialEntitys = new ArrayList<TutorialText>();
 
 	// ===========================================================
 	// Constructors
@@ -182,15 +180,15 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private boolean asr = false;
 
 	public LevelScreen() {
-		this.mBackground = new Gradient(0, 0, Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
+		this.mBackground = new Entity(Options.cameraWidth, Options.cameraHeight, Resources.mLevelBackgroundGradientTextureRegion, this);
 
-		this.mSpaceBackground = new Sprite(Resources.mSpaceStarsBackgroundTextureRegion, this.mBackground);
+		this.mSpaceBackground = new Entity(Resources.mSpaceStarsBackgroundTextureRegion, this.mBackground);
 		this.mSpaceBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.mSpaceBackground.enableFullBlendFunction();
 
 		this.mSmallMeteorits = new EntityManager<SmallMeteorit>(10, new SmallMeteorit(Resources.mMeteoritTextureRegion, this.mBackground));
 
-		this.mSpacePlanet = new Sprite(Resources.mSpacePlanetTextureRegion, this.mBackground);
+		this.mSpacePlanet = new Entity(Resources.mSpacePlanetTextureRegion, this.mBackground);
 		this.mSpacePlanet.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.mSpacePlanet.enableFullBlendFunction();
 
@@ -205,8 +203,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBonusesText = new EntityManager<BonusText>(220, new BonusText(Resources.mScoreBonusesTextTextureRegion, this.mBackground));
 
 		this.mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
-		this.mSolidLine = new Sprite(Resources.mAirRegularOneTextureRegion, this.mBackground);
-		this.mSolidLineAir = new Sprite(Resources.mAirTwoTextureRegion, this.mBackground);
+		this.mSolidLine = new Entity(Resources.mAirRegularOneTextureRegion, this.mBackground);
+		this.mSolidLineAir = new Entity(Resources.mAirTwoTextureRegion, this.mBackground);
 
 		shape = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight) {
 
@@ -218,7 +216,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+			 * @see org.anddev.andengine.entity.Entity.AnimatedEntity#onManagedUpdate (float)
 			 */
 			@Override
 			protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -254,10 +252,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		};
 
-		mLevelWord = new Sprite(Resources.mLevelWordTextureRegion, this.shape);
-		numbers = new EntityManager<Sprite>(4, new Sprite(Resources.mNumbersTextureRegion, this.shape));
+		mLevelWord = new Entity(Resources.mLevelWordTextureRegion, this.shape);
+		numbers = new EntityManager<Entity>(4, new Entity(Resources.mNumbersTextureRegion, this.shape));
 
-		mResetText = new Sprite(Resources.mRestartTextTextureRegion, this.mRectangle);
+		mResetText = new Entity(Resources.mRestartTextTextureRegion, this.mRectangle);
 
 		bonuses = new EntityManager<Bonus>(10, new Bonus(Resources.mBonusTextureRegion, this.mBackground));
 
@@ -276,16 +274,16 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mBubbleBrokes = new EntityManager<BubbleBrokes>(100, new BubbleBrokes(Resources.mAsteroidBrokenTextureRegion, this.mBackground));
 
-		mSnowBallSpeed = new EntityManager<Sprite>(100, new Sprite(Resources.mSpaceBallSpeedTextureRegion, this.mBackground));
+		mSnowBallSpeed = new EntityManager<Entity>(100, new Entity(Resources.mSpaceBallSpeedTextureRegion, this.mBackground));
 
 		mBlueBird = new BlueBird(Resources.mBlueBirdTextureRegion, new EntityManager<Feather>(100, new Feather(Resources.mBlueFeathersTextureRegion, this.mBackground)), this.mBackground);
 		mAirplane = new Airplane(Resources.mAirplaneTextureRegion, this.mBackground);
 
-		mPanel = new Sprite(Resources.mTopGamePanelTextureRegion, this.mBackground);
+		mPanel = new Entity(Resources.mTopGamePanelTextureRegion, this.mBackground);
 
-		mScoreText = new Sprite(Resources.mScoreTextTextureRegion, this.mBackground);
+		mScoreText = new Entity(Resources.mScoreTextTextureRegion, this.mBackground);
 
-		numbersSmall = new EntityManager<Sprite>(4, new Sprite(Resources.mSmallNumbersTextureRegion, this.mBackground));
+		numbersSmall = new EntityManager<Entity>(4, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
 
 		mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
 
@@ -436,7 +434,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			this.numbersSmall.getByIndex(i).registerEntityModifier(this.mAllFallDownModifier);
 		}
 
-		this.mLightings = new EntityManager<Sprite>(10, new Sprite(Resources.mLighingTextureRegion, this.mBackground));
+		this.mLightings = new EntityManager<Entity>(10, new Entity(Resources.mLighingTextureRegion, this.mBackground));
 
 		this.mLightingSwarms = new EntityManager<LightingSwarm>(3, new LightingSwarm(Resources.mAngryCloudTextureRegion, this.mBackground));
 
@@ -488,15 +486,19 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		};
 
-		mBonusButton1.create().setPosition(Options.cameraWidth - 50f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
-		mBonusButton2.create().setPosition(Options.cameraWidth - 100f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
-		mBonusButton3.create().setPosition(Options.cameraWidth - 150f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
-		mBonusButton4.create().setPosition(Options.cameraWidth - 200f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2, Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
+		mBonusButton1.create().setPosition(Options.cameraWidth - 50f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
+				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
+		mBonusButton2.create().setPosition(Options.cameraWidth - 100f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
+				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
+		mBonusButton3.create().setPosition(Options.cameraWidth - 150f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
+				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
+		mBonusButton4.create().setPosition(Options.cameraWidth - 200f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
+				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
 	}
 
 	private final EntityManager<LightingSwarm> mLightingSwarms;
 	private final EntityManager<HoldSwarm> mHoldSwarms;
-	public final EntityManager<Sprite> mLightings;
+	public final EntityManager<Entity> mLightings;
 
 	public final EntityManager<Ufo> mUfos;
 
@@ -554,9 +556,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		feathers.clear();
 
-		for (TutorialText sprite : mTutorialSprites) {
-			if (sprite.getAlpha() > 0)
-				sprite.destroy();
+		for (TutorialText Entity : mTutorialEntitys) {
+			if (Entity.getAlpha() > 0)
+				Entity.destroy();
 		}
 
 		Options.bubbleSizePower = Options.bubbleMaxSizePower;
@@ -614,7 +616,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				if (chiky.isCanCollide()) {
 
 					if (this.isCollide(chiky, laser)) {
-						chiky.setCollide();
+						chiky.collide();
 						deadBirds++;
 					}
 				}
@@ -630,7 +632,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					if (chiky.isCanCollide()) {
 						if (this.isCollide(chiky, airgum)) {
 							airgum.addBirdsKills();
-							chiky.setCollide(airgum);
+							chiky.collide(airgum);
 							deadBirds++;
 						}
 					}
@@ -639,8 +641,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				for (int j = bonuses.getCount() - 1; j >= 0; --j) {
 					final Bonus bonus = bonuses.getByIndex(j);
 					if (this.isCollide(airgum, bonus, true)) {
-						airgum.isCollide();
-						bonus.isCollide();
+						airgum.collide();
+						bonus.collide();
 					}
 				}
 
@@ -668,7 +670,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 							(airgum.getX() - airgum.getWidth()) <= (swarm.getX() + swarm.getWidthScaled()) &&
 							swarm.getY() <= (airgum.getY() + airgum.getHeight() * 1.1f) &&
 							airgum.getY() - airgum.getHeight() <= (swarm.getY() + swarm.getHeightScaled())) {
-						airgum.isCollide();
+						airgum.collide();
 					}
 				}
 
@@ -684,7 +686,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					final Laser laser = this.mGreenLasers.getByIndex(k);
 
 					if (this.isCollide(airgum, laser)) {
-						airgum.isCollide();
+						airgum.collide();
 
 						if (Options.isMusicEnabled) {
 							Options.mAsteroidDeath.play();
@@ -695,7 +697,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
 					mBlueBird.particles();
 					if (!airgum.isAnimationRunning()) {
-						airgum.isCollide();
+						airgum.collide();
 					}
 				}
 			}
@@ -777,7 +779,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+	 * @see org.anddev.andengine.entity.Entity.AnimatedEntity#onManagedUpdate (float)
 	 */
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -811,8 +813,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 			this.lastAirgum = null;
 
-			for (TutorialText sprite : mTutorialSprites) {
-				sprite.destroy();
+			for (TutorialText Entity : mTutorialEntitys) {
+				Entity.destroy();
 			}
 
 			AIR = 0;
@@ -995,8 +997,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.accelerators.changeTextureRegion(Resources.mAcceleratorsTextureRegion);
 
-		this.mSpaceBackground.hide();
-		this.mSpacePlanet.hide();
+		this.mSpaceBackground.destroy();
+		this.mSpacePlanet.destroy();
 
 		this.mSolidLineAir.changeTextureRegion(Resources.mAirTwoTextureRegion);
 	}
@@ -1023,8 +1025,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mSnowBallSpeed.changeTextureRegion(Resources.mSnowyBallSpeedTextureRegion);
 
-		this.mSpaceBackground.hide();
-		this.mSpacePlanet.hide();
+		this.mSpaceBackground.destroy();
+		this.mSpacePlanet.destroy();
 	}
 
 	private void onSTBoxAttached() {
@@ -1044,8 +1046,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mSnowBallSpeed.changeTextureRegion(Resources.mSpaceBallSpeedTextureRegion);
 
-		this.mSpaceBackground.show();
-		this.mSpacePlanet.show();
+		this.mSpaceBackground.create();
+		this.mSpacePlanet.create();
 
 		this.mSolidLine.changeTextureRegion(Resources.mAirSpaceOneTextureRegion);
 

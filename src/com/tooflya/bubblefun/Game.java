@@ -18,6 +18,7 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.util.FPSCounter;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.user.IAsyncCallback;
 
@@ -185,20 +186,20 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			@Override
 			public void onDrawFrame(GL10 pGL) throws InterruptedException {
 				super.onDrawFrame(pGL);
-				pGL.glFlush();
 
 				int error = pGL.glGetError();
 
 				/**
-				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
+				 * 1280 GL_INVALID_ENUM
+				 * 1281 GL_INVALID_VALUE
+				 * 1282 GL_INVALID_OPERATION
+				 * 1283 GL_STACK_OVERFLOW
+				 * 1284 GL_STACK_UNDERFLOW
+				 * 1285 GL_OUT_OF_MEMORY
 				 */
 				if (error != GL10.GL_NO_ERROR) {
 					throw new GLException(error, "OpenGL ES has error occurred: " + error);
 				}
-
-				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, Debug.mGLMaxTextureParams, 0);
-				pGL.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, Debug.mGLMaxTextureParams, 1);
-
 			}
 
 			/*
@@ -209,6 +210,8 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			@Override
 			protected void onDrawScene(GL10 pGL) {
 				super.onDrawScene(pGL);
+
+				GLHelper.enableDither(pGL);
 			}
 		};
 
@@ -381,14 +384,11 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				public void onUpdate(float pSecondsElapsed) {
 					this.mTime += pSecondsElapsed;
 
-					if (this.mTime > 5) {
+					if (this.mTime > 5f) {
 						this.mTime = 0;
 
-						System.out.println("Avg FPS: " + Debug.deltaFPS);
+						System.out.println("Average FPS: " + Debug.deltaFPS);
 						System.out.println("Current FPS: " + mCurrentFramesPerSecond);
-						System.out.println("GPU Memory Allocated: " + Debug.mGraphicsHeapAllocation);
-						System.out.println("GL Max Textures Size: " + Debug.mGLMaxTextureParams[0]);
-						System.out.println("GL Max TexturesUnits: " + Debug.mGLMaxTextureParams[1]);
 						System.out.println("=========================================================");
 					}
 				}
@@ -398,7 +398,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				}
 			});
 		}
-		
+
 		/** Create loading screen and return her scene for attaching to the activity. */
 		return new AndEngineScreen();
 	}
@@ -512,30 +512,10 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 	// ===========================================================
 
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
-		if (Options.DEBUG) {
-			final int count = textures.length;
-			for (int i = 0; i < count; i++) {
-				final int width = textures[i].getWidth();
-				final int height = textures[i].getHeight();
-
-				Debug.mGraphicsHeapAllocation += width * height * 4 / 1024 / 1024;
-			}
-		}
-
 		engine.getTextureManager().loadTextures(textures);
 	}
 
 	public static void unloadTextures(final BitmapTextureAtlas... textures) {
-		if (Options.DEBUG) {
-			final int count = textures.length;
-			for (int i = 0; i < count; i++) {
-				final int width = textures[i].getWidth();
-				final int height = textures[i].getHeight();
-
-				Debug.mGraphicsHeapAllocation -= width * height * 4 / 1024 / 1024;
-			}
-		}
-
 		engine.getTextureManager().unloadTextures(textures);
 	}
 

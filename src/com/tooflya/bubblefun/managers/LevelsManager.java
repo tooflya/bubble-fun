@@ -19,13 +19,9 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
-import com.tooflya.bubblefun.entities.ChikyBezier;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
-import com.tooflya.bubblefun.entities.Sprike;
-import com.tooflya.bubblefun.entities.Sprite;
-import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
@@ -37,7 +33,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private static Chiky chikyBezier = null;
 
-	private EntityManager<Sprite> mNumbers;
+	private EntityManager<Entity> mNumbers;
 
 	private static LevelLoader mLevelLoader;
 
@@ -70,7 +66,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	}
 
-	public void generate(final EntityManager<Sprite> pNumbers) {
+	public void generate(final EntityManager<Entity> pNumbers) {
 		this.mNumbers = pNumbers;
 
 		this.generate();
@@ -339,9 +335,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				 * 
 				 * final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
 				 * 
-				 * final TutorialText sprite = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen); sprite.create().setPosition(x, y); sprite.index = index;
+				 * final TutorialText Entity = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen); Entity.create().setPosition(x, y); Entity.index = index;
 				 * 
-				 * screen.mTutorialSprites.add(sprite);
+				 * screen.mTutorialEntitys.add(Entity);
 				 */
 			}
 		});

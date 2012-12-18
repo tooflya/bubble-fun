@@ -15,7 +15,6 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import android.graphics.Color;
 
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.Sprite;
 
 public class Resources {
 
@@ -110,7 +109,7 @@ public class Resources {
 	public static final LinearGradientFillBitmapTextureAtlasSourceDecorator mLevelBackgroundGradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(mLevelGradientBitmap,
 			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(255, 255, 255), Color.rgb(255, 255, 255), LinearGradientDirection.BOTTOM_TO_TOP);
 
-	public static final TextureRegion mLevelBackgroundGradientTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(mBackgroundGradientTextureAtlas2, mLevelBackgroundGradientSource, 0, 0);
+	public static final TiledTextureRegion mLevelBackgroundGradientTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromSource(mBackgroundGradientTextureAtlas2, mLevelBackgroundGradientSource, 0, 0, 1, 1);
 	public static final TiledTextureRegion mRegularBirdsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "small-bird.png", 0, 0, 6, 4);
 	public static final TiledTextureRegion mTopGamePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "game-panel.png", 0, 177, 1, 1);
 	public static final TiledTextureRegion mAwesomeText1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "awesome-kill.png", 0, 237, 1, 1);
@@ -190,7 +189,7 @@ public class Resources {
 	public static final Entity mBackgroundGradient = new Entity(mBackgroundGradientTextureRegion) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-			final Sprite sprite = new Sprite(mBackgroundGradientTextureRegion);
+			final Entity sprite = new Entity(mBackgroundGradientTextureRegion);
 
 			sprite.setWidth(380);
 			sprite.setHeight(610);
@@ -204,7 +203,7 @@ public class Resources {
 	public static final Entity mBackgroundGrass = new Entity(mBackgroundGrassTextureRegion) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-			final Sprite sprite = new Sprite(getTextureRegion());
+			final Entity sprite = new Entity(getTextureRegion());
 
 			pEntity.attachChild(sprite);
 
@@ -215,7 +214,7 @@ public class Resources {
 	public static final Entity mBackgroundWater = new Entity(mBackgroundWaterTextureRegion) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-			final Sprite sprite = new Sprite(getTextureRegion());
+			final Entity sprite = new Entity(getTextureRegion());
 
 			pEntity.attachChild(sprite);
 
@@ -226,7 +225,7 @@ public class Resources {
 	public static final Entity mBackgroundHouses1 = new Entity(mBackgroundHouseTextureRegion1) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-			final Sprite sprite = new Sprite(getTextureRegion());
+			final Entity sprite = new Entity(getTextureRegion());
 
 			pEntity.attachChild(sprite);
 
@@ -237,7 +236,7 @@ public class Resources {
 	public static final Entity mBackgroundHouses2 = new Entity(mBackgroundHouseTextureRegion2) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-			final Sprite sprite = new Sprite(getTextureRegion());
+			final Entity sprite = new Entity(getTextureRegion());
 
 			pEntity.attachChild(sprite);
 
@@ -248,7 +247,7 @@ public class Resources {
 	public static final Entity mBackgroundHouses3 = new Entity(mBackgroundHouseTextureRegion3) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-			final Sprite sprite = new Sprite(getTextureRegion());
+			final Entity sprite = new Entity(getTextureRegion());
 
 			pEntity.attachChild(sprite);
 

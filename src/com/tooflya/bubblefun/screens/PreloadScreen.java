@@ -8,13 +8,13 @@ import org.anddev.andengine.util.user.IAsyncCallback;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
 public class PreloadScreen extends Screen implements IAsyncCallback {
 
-	private final Sprite mBackground;
-	public final Sprite mTextBar;
+	private final Entity mBackground;
+	public final Entity mTextBar;
 
 	public int updates = 0;
 	public int temp = 0;
@@ -76,8 +76,8 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 	});
 
 	public PreloadScreen() {
-		this.mBackground = new Sprite(Resources.mPreloadBackgroundTextureRegion, this);
-		this.mTextBar = new Sprite(Resources.mPreloadTextTextureRegion, this.mBackground);
+		this.mBackground = new Entity(Resources.mPreloadBackgroundTextureRegion, this);
+		this.mTextBar = new Entity(Resources.mPreloadTextTextureRegion, this.mBackground);
 
 		this.mBackground.create().setBackgroundCenterPosition();
 

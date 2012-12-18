@@ -20,17 +20,20 @@ public class Cloud extends Entity {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param pTiledTextureRegion
+	 */
 	public Cloud(TiledTextureRegion pTiledTextureRegion) {
 		super(pTiledTextureRegion);
 	}
 
+	/**
+	 * @param pTiledTextureRegion
+	 * @param pParentScreen
+	 */
 	public Cloud(TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	// ===========================================================
 	// Virtual methods
@@ -50,4 +53,9 @@ public class Cloud extends Entity {
 			this.destroy();
 		}
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
 }

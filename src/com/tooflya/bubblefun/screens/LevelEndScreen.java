@@ -11,7 +11,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
@@ -22,7 +22,7 @@ public class LevelEndScreen extends PopupScreen {
 
 	private static int mStarsAnimationCount = 0;
 
-	private final Sprite mPanel = new Sprite(Resources.mLevelEndPanelTextureRegion, this);
+	private final Entity mPanel = new Entity(Resources.mLevelEndPanelTextureRegion, this);
 
 	public final ButtonScaleable mMenu = new ButtonScaleable(Resources.mLevelEndReturnButtonTextureRegion, this.mPanel) {
 
@@ -82,7 +82,7 @@ public class LevelEndScreen extends PopupScreen {
 					mStarsAnimationCount++;
 
 					Star star = (Star) stars.getByIndex(mStarsAnimationCount);
-					star.show();
+					star.setVisible(true);
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
@@ -100,13 +100,13 @@ public class LevelEndScreen extends PopupScreen {
 
 	private AlphaModifier mRectangleAlphaModifier = new AlphaModifier(0.1f, 0.4f, 0f);
 
-	private final Sprite mTotalScoreText = new Sprite(Resources.mLevelEndTotalScoreTextTextureRegion, this.mPanel);
-	private final Sprite mScoreText = new Sprite(Resources.mLevelEndScoreTextTextureRegion, this.mPanel);
-	private final Sprite mStarsText = new Sprite(Resources.mLevelEndStarsScoreTextTextureRegion, this.mPanel);
+	private final Entity mTotalScoreText = new Entity(Resources.mLevelEndTotalScoreTextTextureRegion, this.mPanel);
+	private final Entity mScoreText = new Entity(Resources.mLevelEndScoreTextTextureRegion, this.mPanel);
+	private final Entity mStarsText = new Entity(Resources.mLevelEndStarsScoreTextTextureRegion, this.mPanel);
 
-	private final EntityManager<Sprite> mStarsCountText = new EntityManager<Sprite>(1, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
-	private final EntityManager<Sprite> mScoreCountText = new EntityManager<Sprite>(4, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
-	private final EntityManager<Sprite> mTotalScoreCountText = new EntityManager<Sprite>(4, new Sprite(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final EntityManager<Entity> mStarsCountText = new EntityManager<Entity>(1, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final EntityManager<Entity> mScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final EntityManager<Entity> mTotalScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 
 	private final AwesomeText mLevelCompleteCapture = new AwesomeText(Resources.mLevelEndCompleteCaptureTextureRegion, false, this.mPanel);
 
@@ -181,12 +181,12 @@ public class LevelEndScreen extends PopupScreen {
 		}
 
 		Star star;
-		stars.create().hide();
+		stars.create().setVisible(false);
 		for (int i = 0; i < 3; i++) {
 			star = stars.create();
 			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), 100f);
 			star.setCurrentTileIndex(0);
-			star.hide();
+			star.setVisible(false);
 		}
 		for (int i = 0; i < 3; i++) {
 			star = stars.create();

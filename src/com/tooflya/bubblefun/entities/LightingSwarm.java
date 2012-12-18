@@ -2,13 +2,7 @@ package com.tooflya.bubblefun.entities;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-import org.anddev.andengine.opengl.util.GLHelper;
-
-import android.opengl.GLES10;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -24,9 +18,9 @@ public class LightingSwarm extends BaseSwarm {
 	protected static final long[] pFrameDuration = new long[] { 100, 100, 100, 100, 100, 100 };
 	protected static final int[] pNormalMoveFrames = new int[] { 1, 2, 3, 2, 1, 0 };
 
-	private ArrayList<Sprite> mLights = new ArrayList<Sprite>();
+	private ArrayList<Entity> mLights = new ArrayList<Entity>();
 
-	public LightingSwarm(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
+	public LightingSwarm(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 	}
 
@@ -41,7 +35,7 @@ public class LightingSwarm extends BaseSwarm {
 
 		final int count = Game.random.nextInt(7);
 		for (int i = 0; i < count; i++) {
-			final Sprite light = screen.mLightings.create();
+			final Entity light = screen.mLightings.create();
 
 			if (light != null) {
 				light.setRotationCenter(light.getWidth() / 2, -10f);
@@ -76,7 +70,7 @@ public class LightingSwarm extends BaseSwarm {
 			this.animate(pFrameDuration, pNormalMoveFrames, 0);
 		}
 
-		for (Sprite light : mLights) {
+		for (Entity light : mLights) {
 			light.setPosition(this.getCenterX() - 10f, this.getCenterY() + 10f, true);
 		}
 

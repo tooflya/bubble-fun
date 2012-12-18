@@ -1,21 +1,20 @@
 package com.tooflya.bubblefun.entities;
 
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Options;
 
-public abstract class Button extends Sprite {
+public abstract class Button extends Entity {
 
 	protected boolean isClicked = false;
 	protected float mLastClickedX, mLastClickedY;
 
-	public Button(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
+	public Button(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen, true);
 	}
 
-	public Button(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen, final boolean isTouchArea) {
+	public Button(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen, final boolean isTouchArea) {
 		super(pTiledTextureRegion, pParentScreen, false);
 	}
 

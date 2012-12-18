@@ -6,7 +6,7 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Button;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 /**
@@ -23,9 +23,9 @@ public class BoxLockedScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mPanel = new Sprite(Resources.mPopupBackgroundTextureRegion, this);
+	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
 
-	private final Sprite mText = new Sprite(Resources.mLockTextTextureRegion, this.mPanel);
+	private final Entity mText = new Entity(Resources.mLockTextTextureRegion, this.mPanel);
 
 	private final Button mOkIcon = new Button(Resources.mOkButtonTextureRegion, this.mPanel) {
 
@@ -38,7 +38,7 @@ public class BoxLockedScreen extends PopupScreen {
 		}
 	};
 
-	private final EntityManager<Sprite> mStarsCountText;
+	private final EntityManager<Entity> mStarsCountText;
 
 	private int mStarsNeeded;
 
@@ -70,9 +70,9 @@ public class BoxLockedScreen extends PopupScreen {
 
 		this.mPanel.setScale(0f);
 
-		this.mStarsCountText = new EntityManager<Sprite>(3, new Sprite(Resources.mPopupStarsNumbersTextureRegion, this.mPanel));
+		this.mStarsCountText = new EntityManager<Entity>(3, new Entity(Resources.mPopupStarsNumbersTextureRegion, this.mPanel));
 
-		Sprite star;
+		Entity star;
 
 		star = this.mStarsCountText.create();
 		star.setPosition(95f, 86f, true);

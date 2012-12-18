@@ -15,7 +15,7 @@ public class BoxUnlockPanel extends Rectangle {
 	private MoveModifier modifier1;
 	private MoveModifier modifier2;
 
-	private final Sprite mPanel;
+	private final Entity mPanel;
 
 	private final ButtonScaleable mButton;
 
@@ -33,7 +33,7 @@ public class BoxUnlockPanel extends Rectangle {
 
 		this.mBasicY = this.mY;
 
-		this.mPanel = new Sprite(Resources.mBoxUnlockPanelTextureRegion, this);
+		this.mPanel = new Entity(Resources.mBoxUnlockPanelTextureRegion, this);
 		this.mPanel.setPosition(0, 10, true);
 		this.mPanel.enableFullBlendFunction();
 		this.mPanel.create();

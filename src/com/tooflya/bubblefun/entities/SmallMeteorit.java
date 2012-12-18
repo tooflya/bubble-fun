@@ -12,17 +12,15 @@ public class SmallMeteorit extends Meteorit {
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.setCurrentTileIndex(Game.random.nextInt(5) + 1);
 
 		final float speed = Game.random.nextInt(this.getCurrentTileIndex() + 1) + 1;
 		
 		this.setSpeedX(speed);
 		this.setSpeedY(speed);
-
-		this.show();
-
-		return this;
 	}
 
 	/*

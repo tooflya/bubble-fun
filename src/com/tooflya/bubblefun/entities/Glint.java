@@ -44,12 +44,12 @@ public class Glint extends Entity {
 	}
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+
 		this.isParticle = false;
 
 		this.setCurrentTileIndex(4);
-
-		return super.create();
 	}
 
 	// ===========================================================
@@ -62,7 +62,7 @@ public class Glint extends Entity {
 		this.setSpeedX(3f * FloatMath.sin(i * 2 * Options.PI / 10));
 		this.setSpeedY(3f * FloatMath.cos(i * 2 * Options.PI / 10));
 
-		final float scale = Game.random.nextFloat() * (0.7f  - 0.1f) + 0.1f;
+		final float scale = Game.random.nextFloat() * (0.7f - 0.1f) + 0.1f;
 		this.mScaleX = scale;
 		this.mScaleY = scale;
 
@@ -92,9 +92,9 @@ public class Glint extends Entity {
 		if (this.isParticle && --this.mSleep <= 0) {
 			if (this.mSleep == 0) {
 				this.setCenterPosition(this.mFollowObject.getCenterX(), this.mFollowObject.getCenterY());
-				this.show();
+				this.setVisible(true);
 			}
-			
+
 			this.mX += this.getSpeedX();
 			this.mY += this.getSpeedY();
 

@@ -127,7 +127,9 @@ public class EntityBezier extends Entity {
 	// ===========================================================
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.mTime = 0f; // Seconds.
 
 		this.mMinTime = 0; // Seconds.
@@ -138,8 +140,6 @@ public class EntityBezier extends Entity {
 		this.mIsReverseTime = true;
 
 		this.mListCount = 0;
-		
-		return super.create();
 	}
 
 	/*

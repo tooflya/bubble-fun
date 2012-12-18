@@ -6,11 +6,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.screens.LevelScreen;
-import com.tooflya.bubblefun.screens.Screen;
-
-public class TutorialText extends Sprite {
+public class TutorialText extends Entity {
 
 	public boolean finish;
 
@@ -53,14 +49,12 @@ public class TutorialText extends Sprite {
 		this.registerEntityModifier(mAlphaModifier);
 	}
 
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		this.finish = false;
 
-		this.show();
-
 		this.mAlpha = 0;
-
-		return this;
 	}
 
 	/*
@@ -82,21 +76,4 @@ public class TutorialText extends Sprite {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.tooflya.bubblefun.entities.Entity#onManagedDraw(javax.microedition.khronos.opengles.GL10, org.anddev.andengine.engine.camera.Camera)
-	 */
-	@Override
-	public void onManagedDraw(final GL10 GL, final Camera pCamera) {
-		super.onManagedDraw(GL, pCamera);
-
-		
-		
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-
-		//this.detachSelf();
-	}
 }

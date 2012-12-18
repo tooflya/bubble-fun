@@ -29,7 +29,9 @@ public class ButtonScaleable extends Button {
 	 * @see com.tooflya.bubblefun.entities.Entity#create()
 	 */
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
+		
 		if (this.mBaseScale == -1) {
 			this.mBaseScale = this.getScaleX();
 
@@ -39,8 +41,6 @@ public class ButtonScaleable extends Button {
 
 			this.registerEntityModifier(this.mScaleModifier);
 		}
-
-		return super.create();
 	}
 
 	/*

@@ -1,6 +1,5 @@
 package com.tooflya.bubblefun.entities;
 
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -12,7 +11,7 @@ public class BonusText extends AwesomeText {
 
 	private int mScoreIncrement;
 
-	public BonusText(TiledTextureRegion pTiledTextureRegion, Entity pParentScreen) {
+	public BonusText(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 	}
 
@@ -24,13 +23,11 @@ public class BonusText extends AwesomeText {
 	}
 
 	@Override
-	public com.tooflya.bubblefun.entities.Entity create() {
-		super.create();
+	public void onCreate() {
+		super.onCreate();
 
 		this.mIsAnimationScaleRunning = false;
 		mSleepTime = 100f;
-
-		return this;
 	}
 
 	@Override

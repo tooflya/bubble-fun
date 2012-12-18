@@ -5,7 +5,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.CloudsManager;
 
 /**
@@ -22,7 +22,7 @@ public class MoreScreen extends ReflectionScreen {
 	// Fields
 	// ===========================================================
 
-	private final Sprite mTopPanel;
+	private final Entity mTopPanel;
 
 	private final ButtonScaleable mBackButton;
 
@@ -41,7 +41,7 @@ public class MoreScreen extends ReflectionScreen {
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
-		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
 		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
@@ -93,7 +93,7 @@ public class MoreScreen extends ReflectionScreen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
-	
+
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
 	 */

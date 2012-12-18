@@ -6,7 +6,7 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.LevelIcon;
-import com.tooflya.bubblefun.entities.Sprite;
+import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
@@ -31,12 +31,12 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	private final ButtonScaleable mBackButton;
 
 	private LevelsManager<LevelIcon> levels;
-	private EntityManager<Sprite> numbers;
+	private EntityManager<Entity> numbers;
 
-	private final Sprite mTopPanel;
+	private final Entity mTopPanel;
 
-	private final EntityManager<Sprite> mSmallnumbers;
-	private final EntityManager<Sprite> mStars;
+	private final EntityManager<Entity> mSmallnumbers;
+	private final EntityManager<Entity> mStars;
 
 	// ===========================================================
 	// Constructors
@@ -51,14 +51,14 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
-		this.mTopPanel = new Sprite(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
 
 		this.levels = new LevelsManager<LevelIcon>(25, new LevelIcon(Resources.mLevelsTextureRegion, this.mBackground));
-		this.numbers = new EntityManager<Sprite>(100, new Sprite(Resources.mNumbersTextureRegion));
+		this.numbers = new EntityManager<Entity>(100, new Entity(Resources.mNumbersTextureRegion));
 
-		this.mSmallnumbers = new EntityManager<Sprite>(5, new Sprite(Resources.mSmallNumbersTextureRegion, this.mBackground));
+		this.mSmallnumbers = new EntityManager<Entity>(5, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
 
-		this.mStars = new EntityManager<Sprite>(2, new Sprite(Resources.mStarsTextureRegion, this.mBackground));
+		this.mStars = new EntityManager<Entity>(2, new Entity(Resources.mStarsTextureRegion, this.mBackground));
 
 		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
@@ -70,6 +70,8 @@ public class LevelChoiseScreen extends ReflectionScreen {
 				Game.screens.set(Screen.BOX);
 			}
 		};
+
+		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
 		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
@@ -94,12 +96,12 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		this.levels.generate(this.numbers);
 
 		for (int i = 1; i >= 0; i--) {
-			final Sprite sprite = this.mStars.create();
+			final Entity Entity = this.mStars.create();
 
-			sprite.setCurrentTileIndex(i);
-			sprite.setScale(this.getScaleX() / 2f);
-			sprite.setScaleCenter(sprite.getWidthScaled() / 2, sprite.getHeightScaled() / 2);
-			sprite.setPosition(Options.cameraWidth - 142f, -10f);
+			Entity.setCurrentTileIndex(i);
+			Entity.setScale(this.getScaleX() / 2f);
+			Entity.setScaleCenter(Entity.getWidthScaled() / 2, Entity.getHeightScaled() / 2);
+			Entity.setPosition(Options.cameraWidth - 142f, -10f);
 		}
 	}
 
@@ -138,38 +140,38 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		this.levels.generate();
 
-		Sprite sprite;
+		Entity Entity;
 
-		sprite = (Sprite) this.mSmallnumbers.create();
+		Entity = (Entity) this.mSmallnumbers.create();
 		if (starsCollected < 10) {
-			sprite.destroy();
+			Entity.destroy();
 			for (int i = 1; i >= 0; i--) {
 				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 130f, 0f);
 			}
 		} else {
-			sprite.setPosition(Options.cameraWidth - 95f, 10f);
+			Entity.setPosition(Options.cameraWidth - 95f, 10f);
 			for (int i = 1; i >= 0; i--) {
 				this.mStars.getByIndex(i).setPosition(Options.cameraWidth - 142f, 0f);
 			}
 		}
 
-		sprite.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
+		Entity.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
 
-		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 80f, 10f);
-		sprite.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
+		Entity = (Entity) this.mSmallnumbers.create();
+		Entity.setPosition(Options.cameraWidth - 80f, 10f);
+		Entity.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
 
-		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 65f, 10f);
-		sprite.setCurrentTileIndex(10);
+		Entity = (Entity) this.mSmallnumbers.create();
+		Entity.setPosition(Options.cameraWidth - 65f, 10f);
+		Entity.setCurrentTileIndex(10);
 
-		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 50f, 10f);
-		sprite.setCurrentTileIndex(7);
+		Entity = (Entity) this.mSmallnumbers.create();
+		Entity.setPosition(Options.cameraWidth - 50f, 10f);
+		Entity.setCurrentTileIndex(7);
 
-		sprite = (Sprite) this.mSmallnumbers.create();
-		sprite.setPosition(Options.cameraWidth - 35f, 10f);
-		sprite.setCurrentTileIndex(5);
+		Entity = (Entity) this.mSmallnumbers.create();
+		Entity.setPosition(Options.cameraWidth - 35f, 10f);
+		Entity.setCurrentTileIndex(5);
 	}
 
 	/*

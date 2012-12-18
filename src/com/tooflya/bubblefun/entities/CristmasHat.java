@@ -74,13 +74,12 @@ public class CristmasHat extends Entity {
 	// ===========================================================
 
 	@Override
-	public Entity create() {
+	public void onCreate() {
+		super.onCreate();
 		this.setRotation(0);
 		this.setAlpha(1);
 		
 		this.mIsParticle = false;
-
-		return super.create();
 	}
 
 	/*
