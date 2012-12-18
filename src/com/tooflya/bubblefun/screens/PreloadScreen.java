@@ -125,7 +125,13 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 			sprite.setScale(0f);
 		}
+	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
+	@Override
+	public void onPostAttached() {
 		if (Options.mMainSound.isPlaying()) {
 			Options.mMainSound.pause();
 		}
@@ -134,13 +140,6 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		}
 
 		this.registerUpdateHandler(mTimer);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
-	 */
-	@Override
-	public void onPostAttached() {
 	}
 
 	/*
