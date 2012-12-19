@@ -1,6 +1,5 @@
 package com.tooflya.bubblefun.screens;
 
-import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.Shape;
@@ -17,9 +16,9 @@ public abstract class Screen extends Scene {
 	// Constants
 	// ===========================================================
 
-	public static final int SCREENS_COUNT = 13;
+	public static int screen = -1;
 
-	public static final int NO_SCREEN = -1;
+	public static final int SCREENS_COUNT = 13;
 
 	public static final int MENU = 0;
 	public static final int CHOISE = 1;
@@ -37,8 +36,6 @@ public abstract class Screen extends Scene {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	public static int screen = -1;
 
 	private float mDeltaTiming = 0;
 
@@ -119,10 +116,9 @@ public abstract class Screen extends Scene {
 	// Methods
 	// ===========================================================
 
-	public void setScene(final Engine pEngine) {
-		pEngine.setScene(this);
-	}
-
+	/**
+	 * 
+	 */
 	public void onBackPressed() {
 	}
 }

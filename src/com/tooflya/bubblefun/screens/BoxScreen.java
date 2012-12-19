@@ -178,8 +178,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 						boxes.get(bi).animation();
 
-						Game.screens.get(Screen.BOX).setChildScene(Game.screens.get(Screen.BL), false, false, true);
-						Game.screens.get(Screen.BL).onAttached();
+						Game.screens.setChildScreen(Game.screens.get(Screen.BL), false, false, true);
 
 						return;
 
@@ -514,8 +513,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 								BOX_INDEX = A;
 								boxes.get(A).animation();
 
-								Game.screens.get(Screen.BOX).setChildScene(Game.screens.get(Screen.BL), false, false, true);
-								Game.screens.get(Screen.BL).onAttached();
+								Game.screens.setChildScreen(Game.screens.get(Screen.BL), false, false, true);
 							}
 						}
 					} catch (NullPointerException ex) {
@@ -629,7 +627,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			this.getChildScene().onDetached();
+			Game.screens.clearChildScreens();
 		} else {
 			Game.screens.set(Screen.MENU);
 		}

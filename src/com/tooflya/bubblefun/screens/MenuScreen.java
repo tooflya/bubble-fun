@@ -296,10 +296,9 @@ public class MenuScreen extends ReflectionScreen {
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			Game.screens.get(Screen.EXIT).onDetached();
+			Game.screens.clearChildScreens();
 		} else {
-			this.setChildScene(Game.screens.get(Screen.EXIT), false, false, true);
-			Game.screens.get(Screen.EXIT).onAttached();
+			Game.screens.setChildScreen(Game.screens.get(Screen.EXIT), false, false, true);
 		}
 	}
 

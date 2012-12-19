@@ -2,11 +2,8 @@ package com.tooflya.bubblefun.managers;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.modifier.AlphaModifier;
-import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.anddev.andengine.entity.primitive.Rectangle;
-import org.anddev.andengine.util.modifier.IModifier;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.HUD;
@@ -37,108 +34,168 @@ public class ScreenManager {
 
 	public static int mChangeAction = 0;
 
-	private final HUD hud = new HUD();
-
-	private final AlphaModifier modifierOn = new AlphaModifier(0.4f, 0f, 1f, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
-		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
-			Game.engine.getScene().onDetached();
-
-			if (Z != 666) {
-				screens[Z].setScene(Game.engine);
-				screens[Z].onAttached();
-				Screen.screen = Z;
-			} else {
-				tempScreen.setScene(Game.engine);
-				tempScreen.onAttached();
-			}
-
-			ScreenManager.this.modifierOff.reset();
-
-		}
-
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
-		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-
-		}
-	});
-
-	private final AlphaModifier modifierOff = new AlphaModifier(0.4f, 1f, 0f, new IEntityModifierListener() {
-
-		/**
-		 * @param pEntityModifier
-		 * @param pEntity
-		 */
-		@Override
-		public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
-			ScreenManager.this.rectangle.setAlpha(0f);
-
-			((Screen) Game.engine.getScene()).onPostAttached();
-		}
-
-		/**
-		 * @param arg0
-		 * @param arg1
-		 */
-		@Override
-		public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-
-		}
-	});
+	private static Screen tempScreen;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private final HUD mHeadUpDisplay = new HUD();
+
 	/** List of available screens */
-	public Screen[] screens;
+	private Screen[] screens;
 
 	private Rectangle rectangle;
+
+	/**
+	 * 
+	 */
+	private final AlphaModifier modifierOn = new AlphaModifier(0.4f, 0f, 1f) {
+		@Override
+		public void onFinished() {
+			Game.engine.getScene().onDetached();
+
+			if (Screen.screen != -1) {
+				Game.engine.setScene(screens[Screen.screen]);
+				screens[Screen.screen].onAttached();
+			} else {
+				Game.engine.setScene(tempScreen);
+				tempScreen.onAttached();
+			}
+
+			modifierOff.reset();
+		}
+	};
+
+	/**
+	 * 
+	 */
+	private final AlphaModifier modifierOff = new AlphaModifier(0.4f, 1f, 0f) {
+		@Override
+		public void onFinished() {
+			((Screen) Game.engine.getScene()).onPostAttached();
+		}
+	};
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * 
+	 */
 	public ScreenManager() {
 		this.rectangle = this.makeColoredRectangle(0, 0, 0f, 0f, 0f);
 
-		Game.camera.setHUD(this.hud);
+		this.rectangle.registerEntityModifier(this.modifierOn);
+		this.rectangle.registerEntityModifier(this.modifierOff);
 
-		ScreenManager.this.rectangle.registerEntityModifier(ScreenManager.this.modifierOn);
-		ScreenManager.this.rectangle.registerEntityModifier(ScreenManager.this.modifierOff);
+		Game.camera.setHUD(this.mHeadUpDisplay);
 	}
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
+	/**
+	 * 
+	 */
 	public void createSurfaces() {
-		screens = new Screen[Screen.SCREENS_COUNT];
+		this.screens = new Screen[Screen.SCREENS_COUNT];
 
 		/** Create all scenes */
-		screens[Screen.MENU] = new MenuScreen();
-		screens[Screen.CHOISE] = new LevelChoiseScreen();
-		screens[Screen.LEVEL] = new LevelScreen();
-		screens[Screen.LEVELEND] = new LevelEndScreen();
-		screens[Screen.EXIT] = new ExitScreen();
-		screens[Screen.PAUSE] = new PauseScreen();
-		screens[Screen.BOX] = new BoxScreen();
-		screens[Screen.MORE] = new MoreScreen();
-		screens[Screen.CREDITS] = new CreditsScreen();
-		screens[Screen.PRELOAD] = new PreloadScreen();
-		screens[Screen.BL] = new BoxLockedScreen();
-		screens[Screen.BOXESUNLOCK] = new BoxesUnlockScreen();
+		this.screens[Screen.MENU] = new MenuScreen();
+		this.screens[Screen.CHOISE] = new LevelChoiseScreen();
+		this.screens[Screen.LEVEL] = new LevelScreen();
+		this.screens[Screen.LEVELEND] = new LevelEndScreen();
+		this.screens[Screen.EXIT] = new ExitScreen();
+		this.screens[Screen.PAUSE] = new PauseScreen();
+		this.screens[Screen.BOX] = new BoxScreen();
+		this.screens[Screen.MORE] = new MoreScreen();
+		this.screens[Screen.CREDITS] = new CreditsScreen();
+		this.screens[Screen.PRELOAD] = new PreloadScreen();
+		this.screens[Screen.BL] = new BoxLockedScreen();
+		this.screens[Screen.BOXESUNLOCK] = new BoxesUnlockScreen();
 	}
 
+	// ===========================================================
+	// Setters
+	// ===========================================================
+
+	/**
+	 * @param pScreen
+	 */
+	public void set(final int pScreen) {
+		if (Screen.screen == pScreen)
+			return;
+
+		Screen.screen = pScreen;
+
+		this.modifierOn.reset();
+	}
+
+	/**
+	 * @param pScreen
+	 */
+	public void set(final Screen pScreen) {
+		tempScreen = pScreen;
+
+		this.modifierOn.reset();
+	}
+
+	// ===========================================================
+	// Getters
+	// ===========================================================
+
+	/**
+	 * @param pScreen
+	 * @return
+	 */
+	public Screen get(final int pScreen) {
+		return screens[pScreen];
+	}
+
+	/**
+	 * @return
+	 */
+	public Screen getCurrent() {
+		return screens[Screen.screen];
+	}
+
+	// ===========================================================
+	// Child screens
+	// ===========================================================
+
+	/**
+	 * @param pScreen
+	 * @param pModalDraw
+	 * @param pModalUpdate
+	 * @param pModalTouch
+	 */
+	public void setChildScreen(final Screen pScreen, final boolean pModalDraw, final boolean pModalUpdate, final boolean pModalTouch) {
+		this.getCurrent().setChildScene(pScreen, pModalDraw, pModalUpdate, pModalTouch);
+		pScreen.onAttached();
+	}
+
+	/**
+	 * 
+	 */
+	public void clearChildScreens() {
+		this.getCurrent().getChildScene().onDetached();
+	}
+
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pRed
+	 * @param pGreen
+	 * @param pBlue
+	 * @return
+	 */
 	private Rectangle makeColoredRectangle(final float pX, final float pY, final float pRed, final float pGreen, final float pBlue) {
 		final Rectangle coloredRect = new Rectangle(pX, pY, Options.screenWidth, Options.screenHeight);
 		coloredRect.setColor(pRed, pGreen, pBlue);
@@ -146,60 +203,8 @@ public class ScreenManager {
 
 		coloredRect.setAlpha(0f);
 
-		this.hud.attachChild(coloredRect);
+		this.mHeadUpDisplay.attachChild(coloredRect);
 
 		return coloredRect;
-	}
-
-	private static int Z = 666;
-	private static Screen tempScreen;
-
-	public void set(final int pScreen) {
-		if (Z == pScreen)
-			return;
-
-		Z = pScreen;
-
-		this.modifierOn.reset();
-	}
-
-	public void set(final int pScreen, final boolean pNoAnimation) {
-		if (Z == pScreen)
-			return;
-
-		Z = pScreen;
-
-		Game.engine.getScene().onDetached();
-		screens[Z].setScene(Game.engine);
-		screens[Z].onAttached();
-		Screen.screen = Z;
-	}
-
-	public void set(final Screen pScreen) {
-		tempScreen = pScreen;
-
-		this.modifierOn.reset();
-	}
-
-	public void setChildScreen(final Screen pScreen, final boolean pModalDraw, final boolean pModalUpdate, final boolean pModalTouch) {
-		this.getCurrent().setChildScene(pScreen, pModalDraw, pModalUpdate, pModalTouch);
-		pScreen.onAttached();
-	}
-
-	public void clearChildScreens() {
-		this.getCurrent().getChildScene().onDetached();
-	}
-
-	public Screen get(final int pScreen) {
-		return screens[pScreen];
-	}
-
-	public Screen getCurrent() {
-		try {
-			return screens[Screen.screen];
-		} catch (ArrayIndexOutOfBoundsException e) {
-		}
-
-		return null;
 	}
 }
