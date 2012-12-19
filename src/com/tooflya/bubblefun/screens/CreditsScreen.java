@@ -1,14 +1,14 @@
 package com.tooflya.bubblefun.screens;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import org.anddev.andengine.entity.primitive.Rectangle;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Text;
 
 /**
  * @author Tooflya.com
@@ -25,13 +25,9 @@ public class CreditsScreen extends ReflectionScreen {
 	// ===========================================================
 
 	private final Entity mTopPanel;
+	private final Entity mSmallLogo;
 
 	private final ButtonScaleable mBackButton;
-
-	private final Rectangle mBaseRectangle = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight);
-	private final Rectangle mFrontRectangle = new Rectangle(0, 0, Options.cameraWidth, Options.cameraHeight);
-
-	//private final Entity mCredits = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mCommonTextureAtlas, Game.context, "logo_small_zero.png", 0, 0, 1, 1), this.mFrontRectangle);
 
 	// ===========================================================
 	// Constructors
@@ -43,9 +39,10 @@ public class CreditsScreen extends ReflectionScreen {
 		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
-		mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mSmallLogo = new Entity(Resources.mSmallLogoTextureRegion, this.mBackground);
 
-		mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
+		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
 			 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -62,22 +59,28 @@ public class CreditsScreen extends ReflectionScreen {
 		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
 
 		this.mTopPanel.create().setPosition(0, 0);
+		this.mSmallLogo.create().setCenterPosition(Options.cameraCenterX, 100f);
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
-		this.mBaseRectangle.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.mFrontRectangle.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 300f, Resources.mWhiteFont, "The premier debugging environemnt for"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 250f, Resources.mWhiteFont, "Opera Presto-based browsers. Opera Drag-"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 200f, Resources.mWhiteFont, "onfly is available directly from the Opera"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 150f, Resources.mWhiteFont, "browser, no extra download requierd."));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 50f, Resources.mWhiteFont, "Opera Dragonfly contains a full suite of"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY, Resources.mWhiteFont, "tools including DOM, CSS and Network"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 50f, Resources.mWhiteFont, "Inspectors, a JavaScript Debugger, Com-"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 100f, Resources.mWhiteFont, "mand Line and Error Console."));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 200f, Resources.mWhiteFont, "Tooflya Inc."));
 
-		this.mBaseRectangle.setAlpha(0f);
-		this.mFrontRectangle.setAlpha(0f);
+		try {
+			final PackageInfo pInfo = Game.instance.getPackageManager().getPackageInfo(Game.instance.getPackageName(), 0);
 
-		this.attachChild(this.mBaseRectangle);
-
-		this.mBaseRectangle.attachChild(this.mFrontRectangle);
-
-		//this.mCredits.enableBlendFunction();
-		//this.mCredits.setAlpha(1f);
-		//this.mCredits.create().setCenterPosition(this.mFrontRectangle.getWidth() / 2, this.mFrontRectangle.getHeight() / 2);
+			this.attachChild(new Text(Options.screenWidth - 140f, Options.screenHeight - 90f, Resources.mWhiteFont, "Version: " + pInfo.versionName));
+			this.attachChild(new Text(Options.screenWidth - 160f, Options.screenHeight - 40f, Resources.mWhiteFont, "Build: " + pInfo.versionCode));
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// ===========================================================

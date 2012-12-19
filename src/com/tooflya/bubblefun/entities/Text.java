@@ -29,6 +29,8 @@ public class Text extends ChangeableText {
 	 */
 	public Text(float pX, float pY, Font pFont, String pText) {
 		super(pX, pY, pFont, pText);
+
+		this.setPosition(pX, pY);
 	}
 
 	// ===========================================================
@@ -40,7 +42,7 @@ public class Text extends ChangeableText {
 	 */
 	@Override
 	public void setPosition(final float pX, final float pY) {
-		this.mX = pX - this.getWidthScaled() / 2;
-		this.mY = pY - this.getHeightScaled() / 2;
+		this.mX = pX - this.getWidth() / 2;
+		this.mY = pY - this.getHeight() / 2;
 	}
 }

@@ -5,6 +5,7 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.Shape;
 
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.entities.Text;
 
 /**
  * @author Tooflya.com
@@ -86,12 +87,14 @@ public abstract class Screen extends Scene {
 		super.attachChild(pEntity);
 
 		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
-		pEntity.setScaleCenter(0, 0);
-		pEntity.setScale(Options.cameraRatioFactor);
+		if (!(pEntity instanceof Text)) {
+			pEntity.setScaleCenter(0, 0);
+			pEntity.setScale(Options.cameraRatioFactor);
 
-		/** After scale action we need to find center of entity position. */
-		if (((Shape) pEntity).getWidthScaled() > Options.cameraWidth || ((Shape) pEntity).getHeightScaled() > Options.cameraHeight) {
-			pEntity.setPosition((Options.screenWidth - ((Shape) pEntity).getWidthScaled()) / 2, (Options.screenHeight - ((Shape) pEntity).getHeightScaled()) / 2);
+			/** After scale action we need to find center of entity position. */
+			if (((Shape) pEntity).getWidthScaled() > Options.cameraWidth || ((Shape) pEntity).getHeightScaled() > Options.cameraHeight) {
+				pEntity.setPosition((Options.screenWidth - ((Shape) pEntity).getWidthScaled()) / 2, (Options.screenHeight - ((Shape) pEntity).getHeightScaled()) / 2);
+			}
 		}
 	}
 

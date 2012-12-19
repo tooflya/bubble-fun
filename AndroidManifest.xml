@@ -1,44 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tooflya.bubblefun"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<?xml version="1.0" encoding="utf-8"?><manifest android:versionCode="1825" android:versionName="0.7.1" package="com.tooflya.bubblefun" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:smallScreens="true" />
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
 
-    <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="14" />
-    
-    <!--  FOR THE BETA VERSION ONLY -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--  /FOR THE BETA VERSION ONLY -->
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="14"/>
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- FOR THE BETA VERSION ONLY -->
 
-    <application
-        android:launchMode="singleInstance"
-        android:icon="@drawable/icon"
-        android:installLocation="auto"
-        android:label="@string/app" >
-        <activity
-            android:name=".Game"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.NoBackground" >
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- /FOR THE BETA VERSION ONLY -->
+
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application android:icon="@drawable/icon" android:installLocation="auto" android:label="@string/app" android:launchMode="singleInstance">
+        <activity android:configChanges="keyboardHidden|orientation" android:name=".Game" android:screenOrientation="portrait" android:theme="@style/Theme.NoBackground">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

@@ -2,6 +2,7 @@ package com.tooflya.bubblefun;
 
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.FontFactory;
+import org.anddev.andengine.opengl.font.StrokeFont;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -35,8 +36,11 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas5 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas6 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public static final BitmapTextureAtlas mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final BitmapTextureAtlas mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
+	public static final BitmapTextureAtlas mWhiteFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
+
 	public static final Font mFont = FontFactory.createFromAsset(mFontTexture, Game.context, "font/casual.ttf", 8, true, Color.BLACK);
+	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mWhiteFontTexture, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
 
 	// ===========================================================
 	// Texture Regions
@@ -96,6 +100,7 @@ public class Resources {
 	public static final TiledTextureRegion mBoxPurchaseButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas5, Game.context, "btn-unlock-bye.png", 680, 930, 1, 1);
 	public static final TiledTextureRegion mBoxCollect50TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas5, Game.context, "50-collect.png", 880, 930, 1, 1);
 	public static final TiledTextureRegion mBoxCollect100TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas5, Game.context, "100-collect.png", 960, 930, 1, 1);
+	public static final TiledTextureRegion mSmallLogoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas5, Game.context, "logo_small_zero.png", 512, 0, 1, 1);
 
 	public static final TiledTextureRegion mExitYesbuttonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas2, Game.context, "accept-btn.png", 350, 0, 1, 2);
 	public static final TiledTextureRegion mExitNobuttonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas2, Game.context, "decline-btn.png", 350, 150, 1, 2);
@@ -255,6 +260,7 @@ public class Resources {
 	};
 
 	private static boolean isFontLoaded = false;
+	private static boolean isFontLoaded2 = false;
 
 	// ===========================================================
 	// Methods
@@ -262,6 +268,11 @@ public class Resources {
 
 	public static final void loadCommonResources() {
 		Game.loadTextures(mBackgroundCommonTextureAtlas, mBackgroundCommonTextureAtlas2);
+		if (!isFontLoaded2) {
+			isFontLoaded2 = true;
+			Game.engine.getFontManager().loadFont(mWhiteFont);
+			Game.loadTextures(mWhiteFontTexture);
+		}
 	}
 
 	public static final void loadFirstResources() {

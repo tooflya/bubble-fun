@@ -11,7 +11,19 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
+/**
+* @author Tooflya.com
+* @since
+*/
 public class PreloadScreen extends Screen implements IAsyncCallback {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
 
 	private final Entity mBackground;
 	public final Entity mTextBar;
@@ -75,6 +87,10 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		}
 	});
 
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
 	public PreloadScreen() {
 		this.mBackground = new Entity(Resources.mPreloadBackgroundTextureRegion, this);
 		this.mTextBar = new Entity(Resources.mPreloadTextTextureRegion, this.mBackground);
@@ -82,7 +98,6 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		this.mBackground.create().setBackgroundCenterPosition();
 
 		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
-
 	}
 
 	// ===========================================================
