@@ -200,7 +200,7 @@ public class LevelEndScreen extends PopupScreen {
 		totalscore = 0;
 
 		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount, LevelScreen.Score);
-		Game.db.updateLevel(Options.levelNumber + 1, 1); // TODO: Remove stars reset
+		Game.db.updateLevel(Options.levelNumber + 1, 1,0,0); // TODO: Remove stars reset
 
 		mLevelCompleteCapture.create().setPosition(this.mPanel.getWidth() / 2 - this.mLevelCompleteCapture.getWidth() / 2 - 5f, this.mPanel.getHeight() / 2 - 200 - this.mLevelCompleteCapture.getHeight() / 2, true);
 	}

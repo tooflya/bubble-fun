@@ -9,7 +9,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextur
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.LinearGradientFillBitmapTextureAtlasSourceDecorator.LinearGradientDirection;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.graphics.Color;

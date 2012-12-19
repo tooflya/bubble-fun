@@ -14,15 +14,13 @@ public class Box {
 	// Fields
 	// ===========================================================
 
-	private int mId;
 	private boolean mOpen;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Box(final int pId, final boolean pOpen) {
-		this.mId = pId;
+	public Box(final boolean pOpen) {
 		this.mOpen = pOpen;
 	}
 

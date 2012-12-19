@@ -26,7 +26,19 @@ import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
+/**
+* @author Tooflya.com
+* @since
+*/
 public class LevelsManager<T> extends EntityManager<Entity> {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
 
 	private float PADDING, PADDING_B;
 	private float X, Y;
@@ -36,6 +48,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	private EntityManager<Entity> mNumbers;
 
 	private static LevelLoader mLevelLoader;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	public LevelsManager(int capacity, Entity element) {
 		super(capacity, element);
@@ -48,6 +64,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		X = PADDING_B + 5f;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
 	}
+
+	// ===========================================================
+	// Virtual methods
+	// ===========================================================
 
 	/*
 	 * (non-Javadoc)
@@ -65,6 +85,10 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
 
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	public void generate(final EntityManager<Entity> pNumbers) {
 		this.mNumbers = pNumbers;
@@ -250,6 +274,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				}
 			}
 		});
+		
 		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
@@ -259,25 +284,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					final int y = SAXUtils.getIntAttribute(pAttributes, "y", 50);
 					chikyBezier.addControlPoint((short) x, (short) y);
 				}
-			}
-		});
-
-		/**
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		mLevelLoader.registerEntityLoader("electrod", new IEntityLoader() {
-			@Override
-			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				/*
-				 * final Electrod electrod = screen.electrods.create();
-				 * 
-				 * final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x"); final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-				 * 
-				 * electrod.setPosition(x, y);
-				 */
 			}
 		});
 
@@ -328,17 +334,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
 
-				/*
-				 * final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x"); final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-				 * 
-				 * final float rotation = SAXUtils.getFloatAttribute(pAttributes, "rotation", 0); final float time = SAXUtils.getFloatAttribute(pAttributes, "time", 0);
-				 * 
-				 * final int index = SAXUtils.getIntAttributeOrThrow(pAttributes, "index");
-				 * 
-				 * final TutorialText Entity = new TutorialText(x, y, rotation, time, screen.mTutorialTextureRegion[index], screen); Entity.create().setPosition(x, y); Entity.index = index;
-				 * 
-				 * screen.mTutorialEntitys.add(Entity);
-				 */
 			}
 		});
 
@@ -349,28 +344,22 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		 * 
 		 */
 
-		if (true) {
-			try {
-				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("TMXLevel: Loading level from SD");
+		if (Options.DEBUG) {
 			InputStream inputStream;
-			String state = Environment.getExternalStorageState();
-			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel * (Options.boxNumber + 1) + ".xml"); // Can be done with 2 params : folder & file.
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel * (Options.boxNumber + 1) + ".xml");
 			try {
 				inputStream = new FileInputStream(file);
 				mLevelLoader.loadLevelFromStream(inputStream);
 				inputStream.close();
 			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				if (!Environment.MEDIA_MOUNTED.equals(state) && !Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-					System.out.println("TMXLevel: SD Storage unavailable.");
-				} else {
-					System.out.println("TMXLevel: File not found, falling back to regular level. Does it exist ? (" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel + ".xml" + ")");
-				}
+
+			}
+
+		} else {
+			try {
+				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 

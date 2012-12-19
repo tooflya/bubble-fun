@@ -34,7 +34,7 @@ public class PauseScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			Game.db.updateLevel(Options.levelNumber, 1, 0);
+			Game.db.updateLevel(Options.levelNumber, 1, 0 ,0);
 
 			if (Options.levelNumber % 25 == 0) {
 				ScreenManager.mChangeAction = 3;
