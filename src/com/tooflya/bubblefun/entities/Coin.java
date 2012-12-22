@@ -5,6 +5,7 @@ import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.screens.LevelScreen;
 
 public class Coin extends Entity {
@@ -53,7 +54,7 @@ public class Coin extends Entity {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		this.stopAnimation();
 		this.animate(pFrameDuration, pNormalMoveFrames, 9999);
 
@@ -102,7 +103,7 @@ public class Coin extends Entity {
 	 * 
 	 */
 	public void remove() {
-		this.mFinishMoveModifier = new MoveModifier(0.6f, this.getX(), 0, this.getY(), 0) {
+		this.mFinishMoveModifier = new MoveModifier(0.3f, this.getX(), 10f, this.getY(), Options.cameraHeight - 30f) {
 			@Override
 			public void onFinished() {
 				mFinishScaleModifier.stop();
@@ -115,6 +116,10 @@ public class Coin extends Entity {
 
 		this.mFinishScaleModifier.reset();
 		this.mFinishMoveModifier.reset();
+
+		if (Options.isMusicEnabled) {
+			Options.mCoinPickup.play();
+		}
 	}
 
 	/**

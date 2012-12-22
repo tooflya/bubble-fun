@@ -21,6 +21,7 @@ import com.tooflya.bubblefun.screens.MoreScreen;
 import com.tooflya.bubblefun.screens.PauseScreen;
 import com.tooflya.bubblefun.screens.PreloadScreen;
 import com.tooflya.bubblefun.screens.Screen;
+import com.tooflya.bubblefun.screens.StoreScreen;
 
 /**
  * @author Tooflya.com
@@ -113,6 +114,7 @@ public class ScreenManager {
 		this.screens[Screen.LEVEL] = new LevelScreen();
 		this.screens[Screen.LEVELEND] = new LevelEndScreen();
 		this.screens[Screen.EXIT] = new ExitScreen();
+		this.screens[Screen.STORE] = new StoreScreen();
 		this.screens[Screen.PAUSE] = new PauseScreen();
 		this.screens[Screen.BOX] = new BoxScreen();
 		this.screens[Screen.MORE] = new MoreScreen();

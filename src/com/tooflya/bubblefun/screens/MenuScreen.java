@@ -42,6 +42,7 @@ public class MenuScreen extends ReflectionScreen {
 	private final ButtonScaleable mPlayIcon;
 	private final ButtonScaleable mMoreIcon;
 	private final ButtonScaleable mSoundIcon;
+	private final ButtonScaleable mBuyButton;
 
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
@@ -148,6 +149,17 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
+		this.mBuyButton = new ButtonScaleable(Resources.mBuyButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.set(Screen.STORE);
+			}
+		};
+
 		this.mMoreIcon = new ButtonScaleable(Resources.mMoreIconTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
@@ -221,6 +233,7 @@ public class MenuScreen extends ReflectionScreen {
 		this.mFacebookIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 
 		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
+		this.mBuyButton.create().setCenterPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 150f);
 
 		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);

@@ -262,6 +262,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				Options.mLaser = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "laser.ogg");
 				Options.mGlassBroke = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "glass-broke.ogg");
 				Options.mAsteroidDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "asteroid-boom.ogg");
+				Options.mCoinPickup = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "coin.ogg");
 
 				Options.mMainSound.setLooping(true);
 				Options.mLevelSound.setLooping(true);
