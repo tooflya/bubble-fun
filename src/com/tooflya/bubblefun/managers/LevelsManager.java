@@ -27,9 +27,9 @@ import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
 /**
-* @author Tooflya.com
-* @since
-*/
+ * @author Tooflya.com
+ * @since
+ */
 public class LevelsManager<T> extends EntityManager<Entity> {
 
 	// ===========================================================
@@ -43,7 +43,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	private float PADDING, PADDING_B;
 	private float X, Y;
 
-	private static Chiky chikyBezier = null;
+	private static Chiky chiky = null;
 
 	private EntityManager<Entity> mNumbers;
 
@@ -188,101 +188,58 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			}
 		});
 
-		/**
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
-			@Override
-			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Chiky chiky = screen.chikies.create();
-
-				if (chiky != null) {
-					final float startX = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-					final float startY = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-
-					final float normalStepX = SAXUtils.getFloatAttribute(pAttributes, "speed", 0);
-					final float speedyStepX = SAXUtils.getFloatAttribute(pAttributes, "speedyStepX", normalStepX);
-					final float parashuteStepY = SAXUtils.getFloatAttribute(pAttributes, "parashuteStepY", 0);
-
-					final float vectorX = SAXUtils.getFloatAttribute(pAttributes, "vectorX", 0);
-					final float vectorY = SAXUtils.getFloatAttribute(pAttributes, "vectorY", 0);
-					final float speedX = SAXUtils.getFloatAttribute(pAttributes, "speedX", 0);
-					final float speedY = SAXUtils.getFloatAttribute(pAttributes, "speedY", 0);
-
-					final float vectorLimit = SAXUtils.getFloatAttribute(pAttributes, "vectorLimit", 0);
-					final float vectorStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStopUpdates", 0);
-					final float vectorStartStopUpdates = SAXUtils.getFloatAttribute(pAttributes, "vectorStartStopUpdates", 0);
-					final boolean stopSecond = SAXUtils.getBooleanAttribute(pAttributes, "stopSecond", false);
-
-					final float offsetX = SAXUtils.getFloatAttribute(pAttributes, "offsetX", 0);
-
-					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
-
-					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
-
-					final boolean flip = SAXUtils.getBooleanAttribute(pAttributes, "flip", false);
-
-					chiky.initState(true);
-
-					chiky.initStartX(startX * Options.cameraWidth);
-					chiky.initStartY(Options.menuHeight + chiky.getHeightScaled() / 2 + startY * (Options.cameraHeight - Options.menuHeight - Options.touchHeight - chiky.getHeightScaled()));
-
-					chiky.initProperties(properties);
-					chiky.initSpeedyStepX(speedyStepX);
-					chiky.initParashuteStepY(parashuteStepY);
-
-					chiky.initVectorMoveSteps(vectorX, vectorY, speedX, speedY, vectorStartStopUpdates, vectorStopUpdates, vectorLimit, stopSecond);
-
-					if (vectorLimit == 0) {
-						chiky.initNormalStepX(normalStepX);
-					}
-
-					chiky.initOffsetX(offsetX);
-
-					chiky.initScale(scale);
-
-					chiky.getTextureRegion().setFlippedHorizontal(flip);
-				}
-			}
-		});
-
 		// Example:
-		// <chikyBezier minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true">
+		// <chiky name="tooflya.com", scale="0.5", minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true", normalMaxTime="1", normalSpeedTime="0.5", unnormalMaxTime="0.5", unnormalSpeedTime="1", properties="3">
 		// <ctrPoint x="10", y="50"/>
 		// <ctrPoint x="90", y="50"/>
 		// </chikyBezier>
-		mLevelLoader.registerEntityLoader("chikyBezier", new IEntityLoader() {
+		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				chikyBezier = screen.chikies.create();
-				if (chikyBezier != null)
+				chiky = screen.chikies.create();
+				if (chiky != null)
 				{
+					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
+					chiky.initScale(scale);
+
+					// TODO: (R) Add later. final String name = SAXUtils.getStringAttribute(pAttributes, "name", 1);
+					// TODO: (R) Add later. chiky.initName(name);
+
 					final float minTime = SAXUtils.getFloatAttribute(pAttributes, "minTime", 0);
-					chikyBezier.initMinTime(minTime);
+					chiky.initMinTime(minTime);
 					final float maxTime = SAXUtils.getFloatAttribute(pAttributes, "maxTime", 1);
-					chikyBezier.initMaxTime(maxTime);
+					chiky.initMaxTime(maxTime);
 					final float speedTime = SAXUtils.getFloatAttribute(pAttributes, "speedTime", 1);
-					chikyBezier.initSpeedTime(speedTime);
+					chiky.initSpeedTime(speedTime);
 					final float offsetTime = SAXUtils.getFloatAttribute(pAttributes, "offsetTime", 0);
-					chikyBezier.initOffsetTime(offsetTime);
+					chiky.initOffsetTime(offsetTime);
 					final boolean isRTime = SAXUtils.getBooleanAttribute(pAttributes, "isRTime", true);
-					chikyBezier.initIsReverseTime(isRTime);
-					chikyBezier.initState(false);
+					chiky.initIsReverseTime(isRTime);
+
+					final float normalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "normalMaxTime", 0);
+					chiky.initMinTime(normalMaxTime);
+					final float normalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "normalSpeedTime", 0);
+					chiky.initMinTime(normalSpeedTime);
+					final float unnormalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalMaxTime", 0);
+					chiky.initMinTime(unnormalMaxTime);
+					final float unnormalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalSpeedTime", 0);
+					chiky.initMinTime(unnormalSpeedTime);
+
+					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
+					chiky.initProperties(properties);
+
 				}
 			}
 		});
-		
+
 		mLevelLoader.registerEntityLoader("ctrPoint", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				if (chikyBezier != null)
+				if (chiky != null)
 				{
 					final int x = SAXUtils.getIntAttribute(pAttributes, "x", 50);
 					final int y = SAXUtils.getIntAttribute(pAttributes, "y", 50);
-					chikyBezier.addControlPoint((short) x, (short) y);
+					chiky.addControlPoint((short) x, (short) y);
 				}
 			}
 		});

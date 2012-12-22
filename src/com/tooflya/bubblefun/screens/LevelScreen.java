@@ -598,7 +598,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			for (int i = 0; i < this.chikies.getCount(); i++) {
 				final Chiky chiky = this.chikies.getByIndex(i);
 
-				chiky.changeName(mBirdsNames[Options.levelNumber - 1][i]);
+				chiky.initName(mBirdsNames[Options.levelNumber - 1][i]);
 			}
 		} catch (ArrayIndexOutOfBoundsException ex) {
 		}

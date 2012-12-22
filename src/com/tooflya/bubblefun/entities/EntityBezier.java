@@ -26,7 +26,7 @@ public class EntityBezier extends Entity {
 
 	private float mMinTime = 0; // Seconds.
 	private float mMaxTime = 1; // Seconds.
-	private float mSpeedTime = 0; // Points per seconds.
+	protected float mSpeedTime = 0; // Points per seconds.
 	private float mOffsetTime = 0; // Seconds.
 	private boolean mIsReverseTime = true;
 
