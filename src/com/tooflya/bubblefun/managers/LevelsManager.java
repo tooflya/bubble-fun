@@ -185,6 +185,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				screen.mBlueBird.setIgnoreUpdate(!isBlueBirdNeed);
 
 				Resources.mLevelBackgroundGradientSource.changeColors(Resources.mLevelGradientBitmap, Color.rgb(r1, g1, b1), Color.rgb(r2, g2, b2));
+				Resources.mBackgroundGradientTextureAtlas2.setUpdateOnHardwareNeeded(true);
 			}
 		});
 
