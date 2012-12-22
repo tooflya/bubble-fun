@@ -32,6 +32,7 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.CristmasHat;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.EntityBezier;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glass;
 import com.tooflya.bubblefun.entities.Glint;
@@ -129,7 +130,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private Bubble lastAirgum = null;
 
 	private final Entity mCoin;
-	
+
 	public EntityManager<Coin> coins;
 
 	public EntityManager<Chiky> chikies;
@@ -354,11 +355,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		};
 
 		this.mCoin = new Entity(Resources.mStaticCoinTextureRegion, this.mBackground);
-		
+
 		this.mBackground.setBackgroundCenterPosition();
 
 		this.mCoin.create().setPosition(10f, Options.cameraHeight - 40f);
-		
+
 		this.mPanel.create().setPosition(0, 0);
 
 		this.setOnSceneTouchListener(this);
@@ -451,18 +452,20 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBonusButton1 = new ButtonScaleable(Resources.mBonus1TextureRegion, this.mBackground, true) {
 			@Override
 			public void onClick() {
-				mBonusType = 21;
-				BubbleFactory.BubbleBonus(mBonusType);
-				mBonusType = 0;
+				EntityBezier.mKoefSpeedTime /= 2;
+				// mBonusType = 21;
+				// BubbleFactory.BubbleBonus(mBonusType);
+				// mBonusType = 0;
 			}
 		};
 
 		this.mBonusButton2 = new ButtonScaleable(Resources.mBonus2TextureRegion, this.mBackground, true) {
 			@Override
 			public void onClick() {
-				mBonusType = 22;
-				BubbleFactory.BubbleBonus(mBonusType);
-				mBonusType = 0;
+				EntityBezier.mKoefSpeedTime *= 2;
+				// mBonusType = 22;
+				// BubbleFactory.BubbleBonus(mBonusType);
+				// mBonusType = 0;
 			}
 		};
 
@@ -548,7 +551,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mMeteorits.clear();
 		this.mSmallMeteorits.clear();
-		//this.mUfos.clear();
+		// this.mUfos.clear();
 
 		generateChikies();
 
@@ -583,6 +586,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 
 		numbers.getByIndex(1).setCurrentTileIndex(10);
+
+		EntityBezier.mKoefSpeedTime = 1;
 	}
 
 	// ===========================================================
@@ -651,14 +656,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						air.remove();
 					}
 
-					/*if (!air.mIsAlreadyFollow) {
-						if (air.getX() <= (airgum.getX() + airgum.getWidthScaled() * 1.1f) &&
-								(airgum.getX() - airgum.getWidthScaled()) <= (air.getX() + air.getWidthScaled()) &&
-								air.getY() <= (airgum.getY() + airgum.getHeightScaled() * 1.1f) &&
-								airgum.getY() - airgum.getHeightScaled() <= (air.getY() + air.getHeightScaled())) {
-							air.follow(airgum);
-						}
-					}*/
+					/*
+					 * if (!air.mIsAlreadyFollow) { if (air.getX() <= (airgum.getX() + airgum.getWidthScaled() * 1.1f) && (airgum.getX() - airgum.getWidthScaled()) <= (air.getX() + air.getWidthScaled()) && air.getY() <= (airgum.getY() + airgum.getHeightScaled() * 1.1f) && airgum.getY() - airgum.getHeightScaled() <= (air.getY() + air.getHeightScaled())) { air.follow(airgum); } }
+					 */
 				}
 
 				for (int k = 0; k < this.mLightingSwarms.getCount(); k++) {

@@ -2,6 +2,8 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.util.FloatMath;
+
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
@@ -138,7 +140,7 @@ public class Chiky extends EntityBezier {
 			if (this.IsProperty(isUnnormalMoveFlag)) {
 				this.mState = States.UnnormalMove;
 				this.mUnnormalTime = this.mNormalTime - this.mNormalMaxTime;
-				this.mSpeedTime = this.mUnnormalSpeedTime;
+				this.mSpeedTime = this.mSpeedTime == 0 ? this.mUnnormalSpeedTime : Math.signum(this.mSpeedTime) * this.mUnnormalSpeedTime;
 
 				this.mWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
 				this.mWind.mFollowEntity = this;
@@ -163,7 +165,7 @@ public class Chiky extends EntityBezier {
 		if (this.mUnnormalTime > this.mUnnormalMaxTime) {
 			this.mState = States.NormalMove;
 			this.mNormalTime = this.mUnnormalTime - this.mUnnormalMaxTime;
-			this.mSpeedTime = this.mNormalSpeedTime;
+			this.mSpeedTime = this.mSpeedTime == 0 ? this.mNormalSpeedTime : Math.signum(this.mSpeedTime) * this.mNormalSpeedTime;
 
 			this.mWind.destroy();
 			this.mWind = null;
@@ -273,6 +275,7 @@ public class Chiky extends EntityBezier {
 		}
 	}
 
+
 	// ===========================================================
 	// Setters
 	// ===========================================================
@@ -310,7 +313,7 @@ public class Chiky extends EntityBezier {
 				}
 			}
 		}
-		
+
 		this.mState = States.WithGumMove;
 	}
 

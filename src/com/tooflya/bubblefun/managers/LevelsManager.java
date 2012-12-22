@@ -200,6 +200,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				chiky = screen.chikies.create();
 				if (chiky != null)
 				{
+					// TODO: (R) Try to not set default values. For example, how we can set Float.MAX_VALUE for normalMaxTime.
 					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
 					chiky.initScale(scale);
 
@@ -219,11 +220,17 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 					final float normalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "normalMaxTime", 0);
 					chiky.initNormalMaxTime(normalMaxTime);
-					final float normalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "normalSpeedTime", 0);
+					float normalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "normalSpeedTime", 0);
+					if(normalSpeedTime==0){
+						normalSpeedTime = Float.MIN_VALUE;
+					}
 					chiky.initNormalSpeedTime(normalSpeedTime);
 					final float unnormalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalMaxTime", 0);
 					chiky.initUnnormalMaxTime(unnormalMaxTime);
-					final float unnormalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalSpeedTime", 0);
+					float unnormalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalSpeedTime", 0);
+					if(unnormalSpeedTime==0){
+						unnormalSpeedTime = Float.MIN_VALUE;
+					}
 					chiky.initUnnormalSpeedTime(unnormalSpeedTime);
 
 					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
