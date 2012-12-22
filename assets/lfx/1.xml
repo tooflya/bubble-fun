@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <level r1="0" g1="138" b1="255" r2="0" g2="255" b2="255" bluebird="false">
-    <chiky x="0" y="0.75" speed="1"/>
-	<chikyBezier minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="true">
-		<ctrPoint x="10" y="50"/>
-		<ctrPoint x="50" y="0"/>
-		<ctrPoint x="90" y="100"/>
-		<ctrPoint x="10" y="80"/>
-		<ctrPoint x="90" y="50"/>
-	</chikyBezier>
+	<chiky name="tooflya.com", scale="0.5", minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true", normalMaxTime="1", normalSpeedTime="0.5", unnormalMaxTime="0.5", unnormalSpeedTime="1", properties="0">
+		<ctrPoint x="10", y="50"/>
+		<ctrPoint x="90", y="50"/>
+	</chiky>
 	<!--<tutorial index="0" x="300" y="750" rotation="-3" time="1"/>-->
 	<tutorial index="1" x="350" y="1050" rotation="-10" time="3"/>
 </level>

@@ -285,7 +285,6 @@ public class Chiky extends EntityBezier {
 
 		this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
 
-		this.mState = States.WithGumMove;
 		this.mWithGumTime = 0;
 
 		if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
@@ -311,6 +310,8 @@ public class Chiky extends EntityBezier {
 				}
 			}
 		}
+		
+		this.mState = States.WithGumMove;
 	}
 
 	@Override
@@ -358,6 +359,7 @@ public class Chiky extends EntityBezier {
 				}
 			}
 		}
+		this.mState = States.WithGumMove;
 	}
 
 	// ===========================================================
