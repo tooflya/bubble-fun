@@ -22,7 +22,7 @@ public class EntityBezier extends Entity {
 	// Fields
 	// ===========================================================
 
-	private float mTime = 0f; // Seconds.
+	protected float mTime = 0f; // Seconds.
 
 	private float mMinTime = 0; // Seconds.
 	private float mMaxTime = 1; // Seconds.
