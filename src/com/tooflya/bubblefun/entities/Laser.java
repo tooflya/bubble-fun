@@ -20,15 +20,15 @@ public class Laser extends Entity {
 
 		float distance = MathUtils.distance(pX, pY, xr, yr);
 
-		float dx = distance * FloatMath.cos(angle);
-		float dy = distance * FloatMath.sin(angle);
+		float dx = xr-pX; // need change variable
+		float dy = yr-pY;
 
-		dx = dx / FloatMath.sqrt((float) (Math.pow(dx, 2) + Math.pow(dy, 2)));
-		dy = dy / FloatMath.sqrt((float) (Math.pow(dx, 2) + Math.pow(dy, 2)));
+		dx = dx /distance;
+		dy = dy /distance;
 
 		this.setSpeed(dx * 15f, dy * 15f);
 
-		this.mRotation = (float) (Math.atan2(this.getSpeedY(), this.getSpeedX()) * 180 / Math.PI);
+		this.mRotation = (float) (angle* 180 / Math.PI);
 	}
 
 	/*

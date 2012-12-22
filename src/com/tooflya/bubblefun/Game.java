@@ -21,6 +21,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.user.IAsyncCallback;
+import org.anddev.andengine.util.user.ShakeEventListener;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
