@@ -193,7 +193,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		// <chiky name="tooflya.com", scale="0.5", minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true", normalMaxTime="1", normalSpeedTime="0.5", unnormalMaxTime="0.5", unnormalSpeedTime="1", properties="3">
 		// <ctrPoint x="10", y="50"/>
 		// <ctrPoint x="90", y="50"/>
-		// </chikyBezier>
+		// </chiky>
 		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
