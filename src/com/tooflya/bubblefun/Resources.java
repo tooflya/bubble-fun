@@ -35,12 +35,12 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas4 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas5 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas6 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final BitmapTextureAtlas mElementsTextureAtlas7 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public static final BitmapTextureAtlas mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
-	public static final BitmapTextureAtlas mWhiteFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
 
 	public static final Font mFont = FontFactory.createFromAsset(mFontTexture, Game.context, "font/casual.ttf", 8, true, Color.BLACK);
-	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mWhiteFontTexture, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
+	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mFontTexture, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
 
 	// ===========================================================
 	// Texture Regions
@@ -108,6 +108,11 @@ public class Resources {
 	public static final TiledTextureRegion mBoxesLabel1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas2, Game.context, "box-name-1.png", 350, 242, 1, 1);
 	public static final TiledTextureRegion mBoxesLabel2TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas2, Game.context, "box-name-2.png", 350, 279, 1, 1);
 	public static final TiledTextureRegion mBoxesLabel3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas2, Game.context, "box-name-3.png", 350, 321, 1, 1);
+	public static final TiledTextureRegion mStaticCoinTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas2, Game.context, "static_coin.jpg", 400, 761, 1, 1);
+
+	public static final TiledTextureRegion mBuyButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "buy-button.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mStorePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "store-panel.png", 0, 100, 1, 5);
+	public static final TiledTextureRegion mAnyPurchaseTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "any-purchase-text.png", 500, 0, 1, 1);
 
 	public static final EmptyBitmapTextureAtlasSource mLevelGradientBitmap = new EmptyBitmapTextureAtlasSource(2, 512);
 	public static final LinearGradientFillBitmapTextureAtlasSourceDecorator mLevelBackgroundGradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecorator(mLevelGradientBitmap,
@@ -259,37 +264,25 @@ public class Resources {
 		}
 	};
 
-	private static boolean isFontLoaded = false;
-	private static boolean isFontLoaded2 = false;
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
 	public static final void loadCommonResources() {
-		Game.loadTextures(mBackgroundCommonTextureAtlas, mBackgroundCommonTextureAtlas2);
-		if (!isFontLoaded2) {
-			isFontLoaded2 = true;
-			Game.engine.getFontManager().loadFont(mWhiteFont);
-			Game.loadTextures(mWhiteFontTexture);
-		}
+		Game.loadTextures(mBackgroundCommonTextureAtlas, mBackgroundCommonTextureAtlas2, mFontTexture);
+		Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
 	}
 
 	public static final void loadFirstResources() {
-		Game.loadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas2, mElementsTextureAtlas5);
+		Game.loadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas2, mElementsTextureAtlas5, mElementsTextureAtlas7);
 	}
 
 	public static final void unloadFirstResources() {
-		Game.unloadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas2, mElementsTextureAtlas5);
+		Game.unloadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas2, mElementsTextureAtlas5, mElementsTextureAtlas7);
 	}
 
 	public static final void loadSecondResources() {
 		Game.loadTextures(mBackgroundGradientTextureAtlas2, mElementsTextureAtlas3, mElementsTextureAtlas4, mElementsTextureAtlas6);
-		if (!isFontLoaded) {
-			isFontLoaded = true;
-			Game.engine.getFontManager().loadFont(mFont);
-			Game.loadTextures(mFontTexture);
-		}
 	}
 
 	public static final void unloadSecondResources() {

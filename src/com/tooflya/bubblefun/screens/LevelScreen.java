@@ -128,6 +128,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private Bubble lastAirgum = null;
 
+	private final Entity mCoin;
+	
 	public EntityManager<Coin> coins;
 
 	public EntityManager<Chiky> chikies;
@@ -351,16 +353,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		};
 
+		this.mCoin = new Entity(Resources.mStaticCoinTextureRegion, this.mBackground);
+		
 		this.mBackground.setBackgroundCenterPosition();
 
-		// ===========================================================
-		// Tutorial
-
-		// this.mTutorialTextureRegion[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-1.png", 0, 0, 1, 1);
-		// this.mTutorialTextureRegion[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mTutorialTextureAtlas, Game.context, "tutorial/tutorial-text-2.png", 0, 40, 1, 1);
-
-		// ===========================================================
-
+		this.mCoin.create().setPosition(10f, Options.cameraHeight - 40f);
+		
 		this.mPanel.create().setPosition(0, 0);
 
 		this.setOnSceneTouchListener(this);

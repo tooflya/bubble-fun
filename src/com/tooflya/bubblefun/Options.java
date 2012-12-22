@@ -103,4 +103,5 @@ public class Options {
 	public static Sound mLaser;
 	public static Sound mGlassBroke;
 	public static Sound mAsteroidDeath;
+	public static Sound mCoinPickup;
 }
