@@ -190,9 +190,9 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		});
 
 		// Example:
-		// <chiky name="tooflya.com", scale="0.5", minTime="0.1", maxTime="1.1", speedTime="0.5", offsetTime="0.3", isRTime="true", normalMaxTime="1", normalSpeedTime="0.5", unnormalMaxTime="0.5", unnormalSpeedTime="1", properties="3">
-		// <ctrPoint x="10", y="50"/>
-		// <ctrPoint x="90", y="50"/>
+		// <chiky name="tooflya.com" scale="0.5" minTime="0.1" maxTime="1.1" speedTime="0.5" offsetTime="0.3" isRTime="true" normalMaxTime="1" normalSpeedTime="0.5" unnormalMaxTime="0.5" unnormalSpeedTime="1" properties="3">
+		// <ctrPoint x="10" y="50"/>
+		// <ctrPoint x="90" y="50"/>
 		// </chiky>
 		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
@@ -200,6 +200,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				chiky = screen.chikies.create();
 				if (chiky != null)
 				{
+					// TODO: (R) Try to not set default values. For example, how we can set Float.MAX_VALUE for normalMaxTime.
 					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
 					chiky.initScale(scale);
 
@@ -218,13 +219,19 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					chiky.initIsReverseTime(isRTime);
 
 					final float normalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "normalMaxTime", 0);
-					chiky.initMinTime(normalMaxTime);
-					final float normalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "normalSpeedTime", 0);
-					chiky.initMinTime(normalSpeedTime);
+					chiky.initNormalMaxTime(normalMaxTime);
+					float normalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "normalSpeedTime", 0);
+					if(normalSpeedTime==0){
+						normalSpeedTime = Float.MIN_VALUE;
+					}
+					chiky.initNormalSpeedTime(normalSpeedTime);
 					final float unnormalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalMaxTime", 0);
-					chiky.initMinTime(unnormalMaxTime);
-					final float unnormalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalSpeedTime", 0);
-					chiky.initMinTime(unnormalSpeedTime);
+					chiky.initUnnormalMaxTime(unnormalMaxTime);
+					float unnormalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalSpeedTime", 0);
+					if(unnormalSpeedTime==0){
+						unnormalSpeedTime = Float.MIN_VALUE;
+					}
+					chiky.initUnnormalSpeedTime(unnormalSpeedTime);
 
 					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 					chiky.initProperties(properties);

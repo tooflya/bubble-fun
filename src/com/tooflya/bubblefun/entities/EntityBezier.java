@@ -22,7 +22,7 @@ public class EntityBezier extends Entity {
 	// Fields
 	// ===========================================================
 
-	private float mTime = 0f; // Seconds.
+	protected float mTime = 0f; // Seconds.
 
 	private float mMinTime = 0; // Seconds.
 	private float mMaxTime = 1; // Seconds.
@@ -31,7 +31,6 @@ public class EntityBezier extends Entity {
 	private boolean mIsReverseTime = true;
 
 	public static float mKoefSpeedTime = 1;
-
 
 	private final short mListBX[] = new short[mListCapacity];
 	private final short mListBY[] = new short[mListCapacity];
