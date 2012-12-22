@@ -32,7 +32,6 @@ public class EntityBezier extends Entity {
 
 	public static float mKoefSpeedTime = 1;
 
-
 	private final short mListBX[] = new short[mListCapacity];
 	private final short mListBY[] = new short[mListCapacity];
 	private byte mListCount = 0;

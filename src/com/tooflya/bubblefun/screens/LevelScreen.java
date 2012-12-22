@@ -452,20 +452,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mBonusButton1 = new ButtonScaleable(Resources.mBonus1TextureRegion, this.mBackground, true) {
 			@Override
 			public void onClick() {
-				EntityBezier.mKoefSpeedTime /= 2;
-				// mBonusType = 21;
-				// BubbleFactory.BubbleBonus(mBonusType);
-				// mBonusType = 0;
+				mBonusType = 41;
+				BubbleFactory.BubbleBonus(mBonusType);
+				mBonusType = 0;
 			}
 		};
 
 		this.mBonusButton2 = new ButtonScaleable(Resources.mBonus2TextureRegion, this.mBackground, true) {
 			@Override
 			public void onClick() {
-				EntityBezier.mKoefSpeedTime *= 2;
-				// mBonusType = 22;
-				// BubbleFactory.BubbleBonus(mBonusType);
-				// mBonusType = 0;
+				mBonusType = 48;
+				BubbleFactory.BubbleBonus(mBonusType);
+				mBonusType = 0;
 			}
 		};
 

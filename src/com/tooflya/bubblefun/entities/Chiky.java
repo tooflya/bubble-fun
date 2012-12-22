@@ -28,7 +28,7 @@ public class Chiky extends EntityBezier {
 
 	private static final long[] pSpaceFrameDuration = new long[] { 50, 50, 50, 300, 50, 50 };
 	private static final int[] pSpaceNormalMoveFrames = new int[] { 0, 1, 2, 3, 2, 1 };
-	private static final int[] pSpaceWithGumFrames = new int[] { 4, 5, 6, 7, 6, 5 }; // TODO: (R) Ups! I lose where using this code. :-( Find!
+	private static final int[] pSpaceWithGumFrames = new int[] { 4, 5, 6, 7, 6, 5 }; // TODO: (R) Oops! I lose where using this code. :-( Find!
 
 	private enum States {
 		NormalMove, UnnormalMove, WithGumMove, Fall
@@ -275,7 +275,6 @@ public class Chiky extends EntityBezier {
 		}
 	}
 
-
 	// ===========================================================
 	// Setters
 	// ===========================================================
@@ -284,11 +283,10 @@ public class Chiky extends EntityBezier {
 	public void onCollide() {
 		super.onCollide();
 
+		this.mState = States.WithGumMove;
+
 		this.stopAnimation(6);
-
 		this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
-
-		this.mWithGumTime = 0;
 
 		if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 			Glass particle;
@@ -313,20 +311,17 @@ public class Chiky extends EntityBezier {
 				}
 			}
 		}
-
-		this.mState = States.WithGumMove;
 	}
 
 	@Override
 	public void onCollide(final Entity pEntity) {
 		super.onCollide(pEntity);
 
-		final Bubble airgum = (Bubble) pEntity;
+		final Bubble bubble = (Bubble) pEntity;
 
 		if (this.mBubble == null) {
-			this.mBubble = airgum.getParent();
+			this.mBubble = bubble.getParent();
 			this.mBubble.AddChildCount();
-			this.mWithGumTime = 0;
 
 			this.mBubble.mLastX = this.getCenterX();
 			this.mBubble.mLastY = this.getCenterY();
@@ -362,6 +357,7 @@ public class Chiky extends EntityBezier {
 				}
 			}
 		}
+
 		this.mState = States.WithGumMove;
 	}
 

@@ -6,6 +6,7 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.EntityBezier;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
@@ -48,6 +49,10 @@ public class BubbleFactory {
 				bubble.initFinishPosition(x, pY - 2 * speed);
 			}
 		}
+	}
+
+	private static void ChikiesSpeedUpDown(final float pSpeedKoef) {
+		EntityBezier.mKoefSpeedTime = pSpeedKoef;
 	}
 
 	public static void BubbleBonus(final int type) {
@@ -135,8 +140,33 @@ public class BubbleFactory {
 			BubblesRainControl(pX, pY, 9);
 			break;
 
-		case 29:
+		case 31:
 			BonusAirplane();
+			break;
+
+		case 41:
+			ChikiesSpeedUpDown(0.9f);
+			break;
+		case 42:
+			ChikiesSpeedUpDown(0.8f);
+			break;
+		case 43:
+			ChikiesSpeedUpDown(0.7f);
+			break;
+		case 44:
+			ChikiesSpeedUpDown(0.6f);
+			break;
+		case 45:
+			ChikiesSpeedUpDown(0.5f);
+			break;
+		case 46:
+			ChikiesSpeedUpDown(0.4f);
+			break;
+		case 47:
+			ChikiesSpeedUpDown(0.3f);
+			break;
+		case 48:
+			ChikiesSpeedUpDown(0.2f);
 			break;
 		}
 	}
