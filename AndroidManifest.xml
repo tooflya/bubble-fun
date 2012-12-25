@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><manifest android:versionCode="2203" android:versionName="0.7.1" package="com.tooflya.bubblefun" xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?><manifest android:versionCode="2241" android:versionName="0.7.1" package="com.tooflya.bubblefun" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
 
@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <!-- /FOR THE BETA VERSION ONLY -->
 
@@ -18,13 +19,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application android:icon="@drawable/icon" android:installLocation="auto" android:label="@string/app" android:launchMode="singleInstance">
-        <activity android:configChanges="keyboardHidden|orientation" android:name=".Game" android:screenOrientation="portrait" android:theme="@style/Theme.NoBackground">
+        <activity android:configChanges="keyboard|keyboardHidden|orientation" android:name=".Game" android:screenOrientation="portrait" android:theme="@style/Theme.NoBackground">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
+        </activity> <!-- AdMobActivity definition -->
+        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.google.ads.AdActivity"/>
     </application>
 
 </manifest>

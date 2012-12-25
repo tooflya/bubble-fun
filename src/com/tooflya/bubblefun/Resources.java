@@ -48,12 +48,14 @@ public class Resources {
 
 	public static final TiledTextureRegion mBackgroundGrassTextureRegion1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass.png", 2, 349, 1, 1);
 	public static final TiledTextureRegion mBackgroundGrassTextureRegion2 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass-2.png", 2, 601, 1, 1);
+	public static final TiledTextureRegion mBackgroundGrassTextureRegion3 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass-3.png", 2, 750, 1, 1);
 	public static final TiledTextureRegion mBackgroundHouseTextureRegion1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-house-1.png", 388, 341, 1, 1);
 	public static final TiledTextureRegion mBackgroundHouseTextureRegion2 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-house-2.png", 2, 2, 1, 1);
 	public static final TiledTextureRegion mBackgroundHouseTextureRegion3 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-house-3.png", 388, 2, 1, 1);
 	public static final TiledTextureRegion mBackgroundWaterTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-down.png", 2, 502, 1, 1);
-	public static final TiledTextureRegion mBackgroundBlueBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "blue-bird-menu.png", 388, 668, 1, 1);
-	public static final TiledTextureRegion mBackgroundParachuteBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "yb-4.png", 440, 668, 1, 1);
+	public static final TiledTextureRegion mBackgroundBlueBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "blue-bird-menu-01.png", 388, 668, 1, 1);
+	public static final TiledTextureRegion mBackgroundParachuteBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "yb-4.png", 493, 668, 1, 1);
+	public static final TiledTextureRegion mBackgroundBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "yb-5.png", 561, 672, 1, 1);
 
 	public static final TiledTextureRegion mBackgroundCloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "cloud.png", 388, 2, 1, 4);
 	public static final TiledTextureRegion mNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-sprite.png", 2, 618, 1, 11);
@@ -105,8 +107,10 @@ public class Resources {
 	public static final TiledTextureRegion mBoxCollect50TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "50-collect.png", 356, 278, 1, 1);
 	public static final TiledTextureRegion mBoxCollect100TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "100-collect.png", 950, 113, 1, 1);
 	public static final TiledTextureRegion mSmallLogoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "logo_small_zero.png", 780, 207, 1, 1);
+	public static final TiledTextureRegion mBuyButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-btn.png", 401, 836, 1, 1);
+	public static final TiledTextureRegion mShopAvailableTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-num-sprite.png", 985, 280, 1, 5);
+	public static final TiledTextureRegion mShopPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-panel.png", 454, 660, 1, 1);
 
-	public static final TiledTextureRegion mBuyButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "buy-button.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mStorePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "store-panel.png", 0, 100, 1, 5);
 	public static final TiledTextureRegion mAnyPurchaseTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "any-purchase-text.png", 500, 0, 1, 1);
 
@@ -216,6 +220,17 @@ public class Resources {
 	};
 
 	public static final Entity mBackgroundGrass2 = new Entity(mBackgroundGrassTextureRegion2) {
+		@Override
+		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
+			final Entity sprite = new Entity(getTextureRegion());
+
+			pEntity.attachChild(sprite);
+
+			return sprite;
+		}
+	};
+
+	public static final Entity mBackgroundGrass3 = new Entity(mBackgroundGrassTextureRegion3) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
 			final Entity sprite = new Entity(getTextureRegion());

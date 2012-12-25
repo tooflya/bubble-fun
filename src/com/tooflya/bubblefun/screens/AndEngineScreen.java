@@ -4,6 +4,9 @@ import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -17,7 +20,7 @@ import com.tooflya.bubblefun.entities.Entity;
  * @author Tooflya.com
  * @since
  */
-public class AndEngineScreen extends Screen {
+public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 
 	// ===========================================================
 	// Constants
@@ -28,8 +31,7 @@ public class AndEngineScreen extends Screen {
 	// ===========================================================
 
 	/**
-	 * Declare the necessary canvas in graphics memory, which then will be used
-	 * to download images.
+	 * Declare the necessary canvas in graphics memory, which then will be used to download images.
 	 */
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(256, 256, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -38,8 +40,7 @@ public class AndEngineScreen extends Screen {
 	private final Entity mAndengineIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "andengine.png", 0, 0, 1, 1), this.mBackground);
 
 	/**
-	 * Set the timer, which will change the size of the loading bar, depending
-	 * on the load time.
+	 * Set the timer, which will change the size of the loading bar, depending on the load time.
 	 */
 	private final TimerHandler mTimer = new TimerHandler(2.8f, true, new ITimerCallback() {
 		@Override
@@ -91,6 +92,8 @@ public class AndEngineScreen extends Screen {
 		this.mAndengineIcon.registerEntityModifier(this.modifier2);
 		this.mAndengineIcon.registerEntityModifier(this.modifier3);
 		this.mAndengineIcon.registerEntityModifier(this.modifier4);
+
+		this.setOnSceneTouchListener(this);
 	}
 
 	// ===========================================================
@@ -161,6 +164,18 @@ public class AndEngineScreen extends Screen {
 	 */
 	@Override
 	public void onBackPressed() {
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener#onSceneTouchEvent(org.anddev.andengine.entity.scene.Scene, org.anddev.andengine.input.touch.TouchEvent)
+	 */
+	@Override
+	public boolean onSceneTouchEvent(Scene arg0, TouchEvent arg1) {
+		if (arg1.isActionDown()) {
+			Game.screens.set(new SplashScreen());
+		}
+
+		return true;
 	}
 
 	// ===========================================================

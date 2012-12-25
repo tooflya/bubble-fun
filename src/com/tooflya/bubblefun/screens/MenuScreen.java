@@ -39,6 +39,8 @@ public class MenuScreen extends ReflectionScreen {
 	private final Entity mBlueBird;
 	private final Entity mParachuteBird1;
 	private final Entity mParachuteBird2;
+	private final Entity mBird1;
+	private final Entity mBird2;
 
 	private final ButtonScaleable mTwitterIcon;
 	private final ButtonScaleable mFacebookIcon;
@@ -46,6 +48,8 @@ public class MenuScreen extends ReflectionScreen {
 	private final ButtonScaleable mMoreIcon;
 	private final ButtonScaleable mSoundIcon;
 	private final ButtonScaleable mBuyButton;
+
+	private final Entity mShopAvailableItemsCount;
 
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
@@ -98,12 +102,14 @@ public class MenuScreen extends ReflectionScreen {
 	public MenuScreen() {
 		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
 		this.mBackgroundHouses = Resources.mBackgroundHouses1.deepCopy(this.mBackground);
-		this.mBackgroundGrass = Resources.mBackgroundGrass1.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass3.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
 		this.mBlueBird = new Entity(Resources.mBackgroundBlueBirdTextureRegion, this.mBackground);
 		this.mParachuteBird1 = new Entity(Resources.mBackgroundParachuteBirdTextureRegion, this.mBackground);
 		this.mParachuteBird2 = new Entity(Resources.mBackgroundParachuteBirdTextureRegion, this.mBackground);
+		this.mBird1 = new Entity(Resources.mBackgroundBirdTextureRegion, this.mBackground);
+		this.mBird2 = new Entity(Resources.mBackgroundBirdTextureRegion, this.mBackground);
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
@@ -227,6 +233,8 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
+		this.mShopAvailableItemsCount = new Entity(Resources.mShopAvailableTextureRegion, this.mBuyButton);
+
 		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
@@ -237,12 +245,17 @@ public class MenuScreen extends ReflectionScreen {
 		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 170f);
 
 		this.mBlueBird.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE * 3);
-		this.mParachuteBird1.create().setPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 150f);
+		//this.mParachuteBird1.create().setPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 150f);
 		this.mParachuteBird2.create().setPosition(Options.cameraCenterX + 100f, Options.cameraCenterY + 50f);
+		this.mBird1.create().setPosition(50f, Options.cameraCenterY);
+		this.mBird2.create().setPosition(30f, Options.cameraCenterY + 50f);
 
-		this.mParachuteBird1.setRotation(-15f);
+		this.mBird1.setScale(1f);
+		this.mBird2.setScale(0.8f);
+
+		this.mParachuteBird1.setRotation(-5f);
 		this.mParachuteBird2.setRotation(15f);
-		
+
 		this.mParachuteBird2.getTextureRegion().setFlippedHorizontal(true);
 
 		this.mTwitterIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
@@ -250,6 +263,8 @@ public class MenuScreen extends ReflectionScreen {
 
 		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
 		this.mBuyButton.create().setCenterPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 150f);
+
+		this.mShopAvailableItemsCount.create().setCenterPosition(this.mBuyButton.getWidth() - 10f, 10f);
 
 		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);

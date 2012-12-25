@@ -19,7 +19,7 @@ import org.anddev.andengine.entity.util.FPSCounter;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.ui.activity.BaseGameActivity;
+import org.anddev.andengine.ui.activity.LayoutGameActivity;
 import org.anddev.andengine.util.user.IAsyncCallback;
 import org.anddev.andengine.util.user.ShakeEventListener;
 
@@ -37,7 +37,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.View;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import com.tooflya.bubblefun.database.DataStorage;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.AndEngineScreen;
@@ -48,7 +51,7 @@ import com.tooflya.bubblefun.screens.Screen;
  * @author Tooflya.com
  * @since
  */
-public class Game extends BaseGameActivity implements IAsyncCallback {
+public class Game extends LayoutGameActivity implements IAsyncCallback {
 
 	// ===========================================================
 	// Constants
@@ -191,12 +194,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 				int error = pGL.glGetError();
 
 				/**
-				 * 1280 GL_INVALID_ENUM
-				 * 1281 GL_INVALID_VALUE
-				 * 1282 GL_INVALID_OPERATION
-				 * 1283 GL_STACK_OVERFLOW
-				 * 1284 GL_STACK_UNDERFLOW
-				 * 1285 GL_OUT_OF_MEMORY
+				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
 				 */
 				if (error != GL10.GL_NO_ERROR) {
 					throw new GLException(error, "OpenGL ES has error occurred: " + error);
@@ -211,7 +209,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			@Override
 			protected void onDrawScene(GL10 pGL) {
 				super.onDrawScene(pGL);
-				
+
 				GLHelper.enableDither(pGL);
 			}
 		};
@@ -507,6 +505,22 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.ui.activity.LayoutGameActivity#getLayoutID()
+	 */
+	@Override
+	protected int getLayoutID() {
+		return R.layout.advertisiment;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.ui.activity.LayoutGameActivity#getRenderSurfaceViewID()
+	 */
+	@Override
+	protected int getRenderSurfaceViewID() {
+		return R.id.xmllayoutRenderSurfaceView;
 	}
 
 	// ===========================================================

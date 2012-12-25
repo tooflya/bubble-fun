@@ -48,7 +48,7 @@ public class StoreScreen extends ReflectionScreen {
 
 		this.mStorePanels = new EntityManager<Entity>(5, new Entity(Resources.mStorePanelTextureRegion, this.mBackground));
 
-		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
+		this.mTopPanel = new Entity(Resources.mShopPanelTextureRegion, this.mBackground);
 		this.mCoin = new Entity(Resources.mStaticCoinTextureRegion, this.mBackground);
 		this.mAnyPurchaseText = new Entity(Resources.mAnyPurchaseTextTextureRegion, this.mBackground);
 
