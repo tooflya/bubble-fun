@@ -46,7 +46,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	public LevelChoiseScreen() {
 		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
 		this.mBackgroundHouses = Resources.mBackgroundHouses3.deepCopy(this.mBackground);
-		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass1.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));

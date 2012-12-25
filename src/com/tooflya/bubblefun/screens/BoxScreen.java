@@ -90,7 +90,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	public BoxScreen() {
 		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
 		this.mBackgroundHouses = Resources.mBackgroundHouses2.deepCopy(this.mBackground);
-		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass2.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));

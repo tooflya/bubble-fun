@@ -1,8 +1,10 @@
 package com.tooflya.bubblefun.entities;
 
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+
 import com.tooflya.bubblefun.factories.BubbleFactory;
 
-public class BonusIcon {
+public class BonusIcon extends ButtonScaleable {
 
 	private enum States {
 		Empty, Enable, InPreparing, Busy, Disable
@@ -10,7 +12,7 @@ public class BonusIcon {
 
 	private int mType = 0;
 
-	private int mCount = 0;
+public int mCount = 0;
 
 	private States mState = States.Empty;
 
@@ -18,13 +20,17 @@ public class BonusIcon {
 	private float mMaxBusyTime = 0;
 	private float mMaxDisableTime = 0;
 
-	public BonusIcon() {
+	public BonusIcon(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
+		super(pTiledTextureRegion, pParentScreen, true);
 	}
 
+	@Override
 	public void onCreate() {
+		super.onCreate();
+		
 		this.mState = States.Empty;
 
-		this.mCount = 0;
+		this.mCount = 1;
 
 		this.mTime = 0;
 		this.mMaxBusyTime = 0;
@@ -43,13 +49,14 @@ public class BonusIcon {
 		this.mMaxDisableTime = 0;
 	}
 
+	@Override
 	public void onClick() {
 		switch (this.mState) {
 		case Empty:
 			// Don't do something.
 			break;
 		case Enable:
-			this.prepare();
+			this.prepare1();
 			break;
 		case InPreparing:
 			this.prepareBreak();
@@ -63,8 +70,9 @@ public class BonusIcon {
 		}
 	}
 
-	protected void prepare() {
+	protected void prepare1() {
 		this.mState = States.InPreparing;
+		this.start();
 		// TODO: (R) Add other code to preparing bonus (change image).
 	}
 
@@ -80,7 +88,17 @@ public class BonusIcon {
 		// TODO: (R) Add other code to start bonus (change image).
 	}
 
+	public void start() {
+		this.mState = States.Busy;
+		this.mTime = 0;
+		BubbleFactory.BubbleBonus(mType);
+		// TODO: (R) Add other code to start bonus (change image).
+	}
+
+	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
 		// TODO: (R) Add this code after adding supper class. super.onManagedUpdate(pSecondsElapsed);
 		this.mTime += pSecondsElapsed;
 		switch (this.mState) {

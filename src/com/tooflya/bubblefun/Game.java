@@ -211,7 +211,7 @@ public class Game extends BaseGameActivity implements IAsyncCallback {
 			@Override
 			protected void onDrawScene(GL10 pGL) {
 				super.onDrawScene(pGL);
-
+				
 				GLHelper.enableDither(pGL);
 			}
 		};

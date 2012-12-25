@@ -12,6 +12,8 @@ import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.util.FloatMath;
 
@@ -23,6 +25,7 @@ import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
+import com.tooflya.bubblefun.entities.BonusIcon;
 import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.BubbleBrokes;
@@ -46,6 +49,7 @@ import com.tooflya.bubblefun.entities.Snowflake;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.entities.Ufo;
 import com.tooflya.bubblefun.factories.BubbleFactory;
+import com.tooflya.bubblefun.managers.BonusManager;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
@@ -61,13 +65,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Constants
 	// ===========================================================
 
-	private final static String[][] mBirdsNames = new String[][] {
-			{ "Дима", "Биренбаум" },
-			{ "Bird3" },
-			{ "Bird4", "Bird5" },
-			{ "Bird6", "Bird7", "Bird8" },
-			{ "Bird9", "Bird10", "Bird11" }
-	};
+	public static JSONArray mBirdsNames;
 
 	private final Entity mSpaceBackground;
 	private final Entity mSpacePlanet;
@@ -166,7 +164,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private int mBonusType = 0;
 
-	private final ButtonScaleable mBonusButton1, mBonusButton2, mBonusButton3, mBonusButton4;
+	private final BonusManager mBonusManager;
 
 	// ===========================================================
 	// Tutorial
@@ -443,56 +441,22 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRedLasers = new EntityManager<Laser>(100, new Laser(Resources.mRedLaserTextureRegion, this.mBackground));
 
 		this.mUfos = new EntityManager<Ufo>(10, new Ufo(Resources.mUfoTextureRegion, this.mBackground));
-		this.mUfos.create().setCenterPosition(150, 150);
+		//this.mUfos.create().setCenterPosition(150, 150);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Entity) shape.getChild(i)).enableBlendFunction();
 		}
 
-		this.mBonusButton1 = new ButtonScaleable(Resources.mBonus1TextureRegion, this.mBackground, true) {
-			@Override
-			public void onClick() {
-				mBonusType = 41;
-				BubbleFactory.BubbleBonus(mBonusType);
-				mBonusType = 0;
-			}
-		};
-
-		this.mBonusButton2 = new ButtonScaleable(Resources.mBonus2TextureRegion, this.mBackground, true) {
-			@Override
-			public void onClick() {
-				mBonusType = 48;
-				BubbleFactory.BubbleBonus(mBonusType);
-				mBonusType = 0;
-			}
-		};
-
-		this.mBonusButton3 = new ButtonScaleable(Resources.mBonus3TextureRegion, this.mBackground, true) {
-			@Override
-			public void onClick() {
-				mBonusType = 23;
-				BubbleFactory.BubbleBonus(mBonusType);
-				mBonusType = 0;
-			}
-		};
-
-		this.mBonusButton4 = new ButtonScaleable(Resources.mBonus4TextureRegion, this.mBackground, true) {
-			@Override
-			public void onClick() {
-				mBonusType = 29;
-				BubbleFactory.BubbleBonus(mBonusType);
-				mBonusType = 0;
-			}
-		};
-
-		mBonusButton1.create().setPosition(Options.cameraWidth - 50f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
-				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
-		mBonusButton2.create().setPosition(Options.cameraWidth - 100f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
-				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
-		mBonusButton3.create().setPosition(Options.cameraWidth - 150f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
-				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
-		mBonusButton4.create().setPosition(Options.cameraWidth - 200f - (Options.cameraWidth * Options.cameraRatioFactor - Options.screenWidth) / 2,
-				Options.cameraHeight - 50f + (Options.cameraHeight * Options.cameraRatioFactor - Options.screenHeight) / 2, true);
+		this.mBonusManager = new BonusManager(10);
+		for (int i = 0; i < 4; i++) {
+			this.mBonusManager.add(new BonusIcon(Resources.mBonus1TextureRegion, this.mBackground) {
+				@Override
+				public void onClick() {
+					this.init(41);
+					super.onClick();
+				}
+			});
+		}
 	}
 
 	private final EntityManager<LightingSwarm> mLightingSwarms;
@@ -599,9 +563,15 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			for (int i = 0; i < this.chikies.getCount(); i++) {
 				final Chiky chiky = this.chikies.getByIndex(i);
 
-				chiky.initName(mBirdsNames[Options.levelNumber - 1][i]);
+				try {
+					chiky.initName(mBirdsNames.optJSONArray(Options.levelNumber - 1).getString(i));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} catch (ArrayIndexOutOfBoundsException ex) {
+		} catch (NullPointerException ex) {
 		}
 	}
 
@@ -780,6 +750,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
+
+		this.mBonusManager.update();
 
 		switch (Options.boxNumber) {
 		case 0:

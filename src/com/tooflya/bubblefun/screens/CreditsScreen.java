@@ -36,7 +36,7 @@ public class CreditsScreen extends ReflectionScreen {
 	public CreditsScreen() {
 		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
 		this.mBackgroundHouses = Resources.mBackgroundHouses2.deepCopy(this.mBackground);
-		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass1.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
 		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);

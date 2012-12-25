@@ -102,6 +102,7 @@ public abstract class Screen extends Scene {
 	/* (non-Javadoc)
 	 * @see org.anddev.andengine.entity.scene.Scene#onManagedUpdate(float)
 	 */
+	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		this.mDeltaTiming += pSecondsElapsed;
 		if (this.mDeltaTiming < Options.framesPerSeconds) {

@@ -36,6 +36,9 @@ public class MenuScreen extends ReflectionScreen {
 
 	private final Entity mLogoBackground;
 	private final Entity mSettingsIcon;
+	private final Entity mBlueBird;
+	private final Entity mParachuteBird1;
+	private final Entity mParachuteBird2;
 
 	private final ButtonScaleable mTwitterIcon;
 	private final ButtonScaleable mFacebookIcon;
@@ -95,8 +98,12 @@ public class MenuScreen extends ReflectionScreen {
 	public MenuScreen() {
 		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
 		this.mBackgroundHouses = Resources.mBackgroundHouses1.deepCopy(this.mBackground);
-		this.mBackgroundGrass = Resources.mBackgroundGrass.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass1.deepCopy(this.mBackground);
 		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
+
+		this.mBlueBird = new Entity(Resources.mBackgroundBlueBirdTextureRegion, this.mBackground);
+		this.mParachuteBird1 = new Entity(Resources.mBackgroundParachuteBirdTextureRegion, this.mBackground);
+		this.mParachuteBird2 = new Entity(Resources.mBackgroundParachuteBirdTextureRegion, this.mBackground);
 
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
 
@@ -228,6 +235,15 @@ public class MenuScreen extends ReflectionScreen {
 		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
 
 		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 170f);
+
+		this.mBlueBird.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE * 3);
+		this.mParachuteBird1.create().setPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 150f);
+		this.mParachuteBird2.create().setPosition(Options.cameraCenterX + 100f, Options.cameraCenterY + 50f);
+
+		this.mParachuteBird1.setRotation(-15f);
+		this.mParachuteBird2.setRotation(15f);
+		
+		this.mParachuteBird2.getTextureRegion().setFlippedHorizontal(true);
 
 		this.mTwitterIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING - ICONS_SIZE, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);
 		this.mFacebookIcon.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE);

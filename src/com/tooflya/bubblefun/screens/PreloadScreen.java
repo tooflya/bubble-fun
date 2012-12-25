@@ -1,10 +1,14 @@
 package com.tooflya.bubblefun.screens;
 
+import java.io.IOException;
+
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.util.user.AsyncTaskLoader;
 import org.anddev.andengine.util.user.IAsyncCallback;
+import org.json.JSONException;
 
+import com.tooflya.bubblefun.Beta;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
@@ -12,9 +16,9 @@ import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
-* @author Tooflya.com
-* @since
-*/
+ * @author Tooflya.com
+ * @since
+ */
 public class PreloadScreen extends Screen implements IAsyncCallback {
 
 	// ===========================================================
@@ -155,6 +159,14 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 	@Override
 	public void workToDo() {
+		try {
+			LevelScreen.mBirdsNames = Beta.readJsonFromUrl("http://bubblefun.tooflya.com/birds.php");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		if (ScreenManager.mChangeAction > 0) {
 			Resources.unloadSecondResources();
 			Resources.loadFirstResources();

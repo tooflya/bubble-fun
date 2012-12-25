@@ -34,10 +34,11 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas7 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas8 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public static final BitmapTextureAtlas mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
+	public static final BitmapTextureAtlas mFontTextureAtlas1 = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
+	public static final BitmapTextureAtlas mFontTextureAtlas2 = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
 
-	public static final Font mFont = FontFactory.createFromAsset(mFontTexture, Game.context, "font/casual.ttf", 8, true, Color.BLACK);
-	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mFontTexture, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
+	public static final Font mFont = FontFactory.createFromAsset(mFontTextureAtlas1, Game.context, "font/casual.ttf", 8f * Options.cameraRatioFactor, true, Color.BLACK);
+	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mFontTextureAtlas2, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
 
 	// ===========================================================
 	// Texture Regions
@@ -45,11 +46,14 @@ public class Resources {
 
 	public static final TiledTextureRegion mBackgroundGradientTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundGradientTextureAtlas, Game.context, "bg-gr.png", 0, 0, 1, 1);
 
-	public static final TiledTextureRegion mBackgroundGrassTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass.png", 2, 349, 1, 1);
+	public static final TiledTextureRegion mBackgroundGrassTextureRegion1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass.png", 2, 349, 1, 1);
+	public static final TiledTextureRegion mBackgroundGrassTextureRegion2 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass-2.png", 2, 601, 1, 1);
 	public static final TiledTextureRegion mBackgroundHouseTextureRegion1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-house-1.png", 388, 341, 1, 1);
 	public static final TiledTextureRegion mBackgroundHouseTextureRegion2 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-house-2.png", 2, 2, 1, 1);
 	public static final TiledTextureRegion mBackgroundHouseTextureRegion3 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-house-3.png", 388, 2, 1, 1);
 	public static final TiledTextureRegion mBackgroundWaterTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-down.png", 2, 502, 1, 1);
+	public static final TiledTextureRegion mBackgroundBlueBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "blue-bird-menu.png", 388, 668, 1, 1);
+	public static final TiledTextureRegion mBackgroundParachuteBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "yb-4.png", 440, 668, 1, 1);
 
 	public static final TiledTextureRegion mBackgroundCloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "cloud.png", 388, 2, 1, 4);
 	public static final TiledTextureRegion mNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-sprite.png", 2, 618, 1, 11);
@@ -111,7 +115,6 @@ public class Resources {
 			new RectangleBitmapTextureAtlasSourceDecoratorShape(), Color.rgb(255, 255, 255), Color.rgb(255, 255, 255), LinearGradientDirection.BOTTOM_TO_TOP);
 	public static final TiledTextureRegion mLevelBackgroundGradientTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromSource(mBackgroundGradientTextureAtlas2, mLevelBackgroundGradientSource, 0, 0, 1, 1);
 
-	//done
 	public static final TiledTextureRegion mRegularBirdsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "small-bird.png", 206, 598, 6, 4);
 	public static final TiledTextureRegion mTopGamePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "game-panel.png", 476, 106, 1, 1);
 	public static final TiledTextureRegion mAwesomeText1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "awesome-kill.png", 206, 571, 1, 1);
@@ -201,7 +204,18 @@ public class Resources {
 		}
 	};
 
-	public static final Entity mBackgroundGrass = new Entity(mBackgroundGrassTextureRegion) {
+	public static final Entity mBackgroundGrass1 = new Entity(mBackgroundGrassTextureRegion1) {
+		@Override
+		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
+			final Entity sprite = new Entity(getTextureRegion());
+
+			pEntity.attachChild(sprite);
+
+			return sprite;
+		}
+	};
+
+	public static final Entity mBackgroundGrass2 = new Entity(mBackgroundGrassTextureRegion2) {
 		@Override
 		public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
 			final Entity sprite = new Entity(getTextureRegion());
@@ -261,8 +275,8 @@ public class Resources {
 	// ===========================================================
 
 	public static final void loadCommonResources() {
-		Game.loadTextures(mBackgroundCommonTextureAtlas, mFontTexture);
-		Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
+		Game.loadTextures(mBackgroundCommonTextureAtlas, mFontTextureAtlas1, mFontTextureAtlas2);
+		//Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
 	}
 
 	public static final void loadFirstResources() {
