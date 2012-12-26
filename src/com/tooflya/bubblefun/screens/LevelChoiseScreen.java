@@ -41,6 +41,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
 	int g = -1;
 
 	public LevelChoiseScreen() {
@@ -82,7 +83,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		this.mTopPanel.create().setPosition(0, 0);
 
-		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f - Screen.ADS_PADDING);
 
 		for (int i = 0; i < this.levels.getCapacity(); i++) {
 			if (i < 9) {
@@ -172,6 +173,8 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		Entity = (Entity) this.mSmallnumbers.create();
 		Entity.setPosition(Options.cameraWidth - 35f, 10f);
 		Entity.setCurrentTileIndex(5);
+		
+		Game.mAdvertisementManager.showSmall();
 	}
 
 	/*

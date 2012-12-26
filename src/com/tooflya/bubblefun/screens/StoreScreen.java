@@ -27,11 +27,15 @@ public class StoreScreen extends ReflectionScreen {
 
 	private final Entity mTopPanel;
 	private final Entity mCoin;
-	private final Entity mAnyPurchaseText;
+
+	private final Entity mStoreBackground;
+	private final Entity mStoreBackgroundTop;
+	private final Entity mStoreBackgroundDown;
+	private final Entity mStoreTrees;
 
 	private final ButtonScaleable mBackButton;
+	private final ButtonScaleable mGetCoinsButton;
 
-	private final EntityManager<Entity> mStorePanels;
 	private final EntityManager<Entity> mCoinsNumbers;
 
 	// ===========================================================
@@ -40,19 +44,27 @@ public class StoreScreen extends ReflectionScreen {
 
 	public StoreScreen() {
 		this.mBackground = Resources.mBackgroundGradient.deepCopy(this);
-		this.mBackgroundHouses = Resources.mBackgroundHouses3.deepCopy(this.mBackground);
-		this.mBackgroundGrass = Resources.mBackgroundGrass1.deepCopy(this.mBackground);
-		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
-
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
-
-		this.mStorePanels = new EntityManager<Entity>(5, new Entity(Resources.mStorePanelTextureRegion, this.mBackground));
+		this.mBackgroundHouses = Resources.mBackgroundHouses3.deepCopy(this.mBackground);
+		this.mBackgroundGrass = Resources.mBackgroundGrass3.deepCopy(this.mBackground);
+		this.mStoreTrees = new Entity(Resources.mStoreTreesTextureRegion, this.mBackground);
+		this.mBackgroundWater = Resources.mBackgroundWater.deepCopy(this.mBackground);
 
 		this.mTopPanel = new Entity(Resources.mShopPanelTextureRegion, this.mBackground);
 		this.mCoin = new Entity(Resources.mStaticCoinTextureRegion, this.mBackground);
-		this.mAnyPurchaseText = new Entity(Resources.mAnyPurchaseTextTextureRegion, this.mBackground);
 
 		this.mCoinsNumbers = new EntityManager<Entity>(5, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mBackground));
+
+		this.mGetCoinsButton = new ButtonScaleable(Resources.mGetCoinsButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.setChildScreen(Game.screens.get(Screen.COINS), false, false, true);
+			}
+		};
 
 		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 
@@ -65,9 +77,14 @@ public class StoreScreen extends ReflectionScreen {
 			}
 		};
 
+		this.mStoreBackground = new Entity(Resources.mStorePanelTextureRegion, this.mBackground);
+		this.mStoreBackgroundTop = new Entity(Resources.mStorePanelTopTextureRegion, this.mStoreBackground);
+		this.mStoreBackgroundDown = new Entity(Resources.mStorePanelDownTextureRegion, this.mStoreBackground);
+
 		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
+		this.mStoreTrees.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
 		this.mBackgroundHouses.create().setPosition(0, Options.cameraHeight - this.mBackgroundHouses.getHeight());
 		this.mBackgroundGrass.create().setPosition(0, Options.cameraHeight - this.mBackgroundGrass.getHeight());
 		this.mBackgroundWater.create().setPosition(0, Options.cameraHeight - this.mBackgroundWater.getHeight());
@@ -76,18 +93,16 @@ public class StoreScreen extends ReflectionScreen {
 
 		this.mTopPanel.create().setPosition(0, 0);
 		this.mCoin.create().setPosition(Options.cameraWidth - 130f, 5f);
-		this.mAnyPurchaseText.create().setCenterPosition(Options.cameraCenterX, 500f);
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mGetCoinsButton.create().setPosition(Options.cameraWidth - 5f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 75f);
 
-		for (int i = 0; i < 5; i++) {
-			final Entity panel = this.mStorePanels.create();
-
-			panel.setCenterPosition(Options.cameraCenterX, 100 + 70f * i);
-			panel.setCurrentTileIndex(i);
-		}
 		for (int a = 0; a < 4; a++) {
 			this.mCoinsNumbers.create().setCenterPosition(this.mCoin.getX() + this.mCoin.getWidth() + 13f + 18f * a, 23f);
 		}
+
+		this.mStoreBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
+		this.mStoreBackgroundTop.create().setCenterPosition(this.mStoreBackground.getWidth() / 2 - 10f, 45f);
+		this.mStoreBackgroundDown.create().setCenterPosition(this.mStoreBackground.getWidth() / 2, 361f);
 	}
 
 	// ===========================================================
@@ -138,6 +153,8 @@ public class StoreScreen extends ReflectionScreen {
 			this.mCoinsNumbers.getByIndex(2).setVisible(true);
 			this.mCoinsNumbers.getByIndex(3).setVisible(true);
 		}
+
+		Game.mAdvertisementManager.hideSmall();
 	}
 
 	/*

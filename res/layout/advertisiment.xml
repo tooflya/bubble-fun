@@ -15,9 +15,21 @@
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/xmllayoutRenderSurfaceView"
+        android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="a150d9dbae2fb1a"
-        ads:loadAdOnCreate="true" />
+        ads:loadAdOnCreate="true"
+        android:visibility="gone" />
+
+    <com.google.ads.AdView
+        android:id="@+id/adViewBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        ads:adSize="IAB_MRECT"
+        ads:adUnitId="a150d9dbae2fb1a"
+        ads:loadAdOnCreate="false"
+        android:visibility="gone" />
 
 </RelativeLayout>

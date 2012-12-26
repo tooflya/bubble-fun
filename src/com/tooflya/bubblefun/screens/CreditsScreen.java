@@ -61,7 +61,7 @@ public class CreditsScreen extends ReflectionScreen {
 		this.mTopPanel.create().setPosition(0, 0);
 		this.mSmallLogo.create().setCenterPosition(Options.cameraCenterX, 100f);
 
-		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f - Screen.ADS_PADDING);
 
 		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 300f, Resources.mWhiteFont, "The premier debugging environemnt for"));
 		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 250f, Resources.mWhiteFont, "Opera Presto-based browsers. Opera Drag-"));
@@ -86,6 +86,18 @@ public class CreditsScreen extends ReflectionScreen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.bouncekid.Screen#onDetached()
+	 */
+	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		Game.mAdvertisementManager.showSmall();
+	}
 
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()

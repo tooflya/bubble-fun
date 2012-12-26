@@ -84,7 +84,7 @@ public class MoreScreen extends ReflectionScreen {
 
 		this.mTopPanel.create().setPosition(0, 0);
 
-		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f - Screen.ADS_PADDING);
 
 		this.b1.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 - 30f);
 		this.b2.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 + 30f);
@@ -93,6 +93,18 @@ public class MoreScreen extends ReflectionScreen {
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tooflya.bouncekid.Screen#onDetached()
+	 */
+	@Override
+	public void onAttached() {
+		super.onAttached();
+
+		Game.mAdvertisementManager.showSmall();
+	}
 
 	/* (non-Javadoc)
 	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()

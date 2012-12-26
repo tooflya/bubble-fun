@@ -61,6 +61,7 @@ public class ButtonScaleable extends Button {
 		case TouchEvent.ACTION_UP:
 			if (this.isClicked) {
 				if (this.mWaitBeforeAction == 0.3f) {
+					this.onAnimationStarted();
 					this.mScaleModifier.reset();
 
 					this.mDoAction = true;
@@ -108,6 +109,9 @@ public class ButtonScaleable extends Button {
 
 	@Override
 	public void onClick() {
+	}
+
+	public void onAnimationStarted() {
 	}
 
 }

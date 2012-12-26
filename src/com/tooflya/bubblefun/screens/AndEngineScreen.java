@@ -72,6 +72,8 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 
 	private ScaleModifier modifier4 = new ScaleModifier(10f, 1f, 2f);
 
+	private boolean isClickedToContinue = false;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -171,11 +173,17 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 	 */
 	@Override
 	public boolean onSceneTouchEvent(Scene arg0, TouchEvent arg1) {
-		if (arg1.isActionDown()) {
-			Game.screens.set(new SplashScreen());
+		if (!this.isClickedToContinue) {
+			this.isClickedToContinue = true;
+
+			if (arg1.isActionDown()) {
+				Game.screens.set(new SplashScreen());
+			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	// ===========================================================

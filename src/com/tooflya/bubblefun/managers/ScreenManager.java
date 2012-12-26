@@ -8,11 +8,13 @@ import org.anddev.andengine.entity.primitive.Rectangle;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.screens.AdvertisimentScreen;
 import com.tooflya.bubblefun.screens.BoxLockedScreen;
 import com.tooflya.bubblefun.screens.BoxScreen;
 import com.tooflya.bubblefun.screens.BoxesUnlockScreen;
 import com.tooflya.bubblefun.screens.CreditsScreen;
 import com.tooflya.bubblefun.screens.ExitScreen;
+import com.tooflya.bubblefun.screens.GetCoinsScreen;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
 import com.tooflya.bubblefun.screens.LevelEndScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -122,6 +124,8 @@ public class ScreenManager {
 		this.screens[Screen.PRELOAD] = new PreloadScreen();
 		this.screens[Screen.BL] = new BoxLockedScreen();
 		this.screens[Screen.BOXESUNLOCK] = new BoxesUnlockScreen();
+		this.screens[Screen.ADS] = new AdvertisimentScreen();
+		this.screens[Screen.COINS] = new GetCoinsScreen();
 	}
 
 	// ===========================================================

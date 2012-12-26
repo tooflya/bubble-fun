@@ -127,12 +127,12 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mTopPanel.create().setPosition(0, 0);
 
-		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f - Screen.ADS_PADDING);
 
 		this.mBackground.attachChild(rectangle);
 		this.rectangle.setAlpha(0);
 
-		this.mBoxUnlockPanel = new BoxUnlockPanel(Options.cameraWidth - 200f, Options.cameraHeight - 70f, this.mBackground);
+		this.mBoxUnlockPanel = new BoxUnlockPanel(Options.cameraWidth - 200f, Options.cameraHeight - 70f - Screen.ADS_PADDING, this.mBackground);
 		this.mBoxUnlockPanel.down();
 
 		for (int i = 0; i < MENUITEMS; i++) {
@@ -325,6 +325,8 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		super.onAttached();
 
 		SC = Game.db.getTotalCore();
+
+		Game.mAdvertisementManager.showSmall();
 	}
 
 	/* (non-Javadoc)

@@ -19,7 +19,7 @@ public abstract class Screen extends Scene {
 
 	public static int screen = -1;
 
-	public static final int SCREENS_COUNT = 14;
+	public static final int SCREENS_COUNT = 16;
 
 	public static final int MENU = 0;
 	public static final int CHOISE = 1;
@@ -34,6 +34,10 @@ public abstract class Screen extends Scene {
 	public static final int BL = 11;
 	public static final int BOXESUNLOCK = 12;
 	public static final int STORE = 13;
+	public static final int ADS = 14;
+	public static final int COINS = 15;
+
+	public static float ADS_PADDING = 0;
 
 	// ===========================================================
 	// Fields

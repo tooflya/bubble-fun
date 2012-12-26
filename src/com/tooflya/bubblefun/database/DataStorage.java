@@ -24,6 +24,7 @@ public class DataStorage extends SQLiteOpenHelper {
 
 	private static final String LEVEL_TABLE = "levels";
 	private static final String BOX_TABLE = "boxes";
+	private static final String MORE_TABLE = "more";
 
 	private static final String LEVEL_ID = "id";
 	private static final String LEVEL_STATE = "state";
@@ -32,6 +33,8 @@ public class DataStorage extends SQLiteOpenHelper {
 
 	private static final String BOX_ID = "id";
 	private static final String BOX_STATE = "state";
+
+	private static final String MORE_ADS = "ads";
 
 	// ===========================================================
 	// Fields
@@ -175,6 +178,17 @@ public class DataStorage extends SQLiteOpenHelper {
 		return value;
 	}
 
+	public boolean isAdvertisimentDisabled() {
+		final Cursor cursor = this.getReadableDatabase().query(MORE_TABLE, new String[] { MORE_ADS }, null, null, null, null, null, null);
+		cursor.moveToFirst();
+
+		final boolean result = cursor.getInt(0) > 0;
+
+		cursor.close();
+
+		return result;
+	}
+
 	// ===========================================================
 	// Virtual methods
 	// ===========================================================
@@ -188,6 +202,7 @@ public class DataStorage extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + LEVEL_TABLE + "(" + LEVEL_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + LEVEL_STARS + " INTEGER DEFAULT 0,  " + LEVEL_SCORE + " INTEGER DEFAULT 0,  " + LEVEL_STATE + " INTEGER DEFAULT 0" + ")");
 		db.execSQL("CREATE TABLE " + BOX_TABLE + "(" + BOX_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + BOX_STATE + " INTEGER DEFAULT 0" + ")");
+		db.execSQL("CREATE TABLE " + MORE_TABLE + "(" + MORE_ADS + " INTEGER DEFAULT 0" + ")");
 
 		for (int i = 1; i <= 25 * 3; i++) {
 			this.addLevel(db);
@@ -197,6 +212,12 @@ public class DataStorage extends SQLiteOpenHelper {
 		for (int i = 1; i <= 3; i++) {
 			this.addBox(db, false);
 		}
+
+		final ContentValues values = new ContentValues();
+
+		values.put(MORE_ADS, 0);
+
+		db.insert(MORE_TABLE, null, values);
 	}
 
 	/*

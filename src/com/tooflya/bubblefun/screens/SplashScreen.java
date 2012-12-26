@@ -2,7 +2,10 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -15,7 +18,7 @@ import com.tooflya.bubblefun.entities.Entity;
  * @author Tooflya.com
  * @since
  */
-public class SplashScreen extends Screen {
+public class SplashScreen extends Screen implements IOnSceneTouchListener {
 
 	// ===========================================================
 	// Constants
@@ -39,6 +42,8 @@ public class SplashScreen extends Screen {
 		}
 	});
 
+	private boolean isClickedToContinue = false;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -52,6 +57,8 @@ public class SplashScreen extends Screen {
 
 		/** Register timer of loading progressbar changes */
 		this.registerUpdateHandler(mTimer);
+
+		this.setOnSceneTouchListener(this);
 	}
 
 	// ===========================================================
@@ -93,6 +100,24 @@ public class SplashScreen extends Screen {
 	 */
 	@Override
 	public void onBackPressed() {
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener#onSceneTouchEvent(org.anddev.andengine.entity.scene.Scene, org.anddev.andengine.input.touch.TouchEvent)
+	 */
+	@Override
+	public boolean onSceneTouchEvent(Scene arg0, TouchEvent arg1) {
+		if (!this.isClickedToContinue) {
+			this.isClickedToContinue = true;
+
+			if (arg1.isActionDown()) {
+				Game.screens.set(new LoadingScreen());
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	// ===========================================================

@@ -120,6 +120,8 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 		mTextBar.setWidth(112f);
 		mTextBar.getTextureRegion().setWidth(112);
+
+		Game.mAdvertisementManager.hideSmall();
 	}
 
 	/* (non-Javadoc)

@@ -37,11 +37,9 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
-import android.view.View;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.tooflya.bubblefun.database.DataStorage;
+import com.tooflya.bubblefun.managers.AdvertisementManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.AndEngineScreen;
 import com.tooflya.bubblefun.screens.LevelScreen;
@@ -84,8 +82,8 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	/** */
 	public static float mCurrentFramesPerSecond;
 
-	private SensorManager mSensorManager;
-	private ShakeEventListener mSensorListener;
+	/** */
+	public static AdvertisementManager mAdvertisementManager;
 
 	// ===========================================================
 	// Fields
@@ -93,6 +91,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 
 	/**  */
 	private long screenChangeTime = 0;
+
+	private SensorManager mSensorManager;
+	private ShakeEventListener mSensorListener;
 
 	// ===========================================================
 	// Virtual methods
@@ -105,10 +106,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onLoadComplete() {
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mSensorListener = new ShakeEventListener();
+		this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		this.mSensorListener = new ShakeEventListener();
 
-		mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+		this.mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
 
 			public void onShake() {
 				if (LevelScreen.running) {
@@ -398,6 +399,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 				}
 			});
 		}
+
+		/** */
+		mAdvertisementManager = new AdvertisementManager();
 
 		/** Create loading screen and return her scene for attaching to the activity. */
 		return new AndEngineScreen();
