@@ -30,6 +30,7 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 	// ===========================================================
 
 	private final Entity mBackground;
+	private final Entity mBackgroundCloud;
 	public final Entity mTextBar;
 
 	public int updates = 0;
@@ -97,11 +98,12 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 	public PreloadScreen() {
 		this.mBackground = new Entity(Resources.mPreloadBackgroundTextureRegion, this);
+		this.mBackgroundCloud = new Entity(Resources.mPreloadBackgroundCloudTextureRegion, this.mBackground);
 		this.mTextBar = new Entity(Resources.mPreloadTextTextureRegion, this.mBackground);
 
 		this.mBackground.create().setBackgroundCenterPosition();
-
-		mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
+		this.mBackgroundCloud.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY - 50f);
+		this.mTextBar.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
 	}
 
 	// ===========================================================

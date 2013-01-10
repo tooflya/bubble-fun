@@ -441,7 +441,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRedLasers = new EntityManager<Laser>(100, new Laser(Resources.mRedLaserTextureRegion, this.mBackground));
 
 		this.mUfos = new EntityManager<Ufo>(10, new Ufo(Resources.mUfoTextureRegion, this.mBackground));
-		//this.mUfos.create().setCenterPosition(150, 150);
+		this.mUfos.create().setCenterPosition(150, 150);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Entity) shape.getChild(i)).enableBlendFunction();
@@ -452,7 +452,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			this.mBonusManager.add(new BonusIcon(Resources.mBonus1TextureRegion, this.mBackground) {
 				@Override
 				public void onClick() {
-					this.init(41);
+					this.init(31);
 					super.onClick();
 				}
 			});

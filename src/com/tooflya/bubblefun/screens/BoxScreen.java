@@ -35,7 +35,7 @@ import com.tooflya.bubblefun.managers.ScreenManager;
  * @author Tooflya.com
  * @since
  */
-public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener, IScrollDetectorListener, IClickDetectorListener {
+public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener, IScrollDetectorListener {
 
 	// ===========================================================
 	// Constants
@@ -53,13 +53,12 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	// ===========================================================
 
 	private SurfaceScrollDetector mScrollDetector;
-	private ClickDetector mClickDetector;
 
 	private boolean mPostScroll = false;
 
 	private final ButtonScaleable mBackButton;
 
-	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, Options.cameraHeight);
+	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, 0);
 	private final Rectangle mScoreHolder;
 	private final EntityManager<Entity> mPoints, mPoints2;
 
@@ -130,7 +129,6 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f - Screen.ADS_PADDING);
 
 		this.mBackground.attachChild(rectangle);
-		this.rectangle.setAlpha(0);
 
 		this.mBoxUnlockPanel = new BoxUnlockPanel(Options.cameraWidth - 200f, Options.cameraHeight - 70f - Screen.ADS_PADDING, this.mBackground);
 		this.mBoxUnlockPanel.down();
@@ -311,7 +309,6 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		}
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);
-		this.mClickDetector = new ClickDetector(this);
 
 		this.setOnSceneTouchListener(this);
 	}
@@ -463,7 +460,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 					}
 
 					try {
-						if (this.mTimeToUnlockBox) {
+						if (this.mTimeToUnlockBox || Options.DEBUG) {
 							this.mTimeToUnlockBox = false;
 
 							l = 0;
@@ -478,7 +475,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 							mStarsNeeded = l - Game.db.getTotalStars();
 
-							if (mStarsNeeded <= 0) {
+							if (mStarsNeeded <= 0 || Options.DEBUG) {
 								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
 								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
 									@Override
@@ -636,32 +633,42 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	}
 
 	@Override
-	public void onClick(ClickDetector arg0, TouchEvent arg1) {
-	}
+	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pTouchEvent) {
+		this.mScrollDetector.onTouchEvent(pTouchEvent);
 
-	@Override
-	public boolean onSceneTouchEvent(Scene arg0, TouchEvent pSceneTouchEvent) {
-
-		this.mClickDetector.onTouchEvent(pSceneTouchEvent);
-		this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
+		if (pTouchEvent.isActionDown()) {
+			if (pTouchEvent.getY() > 200f && pTouchEvent.getY() < 800f) {
+				this.move = true;
+			}
+		}
 
 		return true;
 	}
 
 	private float sx;
+	private boolean move = false;
 
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener#onScroll(org.anddev.andengine.input.touch.detector.ScrollDetector, org.anddev.andengine.input.touch.TouchEvent, float, float)
+	 */
 	@Override
 	public void onScroll(ScrollDetector arg0, TouchEvent pTouchEvent, float pDistanceX, float pDistanceY) {
 		if (pTouchEvent.isActionMove()) {
-			sx = pDistanceX > 0 ? 8 : -8;
+			if (this.move) {
+				sx = pDistanceX > 0 ? 8 : -8;
 
-			if (this.rectangle.getX() < Options.cameraCenterX / 2 && this.rectangle.getX() > -254 * 3.2f)
-				this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
+				if (this.rectangle.getX() < Options.cameraCenterX / 2 && this.rectangle.getX() > -254 * 3.2f) {
+					this.rectangle.setPosition(this.rectangle.getX() + pDistanceX / 2, 0);
+				}
+			}
 		} else if (pTouchEvent.isActionUp()) {
-			this.mPostScroll = true;
+			if (this.move) {
+				this.mPostScroll = true;
+				this.move = false;
+			}
 		}
-
 	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

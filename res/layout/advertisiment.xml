@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom" >
 
     <org.anddev.andengine.opengl.view.RenderSurfaceView
         android:id="@+id/xmllayoutRenderSurfaceView"
@@ -18,7 +19,7 @@
         android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="a150d9dbae2fb1a"
-        ads:loadAdOnCreate="true"
+        ads:loadAdOnCreate="false"
         android:visibility="gone" />
 
     <com.google.ads.AdView
@@ -30,6 +31,49 @@
         ads:adSize="IAB_MRECT"
         ads:adUnitId="a150d9dbae2fb1a"
         ads:loadAdOnCreate="false"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/noAdsSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
+        android:background="#000000"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Please remove this ads!"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noAdsBig"
+        android:layout_width="fill_parent"
+        android:layout_height="220dp"
+        android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
+        android:layout_marginBottom="200dp"
+        android:background="#000000"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Please remove this ads!"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:visibility="gone" />
 
 </RelativeLayout>

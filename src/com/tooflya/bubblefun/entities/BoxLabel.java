@@ -1,5 +1,6 @@
 package com.tooflya.bubblefun.entities;
 
+import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
@@ -12,21 +13,24 @@ public class BoxLabel extends Entity {
 	private ScaleModifier modifier3;
 	private ScaleModifier modifier4;
 
-	private ScaleModifier modifier5 = new ScaleModifier(0.2f, 1f, 0.9f, 1f, 1.1f) {
+	private final ScaleModifier modifier5 = new ScaleModifier(0.2f, 1f, 0.9f, 1f, 1.1f) {
 		@Override
 		public void onFinished() {
 			modifier6.reset();
 		}
 	};
 
-	private ScaleModifier modifier6 = new ScaleModifier(0.2f, 0.9f, 1.1f, 1.1f, 0.9f) {
+	private final ScaleModifier modifier6 = new ScaleModifier(0.2f, 0.9f, 1.1f, 1.1f, 0.9f) {
 		@Override
 		public void onFinished() {
 			modifier7.reset();
 		}
 	};
 
-	private ScaleModifier modifier7 = new ScaleModifier(0.2f, 1.1f, 1f, 0.9f, 1f);
+	private final ScaleModifier modifier7 = new ScaleModifier(0.2f, 1.1f, 1f, 0.9f, 1f);
+
+	private final AlphaModifier modifier8 = new AlphaModifier(0.4f, 1f, 0f);
+	private final AlphaModifier modifier9 = new AlphaModifier(0.4f, 0f, 1f);
 
 	private float mBasicY;
 
@@ -40,7 +44,7 @@ public class BoxLabel extends Entity {
 
 		this.mBasicY = this.mY;
 
-		if(!reverse) {
+		if (!reverse) {
 			this.modifier1 = new MoveModifier(0.2f, this.mX, this.mX, this.mY, this.mY + 100f);
 			this.modifier2 = new MoveModifier(0.2f, this.mX, this.mX, this.mY + 100f, this.mY);
 		} else {
@@ -63,15 +67,18 @@ public class BoxLabel extends Entity {
 		this.registerEntityModifier(modifier5);
 		this.registerEntityModifier(modifier6);
 		this.registerEntityModifier(modifier7);
+		this.registerEntityModifier(modifier8);
+		this.registerEntityModifier(modifier9);
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
-	}
 
+		this.enableFullBlendFunction();
+	}
 
 	public BoxLabel(final float pX, final float pY, TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pX, pY, pTiledTextureRegion, pParentScreen, false);
 	}
-	
+
 	public void up() {
 		if (this.mBasicY != this.mY) {
 			modifier1.stop();
@@ -79,6 +86,8 @@ public class BoxLabel extends Entity {
 
 			modifier2.reset();
 			modifier4.reset();
+
+			modifier9.reset();
 		} else {
 			modifier5.reset();
 		}
@@ -91,6 +100,8 @@ public class BoxLabel extends Entity {
 
 			modifier1.reset();
 			modifier3.reset();
+
+			modifier8.reset();
 		}
 	}
 
@@ -102,7 +113,6 @@ public class BoxLabel extends Entity {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-
 
 	}
 

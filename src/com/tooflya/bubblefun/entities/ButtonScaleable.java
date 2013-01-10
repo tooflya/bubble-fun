@@ -6,8 +6,6 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 public class ButtonScaleable extends Button {
 
-	private ScaleModifier mScaleModifier;
-
 	private float mWaitBeforeAction = 0.3f;
 	private boolean mDoAction = false;
 
@@ -15,10 +13,30 @@ public class ButtonScaleable extends Button {
 
 	private boolean mModalTouch;
 
+	private ScaleModifier modifier1 = new ScaleModifier(0.2f, 1f, 0.9f, 1f, 1.1f) {
+		@Override
+		public void onFinished() {
+			modifier2.reset();
+		}
+	};
+
+	private ScaleModifier modifier2 = new ScaleModifier(0.2f, 0.9f, 1.1f, 1.1f, 0.9f) {
+		@Override
+		public void onFinished() {
+			modifier3.reset();
+		}
+	};
+
+	private ScaleModifier modifier3 = new ScaleModifier(0.2f, 1.1f, 1f, 0.9f, 1f);
+
 	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen, final boolean isModalTouch) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.mModalTouch = isModalTouch;
+
+		this.registerEntityModifier(modifier1);
+		this.registerEntityModifier(modifier2);
+		this.registerEntityModifier(modifier3);
 	}
 
 	public ButtonScaleable(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
@@ -26,20 +44,16 @@ public class ButtonScaleable extends Button {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tooflya.bubblefun.entities.Entity#create()
+	 * @see com.tooflya.bubblefun.entities.Entity#onCreate()
 	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		if (this.mBaseScale == -1) {
 			this.mBaseScale = this.getScaleX();
 
-			this.mScaleModifier = new ScaleModifier(0.1f, this.getScaleX(), this.getScaleX() + 0.1f);
-
 			this.setScaleCenter(this.getBaseWidth() / 2, this.getBaseHeight() / 2);
-
-			this.registerEntityModifier(this.mScaleModifier);
 		}
 	}
 
@@ -62,7 +76,7 @@ public class ButtonScaleable extends Button {
 			if (this.isClicked) {
 				if (this.mWaitBeforeAction == 0.3f) {
 					this.onAnimationStarted();
-					this.mScaleModifier.reset();
+					this.modifier1.reset();
 
 					this.mDoAction = true;
 				}
@@ -71,7 +85,7 @@ public class ButtonScaleable extends Button {
 			isClicked = false;
 			return this.mModalTouch;
 		case TouchEvent.ACTION_MOVE:
-			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 10 || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 10) {
+			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 5f || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 5f) {
 				this.isClicked = false;
 			}
 
