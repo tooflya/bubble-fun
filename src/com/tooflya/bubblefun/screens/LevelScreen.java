@@ -700,6 +700,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public void onAttached() {
 		super.onAttached();
 
+		Game.isAlreadyPlayed = true;
+
 		switch (Options.boxNumber) {
 		case 0:
 			this.onWOCBoxAttached();

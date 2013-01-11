@@ -85,6 +85,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	/** */
 	public static AdvertisementManager mAdvertisementManager;
 
+	/** */
+	public static boolean isAlreadyPlayed = false;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -238,8 +241,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 
 		if (Options.DEBUG) {
 			Options.isMusicEnabled = false;
+			Options.isSoundEnabled = false;
 		} else {
 			Options.isMusicEnabled = true;
+			Options.isSoundEnabled = true;
 		}
 
 		if (Options.isMusicEnabled) {

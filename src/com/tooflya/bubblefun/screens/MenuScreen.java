@@ -46,8 +46,8 @@ public class MenuScreen extends ReflectionScreen {
 	private final ButtonScaleable mTwitterIcon;
 	private final ButtonScaleable mFacebookIcon;
 	private final ButtonScaleable mMoreIcon;
-	private final ButtonScaleable mMusicIcon;
 	private final ButtonScaleable mSoundIcon;
+	private final ButtonScaleable mMusicIcon;
 	private final ButtonScaleable mBuyButton;
 	private final PlayIcon mPlayIcon;
 
@@ -86,7 +86,7 @@ public class MenuScreen extends ReflectionScreen {
 		 */
 		@Override
 		public void onFinished() {
-			registerTouchArea(mMusicIcon);
+			registerTouchArea(mSoundIcon);
 		}
 	};
 	private final MoveModifier mMusicMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 90f, ICONS_PADDING, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
@@ -96,7 +96,7 @@ public class MenuScreen extends ReflectionScreen {
 		 */
 		@Override
 		public void onFinished() {
-			unregisterTouchArea(mMusicIcon);
+			unregisterTouchArea(mSoundIcon);
 		}
 	};
 
@@ -107,7 +107,7 @@ public class MenuScreen extends ReflectionScreen {
 		 */
 		@Override
 		public void onFinished() {
-			registerTouchArea(mSoundIcon);
+			registerTouchArea(mMusicIcon);
 		}
 	};
 	private final MoveModifier mSoundMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 90f, ICONS_PADDING, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
@@ -117,7 +117,7 @@ public class MenuScreen extends ReflectionScreen {
 		 */
 		@Override
 		public void onFinished() {
-			unregisterTouchArea(mSoundIcon);
+			unregisterTouchArea(mMusicIcon);
 		}
 	};
 
@@ -212,26 +212,19 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
-		this.mMusicIcon = new ButtonScaleable(Resources.mMusicIconTextureRegion, this.mBackground) {
+		this.mSoundIcon = new ButtonScaleable(Resources.mSoundIconTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
 			 * @see com.tooflya.bubblefun.entities.Button#onClick()
 			 */
 			@Override
 			public void onClick() {
-				Options.isMusicEnabled = !Options.isMusicEnabled;
-
-				if (Options.isMusicEnabled) {
-					this.setCurrentTileIndex(0);
-					Options.mMainSound.play();
-				} else {
-					this.setCurrentTileIndex(1);
-					Options.mMainSound.pause();
-				}
+				this.setCurrentTileIndex(Options.isSoundEnabled ? 1 : 0);
+				Options.isSoundEnabled = !Options.isSoundEnabled;
 			}
 		};
 
-		this.mSoundIcon = new ButtonScaleable(Resources.mSoundIconTextureRegion, this.mBackground) {
+		this.mMusicIcon = new ButtonScaleable(Resources.mMusicIconTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
 			 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -307,8 +300,8 @@ public class MenuScreen extends ReflectionScreen {
 
 		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
-		this.mMusicIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 		this.mSoundIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
+		this.mMusicIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 
 		this.mSettingsIcon.setRotationCenter(this.mSettingsIcon.getWidthScaled() / 2, this.mSettingsIcon.getHeightScaled() / 2);
 
@@ -327,15 +320,15 @@ public class MenuScreen extends ReflectionScreen {
 		this.mMoreIcon.registerEntityModifier(this.mMoreMoveOn);
 		this.mMoreIcon.registerEntityModifier(this.mMoreMoveOff);
 
-		this.mMusicIcon.registerEntityModifier(this.mMusicMoveOn);
-		this.mMusicIcon.registerEntityModifier(this.mMusicMoveOff);
+		this.mSoundIcon.registerEntityModifier(this.mMusicMoveOn);
+		this.mSoundIcon.registerEntityModifier(this.mMusicMoveOff);
 
-		this.mSoundIcon.registerEntityModifier(this.mSoundMoveOn);
-		this.mSoundIcon.registerEntityModifier(this.mSoundMoveOff);
+		this.mMusicIcon.registerEntityModifier(this.mSoundMoveOn);
+		this.mMusicIcon.registerEntityModifier(this.mSoundMoveOff);
 
 		this.unregisterTouchArea(this.mMoreIcon);
-		this.unregisterTouchArea(this.mMusicIcon);
 		this.unregisterTouchArea(this.mSoundIcon);
+		this.unregisterTouchArea(this.mMusicIcon);
 	}
 
 	// ===========================================================
@@ -366,6 +359,9 @@ public class MenuScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onPostAttached() {
+		if (Game.isAlreadyPlayed) {
+			Game.screens.setChildScreen(Game.screens.get(Screen.RATE), false, false, true);
+		}
 	}
 
 	/*
