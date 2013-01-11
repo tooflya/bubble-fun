@@ -113,6 +113,9 @@ public class Resources {
 	public static final TiledTextureRegion mShopAvailableTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-num-sprite.png", 985, 280, 1, 5);
 	public static final TiledTextureRegion mShopPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-panel.png", 454, 660, 1, 1);
 	public static final TiledTextureRegion mGetCoinsButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "get-coins-btn.png", 401, 908, 1, 1);
+	public static final TiledTextureRegion mRatePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me.png", 523, 721, 1, 1);
+	public static final TiledTextureRegion mRateLaterButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me-later.png", 533, 871, 1, 1);
+	public static final TiledTextureRegion mRateNowButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me-rate.png", 670, 871, 1, 1);
 
 	public static final TiledTextureRegion mStorePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu.png", 2, 2, 1, 1);
 	public static final TiledTextureRegion mStoreTreesTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu-tree.png", 340, 2, 1, 1);
@@ -299,7 +302,7 @@ public class Resources {
 
 	public static final void loadCommonResources() {
 		Game.loadTextures(mBackgroundCommonTextureAtlas, mFontTextureAtlas1, mFontTextureAtlas2);
-		Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
+		//Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
 	}
 
 	public static final void loadFirstResources() {

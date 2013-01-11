@@ -92,6 +92,7 @@ public class AdvertisementManager {
 		this.mAdsRequest.addTestDevice(AdRequest.TEST_EMULATOR);
 		this.mAdsRequest.addTestDevice("75FB804D31DDACC071B1AAF9A074D67A");
 		this.mAdsRequest.addTestDevice("2A1EBFDEA347D99BD1F7FBB84433AD72");
+		this.mAdsRequest.addTestDevice("FA02AC6CC21C807191ED1A07863CD045");
 
 		this.mSmallAdvertisiment = (AdView) Game.instance.findViewById(R.id.adView);
 		this.mBigAdvertisiment = (AdView) Game.instance.findViewById(R.id.adViewBig);

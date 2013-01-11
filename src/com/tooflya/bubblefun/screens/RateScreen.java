@@ -20,22 +20,20 @@ public class RateScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
+	private final Entity mPanel = new Entity(Resources.mRatePanelTextureRegion, this);
 
-	private final Entity mText = new Entity(Resources.mExitTextTextureRegion, this.mPanel);
-
-	private final Button mYIcon = new Button(Resources.mExitYesbuttonTextureRegion, this.mPanel) {
+	private final Button mLaterIcon = new Button(Resources.mRateLaterButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
 		 */
 		@Override
 		public void onClick() {
-			Game.close();
+			modifier4.reset();
 		}
 	};
 
-	private final Button mNIcon = new Button(Resources.mExitNobuttonTextureRegion, this.mPanel) {
+	private final Button mNowIcon = new Button(Resources.mRateNowButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -57,20 +55,16 @@ public class RateScreen extends PopupScreen {
 		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
 		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
 
-		this.mText.create();
-		this.mText.setScaleCenter(this.mText.getWidth() / 2, this.mText.getHeight() / 2);
-		this.mText.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
+		this.mLaterIcon.create();
+		this.mLaterIcon.setScaleCenter(this.mLaterIcon.getWidth() / 2, this.mLaterIcon.getHeight() / 2);
+		this.mLaterIcon.setCenterPosition(70, this.mPanel.getHeight() - 5f);
 
-		this.mYIcon.create();
-		this.mYIcon.setScaleCenter(this.mYIcon.getWidth() / 2, this.mYIcon.getHeight() / 2);
-		this.mYIcon.setCenterPosition(70, this.mPanel.getHeight() - 5f);
+		this.mNowIcon.create();
+		this.mNowIcon.setScaleCenter(this.mNowIcon.getWidth() / 2, this.mNowIcon.getHeight() / 2);
+		this.mNowIcon.setCenterPosition(this.mPanel.getWidth() - 70, this.mPanel.getHeight() - 5f);
 
-		this.mNIcon.create();
-		this.mNIcon.setScaleCenter(this.mNIcon.getWidth() / 2, this.mNIcon.getHeight() / 2);
-		this.mNIcon.setCenterPosition(this.mPanel.getWidth() - 70, this.mPanel.getHeight() - 5f);
-
-		this.registerTouchArea(this.mYIcon);
-		this.registerTouchArea(this.mNIcon);
+		this.registerTouchArea(this.mLaterIcon);
+		this.registerTouchArea(this.mNowIcon);
 
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
@@ -92,6 +86,8 @@ public class RateScreen extends PopupScreen {
 	 */
 	@Override
 	public void onAttached() {
+		super.onAttached();
+
 		Game.isAlreadyPlayed = false;
 	}
 

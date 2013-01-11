@@ -513,7 +513,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 			return true;
 		}
 
-		return super.onKeyDown(keyCode, event);
+		return true;
 	}
 
 	/* (non-Javadoc)
