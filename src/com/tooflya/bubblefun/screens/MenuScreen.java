@@ -2,7 +2,6 @@ package com.tooflya.bubblefun.screens;
 
 import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.modifier.RotationModifier;
-import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -47,6 +46,7 @@ public class MenuScreen extends ReflectionScreen {
 	private final ButtonScaleable mTwitterIcon;
 	private final ButtonScaleable mFacebookIcon;
 	private final ButtonScaleable mMoreIcon;
+	private final ButtonScaleable mMusicIcon;
 	private final ButtonScaleable mSoundIcon;
 	private final ButtonScaleable mBuyButton;
 	private final PlayIcon mPlayIcon;
@@ -67,6 +67,7 @@ public class MenuScreen extends ReflectionScreen {
 			registerTouchArea(mMoreIcon);
 		}
 	};
+
 	private final MoveModifier mMoreMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 53f, ICONS_PADDING, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
 		/* (non-Javadoc)
@@ -77,7 +78,29 @@ public class MenuScreen extends ReflectionScreen {
 			unregisterTouchArea(mMoreIcon);
 		}
 	};
-	private final MoveModifier mSoundMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 90f + ICONS_PADDING * 2, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
+
+	private final MoveModifier mMusicMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 90f + ICONS_PADDING * 2, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
+		 */
+		@Override
+		public void onFinished() {
+			registerTouchArea(mMusicIcon);
+		}
+	};
+	private final MoveModifier mMusicMoveOff = new MoveModifier(0.3f, ICONS_PADDING * 2 + 90f, ICONS_PADDING, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
+		 */
+		@Override
+		public void onFinished() {
+			unregisterTouchArea(mMusicIcon);
+		}
+	};
+
+	private final MoveModifier mSoundMoveOn = new MoveModifier(0.3f, ICONS_PADDING * 2, 127f + ICONS_PADDING * 2, Options.cameraHeight - 50f, Options.cameraHeight - 50f) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.modifiers.MoveModifier#onFinished()
@@ -189,6 +212,25 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
+		this.mMusicIcon = new ButtonScaleable(Resources.mMusicIconTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Options.isMusicEnabled = !Options.isMusicEnabled;
+
+				if (Options.isMusicEnabled) {
+					this.setCurrentTileIndex(0);
+					Options.mMainSound.play();
+				} else {
+					this.setCurrentTileIndex(1);
+					Options.mMainSound.pause();
+				}
+			}
+		};
+
 		this.mSoundIcon = new ButtonScaleable(Resources.mSoundIconTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
@@ -208,33 +250,27 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
-		this.mSettingsIcon = new Entity(Resources.mSettingsIconTextureRegion, this.mBackground, true) {
+		this.mSettingsIcon = new ButtonScaleable(Resources.mSettingsIconTextureRegion, this.mBackground, true) {
 
 			private boolean rotation = false;
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.anddev.andengine.entity.shape.Shape#onAreaTouched(org.anddev.andengine.input.touch.TouchEvent, float, float)
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
 			 */
 			@Override
-			public boolean onAreaTouched(final TouchEvent pAreaTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				switch (pAreaTouchEvent.getAction()) {
-				case TouchEvent.ACTION_UP:
-					if (this.rotation) {
-						MenuScreen.this.mRotateOff.reset();
-						MenuScreen.this.mMoreMoveOff.reset();
-						MenuScreen.this.mSoundMoveOff.reset();
-					} else {
-						MenuScreen.this.mRotateOn.reset();
-						MenuScreen.this.mMoreMoveOn.reset();
-						MenuScreen.this.mSoundMoveOn.reset();
-					}
-					this.rotation = !this.rotation;
-					break;
+			public void onClick() {
+				if (this.rotation) {
+					MenuScreen.this.mRotateOff.reset();
+					MenuScreen.this.mMoreMoveOff.reset();
+					MenuScreen.this.mMusicMoveOff.reset();
+					MenuScreen.this.mSoundMoveOff.reset();
+				} else {
+					MenuScreen.this.mRotateOn.reset();
+					MenuScreen.this.mMoreMoveOn.reset();
+					MenuScreen.this.mMusicMoveOn.reset();
+					MenuScreen.this.mSoundMoveOn.reset();
 				}
-
-				return super.onAreaTouched(pAreaTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+				this.rotation = !this.rotation;
 			}
 		};
 
@@ -271,6 +307,7 @@ public class MenuScreen extends ReflectionScreen {
 
 		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
+		this.mMusicIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 		this.mSoundIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 
 		this.mSettingsIcon.setRotationCenter(this.mSettingsIcon.getWidthScaled() / 2, this.mSettingsIcon.getHeightScaled() / 2);
@@ -281,8 +318,8 @@ public class MenuScreen extends ReflectionScreen {
 		this.mMoreMoveOn.setRemoveWhenFinished(false);
 		this.mMoreMoveOff.setRemoveWhenFinished(false);
 
-		this.mSoundMoveOn.setRemoveWhenFinished(false);
-		this.mSoundMoveOff.setRemoveWhenFinished(false);
+		this.mMusicMoveOn.setRemoveWhenFinished(false);
+		this.mMusicMoveOff.setRemoveWhenFinished(false);
 
 		this.mSettingsIcon.registerEntityModifier(this.mRotateOn);
 		this.mSettingsIcon.registerEntityModifier(this.mRotateOff);
@@ -290,10 +327,14 @@ public class MenuScreen extends ReflectionScreen {
 		this.mMoreIcon.registerEntityModifier(this.mMoreMoveOn);
 		this.mMoreIcon.registerEntityModifier(this.mMoreMoveOff);
 
+		this.mMusicIcon.registerEntityModifier(this.mMusicMoveOn);
+		this.mMusicIcon.registerEntityModifier(this.mMusicMoveOff);
+
 		this.mSoundIcon.registerEntityModifier(this.mSoundMoveOn);
 		this.mSoundIcon.registerEntityModifier(this.mSoundMoveOff);
 
 		this.unregisterTouchArea(this.mMoreIcon);
+		this.unregisterTouchArea(this.mMusicIcon);
 		this.unregisterTouchArea(this.mSoundIcon);
 	}
 

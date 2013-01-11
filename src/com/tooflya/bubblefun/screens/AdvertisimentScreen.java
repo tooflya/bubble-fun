@@ -1,7 +1,9 @@
 package com.tooflya.bubblefun.screens;
 
 import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
+import com.tooflya.bubblefun.entities.Button;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 
@@ -9,12 +11,41 @@ public class AdvertisimentScreen extends Screen {
 
 	private final Entity mBackground;
 
+	private final Button mAdsPanel;
+	private final ButtonScaleable mAdsButton;
+
 	public final ButtonScaleable mClose;
 
 	public AdvertisimentScreen() {
 		this.mBackground = new Entity(Resources.mPreloadBackgroundTextureRegion, this);
 
+		this.mAdsPanel = new Button(Resources.mAdsPanelTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				removeAds();
+			}
+		};
+
+		this.mAdsButton = new ButtonScaleable(Resources.mAdsButtonTextureRegion, this.mAdsPanel) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
+			 */
+			@Override
+			public void onClick() {
+				removeAds();
+			}
+		};
+
 		this.mClose = new ButtonScaleable(Resources.mCloseTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
+			 */
 			@Override
 			public void onClick() {
 				AdvertisimentScreen.this.onBackPressed();
@@ -22,7 +53,9 @@ public class AdvertisimentScreen extends Screen {
 		};
 
 		this.mBackground.create().setBackgroundCenterPosition();
-		this.mClose.create().setCenterPosition(50f, 40f);
+		this.mClose.create().setCenterPosition(55f, 40f);
+		this.mAdsPanel.create().setPosition(0, Options.cameraHeight - this.mAdsPanel.getHeight());
+		this.mAdsButton.create().setCenterPosition(340f, 25f);
 	}
 
 	// ===========================================================
@@ -70,5 +103,9 @@ public class AdvertisimentScreen extends Screen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private final void removeAds() {
+
+	}
 
 }
