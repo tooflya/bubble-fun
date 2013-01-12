@@ -121,7 +121,12 @@ public class DataStorage extends SQLiteOpenHelper {
 	 * @param pScore
 	 * @return
 	 */
-	public int updateLevel(final int id, final int pOpen, final int pStars, final int pScore) {
+	public int updateLevel(final int id, final int pOpen, int pStars, int pScore) {
+		final Level existLevel = this.getLevel(id);
+
+		pStars = pStars < existLevel.getStarsCount() ? existLevel.getStarsCount() : pStars;
+		pScore = pScore < existLevel.getScoreCount() ? existLevel.getScoreCount() : pScore;
+
 		final ContentValues values = new ContentValues();
 
 		values.put(LEVEL_STATE, pOpen);

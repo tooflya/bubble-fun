@@ -255,7 +255,7 @@ public class Bubble extends Entity {
 
 	private void writeText() {
 		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-		if (this.mBirdsKills == 1 && screen.chikies.getCount() <= 1 && LevelScreen.deadBirds <= 0) {
+		if (this.mBirdsKills == 1 && screen.chikies.getCount() <= 1 && LevelScreen.deadBirds <= 1) {
 			this.mBirdsKills--;
 			final Entity text = screen.mAwesomeKillText.create();
 			text.setCenterPosition(this.mLastX, this.mLastY);

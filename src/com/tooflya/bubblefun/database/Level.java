@@ -17,6 +17,7 @@ public class Level {
 	private int mId;
 	private boolean mOpen;
 	private int mStarsCount;
+	private int mScoreCount;
 
 	// ===========================================================
 	// Constructors
@@ -82,5 +83,12 @@ public class Level {
 	 */
 	public int getStarsCount() {
 		return this.mStarsCount;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getScoreCount() {
+		return this.mScoreCount;
 	}
 }
