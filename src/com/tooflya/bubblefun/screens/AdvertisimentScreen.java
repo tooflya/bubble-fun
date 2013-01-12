@@ -19,7 +19,7 @@ public class AdvertisimentScreen extends Screen {
 	public AdvertisimentScreen() {
 		this.mBackground = new Entity(Resources.mPreloadBackgroundTextureRegion, this);
 
-		this.mAdsPanel = new Button(Resources.mAdsPanelTextureRegion, this.mBackground) {
+		this.mAdsPanel = new Button(Resources.mAdsPanelTextureRegion, this.mBackground, true) {
 
 			/* (non-Javadoc)
 			 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -30,7 +30,7 @@ public class AdvertisimentScreen extends Screen {
 			}
 		};
 
-		this.mAdsButton = new ButtonScaleable(Resources.mAdsButtonTextureRegion, this.mAdsPanel) {
+		this.mAdsButton = new ButtonScaleable(Resources.mAdsButtonTextureRegion, this.mAdsPanel, true) {
 
 			/* (non-Javadoc)
 			 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
@@ -55,7 +55,7 @@ public class AdvertisimentScreen extends Screen {
 		this.mBackground.create().setBackgroundCenterPosition();
 		this.mClose.create().setCenterPosition(55f, 40f);
 		this.mAdsPanel.create().setCenterPosition(Options.cameraCenterX, Options.cameraHeight - this.mAdsPanel.getHeight() / 2);
-		this.mAdsButton.create().setCenterPosition(340f, 25f);
+		this.mAdsButton.create().setCenterPosition(320f, 15f);
 	}
 
 	// ===========================================================

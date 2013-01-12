@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level r1="129" g1="84" b1="243" r2="28" g2="230" b2="218" bluebird="false">
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.7" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<ctrPoint x="0" y="40"/>
+<ctrPoint x="100" y="40"/>
+</chiky>
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<ctrPoint x="0" y="35"/>
+<ctrPoint x="70" y="20"/>
+<ctrPoint x="70" y="55"/>
+</chiky>
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<ctrPoint x="100" y="45"/>
+<ctrPoint x="30" y="60"/>
+<ctrPoint x="30" y="25"/>
+</chiky>
+</level>

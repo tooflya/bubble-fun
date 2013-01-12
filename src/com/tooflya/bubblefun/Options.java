@@ -9,7 +9,7 @@ import org.anddev.andengine.audio.sound.Sound;
  */
 public class Options {
 	// > Compile options.
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	// < Compile options.
 
 	// > Math options.

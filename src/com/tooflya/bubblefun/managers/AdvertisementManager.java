@@ -8,6 +8,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.R;
 import com.tooflya.bubblefun.screens.AdvertisimentScreen;
 import com.tooflya.bubblefun.screens.Screen;
@@ -109,18 +110,24 @@ public class AdvertisementManager {
 
 		this.isAdvertisementDisabled = Game.db.isAdvertisimentDisabled();
 
-		if (!this.isAdvertisementDisabled) {
+		if (!this.isAdvertisementDisabled()) {
 			this.mSmallAdvertisiment.loadAd(this.mAdsRequest);
 			Screen.ADS_PADDING = 60f;
 		}
 	}
 
 	public boolean isAdvertisementDisabled() {
+		if (Options.DEBUG) {
+			return true;
+		}
+
 		return this.isAdvertisementDisabled;
 	}
 
 	public void showSmall() {
-		Game.instance.runOnUiThread(this.mShowSmallRunnable);
+		if (!this.isAdvertisementDisabled()) {
+			Game.instance.runOnUiThread(this.mShowSmallRunnable);
+		}
 	}
 
 	public void hideSmall() {
@@ -128,7 +135,9 @@ public class AdvertisementManager {
 	}
 
 	public void showBig() {
-		Game.instance.runOnUiThread(this.mLoadBigRunnable);
+		if (!this.isAdvertisementDisabled()) {
+			Game.instance.runOnUiThread(this.mLoadBigRunnable);
+		}
 	}
 
 	public void hideBig() {

@@ -2,8 +2,6 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import android.util.FloatMath;
-
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
@@ -63,8 +61,8 @@ public class Chiky extends EntityBezier {
 	// < UnnormalMove state.
 
 	// > WithGumMove state.
-	private float mWithGumTime = 0f; // Seconds.
-	private float mWithGumMaxTime = 0; // Seconds.
+	private float mWithGumTime; // Seconds.
+	private float mWithGumMaxTime; // Seconds.
 	// > WithGumMove state.
 
 	private Bubble mBubble = null;
@@ -396,21 +394,31 @@ public class Chiky extends EntityBezier {
 		this.mUnnormalSpeedTime = 0; // Seconds.
 		// < UnnormalMove state.
 
-		// > WithGumMove state.
-		this.mWithGumTime = 0f; // Seconds.
-		this.mWithGumMaxTime = 0; // Seconds.
-		// > WithGumMove state.
-
 		this.mBubble = null;
 		this.mWind = null;
 		this.mCristmasHat = null;
 
 		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+
+			// > WithGumMove state.
+			this.mWithGumTime = 0f; // Seconds.
+			this.mWithGumMaxTime = 2f; // Seconds.
+			// > WithGumMove state.
 		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
 			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
+
+			// > WithGumMove state.
+			this.mWithGumTime = 0f; // Seconds.
+			this.mWithGumMaxTime = 0; // Seconds.
+			// > WithGumMove state.
 		} else if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 			this.animate(pSpaceFrameDuration, pSpaceNormalMoveFrames, 9999);
+
+			// > WithGumMove state.
+			this.mWithGumTime = 0f; // Seconds.
+			this.mWithGumMaxTime = 0; // Seconds.
+			// > WithGumMove state.
 		}
 
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {

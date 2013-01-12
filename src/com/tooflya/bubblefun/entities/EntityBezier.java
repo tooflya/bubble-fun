@@ -75,6 +75,7 @@ public class EntityBezier extends Entity {
 	
 	public void initOffsetTime(final float pOffsetTime) {
 		this.mOffsetTime = pOffsetTime;
+		this.mTime = pOffsetTime;
 	}
 	
 	public void initIsReverseTime(final boolean pIsReverseTime) {
