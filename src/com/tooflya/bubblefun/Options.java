@@ -9,7 +9,7 @@ import org.anddev.andengine.audio.sound.Sound;
  */
 public class Options {
 	// > Compile options.
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	// < Compile options.
 
 	// > Math options.
@@ -42,10 +42,10 @@ public class Options {
 	public static int levelNumber = 1;
 	public static int boxNumber = 1;
 
-	final static float touchHeightPercents = 0.3f;
+	public final static float touchHeightPercents = 0.3f;
 	public static float touchHeight;
 
-	final static float menuHeightPercents = 0.1f;
+	public final static float menuHeightPercents = 0.1f;
 	public static float menuHeight;
 	// < Camera options.
 

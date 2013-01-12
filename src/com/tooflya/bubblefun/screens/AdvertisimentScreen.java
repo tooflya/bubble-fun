@@ -72,6 +72,12 @@ public class AdvertisimentScreen extends Screen {
 		this.mClose.setVisible(false);
 
 		Game.mAdvertisementManager.showBig();
+
+		if (Options.isMusicEnabled) {
+			if (Options.mLevelSound.isPlaying()) {
+				Options.mLevelSound.pause();
+			}
+		}
 	}
 
 	@Override

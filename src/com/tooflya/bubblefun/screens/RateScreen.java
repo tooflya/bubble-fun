@@ -3,7 +3,7 @@ package com.tooflya.bubblefun.screens;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
-import com.tooflya.bubblefun.entities.Button;
+import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 
 /**
@@ -22,7 +22,7 @@ public class RateScreen extends PopupScreen {
 
 	private final Entity mPanel = new Entity(Resources.mRatePanelTextureRegion, this);
 
-	private final Button mLaterIcon = new Button(Resources.mRateLaterButtonTextureRegion, this.mPanel) {
+	private final ButtonScaleable mLaterIcon = new ButtonScaleable(Resources.mRateLaterButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -33,7 +33,7 @@ public class RateScreen extends PopupScreen {
 		}
 	};
 
-	private final Button mNowIcon = new Button(Resources.mRateNowButtonTextureRegion, this.mPanel) {
+	private final ButtonScaleable mNowIcon = new ButtonScaleable(Resources.mRateNowButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()

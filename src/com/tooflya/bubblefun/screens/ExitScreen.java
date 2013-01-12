@@ -3,7 +3,7 @@ package com.tooflya.bubblefun.screens;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
-import com.tooflya.bubblefun.entities.Button;
+import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 
 /**
@@ -24,7 +24,7 @@ public class ExitScreen extends PopupScreen {
 
 	private final Entity mText = new Entity(Resources.mExitTextTextureRegion, this.mPanel);
 
-	private final Button mYIcon = new Button(Resources.mExitYesbuttonTextureRegion, this.mPanel) {
+	private final ButtonScaleable mYIcon = new ButtonScaleable(Resources.mExitYesbuttonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -35,7 +35,7 @@ public class ExitScreen extends PopupScreen {
 		}
 	};
 
-	private final Button mNIcon = new Button(Resources.mExitNobuttonTextureRegion, this.mPanel) {
+	private final ButtonScaleable mNIcon = new ButtonScaleable(Resources.mExitNobuttonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()

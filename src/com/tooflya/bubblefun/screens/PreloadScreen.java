@@ -163,13 +163,13 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 
 	@Override
 	public void workToDo() {
-		try {
+		/**try {
 			LevelScreen.mBirdsNames = Beta.readJsonFromUrl("http://bubblefun.tooflya.com/birds.php");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		}**/
 
 		if (ScreenManager.mChangeAction > 0) {
 			Resources.unloadSecondResources();

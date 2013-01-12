@@ -513,7 +513,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	/* (non-Javadoc)

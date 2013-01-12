@@ -304,8 +304,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		};
 
-		restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY,
-				Options.cameraCenterY) {
+		restartMove1 = new MoveModifier(0.5f, -mResetText.getWidth(), Options.cameraWidth / 8, Options.cameraCenterY, Options.cameraCenterY) {
+
 			@Override
 			public void onStarted() {
 				rectangleAlphaModifierOn.reset();
@@ -320,8 +320,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		rectangleAlphaModifierOn = new AlphaModifier(1f, 0f, 0.7f);
 		rectangleAlphaModifierOff = new AlphaModifier(1f, 0.7f, 0f);
 
-		restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY,
-				Options.cameraCenterY) {
+		restartMove2 = new MoveModifier(1f, Options.cameraWidth / 8, Options.cameraWidth / 8 * 2, Options.cameraCenterY, Options.cameraCenterY) {
 			@Override
 			public void onFinished() {
 				restartMove3.reset();
@@ -441,7 +440,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRedLasers = new EntityManager<Laser>(100, new Laser(Resources.mRedLaserTextureRegion, this.mBackground));
 
 		this.mUfos = new EntityManager<Ufo>(10, new Ufo(Resources.mUfoTextureRegion, this.mBackground));
-		this.mUfos.create().setCenterPosition(150, 150);
+		//this.mUfos.create().setCenterPosition(150, 150);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Entity) shape.getChild(i)).enableBlendFunction();
@@ -513,7 +512,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mMeteorits.clear();
 		this.mSmallMeteorits.clear();
-		// this.mUfos.clear();
+		this.mUfos.clear();
 
 		generateChikies();
 
@@ -717,7 +716,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.reInit();
 
 		if (Options.isMusicEnabled) {
-			if (!Options.mLevelSound.isPlaying() && Options.isMusicEnabled) {
+			if (!Options.mLevelSound.isPlaying()) {
 				Options.mLevelSound.play();
 			}
 		}
