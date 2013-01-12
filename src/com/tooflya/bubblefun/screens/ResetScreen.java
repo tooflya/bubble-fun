@@ -20,7 +20,10 @@ public class ResetScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private final Entity mPanel = new Entity(Resources.mRatePanelTextureRegion, this);
+	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
+
+	private final Entity mText = new Entity(Resources.mResetTextTextureRegion, this.mPanel);
+	private final Entity mResetText = new Entity(Resources.mResetHoldTextTextureRegion, this.mPanel);
 
 	private final ButtonScaleable mNIcon = new ButtonScaleable(Resources.mExitNobuttonTextureRegion, this.mPanel) {
 
@@ -54,6 +57,14 @@ public class ResetScreen extends PopupScreen {
 		this.mPanel.create();
 		this.mPanel.setScaleCenter(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
 		this.mPanel.setCenterPosition(Options.screenCenterX, Options.screenCenterY);
+
+		this.mText.create();
+		this.mText.setScaleCenter(this.mText.getWidth() / 2, this.mText.getHeight() / 2);
+		this.mText.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2);
+
+		this.mResetText.create();
+		this.mResetText.setScaleCenter(this.mResetText.getWidth() / 2, this.mResetText.getHeight() / 2);
+		this.mResetText.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 70f);
 
 		this.mYIcon.create();
 		this.mYIcon.setScaleCenter(this.mYIcon.getWidth() / 2, this.mYIcon.getHeight() / 2);

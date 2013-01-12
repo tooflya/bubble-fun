@@ -40,6 +40,9 @@ public class Resources {
 	public static final Font mFont = FontFactory.createFromAsset(mFontTextureAtlas1, Game.context, "font/casual.ttf", 8f * Options.cameraRatioFactor, true, Color.BLACK);
 	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mFontTextureAtlas2, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
 
+	public static final BitmapTextureAtlas mTutorialFontTextureAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
+	public static final Font mTutorialFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.context, "font/JOINTBYPIZZADUDE.ttf", 12f * Options.cameraRatioFactor, true, Color.BLACK);
+
 	// ===========================================================
 	// Texture Regions
 	// ===========================================================
@@ -116,6 +119,8 @@ public class Resources {
 	public static final TiledTextureRegion mRatePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me.png", 523, 721, 1, 1);
 	public static final TiledTextureRegion mRateLaterButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me-later.png", 533, 871, 1, 1);
 	public static final TiledTextureRegion mRateNowButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me-rate.png", 670, 871, 1, 1);
+	public static final TiledTextureRegion mResetTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "reset-text.png", 533, 951, 1, 1);
+	public static final TiledTextureRegion mResetHoldTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "reset-text-hold.png", 557, 606, 1, 1);
 
 	public static final TiledTextureRegion mStorePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu.png", 2, 2, 1, 1);
 	public static final TiledTextureRegion mStoreTreesTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu-tree.png", 340, 2, 1, 1);
@@ -301,8 +306,9 @@ public class Resources {
 	// ===========================================================
 
 	public static final void loadCommonResources() {
-		Game.loadTextures(mBackgroundCommonTextureAtlas, mFontTextureAtlas1, mFontTextureAtlas2);
+		Game.loadTextures(mBackgroundCommonTextureAtlas, mFontTextureAtlas1, mFontTextureAtlas2, mTutorialFontTextureAtlas);
 		//Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
+		Game.engine.getFontManager().loadFonts(mTutorialFont);
 	}
 
 	public static final void loadFirstResources() {

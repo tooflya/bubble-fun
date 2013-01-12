@@ -46,6 +46,7 @@ import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Meteorit;
 import com.tooflya.bubblefun.entities.SmallMeteorit;
 import com.tooflya.bubblefun.entities.Snowflake;
+import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.entities.Ufo;
 import com.tooflya.bubblefun.factories.BubbleFactory;
@@ -456,6 +457,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				}
 			});
 		}
+		
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 300f, Resources.mTutorialFont, "Hi! This is fucking tutorial! (;"));
 	}
 
 	private final EntityManager<LightingSwarm> mLightingSwarms;
