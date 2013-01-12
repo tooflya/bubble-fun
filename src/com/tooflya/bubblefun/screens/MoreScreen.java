@@ -60,6 +60,7 @@ public class MoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
+				Game.screens.setChildScreen(Game.screens.get(Screen.RESET), false, false, true);
 			}
 		};
 
@@ -132,7 +133,11 @@ public class MoreScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onBackPressed() {
-		Game.screens.set(Screen.MENU);
+		if (this.hasChildScene()) {
+			Game.screens.clearChildScreens();
+		} else {
+			Game.screens.set(Screen.MENU);
+		}
 	}
 
 	// ===========================================================
