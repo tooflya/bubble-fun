@@ -12,6 +12,7 @@ import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.SAXUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -430,7 +431,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mLightings = new EntityManager<Entity>(10, new Entity(Resources.mLighingTextureRegion, this.mBackground));
 
 		this.mLightingSwarms = new EntityManager<LightingSwarm>(3, new LightingSwarm(Resources.mAngryCloudTextureRegion, this.mBackground));
-		//this.mLightingSwarms.create().setCenterPosition(150, 150);
+		// this.mLightingSwarms.create().setCenterPosition(150, 150);
 
 		this.mHoldSwarms = new EntityManager<HoldSwarm>(3, new HoldSwarm(Resources.mHoldCloudTextureRegion, this.mBackground));
 
@@ -438,22 +439,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRedLasers = new EntityManager<Laser>(100, new Laser(Resources.mRedLaserTextureRegion, this.mBackground));
 
 		this.mUfos = new EntityManager<Ufo>(10, new Ufo(Resources.mUfoTextureRegion, this.mBackground));
-		//this.mUfos.create().setCenterPosition(150, 150);
+		// this.mUfos.create().setCenterPosition(150, 150);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Entity) shape.getChild(i)).enableBlendFunction();
 		}
 
 		this.mBonusManager = new BonusManager(10);
-	/**	for (int i = 0; i < 4; i++) {
-			this.mBonusManager.add(new BonusIcon(Resources.mBonus1TextureRegion, this.mBackground) {
-				@Override
-				public void onClick() {
-					this.init(31);
-					super.onClick();
-				}
-			});
-		}*/
+		/**
+		 * for (int i = 0; i < 4; i++) { this.mBonusManager.add(new BonusIcon(Resources.mBonus1TextureRegion, this.mBackground) {
+		 * 
+		 * @Override public void onClick() { this.init(31); super.onClick(); } }); }
+		 */
 
 		this.mTutorialTexts = new ArrayList<TutorialText>();
 		for (int i = 0; i < 3; i++) {
@@ -510,7 +507,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		coins.clear();
 		glasses.clear();
 
-		//this.mLightingSwarms.clear();
+		// this.mLightingSwarms.clear();
 		this.mHoldSwarms.clear();
 
 		this.mBonusType = 0;
@@ -557,11 +554,21 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private void generateChikies() {
-		LevelsManager.generateLevel(Options.levelNumber);
-
-		try {
-			for (int i = 0; i < this.chikies.getCount(); i++) {
+		if (Options.levelNumber == 1) {
+			int count = Game.random.nextInt(this.chikies.getCount());
+			for (int i = 0; i < count; i++) {
 				final Chiky chiky = this.chikies.getByIndex(i);
+				if (chiky != null) {
+					chiky.initSpeedTime(Game.random.nextFloat() * 2 + 0.1f);
+					chiky.initOffsetTime(Game.random.nextFloat() * 2);
+					chiky.initIsReverseTime(Game.random.nextInt(2) == 0);
+					chiky.setWeight(i);
+
+					int countPoints = Game.random.nextInt(10);
+					for (int j = 0; j < countPoints; j++) {
+						chiky.addControlPoint((short) Game.random.nextInt(100), (short) Game.random.nextInt(100));
+					}
+				}
 
 				try {
 					chiky.initName(mBirdsNames.optJSONArray(Options.levelNumber - 1).getString(i));
@@ -570,8 +577,24 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					e.printStackTrace();
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException ex) {
-		} catch (NullPointerException ex) {
+		}
+		else {
+			LevelsManager.generateLevel(Options.levelNumber);
+
+			try {
+				for (int i = 0; i < this.chikies.getCount(); i++) {
+					final Chiky chiky = this.chikies.getByIndex(i);
+
+					try {
+						chiky.initName(mBirdsNames.optJSONArray(Options.levelNumber - 1).getString(i));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException ex) {
+			} catch (NullPointerException ex) {
+			}
 		}
 	}
 

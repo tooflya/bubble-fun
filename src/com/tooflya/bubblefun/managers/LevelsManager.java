@@ -208,9 +208,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					final float scale = SAXUtils.getFloatAttribute(pAttributes, "scale", 1);
 					chiky.initScale(scale);
 
-					// TODO: (R) Add later. final String name = SAXUtils.getStringAttribute(pAttributes, "name", 1);
-					// TODO: (R) Add later. chiky.initName(name);
-
 					final float minTime = SAXUtils.getFloatAttribute(pAttributes, "minTime", 0);
 					chiky.initMinTime(minTime);
 					final float maxTime = SAXUtils.getFloatAttribute(pAttributes, "maxTime", 1);
