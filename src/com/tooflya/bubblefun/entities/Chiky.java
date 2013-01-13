@@ -240,6 +240,10 @@ public class Chiky extends EntityBezier {
 
 		this.stopAnimation(6);
 
+		if (this.mAim != null) {
+			this.mAim.animate();
+		}
+
 		this.reorgznize();
 
 		if (Options.isMusicEnabled) {
@@ -330,7 +334,7 @@ public class Chiky extends EntityBezier {
 					this.findSecond();
 				}
 
-				this.setFirst();
+				this.setFirstForTime();
 			}
 		} else {
 			super.onCollide(pEntity);
@@ -524,6 +528,16 @@ public class Chiky extends EntityBezier {
 		this.isFirst = true;
 	}
 
+	public void setFirstForTime() {
+		this.removeAim();
+
+		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+		this.mAim.setTime(5f);
+
+		this.isSecond = false;
+		this.isFirst = false;
+	}
+
 	public void setSecond() {
 		this.removeAim();
 
@@ -539,7 +553,9 @@ public class Chiky extends EntityBezier {
 		this.isSecond = false;
 
 		if (this.mAim != null) {
-			this.mAim.destroy();
+			if (!this.mAim.isAnimate()) {
+				this.mAim.destroy();
+			}
 		}
 	}
 
@@ -554,6 +570,9 @@ public class Chiky extends EntityBezier {
 
 				if (chiky.isCanCollide()) {
 					if (chiky.isSecond()) {
+						chiky.mAim.destroy();
+						chiky.mAim = null;
+
 						chiky.setFirst();
 					}
 
@@ -603,6 +622,11 @@ public class Chiky extends EntityBezier {
 		}
 
 		if (nextChiky != null) {
+			if (nextChiky.mAim != null) {
+				nextChiky.mAim.destroy();
+				nextChiky.mAim = null;
+			}
+
 			nextChiky.setSecond();
 		}
 	}

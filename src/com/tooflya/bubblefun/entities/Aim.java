@@ -14,6 +14,9 @@ public class Aim extends Entity {
 
 	private boolean mIsGoningToDeath;
 
+	private float mTime;
+	private boolean mIsAlphaReverse;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -43,16 +46,9 @@ public class Aim extends Entity {
 		this.setRotation(0f);
 
 		this.mIsGoningToDeath = false;
-	}
 
-	/* (non-Javadoc)
-	 * @see com.tooflya.bubblefun.entities.Entity#onDestroy()
-	 */
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		//this.mIsGoningToDeath = true;
+		this.mTime = -1f;
+		this.mIsAlphaReverse = false;
 	}
 
 	/*
@@ -70,7 +66,29 @@ public class Aim extends Entity {
 			this.mAlpha -= 0.01f;
 
 			if (this.mAlpha <= 0f) {
-				super.onDestroy();
+				this.destroy();
+			}
+		} else {
+			if (this.mTime > 0f) {
+				this.mTime -= pSecondsElapsed;
+
+				if (this.mIsAlphaReverse) {
+					this.mAlpha -= 0.02f;
+
+					if (this.mAlpha <= 0f) {
+						this.mIsAlphaReverse = false;
+					}
+				} else {
+					this.mAlpha += 0.02f;
+
+					if (this.mAlpha >= 1f) {
+						this.mIsAlphaReverse = true;
+					}
+				}
+			} else {
+				if (this.mTime != -1) {
+					this.destroy();
+				}
 			}
 		}
 	}
@@ -79,4 +97,15 @@ public class Aim extends Entity {
 	// Methods
 	// ===========================================================
 
+	public void setTime(final float pTime) {
+		this.mTime = pTime;
+	}
+
+	public void animate() {
+		this.mIsGoningToDeath = true;
+	}
+
+	public boolean isAnimate() {
+		return this.mIsGoningToDeath;
+	}
 }
