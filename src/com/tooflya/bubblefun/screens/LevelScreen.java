@@ -12,7 +12,6 @@ import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
-import org.anddev.andengine.util.SAXUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -27,7 +26,6 @@ import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
-import com.tooflya.bubblefun.entities.BonusIcon;
 import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.BubbleBrokes;
@@ -48,7 +46,6 @@ import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Meteorit;
 import com.tooflya.bubblefun.entities.SmallMeteorit;
 import com.tooflya.bubblefun.entities.Snowflake;
-import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.entities.Ufo;
 import com.tooflya.bubblefun.factories.BubbleFactory;
@@ -554,21 +551,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private void generateChikies() {
-		if (Options.levelNumber == 1) {
-			int count = Game.random.nextInt(this.chikies.getCount());
-			for (int i = 0; i < count; i++) {
-				final Chiky chiky = this.chikies.getByIndex(i);
-				if (chiky != null) {
-					chiky.initSpeedTime(Game.random.nextFloat() * 2 + 0.1f);
-					chiky.initOffsetTime(Game.random.nextFloat() * 2);
-					chiky.initIsReverseTime(Game.random.nextInt(2) == 0);
-					chiky.setWeight(i);
+		LevelsManager.generateLevel(Options.levelNumber);
 
-					int countPoints = Game.random.nextInt(10);
-					for (int j = 0; j < countPoints; j++) {
-						chiky.addControlPoint((short) Game.random.nextInt(100), (short) Game.random.nextInt(100));
-					}
-				}
+		try {
+			for (int i = 0; i < this.chikies.getCount(); i++) {
+				final Chiky chiky = this.chikies.getByIndex(i);
 
 				try {
 					chiky.initName(mBirdsNames.optJSONArray(Options.levelNumber - 1).getString(i));
@@ -577,24 +564,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					e.printStackTrace();
 				}
 			}
-		}
-		else {
-			LevelsManager.generateLevel(Options.levelNumber);
-
-			try {
-				for (int i = 0; i < this.chikies.getCount(); i++) {
-					final Chiky chiky = this.chikies.getByIndex(i);
-
-					try {
-						chiky.initName(mBirdsNames.optJSONArray(Options.levelNumber - 1).getString(i));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			} catch (ArrayIndexOutOfBoundsException ex) {
-			} catch (NullPointerException ex) {
-			}
+		} catch (ArrayIndexOutOfBoundsException ex) {
+		} catch (NullPointerException ex) {
 		}
 	}
 

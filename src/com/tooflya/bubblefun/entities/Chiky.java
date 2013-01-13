@@ -609,12 +609,12 @@ public class Chiky extends EntityBezier {
 			final Chiky chiky = chikies.getByIndex(i);
 
 			if (chiky.isCanCollide()) {
-				if (nextChiky == null && chiky != this && !chiky.isFirst) {
+				if (nextChiky == null && chiky != this && !chiky.isFirst()) {
 					nextChiky = chiky;
 				}
 
 				if (nextChiky != null) {
-					if (chiky.getWeight() < nextChiky.getWeight()) {
+					if (chiky.getWeight() < nextChiky.getWeight() && chiky.isFirst()) {
 						nextChiky = chiky;
 					}
 				}
