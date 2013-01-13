@@ -2,78 +2,64 @@ package com.tooflya.bubblefun.entities;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.modifier.AlphaModifier;
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.opengl.font.Font;
 
-public class TutorialText extends Entity {
+public class TutorialText extends Text {
 
-	public boolean finish;
+	private float mWaitTime;
+	private float mShowTime;
 
-	private float mElapsedTime, mTime;
+	private boolean isAlreadyShowed;
 
-	public int index;
+	public TutorialText(float pX, float pY, Font pFont, String pText) {
+		super(pX, pY, pFont, pText);
 
-	private final AlphaModifier mAlphaModifier1 = new AlphaModifier(1.5f, 0f, 1f) {
-		@Override
-		public void onFinished() {
-			mAlphaModifier.reset();
-		}
-	};
-
-	private final AlphaModifier mAlphaModifier = new AlphaModifier(10f, 1f, 0f) {
-		@Override
-		public void onFinished() {
-			finish = true;
-		}
-	};
-
-	public TutorialText(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
-		super(pTiledTextureRegion, pParentScreen);
+		this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	public TutorialText(final float x, final float y, final float rotation, final float time, final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
-		this(pTiledTextureRegion, pParentScreen);
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.text.ChangeableText#setText(java.lang.String)
+	 */
+	@Override
+	public void setText(final String pText) {
+		super.setText(pText);
 
-		this.setCenterPosition(x, y);
+		this.setAlpha(0f);
 
-		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
-		this.setRotation(rotation);
-
-		this.mTime = time;
-		this.mElapsedTime = 0;
-
-		this.enableBlendFunction();
-
-		this.registerEntityModifier(mAlphaModifier1);
-		this.registerEntityModifier(mAlphaModifier);
+		this.isAlreadyShowed = false;
 	}
 
-	public void onCreate() {
-		super.onCreate();
-		
-		this.finish = false;
+	public void setWaitTime(final float pTime) {
+		this.mWaitTime = pTime;
+	}
 
-		this.mAlpha = 0;
+	public void setShowTime(final float pTime) {
+		this.mShowTime = pTime;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tooflya.bouncekid.entity.Entity#onManagedUpdate(float)
+	 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
 	 */
 	@Override
-	public void onManagedUpdate(final float pSecondsElapsed) {
+	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if (this.mAlpha > 0 || finish)
-			return;
+		this.mWaitTime -= pSecondsElapsed;
 
-		this.mElapsedTime += pSecondsElapsed;
+		if (this.mWaitTime <= 0) {
+			if (this.mAlpha < 1f && !this.isAlreadyShowed) {
+				this.mAlpha += 0.01f;
+			} else {
+				this.mShowTime -= pSecondsElapsed;
 
-		if (this.mElapsedTime >= this.mTime) {
-			this.mAlphaModifier1.reset();
+				this.isAlreadyShowed = true;
+
+				if (this.mShowTime <= 0) {
+					this.mAlpha -= 0.01f;
+				}
+			}
 		}
 	}
-
 }

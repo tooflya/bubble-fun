@@ -49,6 +49,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private static LevelLoader mLevelLoader;
 
+	private static int tutorialCount;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -163,6 +165,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	public static void generateLevel(final int pLevel) {
 		final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
 
+		tutorialCount = 0;
+
 		/**
 		 * 
 		 * 
@@ -221,14 +225,14 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					final float normalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "normalMaxTime", 0);
 					chiky.initNormalMaxTime(normalMaxTime);
 					float normalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "normalSpeedTime", 0);
-					if(normalSpeedTime==0){
+					if (normalSpeedTime == 0) {
 						normalSpeedTime = Float.MIN_VALUE;
 					}
 					chiky.initNormalSpeedTime(normalSpeedTime);
 					final float unnormalMaxTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalMaxTime", 0);
 					chiky.initUnnormalMaxTime(unnormalMaxTime);
 					float unnormalSpeedTime = SAXUtils.getFloatAttribute(pAttributes, "unnormalSpeedTime", 0);
-					if(unnormalSpeedTime==0){
+					if (unnormalSpeedTime == 0) {
 						unnormalSpeedTime = Float.MIN_VALUE;
 					}
 					chiky.initUnnormalSpeedTime(unnormalSpeedTime);
@@ -236,6 +240,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					final int properties = SAXUtils.getIntAttribute(pAttributes, "properties", 0);
 					chiky.initProperties(properties);
 
+					final int weight = SAXUtils.getIntAttribute(pAttributes, "weight", 0);
+					chiky.setWeight(weight);
 				}
 			}
 		});
@@ -298,7 +304,21 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("tutorial", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
+				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
+				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
+				final String text = SAXUtils.getAttributeOrThrow(pAttributes, "text");
+
+				final float waitTime = SAXUtils.getFloatAttribute(pAttributes, "wait", 0);
+				final float showTime = SAXUtils.getFloatAttribute(pAttributes, "show", 5);
+
+				screen.mTutorialTexts.get(tutorialCount).setPosition(x, y);
+				screen.mTutorialTexts.get(tutorialCount).setText(text);
+
+				screen.mTutorialTexts.get(tutorialCount).setWaitTime(waitTime);
+				screen.mTutorialTexts.get(tutorialCount).setShowTime(showTime);
+
+				tutorialCount++;
 			}
 		});
 

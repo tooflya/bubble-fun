@@ -180,9 +180,6 @@ public class LevelEndScreen extends PopupScreen {
 			mStarsCount = 4 - LevelScreen.mBubblesCount;
 		} else {
 			mStarsCount = 1;
-			if (LevelScreen.AIR < 0) {
-				mStarsCount = 0;
-			}
 		}
 
 		Star star;

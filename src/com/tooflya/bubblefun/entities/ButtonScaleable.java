@@ -85,7 +85,7 @@ public class ButtonScaleable extends Button {
 			isClicked = false;
 			return this.mModalTouch;
 		case TouchEvent.ACTION_MOVE:
-			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 5f || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 5f) {
+			if (Math.abs(this.mLastClickedX - pTouchAreaLocalX) > 10f || Math.abs(this.mLastClickedY - pTouchAreaLocalY) > 10f) {
 				this.isClicked = false;
 			}
 

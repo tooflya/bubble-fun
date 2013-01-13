@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
+import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
@@ -42,6 +43,11 @@ public class Chiky extends EntityBezier {
 	// Fields
 	// ===========================================================
 
+	private boolean isFirst;
+	private boolean isSecond;
+
+	private int mWeight;
+
 	private float mX_ = 0; // Last (or old) x.
 
 	private int mProperties = 0;
@@ -68,6 +74,7 @@ public class Chiky extends EntityBezier {
 	private Bubble mBubble = null;
 	protected Acceleration mWind = null;
 	private CristmasHat mCristmasHat = null;
+	private Aim mAim;
 
 	// ===========================================================
 	// Constructors
@@ -233,6 +240,8 @@ public class Chiky extends EntityBezier {
 
 		this.stopAnimation(6);
 
+		this.reorgznize();
+
 		if (Options.isMusicEnabled) {
 			final int randomInt = Game.random.nextInt(3);
 			switch (randomInt) {
@@ -313,50 +322,60 @@ public class Chiky extends EntityBezier {
 
 	@Override
 	public void onCollide(final Entity pEntity) {
-		super.onCollide(pEntity);
-
 		final Bubble bubble = (Bubble) pEntity;
 
-		if (this.mBubble == null) {
-			this.mBubble = bubble.getParent();
-			this.mBubble.AddChildCount();
-
-			this.mBubble.mLastX = this.getCenterX();
-			this.mBubble.mLastY = this.getCenterY();
-
-			if (this.mState == States.NormalMove) {
-				this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
-			}
-			else { // States.SpeedyMove.
-				this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
-			}
-
-			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
-				Glass particle;
-				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
-					if (particle != null) {
-						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
-					}
+		if (bubble.isHasParent()) {
+			if (!this.isFirst()) {
+				if (this.isSecond()) {
+					this.findSecond();
 				}
+
+				this.setFirst();
 			}
+		} else {
+			super.onCollide(pEntity);
 
-			LevelScreen.Score += 50;
+			if (this.mBubble == null) {
+				this.mBubble = bubble.getParent();
+				this.mBubble.AddChildCount();
 
-			if (Options.isMusicEnabled) {
+				this.mBubble.mLastX = this.getCenterX();
+				this.mBubble.mLastY = this.getCenterY();
+
+				if (this.mState == States.NormalMove) {
+					this.animate(pFrameDuration, pNormalMoveWithGumFrames, 9999);
+				}
+				else { // States.SpeedyMove.
+					this.animate(pFrameDuration, pSpeedyMoveWithGumFrames, 9999);
+				}
+
 				if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
-					Options.mGlassBroke.play();
-				} else {
-					if (Game.random.nextInt(2) == 1) {
-						Options.mBirdsShotted1.play();
+					Glass particle;
+					for (int i = 0; i < Options.particlesCount; i++) {
+						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+						if (particle != null) {
+							particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+						}
+					}
+				}
+
+				LevelScreen.Score += 50;
+
+				if (Options.isMusicEnabled) {
+					if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
+						Options.mGlassBroke.play();
 					} else {
-						Options.mBirdsShotted2.play();
+						if (Game.random.nextInt(2) == 1) {
+							Options.mBirdsShotted1.play();
+						} else {
+							Options.mBirdsShotted2.play();
+						}
 					}
 				}
 			}
-		}
 
-		this.mState = States.WithGumMove;
+			this.mState = States.WithGumMove;
+		}
 	}
 
 	// ===========================================================
@@ -424,6 +443,9 @@ public class Chiky extends EntityBezier {
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
 			this.mCristmasHat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
 		}
+
+		this.isFirst = false;
+		this.isSecond = false;
 	}
 
 	/*
@@ -464,6 +486,10 @@ public class Chiky extends EntityBezier {
 				this.mCristmasHat.getTextureRegion().setFlippedHorizontal(this.getTextureRegion().isFlippedHorizontal());
 			}
 		}
+
+		if (this.mAim != null) {
+			this.mAim.setCenterPosition(this.getCenterX(), this.getCenterY());
+		}
 	}
 
 	@Override
@@ -472,7 +498,126 @@ public class Chiky extends EntityBezier {
 
 		this.mName.setVisible(false);
 
+		if (this.mAim != null) {
+			this.mAim.destroy();
+			this.mAim = null;
+		}
+
 		// TODO: (R) Strange code. Try to find correct place for this code.
 		LevelScreen.deadBirds--;
+	}
+
+	public boolean isFirst() {
+		return this.isFirst;
+	}
+
+	public boolean isSecond() {
+		return this.isSecond;
+	}
+
+	public void setFirst() {
+		this.removeAim();
+
+		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+
+		this.isSecond = false;
+		this.isFirst = true;
+	}
+
+	public void setSecond() {
+		this.removeAim();
+
+		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+		this.mAim.setAlpha(0.5f);
+
+		this.isFirst = false;
+		this.isSecond = true;
+	}
+
+	private void removeAim() {
+		this.isFirst = false;
+		this.isSecond = false;
+
+		if (this.mAim != null) {
+			this.mAim.destroy();
+		}
+	}
+
+	private void reorgznize() {
+		final EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+
+		if (this.isFirst()) {
+			Chiky nextChiky = null;
+
+			for (int i = 0; i < chikies.getCount(); i++) {
+				final Chiky chiky = chikies.getByIndex(i);
+
+				if (chiky.isCanCollide()) {
+					if (chiky.isSecond()) {
+						chiky.setFirst();
+					}
+
+					if (nextChiky == null && chiky != this && !chiky.isFirst) {
+						nextChiky = chiky;
+					}
+
+					if (nextChiky != null) {
+						if (chiky.getWeight() < nextChiky.getWeight()) {
+							nextChiky = chiky;
+						}
+					}
+				}
+			}
+
+			if (nextChiky != null) {
+				nextChiky.setSecond();
+			}
+
+			this.removeAim();
+		} else if (this.isSecond()) {
+			this.findSecond();
+
+			this.removeAim();
+		}
+	}
+
+	private void findSecond() {
+		final EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+
+		Chiky nextChiky = null;
+
+		for (int i = 0; i < chikies.getCount(); i++) {
+			final Chiky chiky = chikies.getByIndex(i);
+
+			if (chiky.isCanCollide()) {
+				if (nextChiky == null && chiky != this && !chiky.isFirst) {
+					nextChiky = chiky;
+				}
+
+				if (nextChiky != null) {
+					if (chiky.getWeight() < nextChiky.getWeight()) {
+						nextChiky = chiky;
+					}
+				}
+			}
+		}
+
+		if (nextChiky != null) {
+			nextChiky.setSecond();
+		}
+	}
+
+	public int getWeight() {
+		return this.mWeight;
+	}
+
+	public void setWeight(final int pWeight) {
+		this.mWeight = pWeight;
+
+		if (this.mWeight == 0) {
+			this.setFirst();
+		} else if (this.mWeight == 1) {
+			this.setSecond();
+		}
 	}
 }

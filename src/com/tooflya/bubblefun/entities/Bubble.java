@@ -144,14 +144,14 @@ public class Bubble extends Entity {
 		}
 		return this.mParent;
 	}
+	
+	public boolean isHasParent() {
+		return this.mParent == null ? false : true;
+	}
 
 	public void initStartPosition(final float x, final float y) {
 		this.setCenterPosition(x, y);
 		this.mLostedSpeed = 0;
-
-		if (this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
-			LevelScreen.AIR -= 10;
-		}
 	}
 
 	public void initFinishPosition(final float x, final float y) {
@@ -303,8 +303,6 @@ public class Bubble extends Entity {
 				this.setScaleCenter(this.mWidth / 2, this.mHeight / 2);
 
 				Options.bubbleSizePower -= Options.bubbleStepSize;
-
-				LevelScreen.AIR--;
 			}
 		}
 	}
