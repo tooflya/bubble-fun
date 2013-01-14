@@ -1,5 +1,6 @@
 package com.tooflya.bubblefun.managers;
 
+import android.annotation.TargetApi;
 import android.view.View;
 
 import com.google.ads.Ad;
@@ -88,12 +89,14 @@ public class AdvertisementManager {
 		}
 	};
 
+	@TargetApi(11)
 	public AdvertisementManager() {
 		this.mAdsRequest = new AdRequest();
 		this.mAdsRequest.addTestDevice(AdRequest.TEST_EMULATOR);
 		this.mAdsRequest.addTestDevice("75FB804D31DDACC071B1AAF9A074D67A");
 		this.mAdsRequest.addTestDevice("2A1EBFDEA347D99BD1F7FBB84433AD72");
 		this.mAdsRequest.addTestDevice("FA02AC6CC21C807191ED1A07863CD045");
+		this.mAdsRequest.addTestDevice("D964D0EE15FC33E6A1678227284CFA70");
 
 		this.mSmallAdvertisiment = (AdView) Game.instance.findViewById(R.id.adView);
 		this.mBigAdvertisiment = (AdView) Game.instance.findViewById(R.id.adViewBig);
@@ -103,7 +106,9 @@ public class AdvertisementManager {
 
 		this.mProgressBar = Game.instance.findViewById(R.id.progressBar);
 
-		this.mBigAdvertisiment.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 11) {
+			this.mBigAdvertisiment.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		}
 
 		this.mSmallAdvertisiment.setAdListener(new SmallAdListener());
 		this.mBigAdvertisiment.setAdListener(new BigAdListener());

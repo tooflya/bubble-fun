@@ -4,6 +4,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.font.Font;
 
+import com.tooflya.bubblefun.Options;
+
 public class TutorialText extends Text {
 
 	private float mWaitTime;
@@ -35,6 +37,14 @@ public class TutorialText extends Text {
 
 	public void setShowTime(final float pTime) {
 		this.mShowTime = pTime;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Text#setPosition(float, float)
+	 */
+	@Override
+	public void setPosition(final float pX, final float pY) {
+		super.setPosition(Options.screenWidth * pX, Options.screenHeight * pY);
 	}
 
 	/*

@@ -240,12 +240,6 @@ public class Chiky extends EntityBezier {
 
 		this.stopAnimation(6);
 
-		if (this.mAim != null) {
-			this.mAim.animate();
-		}
-
-		this.reorgznize();
-
 		if (Options.isMusicEnabled) {
 			final int randomInt = Game.random.nextInt(3);
 			switch (randomInt) {
@@ -329,7 +323,7 @@ public class Chiky extends EntityBezier {
 		final Bubble bubble = (Bubble) pEntity;
 
 		if (bubble.isHasParent()) {
-			if (!this.isFirst()) {
+			if (!this.isFirst() && !this.isSecond) {
 				if (this.isSecond()) {
 					this.findSecond();
 				}
@@ -338,6 +332,10 @@ public class Chiky extends EntityBezier {
 			}
 		} else {
 			super.onCollide(pEntity);
+
+			this.mAim.animate();
+
+			this.reorgznize();
 
 			if (this.mBubble == null) {
 				this.mBubble = bubble.getParent();
@@ -399,6 +397,8 @@ public class Chiky extends EntityBezier {
 		this.mName.setText("");
 		this.mName.setVisible(true);
 
+		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+
 		this.setRotation(0);
 
 		this.mX_ = 0;
@@ -426,7 +426,7 @@ public class Chiky extends EntityBezier {
 
 			// > WithGumMove state.
 			this.mWithGumTime = 0f; // Seconds.
-			this.mWithGumMaxTime = 2f; // Seconds.
+			this.mWithGumMaxTime = 1f; // Seconds.
 			// > WithGumMove state.
 		} else if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
 			this.animate(pFrameDuration, pNormalMoveFrames, 9999);
@@ -491,9 +491,7 @@ public class Chiky extends EntityBezier {
 			}
 		}
 
-		if (this.mAim != null) {
-			this.mAim.setCenterPosition(this.getCenterX(), this.getCenterY());
-		}
+		this.mAim.setCenterPosition(this.getCenterX(), this.getCenterY() - 3f);
 	}
 
 	@Override
@@ -502,10 +500,7 @@ public class Chiky extends EntityBezier {
 
 		this.mName.setVisible(false);
 
-		if (this.mAim != null) {
-			this.mAim.destroy();
-			this.mAim = null;
-		}
+		this.mAim.destroy();
 
 		// TODO: (R) Strange code. Try to find correct place for this code.
 		LevelScreen.deadBirds--;
@@ -522,7 +517,7 @@ public class Chiky extends EntityBezier {
 	public void setFirst() {
 		this.removeAim();
 
-		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+		this.mAim.setAlpha(1f);
 
 		this.isSecond = false;
 		this.isFirst = true;
@@ -531,7 +526,6 @@ public class Chiky extends EntityBezier {
 	public void setFirstForTime() {
 		this.removeAim();
 
-		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
 		this.mAim.setTime(5f);
 
 		this.isSecond = false;
@@ -541,7 +535,6 @@ public class Chiky extends EntityBezier {
 	public void setSecond() {
 		this.removeAim();
 
-		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
 		this.mAim.setAlpha(0.5f);
 
 		this.isFirst = false;
@@ -551,12 +544,6 @@ public class Chiky extends EntityBezier {
 	private void removeAim() {
 		this.isFirst = false;
 		this.isSecond = false;
-
-		if (this.mAim != null) {
-			if (!this.mAim.isAnimate()) {
-				this.mAim.destroy();
-			}
-		}
 	}
 
 	private void reorgznize() {
@@ -570,27 +557,12 @@ public class Chiky extends EntityBezier {
 
 				if (chiky.isCanCollide()) {
 					if (chiky.isSecond()) {
-						chiky.mAim.destroy();
-						chiky.mAim = null;
-
 						chiky.setFirst();
-					}
-
-					if (nextChiky == null && chiky != this && !chiky.isFirst) {
-						nextChiky = chiky;
-					}
-
-					if (nextChiky != null) {
-						if (chiky.getWeight() < nextChiky.getWeight()) {
-							nextChiky = chiky;
-						}
 					}
 				}
 			}
 
-			if (nextChiky != null) {
-				nextChiky.setSecond();
-			}
+			this.findSecond();
 
 			this.removeAim();
 		} else if (this.isSecond()) {
@@ -614,7 +586,7 @@ public class Chiky extends EntityBezier {
 				}
 
 				if (nextChiky != null) {
-					if (chiky.getWeight() < nextChiky.getWeight() && chiky.isFirst()) {
+					if (chiky.getWeight() <= nextChiky.getWeight() && !chiky.isFirst()) {
 						nextChiky = chiky;
 					}
 				}
@@ -622,12 +594,9 @@ public class Chiky extends EntityBezier {
 		}
 
 		if (nextChiky != null) {
-			if (nextChiky.mAim != null) {
-				nextChiky.mAim.destroy();
-				nextChiky.mAim = null;
-			}
-
 			nextChiky.setSecond();
+		} else {
+			System.out.println("Поиск второй провален!");
 		}
 	}
 

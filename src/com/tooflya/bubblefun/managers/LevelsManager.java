@@ -64,7 +64,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		PADDING_B = 23f;
 
 		X = PADDING_B + 5f;
-		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
+		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 6) / 2;
 	}
 
 	// ===========================================================
@@ -84,7 +84,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		PADDING_B = 23f;
 
 		X = PADDING_B + 5f;
-		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 4) / 2;
+		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 6) / 2;
 
 	}
 
@@ -134,7 +134,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					text.setScale(1f);
 					text.setCenterPosition(icon.getWidth() / 2, icon.getHeight() / 2 - 2f);
 				} else {
-
 					float a;
 					if ((int) Math.floor(icon.id / 10) == 1) {
 						a = 1;
@@ -314,6 +313,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				screen.mTutorialTexts.get(tutorialCount).setWaitTime(waitTime);
 				screen.mTutorialTexts.get(tutorialCount).setShowTime(showTime);
+				screen.mTutorialTexts.get(tutorialCount).setVisible(true);
 
 				tutorialCount++;
 			}

@@ -12,4 +12,6 @@
 <ctrPoint x="0" y="20"/>
 <ctrPoint x="100" y="20"/>
 </chiky>
+<tutorial x="0.4" y="0.5" text="Старайтесь делать как можно" wait="1.5" show="5">
+<tutorial x="0.6" y="0.55" text="меньше выстрелов!" wait="2.5" show="5">
 </level>

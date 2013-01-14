@@ -4,5 +4,7 @@
 <ctrPoint x="0" y="50"/>
 <ctrPoint x="100" y="50"/>
 </chiky>
-<tutorial x="100" y="100" text="Попробуйте-ка сбить птичку!">
+<tutorial x="0.65" y="0.33" text="Попробуйте-ка сбить птичку!" wait="1.5" show="5">
+<tutorial x="0.57" y="0.8" text="Нажимайте в этой части экрана" wait="3" show="5">
+<tutorial x="0.7" y="0.85" text="чтобы надувать пузыри!" wait="4" show="5">
 </level>

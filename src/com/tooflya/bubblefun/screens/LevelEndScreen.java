@@ -72,6 +72,7 @@ public class LevelEndScreen extends PopupScreen {
 					mRectangleAlphaModifier.reset();
 				}
 			} else {
+				modifier4.reset();
 				Options.levelNumber++;
 				Game.screens.set(Screen.ADS);
 			}

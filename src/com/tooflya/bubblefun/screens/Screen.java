@@ -6,6 +6,7 @@ import org.anddev.andengine.entity.shape.Shape;
 
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Text;
+import com.tooflya.bubblefun.entities.TutorialText;
 
 /**
  * @author Tooflya.com
@@ -94,7 +95,7 @@ public abstract class Screen extends Scene {
 		super.attachChild(pEntity);
 
 		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
-		if (!(pEntity instanceof Text)) {
+		if (!(pEntity instanceof Text) || !(pEntity instanceof TutorialText)) {
 			pEntity.setScaleCenter(0, 0);
 			pEntity.setScale(Options.cameraRatioFactor);
 

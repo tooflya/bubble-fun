@@ -22,6 +22,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.Acceleration;
 import com.tooflya.bubblefun.entities.Aim;
+import com.tooflya.bubblefun.entities.AimArrow;
 import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
@@ -130,6 +131,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public EntityManager<Coin> coins;
 
 	public EntityManager<Aim> aims;
+	public EntityManager<AimArrow> arrows;
 	public EntityManager<Chiky> chikies;
 	public EntityManager<Bubble> airgums;
 	public EntityManager<Feather> feathers;
@@ -269,6 +271,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		glasses = new EntityManager<Glass>(20, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
 		glints = new EntityManager<Glint>(20, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.aims = new EntityManager<Aim>(30, new Aim(Resources.mAimTextureRegion, this.mBackground));
+		this.arrows = new EntityManager<AimArrow>(30, new AimArrow(Resources.mAimArrowsTextureRegion, this.mBackground));
 		this.chikies = new EntityManager<Chiky>(20, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 		mCristmasHats = new EntityManager<CristmasHat>(10, new CristmasHat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 
@@ -486,39 +489,37 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		isResetAnimationRunning = false;
 		this.mLevelEndRunning = false;
 
-		mAwesomeKillText.clear();
-		mDoubleKillText.clear();
-		mTripleKillText.clear();
-		mBonusesText.clear();
-		bonuses.clear();
+		this.mAwesomeKillText.clear();
+		this.mDoubleKillText.clear();
+		this.mTripleKillText.clear();
+		this.mBonusesText.clear();
+		this.bonuses.clear();
 
-		mBlueBird.create();
-		mBlueBird.clear();
-		airgums.clear();
+		this.mBlueBird.clear();
+		this.airgums.clear();
 		this.aims.clear();
-		chikies.clear();
+		this.arrows.clear();
+		this.chikies.clear();
 		this.mCristmasHats.clear();
-		glints.clear();
-		accelerators.clear();
-		mMarks.clear();
-		coins.clear();
-		glasses.clear();
-
-		// this.mLightingSwarms.clear();
+		this.glints.clear();
+		this.accelerators.clear();
+		this.mMarks.clear();
+		this.coins.clear();
+		this.feathers.clear();
+		this.glasses.clear();
+		this.mLightingSwarms.clear();
 		this.mHoldSwarms.clear();
-
-		this.mBonusType = 0;
-
-		// this.mLightingSwarms.create().setCenterPosition(150, 150);
-		// this.mHoldSwarms.create().setCenterPosition(350, 350);
-
 		this.mMeteorits.clear();
 		this.mSmallMeteorits.clear();
 		this.mUfos.clear();
 
-		generateChikies();
+		for (TutorialText text : this.mTutorialTexts) {
+			text.setVisible(false);
+		}
 
-		feathers.clear();
+		this.mBonusType = 0;
+
+		generateChikies();
 
 		Options.bubbleSizePower = Options.bubbleMaxSizePower;
 
@@ -594,10 +595,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 				for (int h = chikies.getCount() - 1; h >= 0; --h) {
 					chiky = chikies.getByIndex(h);
-					if (chiky.isCanCollide()) {
+					if (chiky.isCanCollide() && airgum.isCanCollide()) {
 						if (this.isCollide(chiky, airgum)) {
 							airgum.addBirdsKills();
 							chiky.collide(airgum);
+							airgum.animate(40, 0);
+							airgum.collide();
 							deadBirds++;
 						}
 					}
@@ -764,6 +767,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.checkCollision();
 
 		if (chikies.getCount() <= 0 && !this.mLevelEndRunning) {
+			for (TutorialText text : this.mTutorialTexts) {
+				text.setVisible(false);
+			}
+
 			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 			this.mLevelEndRunning = true;
 

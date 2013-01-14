@@ -2,6 +2,10 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.screens.LevelScreen;
+import com.tooflya.bubblefun.screens.Screen;
+
 public class Aim extends Entity {
 
 	// ===========================================================
@@ -16,6 +20,8 @@ public class Aim extends Entity {
 
 	private float mTime;
 	private boolean mIsAlphaReverse;
+
+	private AimArrow mAimArrow;
 
 	// ===========================================================
 	// Constructors
@@ -40,7 +46,7 @@ public class Aim extends Entity {
 	public void onCreate() {
 		super.onCreate();
 
-		this.setAlpha(1f);
+		this.setAlpha(0f);
 
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotation(0f);
@@ -49,6 +55,18 @@ public class Aim extends Entity {
 
 		this.mTime = -1f;
 		this.mIsAlphaReverse = false;
+
+		this.mAimArrow = ((LevelScreen) Game.screens.get(Screen.LEVEL)).arrows.create();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.Entity#setAlpha(float)
+	 */
+	@Override
+	public void setAlpha(final float pAlpha) {
+		super.setAlpha(pAlpha);
+
+		this.mTime = -1;
 	}
 
 	/*
@@ -61,6 +79,11 @@ public class Aim extends Entity {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.mRotation += 3f;
+
+		if (this.mAimArrow != null) {
+			this.mAimArrow.setCenterPosition(this.getCenterX(), this.getCenterY());
+			this.mAimArrow.setAlpha(this.mAlpha);
+		}
 
 		if (this.mIsGoningToDeath) {
 			this.mAlpha -= 0.01f;
@@ -87,10 +110,17 @@ public class Aim extends Entity {
 				}
 			} else {
 				if (this.mTime != -1) {
-					this.destroy();
+					this.mAlpha = 0f;
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		this.mAimArrow.destroy();
 	}
 
 	// ===========================================================

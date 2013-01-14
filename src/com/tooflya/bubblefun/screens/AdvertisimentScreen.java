@@ -53,8 +53,8 @@ public class AdvertisimentScreen extends Screen {
 		};
 
 		this.mBackground.create().setBackgroundCenterPosition();
-		this.mClose.create().setCenterPosition(55f, 40f);
-		this.mAdsPanel.create().setCenterPosition(Options.cameraCenterX, Options.cameraHeight - this.mAdsPanel.getHeight() / 2);
+		this.mClose.create().setPosition(15f, 15f);
+		this.mAdsPanel.create().setPosition(0, Options.cameraHeight - this.mAdsPanel.getHeight());
 		this.mAdsButton.create().setCenterPosition(320f, 15f);
 	}
 

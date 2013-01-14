@@ -14,6 +14,7 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.graphics.Color;
+import android.util.FloatMath;
 
 import com.tooflya.bubblefun.entities.Entity;
 
@@ -40,8 +41,8 @@ public class Resources {
 	public static final Font mFont = FontFactory.createFromAsset(mFontTextureAtlas1, Game.context, "font/casual.ttf", 8f * Options.cameraRatioFactor, true, Color.BLACK);
 	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mFontTextureAtlas2, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
 
-	public static final BitmapTextureAtlas mTutorialFontTextureAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
-	public static final Font mTutorialFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.context, "font/Lobster.ttf", 14f * Options.cameraRatioFactor, true, Color.BLACK);
+	public static final BitmapTextureAtlas mTutorialFontTextureAtlas = new BitmapTextureAtlas(512, 512, TextureOptions.BILINEAR);
+	public static final Font mTutorialFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.context, "font/Lobster.ttf", FloatMath.ceil(16f * Options.cameraRatioFactor), true, Color.BLACK);
 
 	// ===========================================================
 	// Texture Regions
@@ -200,6 +201,7 @@ public class Resources {
 	public static final TiledTextureRegion mAdsButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "ads-btn-blue.png", 2, 571, 1, 1);
 	public static final TiledTextureRegion mAdsPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "ads-panel.png", 348, 888, 1, 1);
 	public static final TiledTextureRegion mAimTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "aim.png", 72, 571, 1, 1);
+	public static final TiledTextureRegion mAimArrowsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "arrow-target.png", 115, 571, 1, 1);
 
 	public static final TiledTextureRegion mSpaceStarsBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "space-stars.png", 2, 2, 1, 1);
 

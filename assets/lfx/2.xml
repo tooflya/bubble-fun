@@ -8,4 +8,6 @@
 <ctrPoint x="0" y="50"/>
 <ctrPoint x="100" y="50"/>
 </chiky>
+<tutorial x="0.4" y="0.5" text="Сбив обеих птичек одним выстрелом," wait="1.5" show="5">
+<tutorial x="0.5" y="0.55" text="вы получите больше очков!" wait="2.5" show="5">
 </level>

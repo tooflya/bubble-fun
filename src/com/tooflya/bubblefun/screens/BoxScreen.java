@@ -268,31 +268,31 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			e.down();
 		}
 
-		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 205f);
-		mPoints.create().setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 205f);
-		mPoints.create().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 205f);
-		mPoints.create().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 205f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 180f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 180f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
+		mPoints.create().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
 
 		Entity point;
 		point = mPoints2.create();
-		point.setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 205f);
+		point.setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
 
 		point = mPoints2.create();
-		point.setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 205f);
-		point.setCurrentTileIndex(1);
-		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
-		point.setScale(0f);
-
-		point = mPoints2.create();
-		point.setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 205f);
+		point.setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
 		point.setScale(0f);
 
 		point = mPoints2.create();
-		point.setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 205f);
+		point.setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
+		point.setCurrentTileIndex(1);
+		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
+		point.setScale(0f);
+
+		point = mPoints2.create();
+		point.setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
 		point.setScale(0f);
@@ -359,14 +359,12 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			this.rectangle.setPosition(this.rectangle.getX() + sx, 0);
 
 			if (sx > 0) {
-
 				if (sx <= 0) {
 					this.mPostScroll = false;
 				}
 			}
 
 			if (sx < 0) {
-
 				if (sx >= 0) {
 					this.mPostScroll = false;
 				}
@@ -637,7 +635,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		this.mScrollDetector.onTouchEvent(pTouchEvent);
 
 		if (pTouchEvent.isActionDown()) {
-			if (pTouchEvent.getY() > 200f && pTouchEvent.getY() < 800f) {
+			if (pTouchEvent.getY() < Options.screenHeight / 3 * 2) {
 				this.move = true;
 			}
 		}

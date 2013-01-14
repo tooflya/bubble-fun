@@ -8,4 +8,6 @@
 <ctrPoint x="10" y="60"/>
 <ctrPoint x="90" y="20"/>
 </chiky>
+<tutorial x="0.65" y="0.8" text="Проведите по экрану к цели" wait="1.5" show="5">
+<tutorial x="0.7" y="0.85" text="чтобы ускорить пузырь!" wait="2" show="5">
 </level>
