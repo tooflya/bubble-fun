@@ -27,8 +27,7 @@ public class Bubble extends Entity {
 	private static enum States {
 		Creating,
 		Moving,
-		Destroying,
-		WaitingForText
+		Destroying
 	};
 
 	// ===========================================================
@@ -144,7 +143,7 @@ public class Bubble extends Entity {
 		}
 		return this.mParent;
 	}
-	
+
 	public boolean isHasParent() {
 		return this.mParent == null ? false : true;
 	}
@@ -253,33 +252,6 @@ public class Bubble extends Entity {
 		this.mCurrentState = States.Destroying;
 	}
 
-	private void writeText() {
-		LevelScreen screen = ((LevelScreen) Game.screens.get(Screen.LEVEL));
-		if (this.mBirdsKills == 1 && screen.chikies.getCount() <= 1 && LevelScreen.deadBirds <= 1) {
-			this.mBirdsKills--;
-			final Entity text = screen.mAwesomeKillText.create();
-			text.setCenterPosition(this.mLastX, this.mLastY);
-			final Entity bonus = screen.mBonusesText.create();
-			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
-			bonus.setCurrentTileIndex(2);
-		}
-		else if (this.mBirdsKills == 2) {
-			this.mBirdsKills -= 2;
-			final Entity text = screen.mDoubleKillText.create();
-			text.setCenterPosition(this.mLastX, this.mLastY);
-			final Entity bonus = screen.mBonusesText.create();
-			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
-			bonus.setCurrentTileIndex(0);
-		} else if (this.mBirdsKills >= 3) {
-			this.mBirdsKills -= 3;
-			final Entity text = screen.mTripleKillText.create();
-			text.setCenterPosition(this.mLastX, this.mLastY);
-			final Entity bonus = screen.mBonusesText.create();
-			bonus.setCenterPosition(text.getCenterX(), text.getCenterY());
-			bonus.setCurrentTileIndex(3);
-		}
-	}
-
 	public void addBirdsKills() {
 		this.getParent().mBirdsKills++;
 	}
@@ -329,13 +301,10 @@ public class Bubble extends Entity {
 		this.mY += this.getSpeedY();
 
 		if (!this.isAnimationRunning()) {
-			if (this.mParent == null) {
-				this.mCurrentState = States.WaitingForText;
-			}
-			else {
+			if (this.mParent != null) {
 				this.mParent.mChildCount--;
-				destroy();
 			}
+			this.destroy();
 		}
 	}
 
@@ -366,20 +335,6 @@ public class Bubble extends Entity {
 		}
 	}
 
-	private void onManagedUpdateWaitingForText(final float pSecondsElapsed) {
-		if (this.mTextureRegion.e(Resources.mBubbleTextureRegion)) {
-			final boolean isNoChikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount() == 0;
-			final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
-			if (this.mChildCount == 0 || isNoChikies || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0) || b <= 2) {
-				this.writeText();
-				this.destroy(); // TODO: (R) Can be lost memory.
-			}
-		} else {
-			this.writeText();
-			this.destroy(); // TODO: (R) Can be lost memory.
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -401,14 +356,6 @@ public class Bubble extends Entity {
 		case Destroying:
 			this.onManagedUpdateDestroying(pSecondsElapsed);
 			break;
-		case WaitingForText:
-			this.onManagedUpdateWaitingForText(pSecondsElapsed);
-			break;
-		}
-
-		final int b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies.getCount();
-		if (this.mChildCount == 0 || this.mBirdsKills > 2 || (this.mBirdsKills > 0 && b - this.mBirdsKills <= 0)) {
-			this.writeText();
 		}
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {

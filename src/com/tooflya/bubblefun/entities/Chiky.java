@@ -303,8 +303,6 @@ public class Chiky extends EntityBezier {
 			}
 		}
 
-		LevelScreen.Score += 50;
-
 		if (Options.isMusicEnabled) {
 			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 				Options.mGlassBroke.play();
@@ -360,8 +358,6 @@ public class Chiky extends EntityBezier {
 						}
 					}
 				}
-
-				LevelScreen.Score += 50;
 
 				if (Options.isMusicEnabled) {
 					if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
@@ -535,7 +531,7 @@ public class Chiky extends EntityBezier {
 	public void setSecond() {
 		this.removeAim();
 
-		this.mAim.setAlpha(0.5f);
+		this.mAim.setAlpha(0.3f);
 
 		this.isFirst = false;
 		this.isSecond = true;

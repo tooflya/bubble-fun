@@ -34,16 +34,13 @@ public class BonusText extends AwesomeText {
 	public void setCurrentTileIndex(final int pTileIndex) {
 		switch (pTileIndex) {
 		case 0:
-			this.mScoreIncrement = 50;
+			this.mScoreIncrement = -150;
 			break;
 		case 1:
 			this.mScoreIncrement = 100;
 			break;
 		case 2:
 			this.mScoreIncrement = 300;
-			break;
-		case 3:
-			this.mScoreIncrement = 500;
 			break;
 		}
 		super.setCurrentTileIndex(pTileIndex);

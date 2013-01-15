@@ -19,7 +19,6 @@ public class Aim extends Entity {
 	private boolean mIsGoningToDeath;
 
 	private float mTime;
-	private boolean mIsAlphaReverse;
 
 	private AimArrow mAimArrow;
 
@@ -54,7 +53,6 @@ public class Aim extends Entity {
 		this.mIsGoningToDeath = false;
 
 		this.mTime = -1f;
-		this.mIsAlphaReverse = false;
 
 		this.mAimArrow = ((LevelScreen) Game.screens.get(Screen.LEVEL)).arrows.create();
 	}
@@ -94,20 +92,6 @@ public class Aim extends Entity {
 		} else {
 			if (this.mTime > 0f) {
 				this.mTime -= pSecondsElapsed;
-
-				if (this.mIsAlphaReverse) {
-					this.mAlpha -= 0.02f;
-
-					if (this.mAlpha <= 0f) {
-						this.mIsAlphaReverse = false;
-					}
-				} else {
-					this.mAlpha += 0.02f;
-
-					if (this.mAlpha >= 1f) {
-						this.mIsAlphaReverse = true;
-					}
-				}
 			} else {
 				if (this.mTime != -1) {
 					this.mAlpha = 0f;

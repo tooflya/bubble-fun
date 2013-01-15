@@ -89,11 +89,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final CloudsManager<Cloud> mClouds;
 	private final SnowManager<Snowflake> mSnowflakes;
 
-	public EntityManager<AwesomeText> mAwesomeKillText;
-	public EntityManager<AwesomeText> mDoubleKillText;
-	public EntityManager<AwesomeText> mTripleKillText;
-	public EntityManager<BonusText> mBonusesText;
-
 	private final Rectangle mRectangle;
 
 	private final Entity mSolidLine;
@@ -198,11 +193,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mSnowflakes = new SnowManager<Snowflake>(100, new Snowflake(Resources.mSnowFlakesTextureRegion, this.mBackground));
 		this.mClouds = new CloudsManager<Cloud>(10, new Cloud(Resources.mBackgroundCloudTextureRegion, this.mBackground));
-
-		this.mAwesomeKillText = new EntityManager<AwesomeText>(220, new AwesomeText(Resources.mAwesomeText1TextureRegion, this.mBackground));
-		this.mDoubleKillText = new EntityManager<AwesomeText>(220, new AwesomeText(Resources.mAwesomeText2TextureRegion, this.mBackground));
-		this.mTripleKillText = new EntityManager<AwesomeText>(220, new AwesomeText(Resources.mAwesomeText3TextureRegion, this.mBackground));
-		this.mBonusesText = new EntityManager<BonusText>(220, new BonusText(Resources.mScoreBonusesTextTextureRegion, this.mBackground));
 
 		this.mRectangle = this.makeColoredRectangle(0, 0, 1f, 1f, 1f);
 		this.mSolidLine = new Entity(Resources.mAirRegularOneTextureRegion, this.mBackground);
@@ -488,11 +478,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		deadBirds = 0;
 		isResetAnimationRunning = false;
 		this.mLevelEndRunning = false;
-
-		this.mAwesomeKillText.clear();
-		this.mDoubleKillText.clear();
-		this.mTripleKillText.clear();
-		this.mBonusesText.clear();
+		
 		this.bonuses.clear();
 
 		this.mBlueBird.clear();
