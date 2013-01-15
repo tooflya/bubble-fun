@@ -26,7 +26,7 @@ public class AwesomeText extends Entity {
 
 		this.mDisappear = pDisappear;
 
-		this.enableBlendFunction();
+		this.enableFullBlendFunction();
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
@@ -130,7 +130,7 @@ public class AwesomeText extends Entity {
 
 	}
 
-	@Override
+	/**@Override
 	public void setCenterPosition(final float pX, final float pY) {
 		float x;
 
@@ -143,6 +143,6 @@ public class AwesomeText extends Entity {
 		}
 
 		super.setCenterPosition(x, pY);
-	}
+	}*/
 
 }

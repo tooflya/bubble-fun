@@ -47,6 +47,7 @@ import com.tooflya.bubblefun.entities.Mark;
 import com.tooflya.bubblefun.entities.Meteorit;
 import com.tooflya.bubblefun.entities.SmallMeteorit;
 import com.tooflya.bubblefun.entities.Snowflake;
+import com.tooflya.bubblefun.entities.TimerNumber;
 import com.tooflya.bubblefun.entities.TutorialText;
 import com.tooflya.bubblefun.entities.Ufo;
 import com.tooflya.bubblefun.factories.BubbleFactory;
@@ -123,10 +124,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Entity mCoin;
 
-	public EntityManager<Coin> coins;
+	public EntityManager<AwesomeText> awesome;
+	public EntityManager<BonusText> points;
 
+	public EntityManager<Coin> coins;
 	public EntityManager<Aim> aims;
 	public EntityManager<AimArrow> arrows;
+	public EntityManager<Entity> timerBars;
+	public EntityManager<TimerNumber> timerNumbers;
 	public EntityManager<Chiky> chikies;
 	public EntityManager<Bubble> airgums;
 	public EntityManager<Feather> feathers;
@@ -248,6 +253,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		mResetText = new Entity(Resources.mRestartTextTextureRegion, this.mRectangle);
 
+		points = new EntityManager<BonusText>(10, new BonusText(Resources.mAwesomePointsTextureRegion, this.mBackground));
+		awesome = new EntityManager<AwesomeText>(10, new AwesomeText(Resources.mAwesomeTextsTextureRegion, this.mBackground));
+
 		bonuses = new EntityManager<Bonus>(10, new Bonus(Resources.mBonusTextureRegion, this.mBackground));
 
 		accelerators = new EntityManager<Acceleration>(50, new Acceleration(Resources.mAcceleratorsTextureRegion, this.mBackground));
@@ -255,13 +263,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mMarks = new EntityManager<Mark>(20, new Mark(Resources.mMarkTextureRegion, this.mBackground));
 
 		coins = new EntityManager<Coin>(10, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
-
 		airgums = new EntityManager<Bubble>(30, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
 		feathers = new EntityManager<Feather>(20, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
 		glasses = new EntityManager<Glass>(20, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
 		glints = new EntityManager<Glint>(20, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.aims = new EntityManager<Aim>(30, new Aim(Resources.mAimTextureRegion, this.mBackground));
 		this.arrows = new EntityManager<AimArrow>(30, new AimArrow(Resources.mAimArrowsTextureRegion, this.mBackground));
+		this.timerBars = new EntityManager<Entity>(30, new Entity(Resources.mTimerBarTextureRegion, this.mBackground));
+		this.timerNumbers = new EntityManager<TimerNumber>(30, new TimerNumber(Resources.mTimerNumbersTextureRegion, this.mBackground));
 		this.chikies = new EntityManager<Chiky>(20, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 		mCristmasHats = new EntityManager<CristmasHat>(10, new CristmasHat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 
@@ -478,7 +487,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		deadBirds = 0;
 		isResetAnimationRunning = false;
 		this.mLevelEndRunning = false;
-		
+
 		this.bonuses.clear();
 
 		this.mBlueBird.clear();
@@ -493,6 +502,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.coins.clear();
 		this.feathers.clear();
 		this.glasses.clear();
+		this.timerBars.clear();
+		this.timerNumbers.clear();
 		this.mLightingSwarms.clear();
 		this.mHoldSwarms.clear();
 		this.mMeteorits.clear();
@@ -773,19 +784,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			this.mAllFallDownModifier.reset();
 
 			running = false;
-		} else {
-
-			if (airgums.getCount() <= 0 && deadBirds <= 0
-					&& !isResetAnimationRunning && !this.mLevelEndRunning && false) {
-				restartMove1.reset();
-				isResetAnimationRunning = true;
-
-				this.mLightings.clear();
-				this.mLightingSwarms.clear();
-				this.mHoldSwarms.clear();
-
-				running = false;
-			}
 		}
 
 		/* Score */
@@ -820,6 +818,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			numbersSmall.getByIndex(2).setVisible(true);
 			numbersSmall.getByIndex(3).setVisible(true);
 		}
+	}
+
+	public void restart() {
+		restartMove1.reset();
+		isResetAnimationRunning = true;
+		running = false;
 	}
 
 	/*

@@ -34,6 +34,7 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas3 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas7 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas8 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	public static final BitmapTextureAtlas mElementsTextureAtlas9 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	public static final BitmapTextureAtlas mFontTextureAtlas1 = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
 	public static final BitmapTextureAtlas mFontTextureAtlas2 = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
@@ -108,7 +109,6 @@ public class Resources {
 	public static final TiledTextureRegion mPopupStarsNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "numbers-sprite-popup.png", 557, 561, 10, 1);
 	public static final TiledTextureRegion mBoxUnlockPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "unlock-bg.png", 564, 358, 1, 1);
 	public static final TiledTextureRegion mBoxUnlockButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "unlock-btn.png", 68, 785, 1, 1);
-	public static final TiledTextureRegion mBoxesUnlockTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "text-popup-unlock-bye.png", 256, 311, 1, 1);
 	public static final TiledTextureRegion mBoxPurchaseButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "btn-unlock-bye.png", 401, 782, 1, 1);
 	public static final TiledTextureRegion mBoxCollect50TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "50-collect.png", 356, 278, 1, 1);
 	public static final TiledTextureRegion mBoxCollect100TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "100-collect.png", 950, 113, 1, 1);
@@ -198,8 +198,14 @@ public class Resources {
 	public static final TiledTextureRegion mAdsPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "ads-panel.png", 348, 888, 1, 1);
 	public static final TiledTextureRegion mAimTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "aim.png", 72, 571, 1, 1);
 	public static final TiledTextureRegion mAimArrowsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "arrow-target.png", 115, 571, 1, 1);
+	public static final TiledTextureRegion mTimerBarTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "timer-bar.png", 180, 571, 1, 1);
+	public static final TiledTextureRegion mTimerNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "timer-numbers-sprite.png", 72, 611, 5, 1);
 
 	public static final TiledTextureRegion mSpaceStarsBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "space-stars.png", 2, 2, 1, 1);
+	public static final TiledTextureRegion mAwesomePointsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "points.png", 402, 2, 1, 3);
+	public static final TiledTextureRegion mAwesomeTextsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "awesome.png", 532, 2, 1, 4);
+
+	public static final TiledTextureRegion mBoxesUnlockTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas9, Game.context, "text-popup-unlock-bye.png", 2, 2, 1, 1);
 
 	// ===========================================================
 	// Entities
@@ -307,11 +313,11 @@ public class Resources {
 	}
 
 	public static final void loadFirstResources() {
-		Game.loadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas7);
+		Game.loadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas7, mElementsTextureAtlas9);
 	}
 
 	public static final void unloadFirstResources() {
-		Game.unloadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas7);
+		Game.unloadTextures(mBackgroundGradientTextureAtlas, mBackgroundElementsTextureAtlas, mElementsTextureAtlas1, mElementsTextureAtlas7, mElementsTextureAtlas9);
 	}
 
 	public static final void loadSecondResources() {

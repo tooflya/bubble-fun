@@ -43,8 +43,11 @@ public class Chiky extends EntityBezier {
 	// Fields
 	// ===========================================================
 
-	private boolean isFirst;
-	private boolean isSecond;
+	public boolean mIsFirst;
+	public boolean mIsSecond;
+
+	public boolean mIsWasSecond;
+	public boolean mIsFirstForTime;
 
 	private int mWeight;
 
@@ -321,9 +324,9 @@ public class Chiky extends EntityBezier {
 		final Bubble bubble = (Bubble) pEntity;
 
 		if (bubble.isHasParent()) {
-			if (!this.isFirst() && !this.isSecond) {
+			if (!this.isFirst()) {
 				if (this.isSecond()) {
-					this.findSecond();
+					this.mIsWasSecond = true;
 				}
 
 				this.setFirstForTime();
@@ -331,9 +334,29 @@ public class Chiky extends EntityBezier {
 		} else {
 			super.onCollide(pEntity);
 
+			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+			b.setCenterPosition(this.getCenterX(), this.getCenterY());
+
+			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
+			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 50f);
+
+			if (this.isFirst()) {
+				a.setCurrentTileIndex(0);
+				b.setCurrentTileIndex(0);
+			} else {
+				a.setCurrentTileIndex(1);
+				b.setCurrentTileIndex(3);
+			}
+
 			this.mAim.animate();
 
-			this.reorgznize();
+			if (!this.mIsFirstForTime) {
+				this.reorgznize();
+			}
+
+			if (!this.hasSecond()) {
+				this.findSecond();
+			}
 
 			if (this.mBubble == null) {
 				this.mBubble = bubble.getParent();
@@ -394,6 +417,7 @@ public class Chiky extends EntityBezier {
 		this.mName.setVisible(true);
 
 		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+		this.mAim.setChiky(this);
 
 		this.setRotation(0);
 
@@ -444,8 +468,10 @@ public class Chiky extends EntityBezier {
 			this.mCristmasHat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
 		}
 
-		this.isFirst = false;
-		this.isSecond = false;
+		this.mIsFirst = false;
+		this.mIsSecond = false;
+		this.mIsWasSecond = false;
+		this.mIsFirstForTime = false;
 	}
 
 	/*
@@ -503,43 +529,48 @@ public class Chiky extends EntityBezier {
 	}
 
 	public boolean isFirst() {
-		return this.isFirst;
+		return this.mIsFirst;
 	}
 
 	public boolean isSecond() {
-		return this.isSecond;
+		return this.mIsSecond;
 	}
 
 	public void setFirst() {
 		this.removeAim();
 
 		this.mAim.setAlpha(1f);
+		this.mAim.setFirst();
 
-		this.isSecond = false;
-		this.isFirst = true;
+		this.mIsSecond = false;
+		this.mIsFirst = true;
 	}
 
 	public void setFirstForTime() {
 		this.removeAim();
 
+		this.mAim.setAlpha(1f);
 		this.mAim.setTime(5f);
+		this.mAim.setFirst();
 
-		this.isSecond = false;
-		this.isFirst = false;
+		this.mIsSecond = false;
+		this.mIsFirst = true;
+		this.mIsFirstForTime = true;
 	}
 
 	public void setSecond() {
 		this.removeAim();
 
 		this.mAim.setAlpha(0.3f);
+		this.mAim.setSecond();
 
-		this.isFirst = false;
-		this.isSecond = true;
+		this.mIsFirst = false;
+		this.mIsSecond = true;
 	}
 
 	private void removeAim() {
-		this.isFirst = false;
-		this.isSecond = false;
+		this.mIsFirst = false;
+		this.mIsSecond = false;
 	}
 
 	private void reorgznize() {
@@ -591,9 +622,21 @@ public class Chiky extends EntityBezier {
 
 		if (nextChiky != null) {
 			nextChiky.setSecond();
-		} else {
-			System.out.println("Поиск второй провален!");
 		}
+	}
+
+	public boolean hasSecond() {
+		final EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+
+		for (int i = 0; i < chikies.getCount(); i++) {
+			final Chiky chiky = chikies.getByIndex(i);
+
+			if (chiky.isCanCollide() && chiky.isSecond()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public int getWeight() {

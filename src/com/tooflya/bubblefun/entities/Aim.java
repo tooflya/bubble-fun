@@ -21,6 +21,12 @@ public class Aim extends Entity {
 	private float mTime;
 
 	private AimArrow mAimArrow;
+	private Entity mTimeBar;
+	private TimerNumber mTimeNumber;
+
+	private boolean mIsSecond;
+
+	private Chiky mParent;
 
 	// ===========================================================
 	// Constructors
@@ -51,10 +57,16 @@ public class Aim extends Entity {
 		this.setRotation(0f);
 
 		this.mIsGoningToDeath = false;
+		this.mIsSecond = false;
 
 		this.mTime = -1f;
 
 		this.mAimArrow = ((LevelScreen) Game.screens.get(Screen.LEVEL)).arrows.create();
+		this.mTimeBar = ((LevelScreen) Game.screens.get(Screen.LEVEL)).timerBars.create();
+		this.mTimeNumber = ((LevelScreen) Game.screens.get(Screen.LEVEL)).timerNumbers.create();
+
+		this.mTimeBar.enableBlendFunction();
+		this.mTimeBar.setAlpha(0f);
 	}
 
 	/* (non-Javadoc)
@@ -80,7 +92,14 @@ public class Aim extends Entity {
 
 		if (this.mAimArrow != null) {
 			this.mAimArrow.setCenterPosition(this.getCenterX(), this.getCenterY());
-			this.mAimArrow.setAlpha(this.mAlpha);
+			this.mTimeBar.setCenterPosition(this.getCenterX() - 15f, this.getCenterY() + 15f);
+			this.mTimeNumber.setCenterPosition(this.mTimeBar.getCenterX() - 2f, this.mTimeBar.getCenterY() + 2f);
+
+			if (!this.mIsSecond) {
+				this.mAimArrow.setAlpha(this.mAlpha);
+			} else {
+				this.mAimArrow.setAlpha(0f);
+			}
 		}
 
 		if (this.mIsGoningToDeath) {
@@ -92,9 +111,20 @@ public class Aim extends Entity {
 		} else {
 			if (this.mTime > 0f) {
 				this.mTime -= pSecondsElapsed;
+				this.mTimeBar.setAlpha(1f);
 			} else {
 				if (this.mTime != -1) {
-					this.mAlpha = 0f;
+					if (this.mAlpha > 0f) {
+						this.mAlpha -= 0.05f;
+						this.mTimeBar.setAlpha(this.mAlpha);
+						this.mParent.mIsFirst = false;
+						this.mParent.mIsFirstForTime = false;
+
+						if (this.mParent.mIsWasSecond) {
+							this.mParent.mIsWasSecond = false;
+							this.mParent.setSecond();
+						}
+					}
 				}
 			}
 		}
@@ -111,15 +141,32 @@ public class Aim extends Entity {
 	// Methods
 	// ===========================================================
 
+	public void setChiky(final Chiky pChiky) {
+		this.mParent = pChiky;
+	}
+
 	public void setTime(final float pTime) {
 		this.mTime = pTime;
+		this.mTimeNumber.animate();
 	}
 
 	public void animate() {
 		this.mIsGoningToDeath = true;
+		this.mTimeBar.destroy();
+		this.mTimeNumber.destroy();
 	}
 
 	public boolean isAnimate() {
 		return this.mIsGoningToDeath;
+	}
+
+	public void setSecond() {
+		this.mIsSecond = true;
+		this.mTimeBar.setAlpha(0f);
+		this.mTimeNumber.setAlpha(0f);
+	}
+
+	public void setFirst() {
+		this.mIsSecond = false;
 	}
 }

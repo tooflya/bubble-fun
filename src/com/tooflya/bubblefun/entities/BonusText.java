@@ -27,20 +27,20 @@ public class BonusText extends AwesomeText {
 		super.onCreate();
 
 		this.mIsAnimationScaleRunning = false;
-		mSleepTime = 100f;
+		this.mSleepTime = 50f;
 	}
 
 	@Override
 	public void setCurrentTileIndex(final int pTileIndex) {
 		switch (pTileIndex) {
 		case 0:
-			this.mScoreIncrement = -150;
+			this.mScoreIncrement = 300;
 			break;
 		case 1:
-			this.mScoreIncrement = 100;
+			this.mScoreIncrement = -150;
 			break;
 		case 2:
-			this.mScoreIncrement = 300;
+			this.mScoreIncrement = -100;
 			break;
 		}
 		super.setCurrentTileIndex(pTileIndex);
@@ -60,9 +60,8 @@ public class BonusText extends AwesomeText {
 
 	}
 
-	@Override
-	public void setCenterPosition(final float pX, final float pY) {
-		super.setCenterPosition(pX, pY + this.getHeight() * 2);
-	}
+	/**
+	 * @Override public void setCenterPosition(final float pX, final float pY) { super.setCenterPosition(pX, pY + this.getHeight() * 2); }
+	 */
 
 }

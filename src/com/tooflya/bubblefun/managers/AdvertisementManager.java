@@ -126,7 +126,8 @@ public class AdvertisementManager {
 			return true;
 		}
 
-		return this.isAdvertisementDisabled;
+		//return this.isAdvertisementDisabled;
+		return true;
 	}
 
 	public void showSmall() {
