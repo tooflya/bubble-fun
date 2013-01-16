@@ -6,7 +6,9 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.Bubble;
+import com.tooflya.bubblefun.entities.Chiky;
 import com.tooflya.bubblefun.entities.EntityBezier;
+import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
@@ -52,7 +54,12 @@ public class BubbleFactory {
 	}
 
 	private static void ChikiesSpeedUpDown(final float pSpeedKoef) {
-		EntityBezier.mKoefSpeedTime = pSpeedKoef;
+		final EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+		for (int i = 0; i < chikies.getCount(); i++) {
+			if (chikies.getByIndex(i).isCanCollide()) {
+				chikies.getByIndex(i).mKoefSpeedTime = pSpeedKoef;
+			}
+		}
 	}
 
 	public static void BubbleBonus(final int type) {

@@ -79,7 +79,7 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	};
 
-	private final TimerHandler mTimer = new TimerHandler(1f, true, new ITimerCallback() {
+	private final TimerHandler mTimer = new TimerHandler(0.5f, true, new ITimerCallback() {
 
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
@@ -114,7 +114,28 @@ public class LevelEndScreen extends PopupScreen {
 	private final EntityManager<Entity> mScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 	private final EntityManager<Entity> mTotalScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 
-	private final AwesomeText mLevelCompleteCapture = new AwesomeText(Resources.mLevelEndCompleteCaptureTextureRegion, false, this.mPanel);
+	private final AwesomeText mLevelCompleteCapture = new AwesomeText(Resources.mLevelEndCompleteCaptureTextureRegion, false, this.mPanel) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.AwesomeText#onCreate()
+		 */
+		@Override
+		public void onCreate() {
+			super.onCreate();
+
+			this.mAlpha = 1f;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.AwesomeText#onAnimationFinished()
+		 */
+		@Override
+		public void onAnimationFinished() {
+			super.onAnimationFinished();
+
+			this.shake = false;
+		}
+	};
 
 	// ===========================================================
 	// Constructors
@@ -173,13 +194,13 @@ public class LevelEndScreen extends PopupScreen {
 		this.mRectangleAlphaModifier.stop();
 		this.mRectangle.setAlpha(0.4f);
 
-		//mExplosionSound.play();
-
 		mStarsAnimationCount = 0;
 
-		if (LevelScreen.mBubblesCount <= 2) {
-			mStarsCount = 4 - LevelScreen.mBubblesCount;
-		} else {
+		if (LevelScreen.Score == LevelScreen.mBirdsCount * 300) {
+			mStarsCount = 3;
+		} else if (LevelScreen.Score >= LevelScreen.mBirdsCount * 150) {
+			mStarsCount = 2;
+		} else if (LevelScreen.Score >= LevelScreen.mBirdsCount * 100) {
 			mStarsCount = 1;
 		}
 

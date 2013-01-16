@@ -6,10 +6,14 @@ import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 
 public class AwesomeText extends Entity {
-	private float mScaleStep = 0.3f;
+	private float mScaleStep = 0.8f;
 
 	protected boolean mIsAnimationScaleRunning;
 	protected boolean mIsAnimationReverse;
+
+	protected boolean mIsAnimationUp;
+
+	public float mDisappearSpeed;
 
 	public boolean shake = false;
 	private float minS = -5, maxS = 5;
@@ -26,7 +30,7 @@ public class AwesomeText extends Entity {
 
 		this.mDisappear = pDisappear;
 
-		this.enableFullBlendFunction();
+		this.enableBlendFunction();
 
 		this.setScaleCenter(this.getWidth() / 2, this.getHeight() / 2);
 		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
@@ -51,13 +55,17 @@ public class AwesomeText extends Entity {
 	public void onCreate() {
 		super.onCreate();
 
-		mIsAnimationScaleRunning = true;
+		this.mIsAnimationScaleRunning = true;
 		this.mIsAnimationReverse = false;
-		mNeedDeath = false;
-		shake = false;
+		this.mIsAnimationUp = false;
+		this.mNeedDeath = false;
+		this.shake = false;
 
 		this.setScale(10f);
 		this.setAlpha(0f);
+
+		this.step = 3f;
+		this.mDisappearSpeed = 0.02f;
 
 		this.setRotation(-5 + Game.random.nextInt(10));
 	}
@@ -73,8 +81,8 @@ public class AwesomeText extends Entity {
 
 		if (mIsAnimationScaleRunning) {
 			if (this.mIsAnimationReverse) {
-				if (this.getAlpha() < 1f) {
-					this.setAlpha(this.getAlpha() + 0.05f);
+				if (this.mAlpha < 1f) {
+					this.mAlpha += 0.05f;
 				}
 
 				this.setScale(this.getScaleX() + mScaleStep);
@@ -82,10 +90,11 @@ public class AwesomeText extends Entity {
 					this.setScale(1f);
 					this.mIsAnimationScaleRunning = false;
 					this.shake = true;
+					this.mAlpha = 1f;
 				}
 			} else {
-				if (this.getAlpha() < 1f) {
-					this.setAlpha(this.getAlpha() + 0.05f);
+				if (this.mAlpha < 1f) {
+					this.mAlpha += 0.05f;
 				}
 
 				this.setScale(this.getScaleX() - mScaleStep);
@@ -93,6 +102,7 @@ public class AwesomeText extends Entity {
 					this.setScale(1f);
 					this.mIsAnimationScaleRunning = false;
 					this.shake = true;
+					this.mAlpha = 1f;
 				}
 			}
 		}
@@ -113,36 +123,33 @@ public class AwesomeText extends Entity {
 			}
 			if (i >= mi) {
 				this.i = 0;
-				this.shake = false;
+				this.step = 1f;
 				this.mNeedDeath = true;
 				this.reverse = false;
+				this.shake = false;
 				this.onAnimationFinished();
 			}
 		}
 
 		if (this.mNeedDeath && this.mDisappear) {
-			if (this.getAlpha() >= 0) {
-				this.setAlpha(this.getAlpha() - 0.005f);
+			if (this.mAlpha >= 0f) {
+				this.mAlpha -= this.mDisappearSpeed;
+
+				if (this.mIsAnimationUp) {
+					this.mY -= 1f;
+				}
 			} else {
 				this.destroy();
 			}
 		}
 
 	}
-
-	/**@Override
-	public void setCenterPosition(final float pX, final float pY) {
-		float x;
-
-		if (pX > Options.cameraWidth - this.getWidth()) {
-			x = Options.cameraWidth - (this.getWidth() * 2);
-		} else if (pX < this.getWidth()) {
-			x = this.getWidth() * 2;
-		} else {
-			x = pX;
-		}
-
-		super.setCenterPosition(x, pY);
-	}*/
+	/**
+	 * @Override public void setCenterPosition(final float pX, final float pY) { float x;
+	 * 
+	 *           if (pX > Options.cameraWidth - this.getWidth()) { x = Options.cameraWidth - (this.getWidth() * 2); } else if (pX < this.getWidth()) { x = this.getWidth() * 2; } else { x = pX; }
+	 * 
+	 *           super.setCenterPosition(x, pY); }
+	 */
 
 }

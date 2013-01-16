@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="0" g1="164" b1="59" r2="139" g2="243" b2="149" bluebird="false">
-	]<chiky scale="1" minTime="0" maxTime="1" speedTime="0.3" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
-<ctrPoint x="0" y="30"/>
-<ctrPoint x="100" y="60"/>
-<ctrPoint x="100" y="30"/>
-<ctrPoint x="0" y="60"/>
+<level r1="255" g1="255" b1="255" r2="255" g2="255" b2="255" bluebird="true">
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.114657" offsetTime="0.1260373" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<ctrPoint x="25" y="10"/>
+<ctrPoint x="53" y="26"/>
+<ctrPoint x="70" y="40"/>
+<ctrPoint x="75" y="24"/>
+<ctrPoint x="25" y="24"/>
+<ctrPoint x="30" y="40"/>
+<ctrPoint x="47" y="26"/>
+<ctrPoint x="75" y="10"/>
 </chiky>
-<chiky scale="1" minTime="0" maxTime="1" speedTime="0.3" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
-<ctrPoint x="100" y="60"/>
-<ctrPoint x="0" y="30"/>
-<ctrPoint x="0" y="60"/>
-<ctrPoint x="100" y="30"/>
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.6652179" offsetTime="0.7311093" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<ctrPoint x="100" y="65"/>
+<ctrPoint x="7" y="55"/>
+<ctrPoint x="99" y="26"/>
+<ctrPoint x="81" y="63"/>
+<ctrPoint x="19" y="63"/>
+<ctrPoint x="1" y="26"/>
+<ctrPoint x="93" y="55"/>
+<ctrPoint x="0" y="65"/>
 </chiky>
-<chiky scale="1" minTime="0" maxTime="1" speedTime="0.3" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
-<ctrPoint x="100" y="60"/>
-<ctrPoint x="0" y="30"/>
-<ctrPoint x="100" y="30"/>
-<ctrPoint x="0" y="60"/>
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5185897" offsetTime="0.4542558" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<ctrPoint x="24" y="36"/>
+<ctrPoint x="51" y="75"/>
+<ctrPoint x="54" y="28"/>
+<ctrPoint x="46" y="28"/>
+<ctrPoint x="49" y="75"/>
+<ctrPoint x="76" y="36"/>
 </chiky>
-
 </level>

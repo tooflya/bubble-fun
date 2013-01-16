@@ -95,7 +95,7 @@ public abstract class Screen extends Scene {
 		super.attachChild(pEntity);
 
 		/** This section is scale object to the real size for adapt size of entity to the screen resolution. */
-		if (!(pEntity instanceof Text) || !(pEntity instanceof TutorialText)) {
+		if (!(pEntity instanceof Text)) {
 			pEntity.setScaleCenter(0, 0);
 			pEntity.setScale(Options.cameraRatioFactor);
 

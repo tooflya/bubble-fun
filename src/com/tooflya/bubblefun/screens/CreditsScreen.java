@@ -63,21 +63,21 @@ public class CreditsScreen extends ReflectionScreen {
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 300f, Resources.mWhiteFont, "The premier debugging environemnt for"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 250f, Resources.mWhiteFont, "Opera Presto-based browsers. Opera Drag-"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 200f, Resources.mWhiteFont, "onfly is available directly from the Opera"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 150f, Resources.mWhiteFont, "browser, no extra download requierd."));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 50f, Resources.mWhiteFont, "Opera Dragonfly contains a full suite of"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY, Resources.mWhiteFont, "tools including DOM, CSS and Network"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 50f, Resources.mWhiteFont, "Inspectors, a JavaScript Debugger, Com-"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 100f, Resources.mWhiteFont, "mand Line and Error Console."));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 200f, Resources.mWhiteFont, "Tooflya Inc."));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 150f * Options.cameraRatioFactor, Resources.mFont, "The premier debugging environemnt for"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 120f * Options.cameraRatioFactor, Resources.mFont, "Opera Presto-based browsers. Opera Drag-"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 90f * Options.cameraRatioFactor, Resources.mFont, "onfly is available directly from the Opera"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 60f * Options.cameraRatioFactor, Resources.mFont, "browser, no extra download requierd."));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 30f * Options.cameraRatioFactor, Resources.mFont, "Opera Dragonfly contains a full suite of"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY, Resources.mFont, "tools including DOM, CSS and Network"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 30f * Options.cameraRatioFactor, Resources.mFont, "Inspectors, a JavaScript Debugger, Com-"));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 60f * Options.cameraRatioFactor, Resources.mFont, "mand Line and Error Console."));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 120f * Options.cameraRatioFactor, Resources.mFont, "Tooflya Inc."));
 
 		try {
 			final PackageInfo pInfo = Game.instance.getPackageManager().getPackageInfo(Game.instance.getPackageName(), 0);
 
-			this.attachChild(new Text(Options.screenWidth - 140f, Options.screenHeight - 90f, Resources.mWhiteFont, "Version: " + pInfo.versionName));
-			this.attachChild(new Text(Options.screenWidth - 160f, Options.screenHeight - 40f, Resources.mWhiteFont, "Build: " + pInfo.versionCode));
+			this.attachChild(new Text(Options.screenWidth - 60f * Options.cameraRatioFactor, Options.screenHeight - 50f * Options.cameraRatioFactor, Resources.mFont, Game.getString("version") + pInfo.versionName));
+			this.attachChild(new Text(Options.screenWidth - 65f * Options.cameraRatioFactor, Options.screenHeight - 25f * Options.cameraRatioFactor, Resources.mFont, Game.getString("build") + pInfo.versionCode));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

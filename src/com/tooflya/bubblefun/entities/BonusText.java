@@ -17,9 +17,11 @@ public class BonusText extends AwesomeText {
 
 	@Override
 	protected void onAnimationFinished() {
+		super.onAnimationFinished();
+
 		this.mRotation = 5;
 
-		LevelScreen.Score += this.mScoreIncrement;
+		this.shake = true;
 	}
 
 	@Override
@@ -27,23 +29,31 @@ public class BonusText extends AwesomeText {
 		super.onCreate();
 
 		this.mIsAnimationScaleRunning = false;
+		this.mIsAnimationUp = true;
 		this.mSleepTime = 50f;
+		this.mDisappearSpeed = 0.005f;
 	}
 
 	@Override
 	public void setCurrentTileIndex(final int pTileIndex) {
+		super.setCurrentTileIndex(pTileIndex);
+
 		switch (pTileIndex) {
 		case 0:
-			this.mScoreIncrement = 300;
+			this.mScoreIncrement = 600;
 			break;
 		case 1:
-			this.mScoreIncrement = -150;
+			this.mScoreIncrement = 300;
 			break;
 		case 2:
+			this.mScoreIncrement = -150;
+			break;
+		case 3:
 			this.mScoreIncrement = -100;
 			break;
 		}
-		super.setCurrentTileIndex(pTileIndex);
+
+		LevelScreen.Score += this.mScoreIncrement;
 	}
 
 	/*

@@ -30,7 +30,7 @@ public class EntityBezier extends Entity {
 	private float mOffsetTime = 0; // Seconds.
 	private boolean mIsReverseTime = true;
 
-	public static float mKoefSpeedTime = 1;
+	public float mKoefSpeedTime = 1f;
 
 	private final short mListBX[] = new short[mListCapacity];
 	private final short mListBY[] = new short[mListCapacity];

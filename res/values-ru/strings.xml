@@ -19,4 +19,24 @@
     <string name="beta_testers_yes">Да, конечно!</string>
     <string name="beta_testers_no">Нет</string>
 
+    <!-- Tutorial -->
+    <string name="tutorial_1">Попробуйте-ка сбить птичку!</string>
+    <string name="tutorial_2">Нажимайте в этой части экрана</string>
+    <string name="tutorial_3">чтобы надувать пузыри!</string>
+    <string name="tutorial_4">Сбивайте птиц,</string>
+    <string name="tutorial_5">отмеченных стрелками!</string>
+    <string name="tutorial_6">Проведите по экрану к цели</string>
+    <string name="tutorial_7">чтобы ускорить пузырь!</string>
+    <string name="tutorial_8">Некоторые птицы отмечаются</string>
+    <string name="tutorial_9">лишь на время!</string>
+    <string name="tutorial_10">Удерживайте палец</string>
+    <string name="tutorial_11">чтобы надуть пузырь!</string>
+    <string name="tutorial_12">Иногда синяя птица будет вам мешать!</string>
+
+    <!-- Resources -->
+    <string name="preload_text">preload-text-ru.png</string>
+    
+    <string name="version">Версия:\u00A0</string>
+    <string name="build">Сборка:\u00A0</string>
+
 </resources>

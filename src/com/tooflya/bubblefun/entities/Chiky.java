@@ -37,7 +37,7 @@ public class Chiky extends EntityBezier {
 	public static final int isUnnormalMoveFlag = 2;
 	// TODO: (R) Is this state need? public static final int isBorderFlag = 2;
 
-	private final Text mName = new Text(0, 0, Resources.mFont, "1234567890123456"); // TODO: (R) What do this code?
+	//private final Text mName = new Text(0, 0, Resources.mFont, "1234567890123456"); // TODO: (R) What do this code?
 
 	// ===========================================================
 	// Fields
@@ -92,9 +92,9 @@ public class Chiky extends EntityBezier {
 		this.mRotationCenterX = this.mWidth / 2;
 		this.mRotationCenterY = this.mHeight / 2;
 
-		pParentScreen.attachChild(this.mName);
+		//pParentScreen.attachChild(this.mName);
 
-		this.mName.setVisible(false);
+		//this.mName.setVisible(false);
 	}
 
 	// ===========================================================
@@ -107,7 +107,7 @@ public class Chiky extends EntityBezier {
 	}
 
 	public void initName(final String pName) {
-		this.mName.setText(pName);
+		//this.mName.setText(pName);
 	}
 
 	public void initNormalMaxTime(final float pNormalMaxTime) {
@@ -143,7 +143,7 @@ public class Chiky extends EntityBezier {
 	}
 
 	private void onManagedUpdateNormalMove(final float pSecondsElapsed) {
-		this.mNormalTime += pSecondsElapsed * EntityBezier.mKoefSpeedTime;
+		this.mNormalTime += pSecondsElapsed * this.mKoefSpeedTime;
 		if (this.mNormalTime > this.mNormalMaxTime) {
 			if (this.IsProperty(isUnnormalMoveFlag)) {
 				this.mState = States.UnnormalMove;
@@ -169,7 +169,7 @@ public class Chiky extends EntityBezier {
 	}
 
 	private void onManagedUpdateUnnormalMove(final float pSecondsElapsed) {
-		this.mUnnormalTime += pSecondsElapsed * EntityBezier.mKoefSpeedTime;
+		this.mUnnormalTime += pSecondsElapsed;
 		if (this.mUnnormalTime > this.mUnnormalMaxTime) {
 			this.mState = States.NormalMove;
 			this.mNormalTime = this.mUnnormalTime - this.mUnnormalMaxTime;
@@ -199,7 +199,7 @@ public class Chiky extends EntityBezier {
 	// onManagedUpdateVectorMovement --> Add two control points: begin and end.
 
 	protected void onManagedUpdateWithGumMove(final float pSecondsElapsed) {
-		this.mWithGumTime += pSecondsElapsed * EntityBezier.mKoefSpeedTime;
+		this.mWithGumTime += pSecondsElapsed;
 		if (this.mWithGumTime >= this.mWithGumMaxTime) {
 			this.prepareToFall();
 
@@ -274,6 +274,8 @@ public class Chiky extends EntityBezier {
 		}
 		super.initMaxTime(Float.MAX_VALUE);
 		super.initSpeedTime(1f);
+
+		this.mKoefSpeedTime = 1f;
 	}
 
 	private void onManagedUpdateFall(final float pSecondsElapsed) {
@@ -335,16 +337,16 @@ public class Chiky extends EntityBezier {
 			super.onCollide(pEntity);
 
 			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
-			b.setCenterPosition(this.getCenterX(), this.getCenterY());
+			b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 
 			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
-			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 50f);
+			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 
 			if (this.isFirst()) {
-				a.setCurrentTileIndex(0);
-				b.setCurrentTileIndex(0);
-			} else {
 				a.setCurrentTileIndex(1);
+				b.setCurrentTileIndex(Game.random.nextInt(3));
+			} else {
+				a.setCurrentTileIndex(3);
 				b.setCurrentTileIndex(3);
 			}
 
@@ -413,8 +415,8 @@ public class Chiky extends EntityBezier {
 
 		super.init();
 
-		this.mName.setText("");
-		this.mName.setVisible(true);
+		//this.mName.setText("");
+		//this.mName.setVisible(true);
 
 		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
 		this.mAim.setChiky(this);
@@ -472,6 +474,8 @@ public class Chiky extends EntityBezier {
 		this.mIsSecond = false;
 		this.mIsWasSecond = false;
 		this.mIsFirstForTime = false;
+
+		this.mKoefSpeedTime = 1f;
 	}
 
 	/*
@@ -502,7 +506,7 @@ public class Chiky extends EntityBezier {
 			this.mX_ = this.mX;
 		}
 
-		this.mName.setPosition(this.getCenterX(), this.getY() - 10f);
+		//this.mName.setPosition(this.getCenterX(), this.getY() - 10f);
 
 		// TODO: (R) Strange code.
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
@@ -520,7 +524,7 @@ public class Chiky extends EntityBezier {
 	public void onDestroy() {
 		super.onDestroy();
 
-		this.mName.setVisible(false);
+		//this.mName.setVisible(false);
 
 		this.mAim.destroy();
 
@@ -544,6 +548,7 @@ public class Chiky extends EntityBezier {
 
 		this.mIsSecond = false;
 		this.mIsFirst = true;
+		this.mIsWasSecond = false;
 	}
 
 	public void setFirstForTime() {
@@ -551,7 +556,6 @@ public class Chiky extends EntityBezier {
 
 		this.mAim.setAlpha(1f);
 		this.mAim.setTime(5f);
-		this.mAim.setFirst();
 
 		this.mIsSecond = false;
 		this.mIsFirst = true;
@@ -583,7 +587,7 @@ public class Chiky extends EntityBezier {
 				final Chiky chiky = chikies.getByIndex(i);
 
 				if (chiky.isCanCollide()) {
-					if (chiky.isSecond()) {
+					if (chiky.isSecond() || chiky.mIsWasSecond) {
 						chiky.setFirst();
 					}
 				}

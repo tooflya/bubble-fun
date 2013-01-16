@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <level r1="248" g1="255" b1="167" r2="0" g2="255" b2="255" bluebird="false">
-<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0" weight="1">
 <ctrPoint x="20" y="35"/>
 <ctrPoint x="80" y="35"/>
 </chiky>
-<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0" weight="2">
 <ctrPoint x="0" y="50"/>
 <ctrPoint x="100" y="50"/>
 </chiky>
-<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0">
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0" weight="0">
 <ctrPoint x="40" y="20"/>
 <ctrPoint x="60" y="20"/>
 </chiky>
+<tutorial x="0.62" y="0.8" text="tutorial_10" wait="1.5" show="5">
+<tutorial x="0.7" y="0.83" text="tutorial_11" wait="2" show="5">
 </level>

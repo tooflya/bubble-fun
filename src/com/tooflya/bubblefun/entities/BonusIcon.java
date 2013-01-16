@@ -12,7 +12,7 @@ public class BonusIcon extends ButtonScaleable {
 
 	private int mType = 0;
 
-public int mCount = 0;
+	public int mCount = 0;
 
 	private States mState = States.Empty;
 
@@ -24,10 +24,13 @@ public int mCount = 0;
 		super(pTiledTextureRegion, pParentScreen, true);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onCreate()
+	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		this.mState = States.Empty;
 
 		this.mCount = 1;
@@ -62,10 +65,8 @@ public int mCount = 0;
 			this.prepareBreak();
 			break;
 		case Busy:
-			// Don't do something.
 			break;
 		case Disable:
-			// Don't do something.
 			break;
 		}
 	}

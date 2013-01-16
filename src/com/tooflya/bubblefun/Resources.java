@@ -2,7 +2,6 @@ package com.tooflya.bubblefun;
 
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.FontFactory;
-import org.anddev.andengine.opengl.font.StrokeFont;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -14,7 +13,6 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFor
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.graphics.Color;
-import android.util.FloatMath;
 
 import com.tooflya.bubblefun.entities.Entity;
 
@@ -36,14 +34,9 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas8 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas9 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public static final BitmapTextureAtlas mFontTextureAtlas1 = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
-	public static final BitmapTextureAtlas mFontTextureAtlas2 = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR);
-
-	public static final Font mFont = FontFactory.createFromAsset(mFontTextureAtlas1, Game.context, "font/casual.ttf", 8f * Options.cameraRatioFactor, true, Color.BLACK);
-	public static final StrokeFont mWhiteFont = FontFactory.createStrokeFromAsset(mFontTextureAtlas2, Game.context, "font/JOINTBYPIZZADUDE.ttf", 17f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
-
 	public static final BitmapTextureAtlas mTutorialFontTextureAtlas = new BitmapTextureAtlas(512, 512, TextureOptions.BILINEAR);
-	public static final Font mTutorialFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.context, "font/Lobster.ttf", FloatMath.ceil(16f * Options.cameraRatioFactor), true, Color.BLACK);
+
+	public static final Font mFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.context, "font/Lobster.ttf", 16f * Options.cameraRatioFactor, true, Color.BLACK);
 
 	// ===========================================================
 	// Texture Regions
@@ -64,13 +57,13 @@ public class Resources {
 
 	public static final TiledTextureRegion mBackgroundCloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "cloud.png", 388, 2, 1, 4);
 	public static final TiledTextureRegion mNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-sprite.png", 2, 618, 1, 11);
-	public static final TiledTextureRegion mSmallNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-small.png", 388, 516, 11, 1);
+	public static final TiledTextureRegion mSmallNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-small.png", 388, 516, 12, 1);
 	public static final TiledTextureRegion mStarsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "end-stars.png", 854, 2, 1, 2);
 	public static final TiledTextureRegion mButtonsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "menu-big-btn.png", 48, 978, 1, 1);
 	public static final TiledTextureRegion mPreloadBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "preload-bg.png", 2, 2, 1, 1);
 	public static final TiledTextureRegion mPreloadBackgroundCloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "preload-bg-cloud.png", 648, 31, 1, 1);
 	public static final TiledTextureRegion mMusicIconTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "melody-btn.png", 515, 549, 1, 2);
-	public static final TiledTextureRegion mPreloadTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "preload-text.png", 388, 582, 1, 1);
+	public static final TiledTextureRegion mPreloadTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, Game.getString("preload_text"), 388, 582, 1, 1);
 	public static final TiledTextureRegion mLevelEndTotalScoreTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "end-text-total-score.png", 388, 549, 1, 1);
 	public static final TiledTextureRegion mLevelEndScoreNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "end-text-numbers.png", 206, 978, 10, 1);
 	public static final TiledTextureRegion mBoxNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-sprite-world-2.png", 648, 2, 11, 1);
@@ -202,7 +195,7 @@ public class Resources {
 	public static final TiledTextureRegion mTimerNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "timer-numbers-sprite.png", 72, 611, 5, 1);
 
 	public static final TiledTextureRegion mSpaceStarsBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "space-stars.png", 2, 2, 1, 1);
-	public static final TiledTextureRegion mAwesomePointsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "points.png", 402, 2, 1, 3);
+	public static final TiledTextureRegion mAwesomePointsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "points.png", 402, 2, 1, 4);
 	public static final TiledTextureRegion mAwesomeTextsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "awesome.png", 532, 2, 1, 4);
 
 	public static final TiledTextureRegion mBoxesUnlockTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas9, Game.context, "text-popup-unlock-bye.png", 2, 2, 1, 1);
@@ -307,9 +300,8 @@ public class Resources {
 	// ===========================================================
 
 	public static final void loadCommonResources() {
-		Game.loadTextures(mBackgroundCommonTextureAtlas, mFontTextureAtlas1, mFontTextureAtlas2, mTutorialFontTextureAtlas);
-		//Game.engine.getFontManager().loadFonts(mFont, mWhiteFont);
-		Game.engine.getFontManager().loadFonts(mTutorialFont);
+		Game.loadTextures(mBackgroundCommonTextureAtlas, mTutorialFontTextureAtlas);
+		Game.engine.getFontManager().loadFonts(mFont);
 	}
 
 	public static final void loadFirstResources() {

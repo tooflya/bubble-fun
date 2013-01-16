@@ -547,4 +547,8 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	public static void close() {
 		instance.finish();
 	}
+
+	public static String getString(final String pString) {
+		return Game.context.getString(Game.context.getResources().getIdentifier(pString, "string", Game.context.getPackageName()));
+	}
 }

@@ -165,6 +165,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
 
 		tutorialCount = 0;
+		LevelScreen.mBirdsCount = 0;
 
 		/**
 		 * 
@@ -185,6 +186,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 				final boolean isBlueBirdNeed = SAXUtils.getBooleanAttribute(pAttributes, "bluebird", true);
 
+				screen.mBlueBird.create();
 				screen.mBlueBird.setIgnoreUpdate(!isBlueBirdNeed);
 
 				Resources.mLevelBackgroundGradientSource.changeColors(Resources.mLevelGradientBitmap, Color.rgb(r1, g1, b1), Color.rgb(r2, g2, b2));
@@ -238,6 +240,8 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 					final int weight = SAXUtils.getIntAttribute(pAttributes, "weight", 0);
 					chiky.setWeight(weight);
+					
+					LevelScreen.mBirdsCount++;
 				}
 			}
 		});
@@ -303,7 +307,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
 
-				final String text = SAXUtils.getAttributeOrThrow(pAttributes, "text");
+				final String text = Game.getString(SAXUtils.getAttributeOrThrow(pAttributes, "text"));
 
 				final float waitTime = SAXUtils.getFloatAttribute(pAttributes, "wait", 0);
 				final float showTime = SAXUtils.getFloatAttribute(pAttributes, "show", 5);

@@ -148,6 +148,7 @@ public class Aim extends Entity {
 	public void setTime(final float pTime) {
 		this.mTime = pTime;
 		this.mTimeNumber.animate();
+		this.mIsSecond = false;
 	}
 
 	public void animate() {
@@ -168,5 +169,8 @@ public class Aim extends Entity {
 
 	public void setFirst() {
 		this.mIsSecond = false;
+		this.mTimeBar.setAlpha(0f);
+		this.mTimeNumber.setAlpha(0f);
+		this.mTime = -1;
 	}
 }

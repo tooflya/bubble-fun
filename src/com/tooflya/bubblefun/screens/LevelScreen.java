@@ -27,6 +27,7 @@ import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
 import com.tooflya.bubblefun.entities.Bonus;
+import com.tooflya.bubblefun.entities.BonusIcon;
 import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.BubbleBrokes;
@@ -72,11 +73,12 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private final Entity mSpaceBackground;
 	private final Entity mSpacePlanet;
 
+	public static int mBirdsCount;
+
 	protected static final EntityManager<Cloud> birds = null;
 
 	public static boolean isTutorialNeeded = false;
 
-	public static int mBubblesCount;
 	public static int mPicupedCoins;
 	public static boolean running;
 	public static int deadBirds;
@@ -285,7 +287,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		mScoreText = new Entity(Resources.mScoreTextTextureRegion, this.mBackground);
 
-		numbersSmall = new EntityManager<Entity>(4, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
+		numbersSmall = new EntityManager<Entity>(5, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
 
 		mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
 
@@ -356,7 +358,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mBackground.setBackgroundCenterPosition();
 
-		this.mCoin.create().setPosition(10f, Options.cameraHeight - 40f);
+		//this.mCoin.create().setPosition(10f, Options.cameraHeight - 40f);
 
 		this.mPanel.create().setPosition(0, 0);
 
@@ -379,11 +381,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.numbersSmall.create().setPosition(111, 8);
 		this.numbersSmall.create().setPosition(125, 8);
 		this.numbersSmall.create().setPosition(138, 8);
+		this.numbersSmall.create().setPosition(151, 8);
 
 		this.numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		this.numbersSmall.getByIndex(1).setCurrentTileIndex(0);
 		this.numbersSmall.getByIndex(2).setCurrentTileIndex(0);
 		this.numbersSmall.getByIndex(3).setCurrentTileIndex(0);
+		this.numbersSmall.getByIndex(4).setCurrentTileIndex(0);
+		this.numbersSmall.getByIndex(4).setVisible(false);
 
 		this.mMenuButton.create().setPosition(Options.cameraWidth - (0 + this.mMenuButton.getWidth()), 3f);
 		this.mResetButton.create().setPosition(Options.cameraWidth - (5 + this.mMenuButton.getWidth() + this.mResetButton.getWidth()), 3f);
@@ -445,15 +450,37 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 
 		this.mBonusManager = new BonusManager(10);
-		/**
-		 * for (int i = 0; i < 4; i++) { this.mBonusManager.add(new BonusIcon(Resources.mBonus1TextureRegion, this.mBackground) {
-		 * 
-		 * @Override public void onClick() { this.init(31); super.onClick(); } }); }
-		 */
+		for (int i = 0; i < 3; i++) {
+			TiledTextureRegion k = null;
+			switch (i) {
+			case 0:
+				k = Resources.mBonus1TextureRegion;
+				break;
+			case 1:
+				k = Resources.mBonus2TextureRegion;
+				break;
+			case 2:
+				k = Resources.mBonus3TextureRegion;
+				break;
+			}
+			final BonusIcon h = new BonusIcon(k, this.mBackground) {
+
+				@Override
+				public void onClick() {
+					super.onClick();
+
+					this.init(48);
+				}
+			};
+			this.mBonusManager.add(h);
+			h.enableBlendFunction();
+			h.registerEntityModifier(this.mAllFallUpModifier);
+			h.registerEntityModifier(this.mAllFallDownModifier);
+		}
 
 		this.mTutorialTexts = new ArrayList<TutorialText>();
-		for (int i = 0; i < 3; i++) {
-			this.mTutorialTexts.add(new TutorialText(0, 0, Resources.mTutorialFont, "TUTORIAL TEXT TUTORIAL TEXT TUTORIAL TEXT"));
+		for (int i = 0; i < 5; i++) {
+			this.mTutorialTexts.add(new TutorialText(0, 0, Resources.mFont, "TUTORIAL TEXT TUTORIAL TEXT TUTORIAL TEXT"));
 			this.attachChild(this.mTutorialTexts.get(i));
 			this.mTutorialTexts.get(i).setText("");
 		}
@@ -483,13 +510,14 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mPicupedCoins = 0;
 		rectangleAlphaModifierOff.reset();
 
-		running = true;
 		deadBirds = 0;
 		isResetAnimationRunning = false;
 		this.mLevelEndRunning = false;
 
 		this.bonuses.clear();
 
+		this.awesome.clear();
+		this.points.clear();
 		this.mBlueBird.clear();
 		this.airgums.clear();
 		this.aims.clear();
@@ -520,8 +548,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		Options.bubbleSizePower = Options.bubbleMaxSizePower;
 
-		mBubblesCount = 0;
-
 		shape.reset();
 
 		numbers.getByIndex(0).setCurrentTileIndex(Options.boxNumber + 1);
@@ -540,8 +566,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 
 		numbers.getByIndex(1).setCurrentTileIndex(10);
-
-		EntityBezier.mKoefSpeedTime = 1;
 	}
 
 	// ===========================================================
@@ -763,60 +787,73 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.checkCollision();
 
-		if (chikies.getCount() <= 0 && !this.mLevelEndRunning) {
-			for (TutorialText text : this.mTutorialTexts) {
-				text.setVisible(false);
+		if (chikies.getCount() <= 0 && !this.mLevelEndRunning && !this.isResetAnimationRunning) {
+			if (Score < LevelScreen.mBirdsCount * 100) {
+				this.restart();
+			} else {
+				for (TutorialText text : this.mTutorialTexts) {
+					text.setVisible(false);
+				}
+
+				Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
+				this.mLevelEndRunning = true;
+
+				airgums.clear();
+				coins.clear();
+				feathers.clear();
+
+				this.mLightings.clear();
+				this.mLightingSwarms.clear();
+				this.mHoldSwarms.clear();
+
+				this.lastAirgum = null;
+
+				this.mAllFallDownModifier.reset();
 			}
-
-			Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
-			this.mLevelEndRunning = true;
-
-			airgums.clear();
-			coins.clear();
-			feathers.clear();
-
-			this.mLightings.clear();
-			this.mLightingSwarms.clear();
-			this.mHoldSwarms.clear();
-
-			this.lastAirgum = null;
-
-			this.mAllFallDownModifier.reset();
 
 			running = false;
 		}
 
 		/* Score */
-		if (Score < 10) {
-			numbersSmall.getByIndex(0).setCurrentTileIndex(Score);
-			numbersSmall.getByIndex(0).setVisible(true);
-			numbersSmall.getByIndex(1).setVisible(false);
-			numbersSmall.getByIndex(2).setVisible(false);
-			numbersSmall.getByIndex(3).setVisible(false);
-		} else if (Score < 100) {
-			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 10));
-			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
-			numbersSmall.getByIndex(0).setVisible(true);
-			numbersSmall.getByIndex(1).setVisible(true);
-			numbersSmall.getByIndex(2).setVisible(false);
-			numbersSmall.getByIndex(3).setVisible(false);
-		} else if (Score < 1000) {
-			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 100));
-			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
-			numbersSmall.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
-			numbersSmall.getByIndex(0).setVisible(true);
-			numbersSmall.getByIndex(1).setVisible(true);
-			numbersSmall.getByIndex(2).setVisible(true);
-			numbersSmall.getByIndex(3).setVisible(false);
+		int side;
+		int score = Math.abs(Score);
+		if (Score < 0) {
+			side = 1;
+			numbersSmall.getByIndex(0).setCurrentTileIndex(11);
 		} else {
-			numbersSmall.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 1000));
-			numbersSmall.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 1000) * 1000) / 100));
-			numbersSmall.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
-			numbersSmall.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
-			numbersSmall.getByIndex(0).setVisible(true);
-			numbersSmall.getByIndex(1).setVisible(true);
-			numbersSmall.getByIndex(2).setVisible(true);
-			numbersSmall.getByIndex(3).setVisible(true);
+			side = 0;
+		}
+
+		if (score < 10) {
+			numbersSmall.getByIndex(0 + side).setCurrentTileIndex(score);
+			numbersSmall.getByIndex(0 + side).setVisible(true);
+			numbersSmall.getByIndex(1 + side).setVisible(false);
+			numbersSmall.getByIndex(2 + side).setVisible(false);
+			numbersSmall.getByIndex(3 + side).setVisible(false);
+		} else if (score < 100) {
+			numbersSmall.getByIndex(0 + side).setCurrentTileIndex((int) FloatMath.floor(score / 10));
+			numbersSmall.getByIndex(1 + side).setCurrentTileIndex((int) FloatMath.floor(score % 10));
+			numbersSmall.getByIndex(0 + side).setVisible(true);
+			numbersSmall.getByIndex(1 + side).setVisible(true);
+			numbersSmall.getByIndex(2 + side).setVisible(false);
+			numbersSmall.getByIndex(3 + side).setVisible(false);
+		} else if (score < 1000) {
+			numbersSmall.getByIndex(0 + side).setCurrentTileIndex((int) FloatMath.floor(score / 100));
+			numbersSmall.getByIndex(1 + side).setCurrentTileIndex((int) FloatMath.floor((score - FloatMath.floor(score / 100) * 100) / 10));
+			numbersSmall.getByIndex(2 + side).setCurrentTileIndex((int) FloatMath.floor(score % 10));
+			numbersSmall.getByIndex(0 + side).setVisible(true);
+			numbersSmall.getByIndex(1 + side).setVisible(true);
+			numbersSmall.getByIndex(2 + side).setVisible(true);
+			numbersSmall.getByIndex(3 + side).setVisible(false);
+		} else {
+			numbersSmall.getByIndex(0 + side).setCurrentTileIndex((int) FloatMath.floor(score / 1000));
+			numbersSmall.getByIndex(1 + side).setCurrentTileIndex((int) FloatMath.floor((score - FloatMath.floor(score / 1000) * 1000) / 100));
+			numbersSmall.getByIndex(2 + side).setCurrentTileIndex((int) FloatMath.floor((score - FloatMath.floor(score / 100) * 100) / 10));
+			numbersSmall.getByIndex(3 + side).setCurrentTileIndex((int) FloatMath.floor(score % 10));
+			numbersSmall.getByIndex(0 + side).setVisible(true);
+			numbersSmall.getByIndex(1 + side).setVisible(true);
+			numbersSmall.getByIndex(2 + side).setVisible(true);
+			numbersSmall.getByIndex(3 + side).setVisible(true);
 		}
 	}
 
@@ -870,8 +907,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				this.lastAirgum.initFinishPositionWithCorrection(pTouchX, pTouchY);
 
 				this.lastAirgum = null;
-
-				mBubblesCount++;
 			}
 			break;
 		case TouchEvent.ACTION_MOVE:

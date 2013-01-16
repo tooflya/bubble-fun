@@ -17,4 +17,24 @@
     <string name="beta_testers_yes">Yes, of course!</string>
     <string name="beta_testers_no">No</string>
 
+    <!-- Tutorial -->
+    <string name="tutorial_1">Try to knock down a bird!</string>
+    <string name="tutorial_2">Press this side of the screen</string>
+    <string name="tutorial_3">to inflate the bubbles!</string>
+    <string name="tutorial_4">Shoot down the birds</string>
+    <string name="tutorial_5">marked with arrows!</string>
+    <string name="tutorial_6">Swipe to the goal</string>
+    <string name="tutorial_7">to accelerate the bubble!</string>
+    <string name="tutorial_8">Some birds observed</string>
+    <string name="tutorial_9">only for a while!</string>
+    <string name="tutorial_10">Hold your finger</string>
+    <string name="tutorial_11">to inflate the bubble!</string>
+    <string name="tutorial_12">Sometimes the blue bird will disturb you!</string>
+
+    <!-- Resources -->
+    <string name="preload_text">preload-text-ru.png</string>
+    
+    <string name="version">Version:\u00A0</string>
+    <string name="build">Build:\u00A0</string>
+
 </resources>
