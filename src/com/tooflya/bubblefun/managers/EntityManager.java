@@ -18,35 +18,23 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	// Fields
 	// ===========================================================
 
-	protected int lastElementNumber;
-	protected int capacity;
-
-	protected Entity[] elements;
+	protected Entity[] mElements;
+	protected int mLastElementNumber;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	/**
-	 * @param capacity
-	 * @param element
+	 * @param pCapacity
+	 * @param pElement
 	 */
-	public EntityManager(final int capacity, final Entity element) {
-		this.lastElementNumber = -1;
-
-		this.capacity = capacity;
-
-		elements = new Entity[capacity];
-
-		for (int i = elements.length - 1; i > 0; --i) {
-			elements[i] = element.deepCopy();
-			elements[i].setManager(this);
-			elements[i].setID(i);
-		}
-
-		elements[0] = element;
-		elements[0].setManager(this);
-		elements[0].setID(0);
+	public EntityManager(final int pCapacity, final Entity pElement) {
+		this.mLastElementNumber = -1;
+		this.mElements = new Entity[pCapacity];
+		this.mElements[0] = pElement;
+		this.mElements[0].setManager(this);
+		this.mElements[0].setID(0);
 	}
 
 	// ===========================================================
@@ -57,53 +45,57 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	 * @return
 	 */
 	public int getCount() {
-		return this.lastElementNumber + 1;
+		return this.mLastElementNumber + 1;
 	}
 
 	/**
 	 * @return
 	 */
 	public int getCapacity() {
-		return capacity;
+		return this.mElements.length;
 	}
 
 	/**
-	 * @param index
+	 * @param pIndex
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public T getByIndex(final int index) {
-		return (T) elements[index];
+	public T getByIndex(final int pIndex) {
+		if (pIndex > this.mLastElementNumber) {
+			return null;
+		}
+		return (T) this.mElements[pIndex];
 	}
 
 	@SuppressWarnings("unchecked")
 	public T create() {
-		if (lastElementNumber + 1 < capacity) {
-			lastElementNumber++;
-
-			elements[lastElementNumber].create();
-
-			return (T) elements[lastElementNumber];
+		if (this.mLastElementNumber + 1 >= this.mElements.length) {
+			return null;
 		}
-
-		return null;
+		
+		this.mLastElementNumber++;
+		if(this.mElements[mLastElementNumber] == null) {
+			this.mElements[this.mLastElementNumber] = this.mElements[0].deepCopy();
+			this.mElements[this.mLastElementNumber].setManager(this);
+			this.mElements[this.mLastElementNumber].setID(this.mLastElementNumber);
+		}
+		this.mElements[mLastElementNumber].create();
+		return (T) this.mElements[mLastElementNumber];
 	}
 
 	/**
-	 * @param i
+	 * @param pIndex
 	 */
-	public void destroy(final int i) {
-		try {
-			Entity temp_element = elements[i];
-			elements[i] = elements[lastElementNumber];
-			elements[lastElementNumber] = temp_element;
+	public void destroy(final int pIndex) {
+		if(pIndex <= this.mLastElementNumber) {
+			Entity temp_element = this.mElements[pIndex];
+			this.mElements[pIndex] = this.mElements[this.mLastElementNumber];
+			this.mElements[this.mLastElementNumber] = temp_element;
 
-			elements[i].setID(i);
-			elements[lastElementNumber].setID(lastElementNumber);
+			this.mElements[pIndex].setID(pIndex);
+			this.mElements[this.mLastElementNumber].setID(this.mLastElementNumber);
 
-			lastElementNumber--;
-		} catch (ArrayIndexOutOfBoundsException e) {
-
+			this.mLastElementNumber--;
 		}
 	}
 
@@ -111,8 +103,8 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	 * 
 	 */
 	public void clear() {
-		for (int i = lastElementNumber; i >= 0; --i) {
-			elements[i].destroy();
+		for (int i = this.mLastElementNumber; i >= 0; --i) {
+			this.mElements[i].destroy(); // TODO: (R) Create method that destroy entity without start destroy of manager. 
 		}
 	}
 
@@ -120,8 +112,8 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	 * 
 	 */
 	public void changeTextureRegion(final TiledTextureRegion pTiledTextureRegion) {
-		for (int i = this.getCapacity() - 1; i >= 0; --i) {
-			elements[i].changeTextureRegion(pTiledTextureRegion);
+		for (int i = this.mElements.length - 1; i >= 0; --i) {
+			this.mElements[i].changeTextureRegion(pTiledTextureRegion);
 		}
 	}
 }
