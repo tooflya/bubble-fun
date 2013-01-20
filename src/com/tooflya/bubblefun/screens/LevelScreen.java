@@ -37,7 +37,6 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.CristmasHat;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.EntityBezier;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glass;
 import com.tooflya.bubblefun.entities.Glint;
@@ -122,9 +121,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Fields
 	// ===========================================================
 
-	private Bubble lastAirgum = null;
-
-	private final Entity mCoin;
+	private Bubble lastBubble = null;
 
 	public EntityManager<AwesomeText> awesome;
 	public EntityManager<BonusText> points;
@@ -135,7 +132,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public EntityManager<Entity> timerBars;
 	public EntityManager<TimerNumber> timerNumbers;
 	public EntityManager<Chiky> chikies;
-	public EntityManager<Bubble> airgums;
+	public EntityManager<Bubble> bubbles;
 	public EntityManager<Feather> feathers;
 	public EntityManager<Glass> glasses;
 	public EntityManager<Glint> glints;
@@ -155,7 +152,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	private Entity mPanel;
 
 	private final ButtonScaleable mMenuButton;
-
 	private final ButtonScaleable mResetButton;
 
 	private final Entity mScoreText;
@@ -265,7 +261,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mMarks = new EntityManager<Mark>(20, new Mark(Resources.mMarkTextureRegion, this.mBackground));
 
 		coins = new EntityManager<Coin>(10, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
-		airgums = new EntityManager<Bubble>(30, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+		bubbles = new EntityManager<Bubble>(30, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
 		feathers = new EntityManager<Feather>(20, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
 		glasses = new EntityManager<Glass>(20, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
 		glints = new EntityManager<Glint>(20, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
@@ -290,7 +286,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		numbersSmall = new EntityManager<Entity>(5, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
 
 		mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
-
 			@Override
 			public void onClick() {
 				Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
@@ -298,7 +293,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		};
 
 		mResetButton = new ButtonScaleable(Resources.mRestartButtonTextureRegion, this.mBackground) {
-
 			@Override
 			public void onClick() {
 				if (!isResetAnimationRunning) {
@@ -354,11 +348,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		};
 
-		this.mCoin = new Entity(Resources.mStaticCoinTextureRegion, this.mBackground);
-
 		this.mBackground.setBackgroundCenterPosition();
-
-		//this.mCoin.create().setPosition(10f, Options.cameraHeight - 40f);
 
 		this.mPanel.create().setPosition(0, 0);
 
@@ -372,16 +362,16 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.shape.setAlpha(0f);
 
 		this.mLevelWord.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		this.numbers.create().setCenterPosition(Options.cameraCenterX - 38f, Options.cameraCenterY);
-		this.numbers.create().setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY);
-		this.numbers.create().setCenterPosition(Options.cameraCenterX + 18f, Options.cameraCenterY);
-		this.numbers.create().setCenterPosition(Options.cameraCenterX + 43f, Options.cameraCenterY);
+		this.numbers.createElement().setCenterPosition(Options.cameraCenterX - 38f, Options.cameraCenterY);
+		this.numbers.createElement().setCenterPosition(Options.cameraCenterX - 10f, Options.cameraCenterY);
+		this.numbers.createElement().setCenterPosition(Options.cameraCenterX + 18f, Options.cameraCenterY);
+		this.numbers.createElement().setCenterPosition(Options.cameraCenterX + 43f, Options.cameraCenterY);
 
-		this.numbersSmall.create().setPosition(97, 8);
-		this.numbersSmall.create().setPosition(111, 8);
-		this.numbersSmall.create().setPosition(125, 8);
-		this.numbersSmall.create().setPosition(138, 8);
-		this.numbersSmall.create().setPosition(151, 8);
+		this.numbersSmall.createElement().setPosition(97, 8);
+		this.numbersSmall.createElement().setPosition(111, 8);
+		this.numbersSmall.createElement().setPosition(125, 8);
+		this.numbersSmall.createElement().setPosition(138, 8);
+		this.numbersSmall.createElement().setPosition(151, 8);
 
 		this.numbersSmall.getByIndex(0).setCurrentTileIndex(0);
 		this.numbersSmall.getByIndex(1).setCurrentTileIndex(0);
@@ -443,7 +433,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mRedLasers = new EntityManager<Laser>(100, new Laser(Resources.mRedLaserTextureRegion, this.mBackground));
 
 		this.mUfos = new EntityManager<Ufo>(10, new Ufo(Resources.mUfoTextureRegion, this.mBackground));
-		// this.mUfos.create().setCenterPosition(150, 150);
 
 		for (int i = 0; i < shape.getChildCount(); i++) {
 			((Entity) shape.getChild(i)).enableBlendFunction();
@@ -519,7 +508,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.awesome.clear();
 		this.points.clear();
 		this.mBlueBird.clear();
-		this.airgums.clear();
+		this.bubbles.clear();
 		this.aims.clear();
 		this.arrows.clear();
 		this.chikies.clear();
@@ -544,7 +533,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mBonusType = 0;
 
-		generateChikies();
+		this.generateChikies();
 
 		Options.bubbleSizePower = Options.bubbleMaxSizePower;
 
@@ -593,7 +582,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 	private void checkCollision() {
 		Chiky chiky;
-		Bubble airgum;
+		Bubble bubble;
 
 		for (int k = 0; k < this.mRedLasers.getCount(); k++) {
 			final Laser laser = this.mRedLasers.getByIndex(k);
@@ -602,7 +591,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				chiky = chikies.getByIndex(h);
 				if (chiky.isCanCollide()) {
 
-					if (this.isCollide(chiky, laser)) {
+					if (this.isCirclesCollide(chiky, laser)) {
 						chiky.collide();
 						deadBirds++;
 					}
@@ -610,18 +599,18 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 		}
 
-		for (int i = airgums.getCount() - 1; i >= 0; --i) {
-			airgum = airgums.getByIndex(i);
-			if (airgum.isCanCollide()) {
+		for (int i = bubbles.getCount() - 1; i >= 0; --i) {
+			bubble = bubbles.getByIndex(i);
+			if (bubble.isCanCollide()) {
 
-				for (int h = chikies.getCount() - 1; h >= 0; --h) {
-					chiky = chikies.getByIndex(h);
-					if (chiky.isCanCollide() && airgum.isCanCollide()) {
-						if (this.isCollide(chiky, airgum)) {
-							airgum.addBirdsKills();
-							chiky.collide(airgum);
-							airgum.animate(40, 0);
-							airgum.collide();
+				for (int j = chikies.getCount() - 1; j >= 0; --j) {
+					chiky = chikies.getByIndex(j);
+					if (chiky.isCanCollide() && bubble.isCanCollide()) {
+						if (this.isCirclesCollide(chiky, bubble)) {
+							bubble.addBirdsKills();
+							chiky.collide(bubble);
+							bubble.animate(40, 0);
+							bubble.collide();
 							deadBirds++;
 						}
 					}
@@ -629,8 +618,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 				for (int j = bonuses.getCount() - 1; j >= 0; --j) {
 					final Bonus bonus = bonuses.getByIndex(j);
-					if (this.isCollide(airgum, bonus, true)) {
-						airgum.collide();
+					if (this.isRectanglesCollide(bubble, bonus)) {
+						bubble.collide();
 						bonus.collide();
 					}
 				}
@@ -638,7 +627,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				for (int k = 0; k < this.coins.getCount(); k++) {
 					final Coin air = this.coins.getByIndex(k);
 
-					if (this.isCollide(airgum, air)) {
+					if (this.isCirclesCollide(bubble, air)) {
 						air.remove();
 					}
 
@@ -650,27 +639,27 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				for (int k = 0; k < this.mLightingSwarms.getCount(); k++) {
 					final LightingSwarm swarm = this.mLightingSwarms.getByIndex(k);
 
-					if (swarm.getX() <= (airgum.getX() + airgum.getWidth() * 1.1f) &&
-							(airgum.getX() - airgum.getWidth()) <= (swarm.getX() + swarm.getWidthScaled()) &&
-							swarm.getY() <= (airgum.getY() + airgum.getHeight() * 1.1f) &&
-							airgum.getY() - airgum.getHeight() <= (swarm.getY() + swarm.getHeightScaled())) {
-						airgum.collide();
+					if (swarm.getX() <= (bubble.getX() + bubble.getWidth() * 1.1f) &&
+							(bubble.getX() - bubble.getWidth()) <= (swarm.getX() + swarm.getWidthScaled()) &&
+							swarm.getY() <= (bubble.getY() + bubble.getHeight() * 1.1f) &&
+							bubble.getY() - bubble.getHeight() <= (swarm.getY() + swarm.getHeightScaled())) {
+						bubble.collide();
 					}
 				}
 
 				for (int k = 0; k < this.mUfos.getCount(); k++) {
 					final Ufo ufo = this.mUfos.getByIndex(k);
 
-					if (this.isCollide(airgum, ufo, 5f)) {
-						ufo.isCollide(airgum.getCenterX(), airgum.getCenterY());
+					if (this.isCirclesCollide(bubble, ufo, 5f)) {
+						ufo.isCollide(bubble.getCenterX(), bubble.getCenterY());
 					}
 				}
 
 				for (int k = 0; k < this.mGreenLasers.getCount(); k++) {
 					final Laser laser = this.mGreenLasers.getByIndex(k);
 
-					if (this.isCollide(airgum, laser)) {
-						airgum.collide();
+					if (this.isCirclesCollide(bubble, laser)) {
+						bubble.collide();
 
 						if (Options.isMusicEnabled) {
 							Options.mAsteroidDeath.play();
@@ -678,35 +667,37 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					}
 				}
 
-				if (!mBlueBird.isSleep() && this.isCollide(mBlueBird, airgum)) {
+				if (!mBlueBird.isSleep() && this.isCirclesCollide(mBlueBird, bubble)) {
 					mBlueBird.particles();
-					if (!airgum.isAnimationRunning()) {
-						airgum.collide();
+					if (!bubble.isAnimationRunning()) {
+						bubble.collide();
 					}
 				}
 			}
 		}
 	}
 
-	private boolean isCollide(Entity entity1, Entity entity2) {
+	private boolean isCirclesCollide(Entity entity1, Entity entity2) {
+		// Don't use scale.
 		final float x = entity2.getCenterX() - entity1.getCenterX();
 		final float y = entity2.getCenterY() - entity1.getCenterY();
-		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
+		final float d = entity2.getWidth() / 2 + entity1.getWidth() / 2;
 		return x * x + y * y < d * d;
 	}
 
-	private boolean isCollide(Entity entity1, Entity entity2, final float pRadius) {
+	private boolean isCirclesCollide(Entity entity1, Entity entity2, final float pRadius) {
+		// Don't use scale.
 		final float x = entity2.getCenterX() - entity1.getCenterX();
 		final float y = entity2.getCenterY() - entity1.getCenterY();
-		final float d = entity2.getWidthScaled() / 2 + entity1.getWidthScaled() / 2;
+		final float d = entity2.getWidth() / 2 + entity1.getWidth() / 2;
 		return x * x + y * y < (d * d) * pRadius;
 	}
 
-	private boolean isCollide(Entity entity1, Entity entity2, final boolean rectangle) {
+	private boolean isRectanglesCollide(Entity entity1, Entity entity2) {
+		// Don't use scale and rotation.
 		return !((entity1.getX() + entity1.getWidth() <= entity2.getX()) ||
 				(entity2.getX() + entity2.getWidth() <= entity1.getX()) ||
 				(entity2.getY() + entity2.getHeight() <= entity1.getY()) || (entity1.getY() + entity1.getHeight() <= entity2.getY()));
-		// TODO: (R) What to do with scaledSize and various rotationCenter?
 	}
 
 	/*
@@ -798,7 +789,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
 				this.mLevelEndRunning = true;
 
-				airgums.clear();
+				bubbles.clear();
 				coins.clear();
 				feathers.clear();
 
@@ -806,7 +797,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 				this.mLightingSwarms.clear();
 				this.mHoldSwarms.clear();
 
-				this.lastAirgum = null;
+				this.lastBubble = null;
 
 				this.mAllFallDownModifier.reset();
 			}
@@ -892,9 +883,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		switch (pTouchEvent.getAction()) {
 		case TouchEvent.ACTION_DOWN:
 			if (this.mBonusType == 0) {
-				if (chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
-					this.lastAirgum = (Bubble) airgums.create();
-					this.lastAirgum.initStartPosition(pTouchX, pTouchY);
+				if (chikies.getCount() > 0 && this.lastBubble == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
+					this.lastBubble = (Bubble) bubbles.createElement();
+					if (this.lastBubble != null) {
+						this.lastBubble.initStartPosition(pTouchX, pTouchY);
+					}
 				}
 			}
 			else {
@@ -903,30 +896,30 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			}
 			break;
 		case TouchEvent.ACTION_UP:
-			if (this.lastAirgum != null) {
-				this.lastAirgum.initFinishPositionWithCorrection(pTouchX, pTouchY);
-
-				this.lastAirgum = null;
+			if (this.lastBubble != null) {
+				this.lastBubble.initFinishPositionWithCorrection(pTouchX, pTouchY);
+				this.lastBubble = null;
 			}
 			break;
 		case TouchEvent.ACTION_MOVE:
-			if (this.lastAirgum != null) {
+			if (this.lastBubble != null) {
+				// TODO: (R) Horror. :-( This code can be lighter by using one texture without many entities.
 				mMarks.clear();
 
 				float xr = pTouchX, yr = pTouchY;
 
 				float mSpeedX, mSpeedY;
 
-				float angle = (float) Math.atan2(yr - this.lastAirgum.getCenterY(), xr - this.lastAirgum.getCenterX());
-				float distance = MathUtils.distance(this.lastAirgum.getCenterX(), this.lastAirgum.getCenterY(), xr, yr);
+				float angle = (float) Math.atan2(yr - this.lastBubble.getCenterY(), xr - this.lastBubble.getCenterX());
+				float distance = MathUtils.distance(this.lastBubble.getCenterX(), this.lastBubble.getCenterY(), xr, yr);
 				if (distance < Options.eps) {
 					mSpeedX = 0;
-					mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 - this.lastAirgum.mLostedSpeed;
+					mSpeedY = (Options.bubbleMinSpeed + Options.bubbleMaxSpeed) / 2 - this.lastBubble.mLostedSpeed;
 					mSpeedY = mSpeedY < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : mSpeedY;
 					mSpeedY = -mSpeedY;
 				}
 				else {
-					distance -= this.lastAirgum.mLostedSpeed;
+					distance -= this.lastBubble.mLostedSpeed;
 					distance = distance < Options.bubbleMinSpeed ? Options.bubbleMinSpeed : distance;
 					distance = distance > Options.bubbleMaxSpeed ? Options.bubbleMaxSpeed : distance;
 
@@ -940,9 +933,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					float dx = mSpeedX / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
 					float dy = mSpeedY / FloatMath.sqrt((float) (Math.pow(mSpeedX, 2) + Math.pow(mSpeedY, 2)));
 
-					float x = this.lastAirgum.getCenterX(), y = this.lastAirgum.getCenterY();
+					float x = this.lastBubble.getCenterX(), y = this.lastBubble.getCenterY();
 					while (0 < x && x < Options.cameraWidth && 0 < y && y < Options.cameraHeight) {
-						Entity w = mMarks.create();
+						Entity w = mMarks.createElement();
 						w.setSpeed(dx, dy);
 						if (w != null)
 							w.setCenterPosition(x, y);
@@ -971,8 +964,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mClouds.clear();
 		this.mClouds.generateStartClouds();
 
-		this.airgums.clear();
-		this.airgums.changeTextureRegion(Resources.mBubbleTextureRegion);
+		this.bubbles.clear();
+		this.bubbles.changeTextureRegion(Resources.mBubbleTextureRegion);
 
 		this.chikies.clear();
 		this.chikies.changeTextureRegion(Resources.mRegularBirdsTextureRegion);
@@ -995,8 +988,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mClouds.clear();
 		this.mSnowflakes.generateStartSnow();
 
-		this.airgums.clear();
-		this.airgums.changeTextureRegion(Resources.mSnowyBubbleTextureRegion);
+		this.bubbles.clear();
+		this.bubbles.changeTextureRegion(Resources.mSnowyBubbleTextureRegion);
 
 		this.chikies.clear();
 		this.chikies.changeTextureRegion(Resources.mSnowyBirdsTextureRegion);
@@ -1019,8 +1012,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.chikies.clear();
 		this.chikies.changeTextureRegion(Resources.mSpaceBirdsTextureRegion);
 
-		this.airgums.clear();
-		this.airgums.changeTextureRegion(Resources.mSpaceBubbleTextureRegion);
+		this.bubbles.clear();
+		this.bubbles.changeTextureRegion(Resources.mSpaceBubbleTextureRegion);
 
 		this.mBlueBird.changeTextureRegion(Resources.mSpaceBlueBirdTextureRegion);
 
@@ -1061,7 +1054,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		if (this.mMeteorits.getCount() <= 1) {
 			if (Game.random.nextInt(20) == 2) {
-				final Meteorit m = this.mMeteorits.create();
+				final Meteorit m = this.mMeteorits.createElement();
 				if (m != null) {
 					m.setCenterPosition(Game.random.nextInt(Options.cameraWidth * 3) - Options.cameraWidth, Game.random.nextInt(Options.cameraHeight * 2) - Options.cameraHeight);
 					if (m.getCenterX() > 0) {
@@ -1073,7 +1066,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		if (this.mSmallMeteorits.getCount() <= 5) {
 			if (Game.random.nextInt(10) == 2) {
-				final SmallMeteorit m = this.mSmallMeteorits.create();
+				final SmallMeteorit m = this.mSmallMeteorits.createElement();
 				if (m != null) {
 					m.setCenterPosition(Game.random.nextInt(Options.cameraWidth * 3) - Options.cameraWidth, Game.random.nextInt(Options.cameraHeight * 2) - Options.cameraHeight);
 					if (m.getCenterX() > 0) {

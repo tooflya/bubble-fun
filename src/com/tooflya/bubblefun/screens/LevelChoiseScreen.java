@@ -97,7 +97,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		this.levels.generate(this.numbers);
 
 		for (int i = 1; i >= 0; i--) {
-			final Entity Entity = this.mStars.create();
+			final Entity Entity = this.mStars.createElement();
 
 			Entity.setCurrentTileIndex(i);
 			Entity.setScale(this.getScaleX() / 2f);
@@ -143,7 +143,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		Entity Entity;
 
-		Entity = (Entity) this.mSmallnumbers.create();
+		Entity = (Entity) this.mSmallnumbers.createElement();
 		if (starsCollected < 10) {
 			Entity.destroy();
 			for (int i = 1; i >= 0; i--) {
@@ -158,19 +158,19 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		Entity.setCurrentTileIndex((int) Math.floor(starsCollected / 10));
 
-		Entity = (Entity) this.mSmallnumbers.create();
+		Entity = (Entity) this.mSmallnumbers.createElement();
 		Entity.setPosition(Options.cameraWidth - 80f, 10f);
 		Entity.setCurrentTileIndex((int) Math.floor(starsCollected % 10));
 
-		Entity = (Entity) this.mSmallnumbers.create();
+		Entity = (Entity) this.mSmallnumbers.createElement();
 		Entity.setPosition(Options.cameraWidth - 65f, 10f);
 		Entity.setCurrentTileIndex(10);
 
-		Entity = (Entity) this.mSmallnumbers.create();
+		Entity = (Entity) this.mSmallnumbers.createElement();
 		Entity.setPosition(Options.cameraWidth - 50f, 10f);
 		Entity.setCurrentTileIndex(7);
 
-		Entity = (Entity) this.mSmallnumbers.create();
+		Entity = (Entity) this.mSmallnumbers.createElement();
 		Entity.setPosition(Options.cameraWidth - 35f, 10f);
 		Entity.setCurrentTileIndex(5);
 		

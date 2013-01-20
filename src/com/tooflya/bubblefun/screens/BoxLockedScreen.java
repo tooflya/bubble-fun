@@ -77,13 +77,13 @@ public class BoxLockedScreen extends PopupScreen {
 
 		Entity star;
 
-		star = this.mStarsCountText.create();
+		star = this.mStarsCountText.createElement();
 		star.setPosition(95f, 86f, true);
 
-		star = this.mStarsCountText.create();
+		star = this.mStarsCountText.createElement();
 		star.setPosition(125f, 86f, true);
 
-		star = this.mStarsCountText.create();
+		star = this.mStarsCountText.createElement();
 		star.setPosition(155f, 86f, true);
 	}
 

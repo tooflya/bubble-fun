@@ -213,7 +213,7 @@ public class Bubble extends Entity {
 			// TODO: (R) Is it needed here?
 			Glint particle;
 			for (int i = 0; i < 15; i++) {
-				particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
+				particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.createElement());
 				if (particle != null) {
 					particle.Init(i, this);
 				}
@@ -227,7 +227,7 @@ public class Bubble extends Entity {
 				}
 			}
 		} else if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
-			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
+			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.createElement();
 			this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
 
 			if (Options.isMusicEnabled) {
@@ -330,7 +330,7 @@ public class Bubble extends Entity {
 
 		if (this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
 			for (int i = 0; i < 3; i++) {
-				((LevelScreen) Game.screens.get(Screen.LEVEL)).mBubbleBrokes.create().init(this.getCenterX(), this.getCenterY());
+				((LevelScreen) Game.screens.get(Screen.LEVEL)).mBubbleBrokes.createElement().init(this.getCenterX(), this.getCenterY());
 			}
 		}
 	}

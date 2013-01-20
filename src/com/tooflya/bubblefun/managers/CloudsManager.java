@@ -57,7 +57,7 @@ public class CloudsManager<T> extends EntityManager<Cloud> {
 	 * @param pIsStart
 	 */
 	public void generateCloud(final boolean pIsStart) {
-		final Cloud cloud = this.create();
+		final Cloud cloud = this.createElement();
 
 		cloud.setPosition(pIsStart ? Game.random.nextInt((int) (Options.cameraWidth)) : Options.cameraWidth, Game.random.nextInt((int) (Options.cameraHeight / 3 * 2 - cloud.getHeight())));
 		cloud.setSpeedX(mCloudMinSpeed + Game.random.nextFloat() * (mCloudMaxSpeed - mCloudMinSpeed));

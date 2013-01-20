@@ -150,7 +150,7 @@ public class Chiky extends EntityBezier {
 				this.mUnnormalTime = this.mNormalTime - this.mNormalMaxTime;
 				this.mSpeedTime = this.mSpeedTime == 0 ? this.mUnnormalSpeedTime : Math.signum(this.mSpeedTime) * this.mUnnormalSpeedTime;
 
-				this.mWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.create());
+				this.mWind = ((Acceleration) ((LevelScreen) Game.screens.get(Screen.LEVEL)).accelerators.createElement());
 				this.mWind.mFollowEntity = this;
 
 				// TODO: (R) Try to move to individual method?
@@ -206,7 +206,7 @@ public class Chiky extends EntityBezier {
 			// Some not good code.
 			if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 				if (this.mBubble != null) {
-					final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+					final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.createElement();
 					if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
 						if (airgum != null) {
 							airgum.setParent(mBubble);
@@ -223,7 +223,7 @@ public class Chiky extends EntityBezier {
 
 				Feather particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.createElement();
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
@@ -301,7 +301,7 @@ public class Chiky extends EntityBezier {
 		if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 			Glass particle;
 			for (int i = 0; i < Options.particlesCount; i++) {
-				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.createElement();
 				if (particle != null) {
 					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 				}
@@ -336,10 +336,10 @@ public class Chiky extends EntityBezier {
 		} else {
 			super.onCollide(pEntity);
 
-			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.createElement();
 			b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 
-			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
+			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.createElement();
 			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 
 			if (this.isFirst()) {
@@ -377,7 +377,7 @@ public class Chiky extends EntityBezier {
 				if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 					Glass particle;
 					for (int i = 0; i < Options.particlesCount; i++) {
-						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+						particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.createElement();
 						if (particle != null) {
 							particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 						}
@@ -418,7 +418,7 @@ public class Chiky extends EntityBezier {
 		//this.mName.setText("");
 		//this.mName.setVisible(true);
 
-		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.create();
+		this.mAim = ((LevelScreen) Game.screens.get(Screen.LEVEL)).aims.createElement();
 		this.mAim.setChiky(this);
 
 		this.setRotation(0);
@@ -467,7 +467,7 @@ public class Chiky extends EntityBezier {
 		}
 
 		if (this.mTextureRegion.e(Resources.mSnowyBirdsTextureRegion)) {
-			this.mCristmasHat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.create();
+			this.mCristmasHat = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mCristmasHats.createElement();
 		}
 
 		this.mIsFirst = false;

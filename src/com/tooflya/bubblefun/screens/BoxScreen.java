@@ -268,30 +268,30 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			e.down();
 		}
 
-		mPoints.create().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 180f);
-		mPoints.create().setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 180f);
-		mPoints.create().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
-		mPoints.create().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
+		mPoints.createElement().setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 180f);
+		mPoints.createElement().setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 180f);
+		mPoints.createElement().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
+		mPoints.createElement().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
 
 		Entity point;
-		point = mPoints2.create();
+		point = mPoints2.createElement();
 		point.setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
 
-		point = mPoints2.create();
+		point = mPoints2.createElement();
 		point.setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
 		point.setScale(0f);
 
-		point = mPoints2.create();
+		point = mPoints2.createElement();
 		point.setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
 		point.setScale(0f);
 
-		point = mPoints2.create();
+		point = mPoints2.createElement();
 		point.setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
@@ -305,7 +305,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mTotalScoreCountText = new EntityManager<Entity>(10, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mScoreHolder));
 		for (int a = 0; a < 5; a++) {
-			this.mTotalScoreCountText.create().setCenterPosition(this.mTotalScoreText.getX() + this.mTotalScoreText.getWidth() + 13f + 18f * a, 21f);
+			this.mTotalScoreCountText.createElement().setCenterPosition(this.mTotalScoreText.getX() + this.mTotalScoreText.getWidth() + 13f + 18f * a, 21f);
 		}
 
 		this.mScrollDetector = new SurfaceScrollDetector(this);

@@ -92,7 +92,7 @@ public class LevelEndScreen extends PopupScreen {
 
 					Star particle;
 					for (int i = 0; i < 7; i++) {
-						particle = ((Star) stars.create());
+						particle = ((Star) stars.createElement());
 						if (particle != null) {
 							particle.Init(i).setCenterPosition(star.getCenterX(), star.getCenterY());
 						}
@@ -171,14 +171,14 @@ public class LevelEndScreen extends PopupScreen {
 		this.mStarsText.create().setCenterPosition(this.mPanel.getWidth() / 2 - 30f, 155f);
 		this.mScoreText.create().setCenterPosition(this.mPanel.getWidth() / 2 - 30f, 185f);
 
-		this.mStarsCountText.create().setCenterPosition(this.mPanel.getWidth() / 2 + 10f, 155f);
+		this.mStarsCountText.createElement().setCenterPosition(this.mPanel.getWidth() / 2 + 10f, 155f);
 
 		for (int i = 0; i < 4; i++) {
-			this.mScoreCountText.create().setCenterPosition(this.mPanel.getWidth() / 2 + 10f + 18f * i, 185f);
+			this.mScoreCountText.createElement().setCenterPosition(this.mPanel.getWidth() / 2 + 10f + 18f * i, 185f);
 		}
 
 		for (int i = 0; i < 4; i++) {
-			this.mTotalScoreCountText.create().setCenterPosition(this.mPanel.getWidth() / 2 + 40f + 18f * i, 235f);
+			this.mTotalScoreCountText.createElement().setCenterPosition(this.mPanel.getWidth() / 2 + 40f + 18f * i, 235f);
 		}
 
 		this.mRectangle.setWidth(200f);
@@ -205,15 +205,15 @@ public class LevelEndScreen extends PopupScreen {
 		}
 
 		Star star;
-		stars.create().setVisible(false);
+		stars.createElement().setVisible(false);
 		for (int i = 0; i < 3; i++) {
-			star = stars.create();
+			star = stars.createElement();
 			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), 100f);
 			star.setCurrentTileIndex(0);
 			star.setVisible(false);
 		}
 		for (int i = 0; i < 3; i++) {
-			star = stars.create();
+			star = stars.createElement();
 			star.setCenterPosition(this.mPanel.getWidth() / 2 + 80f * (i - 1), 100f);
 			star.setCurrentTileIndex(1);
 		}

@@ -62,7 +62,7 @@ public class SnowManager<T> extends EntityManager<Snowflake> {
 	 * @param pIsStart
 	 */
 	public void generateCloud(final boolean pIsStart) {
-		final Snowflake snowflake = this.create();
+		final Snowflake snowflake = this.createElement();
 
 		snowflake.setPosition(Game.random.nextInt(Options.cameraWidth), pIsStart ? Game.random.nextInt((int) (Options.cameraHeight / 3 * 2 - snowflake.getHeight())) : -snowflake.getHeight());
 		snowflake.setAlpha(mSnowflakesMinAlpha + Game.random.nextFloat() * (mSnowflakesMaxAlpha - mSnowflakesMinAlpha));

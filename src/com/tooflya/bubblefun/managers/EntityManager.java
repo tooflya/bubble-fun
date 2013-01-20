@@ -8,7 +8,7 @@ import com.tooflya.bubblefun.entities.Entity;
  * @author Tooflya.com
  * @since
  */
-public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
+public class EntityManager<T> {
 
 	// ===========================================================
 	// Constants
@@ -18,19 +18,15 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	// Fields
 	// ===========================================================
 
-	protected Entity[] mElements;
-	protected int mLastElementNumber;
+	protected int mLastIndex;
+	protected Entity[] mElements; // TODO: (R) Can we create and use something like "T[] mElements"?
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pCapacity
-	 * @param pElement
-	 */
 	public EntityManager(final int pCapacity, final Entity pElement) {
-		this.mLastElementNumber = -1;
+		this.mLastIndex = -1;
 		this.mElements = new Entity[pCapacity];
 		this.mElements[0] = pElement;
 		this.mElements[0].setManager(this);
@@ -41,78 +37,65 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	// Methods
 	// ===========================================================
 
-	/**
-	 * @return
-	 */
 	public int getCount() {
-		return this.mLastElementNumber + 1;
+		return this.mLastIndex + 1;
 	}
 
-	/**
-	 * @return
-	 */
 	public int getCapacity() {
 		return this.mElements.length;
 	}
 
-	/**
-	 * @param pIndex
-	 * @return
-	 */
+	public int getLastIndex() {
+		return this.mLastIndex;
+	}
+
 	@SuppressWarnings("unchecked")
 	public T getByIndex(final int pIndex) {
-		if (pIndex > this.mLastElementNumber) {
+		if (pIndex > this.mLastIndex) {
 			return null;
 		}
 		return (T) this.mElements[pIndex];
 	}
 
 	@SuppressWarnings("unchecked")
-	public T create() {
-		if (this.mLastElementNumber + 1 >= this.mElements.length) {
+	public T createElement() {
+		if (this.mLastIndex + 1 >= this.mElements.length) {
 			return null;
 		}
-		
-		this.mLastElementNumber++;
-		if(this.mElements[mLastElementNumber] == null) {
-			this.mElements[this.mLastElementNumber] = this.mElements[0].deepCopy();
-			this.mElements[this.mLastElementNumber].setManager(this);
-			this.mElements[this.mLastElementNumber].setID(this.mLastElementNumber);
+
+		this.mLastIndex++;
+		if (this.mElements[mLastIndex] == null) {
+			this.mElements[this.mLastIndex] = this.mElements[0].deepCopy();
+			this.mElements[this.mLastIndex].setManager(this);
+			this.mElements[this.mLastIndex].setID(this.mLastIndex);
 		}
-		this.mElements[mLastElementNumber].create();
-		return (T) this.mElements[mLastElementNumber];
+		this.mElements[mLastIndex].create();
+		return (T) this.mElements[mLastIndex];
 	}
 
-	/**
-	 * @param pIndex
-	 */
-	public void destroy(final int pIndex) {
-		if(pIndex <= this.mLastElementNumber) {
-			Entity temp_element = this.mElements[pIndex];
-			this.mElements[pIndex] = this.mElements[this.mLastElementNumber];
-			this.mElements[this.mLastElementNumber] = temp_element;
+	public void destroyElement(final int pIndex) {
+		if (pIndex <= this.mLastIndex) {
+			if (pIndex < this.mLastIndex) {
+				Entity temp_element = this.mElements[pIndex];
+				this.mElements[pIndex] = this.mElements[this.mLastIndex];
+				this.mElements[this.mLastIndex] = temp_element;
 
-			this.mElements[pIndex].setID(pIndex);
-			this.mElements[this.mLastElementNumber].setID(this.mLastElementNumber);
-
-			this.mLastElementNumber--;
+				this.mElements[pIndex].setID(pIndex);
+				this.mElements[this.mLastIndex].setID(this.mLastIndex);
+			}
+			this.mLastIndex--;
 		}
 	}
 
-	/**
-	 * 
-	 */
 	public void clear() {
-		for (int i = this.mLastElementNumber; i >= 0; --i) {
-			this.mElements[i].destroy(); // TODO: (R) Create method that destroy entity without start destroy of manager. 
+		for (int i = this.mLastIndex; i >= 0; --i) {
+			this.mElements[i].destroy();
 		}
 	}
 
-	/*
-	 * 
-	 */
 	public void changeTextureRegion(final TiledTextureRegion pTiledTextureRegion) {
-		for (int i = this.mElements.length - 1; i >= 0; --i) {
+		final int len = this.mElements.length;
+		for (int i = 0; i < len && this.mElements[i] != null; --i) {
 			this.mElements[i].changeTextureRegion(pTiledTextureRegion);
 		}
 	}

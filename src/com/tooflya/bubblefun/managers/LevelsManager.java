@@ -114,7 +114,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				X = PADDING_B + 5f;
 			}
 
-			LevelIcon icon = ((LevelIcon) this.create());
+			LevelIcon icon = ((LevelIcon) this.createElement());
 
 			icon.setCenterPosition(25f + X, 25f + Y);
 			icon.id = (i + 1);
@@ -128,7 +128,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 				LevelChoiseScreen.starsCollected += level.getStarsCount();
 
 				if (icon.id < 10) {
-					final Entity text = this.mNumbers.create();
+					final Entity text = this.mNumbers.createElement();
 					text.setCurrentTileIndex(icon.id);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
@@ -141,12 +141,12 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 						a = 0;
 					}
 
-					Entity text = this.mNumbers.create();
+					Entity text = this.mNumbers.createElement();
 					text.setCurrentTileIndex((int) Math.floor(icon.id / 10));
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
 					text.setCenterPosition(icon.getWidth() / 2 - text.getWidth() / 4 + a, icon.getHeight() / 2 - 2f);
-					text = this.mNumbers.create();
+					text = this.mNumbers.createElement();
 					text.setCurrentTileIndex(icon.id % 10);
 					text.setScaleCenter(0, 0);
 					text.setScale(1f);
@@ -155,7 +155,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			} else {
 				icon.setCurrentTileIndex(4);
 				icon.blocked = true;
-				final Entity text = this.mNumbers.create();
+				final Entity text = this.mNumbers.createElement();
 				text.setVisible(false);
 			}
 		}
@@ -202,7 +202,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				chiky = screen.chikies.create();
+				chiky = screen.chikies.createElement();
 				if (chiky != null)
 				{
 					// TODO: (R) Try to not set default values. For example, how we can set Float.MAX_VALUE for normalMaxTime.
@@ -267,7 +267,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("coin", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Coin air = screen.coins.create();
+				final Coin air = screen.coins.createElement();
 
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
@@ -285,7 +285,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("bonus", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Bonus bonus = screen.bonuses.create();
+				final Bonus bonus = screen.bonuses.createElement();
 
 				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
 

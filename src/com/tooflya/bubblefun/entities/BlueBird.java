@@ -69,7 +69,7 @@ public class BlueBird extends Entity {
 			if (this.mTextureRegion.e(Resources.mBlueBirdTextureRegion)) {
 				for (int i = 0; i < Options.particlesCount; i++) {
 					Feather particle;
-					particle = ((Feather) mFeathersManager.create());
+					particle = ((Feather) mFeathersManager.createElement());
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
@@ -77,7 +77,7 @@ public class BlueBird extends Entity {
 			} else if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
 				Glass particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.create();
+					particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).glasses.createElement();
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}

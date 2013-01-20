@@ -18,7 +18,7 @@ public class BubbleFactory {
 		final float startAngle = 2 * Options.PI * Game.random.nextFloat();
 		final float stepAngle = 2 * Options.PI / pCount;
 		for (int i = 0; i < pCount; i++) {
-			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.createElement();
 			if (bubble != null) {
 				bubble.initStartPosition(pX, pY);
 				bubble.initFinishPosition(pX + pSpeed * FloatMath.cos(startAngle + i * stepAngle), pY + pSpeed * FloatMath.sin(startAngle + i * stepAngle));
@@ -29,7 +29,7 @@ public class BubbleFactory {
 	private static void BubblesRainRandom(final float pX, final float pY, final int pCount) {
 		Bubble bubble;
 		for (int i = 0; i < pCount; i++) {
-			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.createElement();
 			if (bubble != null) {
 				final float x = pX + (pCount * bubble.getWidth()) * (0.5f - Game.random.nextFloat());
 				final float y = pY + (pCount * bubble.getWidth()) * (0.5f - Game.random.nextFloat());
@@ -43,7 +43,7 @@ public class BubbleFactory {
 	private static void BubblesRainControl(final float pX, final float pY, final int pCount) {
 		Bubble bubble;
 		for (int i = 0; i < pCount; i++) {
-			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
+			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.createElement();
 			if (bubble != null) {
 				final float x = pX + (i - pCount / 2) * 2 * bubble.getWidth();
 				final float speed = Options.bubbleMaxSpeed;

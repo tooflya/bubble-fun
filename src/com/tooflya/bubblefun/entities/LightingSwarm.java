@@ -35,7 +35,7 @@ public class LightingSwarm extends BaseSwarm {
 
 		final int count = Game.random.nextInt(7);
 		for (int i = 0; i < count; i++) {
-			final Entity light = screen.mLightings.create();
+			final Entity light = screen.mLightings.createElement();
 
 			if (light != null) {
 				light.setRotationCenter(light.getWidth() / 2, -10f);

@@ -111,22 +111,22 @@ public class PauseScreen extends PopupScreen {
 
 		Entity Entity;
 
-		Entity = mLables.create();
+		Entity = mLables.createElement();
 		Entity.setCenterPosition(this.b1.getWidth() / 2, this.b1.getHeight() / 2);
 		Entity.setCurrentTileIndex(0);
 		this.b1.attachChild(Entity);
 
-		Entity = mLables.create();
+		Entity = mLables.createElement();
 		Entity.setCenterPosition(this.b2.getWidth() / 2, this.b2.getHeight() / 2);
 		Entity.setCurrentTileIndex(1);
 		this.b2.attachChild(Entity);
 
-		Entity = mLables.create();
+		Entity = mLables.createElement();
 		Entity.setCenterPosition(this.b3.getWidth() / 2, this.b3.getHeight() / 2);
 		Entity.setCurrentTileIndex(2);
 		this.b3.attachChild(Entity);
 
-		Entity = mLables.create();
+		Entity = mLables.createElement();
 		Entity.setCenterPosition(this.b4.getWidth() / 2, this.b4.getHeight() / 2);
 		Entity.setCurrentTileIndex(3);
 		this.b4.attachChild(Entity);

@@ -99,7 +99,7 @@ public class StoreScreen extends ReflectionScreen {
 		this.mGetCoinsButton.create().setPosition(Options.cameraWidth - 5f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 75f);
 
 		for (int a = 0; a < 4; a++) {
-			this.mCoinsNumbers.create().setCenterPosition(13f + 18f * a, 23f);
+			this.mCoinsNumbers.createElement().setCenterPosition(13f + 18f * a, 23f);
 		}
 
 		this.mStoreBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);

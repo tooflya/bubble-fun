@@ -31,7 +31,7 @@ public class Ufo extends EntityBezier {
 
 	public void isCollide(final float pX, final float pY) {
 		if (this.mTime <= 0) {
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).mGreenLasers.create().init(this.getCenterX(), this.getCenterY(), pX, pY);
+			((LevelScreen) Game.screens.get(Screen.LEVEL)).mGreenLasers.createElement().init(this.getCenterX(), this.getCenterY(), pX, pY);
 			this.mTime = 0.2f;
 
 			if (Options.isMusicEnabled) {

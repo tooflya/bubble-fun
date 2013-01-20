@@ -163,7 +163,7 @@ public class Entity extends AnimatedSprite {
 	/** The method, which is similar to the method <i>destroySelf()</i>. If <i>mEntityManager</i> is defined call them to destroy element with ID <i>mId</i>. Else do nothing. */
 	public final void destroy() {
 		if (this.isManagerExist()) {
-			this.mEntityManager.destroy(this.mId);
+			this.mEntityManager.destroyElement(this.mId);
 		}
 
 		/** Let's hide this entity. */

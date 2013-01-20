@@ -66,7 +66,7 @@ public class Airplane extends Entity {
 			final Chiky chiky = screen.chikies.getByIndex(Game.random.nextInt(screen.chikies.getCount() + 1));
 
 			if (chiky.isCanCollide()) {
-				screen.mRedLasers.create().init(this.getCenterX(), this.getCenterY(), chiky.getCenterX(), chiky.getCenterY());
+				screen.mRedLasers.createElement().init(this.getCenterX(), this.getCenterY(), chiky.getCenterX(), chiky.getCenterY());
 
 				if (Options.isMusicEnabled) {
 					Options.mLaser.play();
