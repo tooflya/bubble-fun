@@ -6,7 +6,6 @@ import org.anddev.andengine.entity.shape.Shape;
 
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Text;
-import com.tooflya.bubblefun.entities.TutorialText;
 
 /**
  * @author Tooflya.com

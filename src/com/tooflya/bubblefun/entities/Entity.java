@@ -52,9 +52,12 @@ public class Entity extends AnimatedSprite {
 	/**
 	 * Base constructor for instantinate this Entity class.
 	 * 
-	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
-	 * @param pParentScreen instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
-	 * @param pRegisterTouchArea boolean value for know if you are want to register this entity as clickable.
+	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen
+	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pRegisterTouchArea
+	 *            boolean value for know if you are want to register this entity as clickable.
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen, final boolean pRegisterTouchArea) {
 		super(0, 0, pTiledTextureRegion.deepCopy());
@@ -102,8 +105,10 @@ public class Entity extends AnimatedSprite {
 	/**
 	 * Constructor that allows you to not specify the need to register this entity as clickable.
 	 * 
-	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
-	 * @param pParentScreen instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen
+	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion.deepCopy(), pParentScreen, false);
@@ -112,9 +117,12 @@ public class Entity extends AnimatedSprite {
 	/**
 	 * Constructor that takes a value on the screen location of this entity. Do not attach an entity to the screen and does not register her as clickable.
 	 * 
-	 * @param pX Coordinate of this entity on the X-axis
-	 * @param pY Coordinate of this entity on the Y-axis
-	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pX
+	 *            Coordinate of this entity on the X-axis
+	 * @param pY
+	 *            Coordinate of this entity on the Y-axis
+	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
 	 */
 	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
 		this(pTiledTextureRegion, null);
@@ -125,10 +133,14 @@ public class Entity extends AnimatedSprite {
 	/**
 	 * Constructor that takes a value on the screen location of this entity. Do not register entity as clickable.
 	 * 
-	 * @param pX Coordinate of this entity on the X-axis
-	 * @param pY Coordinate of this entity on the Y-axis
-	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
-	 * @param pParentScreen instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
+	 * @param pX
+	 *            Coordinate of this entity on the X-axis
+	 * @param pY
+	 *            Coordinate of this entity on the Y-axis
+	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pParentScreen
+	 *            instance of <b>org.anddev.andengine.entity.Entity</b> class. This is <b>Scene</b> which will be a parent of this entity.
 	 */
 	public Entity(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final org.anddev.andengine.entity.Entity pParentScreen) {
 		this(pTiledTextureRegion, pParentScreen);
@@ -139,7 +151,8 @@ public class Entity extends AnimatedSprite {
 	/**
 	 * Simple constructor which takes only one parameter.
 	 * 
-	 * @param pTiledTextureRegion Region of the texture on the <b>BitmapTextureAtlas</b>
+	 * @param pTiledTextureRegion
+	 *            Region of the texture on the <b>BitmapTextureAtlas</b>
 	 */
 	public Entity(final TiledTextureRegion pTiledTextureRegion) {
 		this(pTiledTextureRegion, null);
@@ -205,7 +218,7 @@ public class Entity extends AnimatedSprite {
 	 * 
 	 */
 	public Entity deepCopy(final org.anddev.andengine.entity.Entity pEntity) {
-		throw new NullPointerException();
+		throw new IllegalStateException("Sorry, but this method must be overrided by child Class.");
 	}
 
 	/**

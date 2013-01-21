@@ -211,9 +211,9 @@ public class Chiky extends EntityBezier {
 			// Some not good code.
 			if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 				if (this.mBubble != null) {
-					final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
-					if (airgum != null) {
-						if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
+					final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.create();
+					if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
+						if (airgum != null) {
 							airgum.setParent(mBubble);
 							airgum.setSize(this.mBubble.getWidth(), this.mBubble.getHeight());
 							airgum.initStartPosition(this.getCenterX(), this.getCenterY());
@@ -341,16 +341,17 @@ public class Chiky extends EntityBezier {
 		} else {
 			super.onCollide(pEntity);
 
+			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+			b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
+
 			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
-			if (a != null) {
-				a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
+			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 
 				if (this.isFirst()) {
 					a.setCurrentTileIndex(1);
 
 					if (LevelScreen.mKillCount > 1) {
 
-						final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
 						if (b != null) {
 							b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 
@@ -364,15 +365,12 @@ public class Chiky extends EntityBezier {
 					LevelScreen.mKillCount++;
 				} else {
 
-					final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
-					b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
-
 					a.setCurrentTileIndex(3);
 					b.setCurrentTileIndex(3);
 
 					LevelScreen.mKillCount = 0;
 				}
-			}
+			
 
 			this.mAim.animate();
 

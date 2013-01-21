@@ -39,10 +39,9 @@ public class Resources {
 	public static final Font mFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.context, "font/Lobster.ttf", 16f * Options.cameraRatioFactor, true, Color.BLACK);
 
 	// ===========================================================
-	// Texture Regions
+	// Blank PNG 1024x1024
 	// ===========================================================
 
-	/** Blank png's */
 	public static final TiledTextureRegion mBlank1024Png1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "blank1024.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mBlank1024Png2 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "blank1024.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mBlank1024Png3 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "blank1024.png", 0, 0, 1, 1);
@@ -50,7 +49,10 @@ public class Resources {
 	public static final TiledTextureRegion mBlank1024Png5 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "blank1024.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mBlank1024Png6 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "blank1024.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mBlank1024Png7 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas9, Game.context, "blank1024.png", 0, 0, 1, 1);
-	/** Blank png's */
+
+	// ===========================================================
+	// Texture Regions
+	// ===========================================================
 
 	public static final TiledTextureRegion mBackgroundGradientTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundGradientTextureAtlas, Game.context, "bg-gr.png", 0, 0, 1, 1);
 

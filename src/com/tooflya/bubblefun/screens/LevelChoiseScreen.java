@@ -98,12 +98,11 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		for (int i = 1; i >= 0; i--) {
 			final Entity Entity = this.mStars.create();
-			if (Entity != null) {
-				Entity.setCurrentTileIndex(i);
-				Entity.setScale(this.getScaleX() / 2f);
-				Entity.setScaleCenter(Entity.getWidthScaled() / 2, Entity.getHeightScaled() / 2);
-				Entity.setPosition(Options.cameraWidth - 142f, -10f);
-			}
+
+			Entity.setCurrentTileIndex(i);
+			Entity.setScale(this.getScaleX() / 2f);
+			Entity.setScaleCenter(Entity.getWidthScaled() / 2, Entity.getHeightScaled() / 2);
+			Entity.setPosition(Options.cameraWidth - 142f, -10f);
 		}
 	}
 

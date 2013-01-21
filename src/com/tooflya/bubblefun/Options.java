@@ -8,16 +8,24 @@ import org.anddev.andengine.audio.sound.Sound;
  * @since
  */
 public class Options {
-	// > Compile options.
-	public static final boolean DEBUG = false;
-	// < Compile options.
 
-	// > Math options.
+	// ===========================================================
+	// Compile options
+	// ===========================================================
+
+	public static final boolean DEBUG = false;
+
+	// ===========================================================
+	// Math options
+	// ===========================================================
+
 	public static float PI = (float) (2 * Math.asin(1));
 	public static float eps = 5f;
-	// < Math options.
 
-	// > Camera options.
+	// ===========================================================
+	// Camera options
+	// ===========================================================
+
 	public final static float cameraRatioCenter = 520f;
 
 	public static int cameraWidth;
@@ -47,11 +55,13 @@ public class Options {
 
 	public final static float menuHeightPercents = 0.1f;
 	public static float menuHeight;
-	// < Camera options.
+
+	// ===========================================================
+	// Elements options
+	// ===========================================================
 
 	public final static int particlesCount = 14;
 
-	// > Chiky options.
 	public final static int chikyEtalonSize = 64; // Pixels.
 
 	public final static float chikyMinStepX = 1f; // Pixels by frame.
@@ -69,15 +79,11 @@ public class Options {
 	public final static float chikyAngleStep = 3f;
 	public final static float chikyOffsetYPercent = 0.1f;
 	public static float chikyOffsetY; // For initialize use setCameraOriginRatioY.
-	// < Chiky options.
 
-	// > BubbleBase options.
 	public final static float bubbleBaseMinScale = 0.8f;
 	public final static float bubbleBaseMaxScale = 1.2f;
 	public final static float bubbleBaseStepScale = 0.005f;
-	// < BubbleBase options.
 
-	// > Bubble options.
 	public final static float bubbleAlpha = 0.8f;
 
 	public static float bubbleSizePower;
@@ -94,7 +100,10 @@ public class Options {
 	public final static float bubbleStepSpeed = 0.05f; // Pixels by frame.
 
 	public final static float bubbleMaxTimeMove = 2f; // Seconds.
-	// < Bubble options.
+
+	// ===========================================================
+	// Sound elements
+	// ===========================================================
 
 	public static Music mMainSound, mLevelSound, mLastPlayedMusic;
 

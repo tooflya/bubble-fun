@@ -8,7 +8,7 @@ import com.tooflya.bubblefun.entities.Entity;
  * @author Tooflya.com
  * @since
  */
-public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
+public class EntityManager<T> {
 
 	// ===========================================================
 	// Constants
@@ -18,35 +18,36 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	// Fields
 	// ===========================================================
 
-	protected int lastElementNumber;
-	protected int capacity;
+	protected Entity[] mElements;
 
-	protected Entity[] elements;
+	protected int mLastElementNumber;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	/**
-	 * @param capacity
-	 * @param element
+	 * Base constructor which create a few elements before it will be need.
+	 * 
+	 * @param pCapacity
+	 *            capacity of manager, count of elements.
+	 * @param pElement
+	 *            element which myst be copyed a few times.
 	 */
-	public EntityManager(final int capacity, final Entity element) {
-		this.lastElementNumber = -1;
+	public EntityManager(final int pCapacity, final Entity pElement) {
+		this.mLastElementNumber = -1;
 
-		this.capacity = capacity;
+		this.mElements = new Entity[pCapacity];
 
-		elements = new Entity[capacity];
-
-		for (int i = elements.length - 1; i > 0; --i) {
-			elements[i] = element.deepCopy();
-			elements[i].setManager(this);
-			elements[i].setID(i);
+		for (int i = this.mElements.length - 1; i > 0; --i) {
+			this.mElements[i] = pElement.deepCopy();
+			this.mElements[i].setManager(this);
+			this.mElements[i].setID(i);
 		}
 
-		elements[0] = element;
-		elements[0].setManager(this);
-		elements[0].setID(0);
+		this.mElements[0] = pElement;
+		this.mElements[0].setManager(this);
+		this.mElements[0].setID(0);
 	}
 
 	// ===========================================================
@@ -54,74 +55,88 @@ public class EntityManager<T> extends org.anddev.andengine.entity.Entity {
 	// ===========================================================
 
 	/**
-	 * @return
+	 * @return count of created elements.
 	 */
-	public int getCount() {
-		return this.lastElementNumber + 1;
+	public final int getCount() {
+		return this.mLastElementNumber + 1;
 	}
 
 	/**
-	 * @return
+	 * @return capacity of current manager.
 	 */
-	public int getCapacity() {
-		return capacity;
+	public final int getCapacity() {
+		return this.mElements.length;
 	}
 
 	/**
-	 * @param index
-	 * @return
+	 * Method which return an element with need index.
+	 * 
+	 * @param pIndex
+	 *            index of elements in list.
+	 * @return (T) element.
 	 */
 	@SuppressWarnings("unchecked")
-	public T getByIndex(final int index) {
-		return (T) elements[index];
+	public final T getByIndex(final int pIndex) {
+		return (T) this.mElements[pIndex];
 	}
 
+	/**
+	 * Method which create an element and return it.
+	 * 
+	 * @return (T) element.
+	 */
 	@SuppressWarnings("unchecked")
-	public T create() {
-		if (lastElementNumber + 1 < capacity) {
-			lastElementNumber++;
+	public final T create() {
+		if (this.mLastElementNumber + 1 < this.getCapacity()) {
+			this.mLastElementNumber++;
 
-			elements[lastElementNumber].create();
+			this.mElements[this.mLastElementNumber].create();
 
-			return (T) elements[lastElementNumber];
+			return (T) this.mElements[this.mLastElementNumber];
 		}
 
-		return null;
+		throw new NullPointerException(this.getClass().getName() + " can't create no more elements: (" + this.mElements[0].getClass().getName() + ").");
 	}
 
 	/**
-	 * @param i
+	 * Method which will destroy an element with pIndex index.
+	 * 
+	 * @param pIndex
+	 *            index of element.
 	 */
-	public void destroy(final int i) {
+	public final void destroy(final int pIndex) {
 		try {
-			Entity temp_element = elements[i];
-			elements[i] = elements[lastElementNumber];
-			elements[lastElementNumber] = temp_element;
+			final Entity temp_element = this.mElements[pIndex];
+			this.mElements[pIndex] = this.mElements[this.mLastElementNumber];
+			this.mElements[this.mLastElementNumber] = temp_element;
 
-			elements[i].setID(i);
-			elements[lastElementNumber].setID(lastElementNumber);
+			this.mElements[pIndex].setID(pIndex);
+			this.mElements[this.mLastElementNumber].setID(this.mLastElementNumber);
 
-			lastElementNumber--;
+			this.mLastElementNumber--;
 		} catch (ArrayIndexOutOfBoundsException e) {
 
 		}
 	}
 
 	/**
-	 * 
+	 * Method which myst destroy all elements in list.
 	 */
 	public void clear() {
-		for (int i = lastElementNumber; i >= 0; --i) {
-			elements[i].destroy();
+		for (int i = this.mLastElementNumber; i >= 0; --i) {
+			this.mElements[i].destroy();
 		}
 	}
 
-	/*
+	/**
+	 * Method which changing graphics texture in all elements of list.
 	 * 
+	 * @param pTiledTextureRegion
+	 *            new TiledTextureRegion.
 	 */
-	public void changeTextureRegion(final TiledTextureRegion pTiledTextureRegion) {
+	public final void changeTextureRegion(final TiledTextureRegion pTiledTextureRegion) {
 		for (int i = this.getCapacity() - 1; i >= 0; --i) {
-			elements[i].changeTextureRegion(pTiledTextureRegion);
+			this.mElements[i].changeTextureRegion(pTiledTextureRegion);
 		}
 	}
 }

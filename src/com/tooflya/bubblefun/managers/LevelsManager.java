@@ -85,7 +85,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 		X = PADDING_B + 5f;
 		Y = (Options.cameraHeight - PADDING * 5 - PADDING_B * 6) / 2;
-
 	}
 
 	// ===========================================================

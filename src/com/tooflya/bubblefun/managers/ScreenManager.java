@@ -2,11 +2,11 @@ package com.tooflya.bubblefun.managers;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.HUD;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.screens.AdvertisimentScreen;
 import com.tooflya.bubblefun.screens.BoxLockedScreen;
