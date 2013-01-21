@@ -77,10 +77,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public static int mBirdsCount;
 	public static int mKillCount;
 
-	protected static final EntityManager<Cloud> birds = null;
-
-	public static boolean isTutorialNeeded = false;
-
 	public static int mPicupedCoins;
 	public static boolean running;
 	public static int deadBirds;
@@ -263,11 +259,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		mMarks = new EntityManager<Mark>(20, new Mark(Resources.mMarkTextureRegion, this.mBackground));
 
-		coins = new EntityManager<Coin>(10, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
-		bubbles = new EntityManager<Bubble>(30, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
-		feathers = new EntityManager<Feather>(200, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
-		glasses = new EntityManager<Glass>(100, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
-		glints = new EntityManager<Glint>(200, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
+		this.coins = new EntityManager<Coin>(10, new Coin(Resources.mCoinsTextureRegion, this.mBackground));
+		this.bubbles = new EntityManager<Bubble>(30, new Bubble(Resources.mBubbleTextureRegion, this.mBackground));
+		this.feathers = new EntityManager<Feather>(200, new Feather(Resources.mFeathersTextureRegion, this.mBackground));
+		this.glasses = new EntityManager<Glass>(100, new Glass(Resources.mGlassesTextureRegion, this.mBackground));
+		this.glints = new EntityManager<Glint>(200, new Glint(Resources.mGlintsTextureRegion, this.mBackground));
 		this.aims = new EntityManager<Aim>(30, new Aim(Resources.mAimTextureRegion, this.mBackground));
 		this.arrows = new EntityManager<AimArrow>(30, new AimArrow(Resources.mAimArrowsTextureRegion, this.mBackground));
 		this.timerBars = new EntityManager<Entity>(30, new Entity(Resources.mTimerBarTextureRegion, this.mBackground));

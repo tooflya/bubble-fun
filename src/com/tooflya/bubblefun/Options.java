@@ -88,7 +88,7 @@ public class Options {
 
 	public static float bubbleSizePower;
 
-	public static float bubbleMaxSizePower = 10000;
+	public final static float bubbleMaxSizePower = 10000;
 	public final static float bubbleMinSize = 25f; // TODO: (R) Auto set value. // Pixels.
 	public final static float bubbleMaxSize = 100f; // TODO: (R) Auto set value. // Pixels.
 	public final static float bubbleStepSize = 1f; // Pixels by frame.
