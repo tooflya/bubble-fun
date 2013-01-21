@@ -14,10 +14,11 @@ public class Level {
 	// Fields
 	// ===========================================================
 
-	private int mId;
 	private boolean mOpen;
-	private int mStarsCount;
-	private int mScoreCount;
+
+	private int mId;
+	private int mStars;
+	private int mScore;
 
 	// ===========================================================
 	// Constructors
@@ -28,19 +29,21 @@ public class Level {
 	 * @param pOpen
 	 * @param pStars
 	 */
-	public Level(final int pId, final boolean pOpen, final int pStars) {
+	public Level(final int pId, final boolean pOpen, final int pStars, final int pScore) {
 		this.mId = pId;
-		this.mStarsCount = pStars;
 		this.mOpen = pOpen;
+		this.mStars = pStars;
+		this.mScore = pScore;
 	}
 
 	/**
 	 * @param pOpen
 	 * @param pStars
 	 */
-	public Level(final boolean pOpen, final int pStars) {
-		this.mStarsCount = pStars;
+	public Level(final boolean pOpen, final int pStars, final int pScore) {
 		this.mOpen = pOpen;
+		this.mStars = pStars;
+		this.mScore = pScore;
 	}
 
 	/**
@@ -82,13 +85,13 @@ public class Level {
 	 * @return
 	 */
 	public int getStarsCount() {
-		return this.mStarsCount;
+		return this.mStars;
 	}
 
 	/**
 	 * @return
 	 */
 	public int getScoreCount() {
-		return this.mScoreCount;
+		return this.mScore;
 	}
 }

@@ -41,7 +41,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	int g = -1;
 
 	public LevelChoiseScreen() {
@@ -98,11 +98,12 @@ public class LevelChoiseScreen extends ReflectionScreen {
 
 		for (int i = 1; i >= 0; i--) {
 			final Entity Entity = this.mStars.create();
-
-			Entity.setCurrentTileIndex(i);
-			Entity.setScale(this.getScaleX() / 2f);
-			Entity.setScaleCenter(Entity.getWidthScaled() / 2, Entity.getHeightScaled() / 2);
-			Entity.setPosition(Options.cameraWidth - 142f, -10f);
+			if (Entity != null) {
+				Entity.setCurrentTileIndex(i);
+				Entity.setScale(this.getScaleX() / 2f);
+				Entity.setScaleCenter(Entity.getWidthScaled() / 2, Entity.getHeightScaled() / 2);
+				Entity.setPosition(Options.cameraWidth - 142f, -10f);
+			}
 		}
 	}
 
@@ -173,7 +174,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		Entity = (Entity) this.mSmallnumbers.create();
 		Entity.setPosition(Options.cameraWidth - 35f, 10f);
 		Entity.setCurrentTileIndex(5);
-		
+
 		Game.mAdvertisementManager.showSmall();
 	}
 

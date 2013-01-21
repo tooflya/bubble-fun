@@ -141,10 +141,10 @@ public class DataStorage extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public Level getLevel(int id) {
-		final Cursor cursor = this.getReadableDatabase().query(LEVEL_TABLE, new String[] { LEVEL_STATE, LEVEL_STARS }, LEVEL_ID + "=?", new String[] { String.valueOf(id + 25 * Options.boxNumber) }, null, null, null, null);
+		final Cursor cursor = this.getReadableDatabase().query(LEVEL_TABLE, new String[] { LEVEL_STATE, LEVEL_STARS, LEVEL_SCORE }, LEVEL_ID + "=?", new String[] { String.valueOf(id + 25 * Options.boxNumber) }, null, null, null, null);
 		cursor.moveToFirst();
 
-		final Level level = new Level(id, cursor.getInt(0) > 0, cursor.getInt(1));
+		final Level level = new Level(id, cursor.getInt(0) > 0, cursor.getInt(1), cursor.getInt(2));
 
 		cursor.close();
 

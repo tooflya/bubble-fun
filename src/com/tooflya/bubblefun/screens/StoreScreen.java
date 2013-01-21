@@ -9,6 +9,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.managers.EntityManager;
 
 /**
@@ -20,6 +21,8 @@ public class StoreScreen extends ReflectionScreen {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static int ATTACH_TYPE;
 
 	// ===========================================================
 	// Fields
@@ -35,6 +38,7 @@ public class StoreScreen extends ReflectionScreen {
 
 	private final ButtonScaleable mBackButton;
 	private final ButtonScaleable mGetCoinsButton;
+	private final ButtonScaleable mPlayButton;
 
 	private final EntityManager<Entity> mCoinsNumbers;
 
@@ -59,14 +63,15 @@ public class StoreScreen extends ReflectionScreen {
 
 		this.mCoinsNumbers = new EntityManager<Entity>(5, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mNumbersHolder));
 
-		this.mGetCoinsButton = new ButtonScaleable(Resources.mGetCoinsButtonTextureRegion, this.mBackground) {
+		this.mPlayButton = new ButtonScaleable(Resources.mPlayButtonTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
 			 * @see com.tooflya.bubblefun.entities.Button#onClick()
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.setChildScreen(Game.screens.get(Screen.COINS), false, false, true);
+				((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+				Game.screens.set(Screen.PRELOAD);
 			}
 		};
 
@@ -77,13 +82,24 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.MENU);
+				onBackPressed();
 			}
 		};
 
 		this.mStoreBackground = new Entity(Resources.mStorePanelTextureRegion, this.mBackground);
-		this.mStoreBackgroundTop = new Entity(Resources.mStorePanelTopTextureRegion, this.mStoreBackground);
-		this.mStoreBackgroundDown = new Entity(Resources.mStorePanelDownTextureRegion, this.mStoreBackground);
+		this.mStoreBackgroundTop = new Entity(Resources.mStorePanelTopTextureRegion, this.mBackground);
+		this.mStoreBackgroundDown = new Entity(Resources.mStorePanelDownTextureRegion, this.mBackground);
+
+		this.mGetCoinsButton = new ButtonScaleable(Resources.mGetCoinsButtonTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				Game.screens.setChildScreen(Game.screens.get(Screen.COINS), false, false, true);
+			}
+		};
 
 		this.mBackground.create().setBackgroundCenterPosition();
 		this.mStoreTrees.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
@@ -96,15 +112,33 @@ public class StoreScreen extends ReflectionScreen {
 		this.mTopPanel.create().setPosition(0, 0);
 		this.mCoin.create().setPosition(Options.cameraWidth - 40f, 5f);
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
-		this.mGetCoinsButton.create().setPosition(Options.cameraWidth - 5f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 75f);
+		this.mGetCoinsButton.create().setPosition(Options.cameraWidth - 55f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 220f);
+		this.mPlayButton.create().setPosition(Options.cameraWidth - 5f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 75f);
 
 		for (int a = 0; a < 4; a++) {
 			this.mCoinsNumbers.create().setCenterPosition(13f + 18f * a, 23f);
 		}
 
 		this.mStoreBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		this.mStoreBackgroundTop.create().setCenterPosition(this.mStoreBackground.getWidth() / 2 - 12f, 45f);
-		this.mStoreBackgroundDown.create().setCenterPosition(this.mStoreBackground.getWidth() / 2 - 5f, 430f);
+		this.mStoreBackgroundTop.create().setCenterPosition(Options.cameraCenterX, this.mStoreBackground.getY() - this.mStoreBackgroundTop.getHeight() / 2);
+		this.mStoreBackgroundDown.create().setCenterPosition(Options.cameraCenterX, this.mStoreBackground.getY() + this.mStoreBackground.getHeight());
+
+		new Entity(Resources.mBonus1TextureRegion, this.mBackground).create().setCenterPosition(80f, 160f);
+		new Entity(Resources.mBonus2TextureRegion, this.mBackground).create().setCenterPosition(80f, 220f);
+		new Entity(Resources.mBonus3TextureRegion, this.mBackground).create().setCenterPosition(80f, 280f);
+		new Entity(Resources.mBonus4TextureRegion, this.mBackground).create().setCenterPosition(80f, 340f);
+
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY - 165f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_1"), true));
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY - 145f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_2"), true));
+
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY - 105f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_3"), true));
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY - 85f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_4"), true));
+
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY - 45f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_5"), true));
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY - 25f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_6"), true));
+
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY + 15f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_7"), true));
+		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY + 35f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_8"), true));
 	}
 
 	// ===========================================================
@@ -122,7 +156,7 @@ public class StoreScreen extends ReflectionScreen {
 	public void onAttached() {
 		super.onAttached();
 
-		final int Score = 7786;
+		final int Score = 0;
 
 		if (Score < 10) {
 			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex(Score);
@@ -165,6 +199,16 @@ public class StoreScreen extends ReflectionScreen {
 		}
 
 		Game.mAdvertisementManager.hideSmall();
+
+		switch (ATTACH_TYPE) {
+		case 0:
+			this.mPlayButton.destroy();
+			break;
+		case 1:
+			this.mPlayButton.create();
+			break;
+		}
+
 	}
 
 	/*
@@ -186,7 +230,14 @@ public class StoreScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onBackPressed() {
-		Game.screens.set(Screen.MENU);
+		switch (ATTACH_TYPE) {
+		case 0:
+			Game.screens.set(Screen.MENU);
+			break;
+		case 1:
+			Game.screens.set(Screen.CHOISE);
+			break;
+		}
 	}
 
 	// ===========================================================

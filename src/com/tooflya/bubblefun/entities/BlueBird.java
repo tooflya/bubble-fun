@@ -84,7 +84,7 @@ public class BlueBird extends Entity {
 				}
 			}
 
-			if (Options.isMusicEnabled) {
+			if (Options.isSoundEnabled) {
 				if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
 					Options.mGlassBroke.play();
 				} else {

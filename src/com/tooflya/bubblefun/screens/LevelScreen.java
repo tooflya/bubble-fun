@@ -37,7 +37,6 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.CristmasHat;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.entities.EntityBezier;
 import com.tooflya.bubblefun.entities.Feather;
 import com.tooflya.bubblefun.entities.Glass;
 import com.tooflya.bubblefun.entities.Glint;
@@ -68,12 +67,16 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	// Constants
 	// ===========================================================
 
+	public static float mLevelTime;
+	public static int mLevelTimeEtalon = 10;
+
 	public static JSONArray mBirdsNames;
 
 	private final Entity mSpaceBackground;
 	private final Entity mSpacePlanet;
 
 	public static int mBirdsCount;
+	public static int mKillCount;
 
 	protected static final EntityManager<Cloud> birds = null;
 
@@ -276,7 +279,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.chikies = new EntityManager<Chiky>(20, new Chiky(Resources.mRegularBirdsTextureRegion, this.mBackground));
 		mCristmasHats = new EntityManager<CristmasHat>(10, new CristmasHat(Resources.mSnowyBirdsHatTextureRegion, this.mBackground));
 
-		this.mBubbleBrokes = new EntityManager<BubbleBrokes>(10, new BubbleBrokes(Resources.mAsteroidBrokenTextureRegion, this.mBackground));
+		this.mBubbleBrokes = new EntityManager<BubbleBrokes>(50, new BubbleBrokes(Resources.mAsteroidBrokenTextureRegion, this.mBackground));
 
 		mSnowBallSpeed = new EntityManager<Entity>(10, new Entity(Resources.mSpaceBallSpeedTextureRegion, this.mBackground));
 
@@ -364,8 +367,8 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.setOnSceneTouchListener(this);
 
-		mSolidLine.create().setPosition(0, Options.cameraHeight - Options.touchHeight);
-		mSolidLine.enableFullBlendFunction();
+		this.mSolidLine.create().setPosition(0, Options.cameraHeight - Options.touchHeight);
+		this.mSolidLine.enableFullBlendFunction();
 
 		this.attachChild(shape);
 		this.shape.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -450,33 +453,20 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 
 		this.mBonusManager = new BonusManager(10);
-		for (int i = 0; i < 3; i++) {
-			TiledTextureRegion k = null;
-			switch (i) {
-			case 0:
-				k = Resources.mBonus1TextureRegion;
-				break;
-			case 1:
-				k = Resources.mBonus2TextureRegion;
-				break;
-			case 2:
-				k = Resources.mBonus3TextureRegion;
-				break;
-			}
-			final BonusIcon h = new BonusIcon(k, this.mBackground) {
-
-				@Override
-				public void onClick() {
-					super.onClick();
-
-					this.init(48);
-				}
-			};
-			this.mBonusManager.add(h);
-			h.enableBlendFunction();
-			h.registerEntityModifier(this.mAllFallUpModifier);
-			h.registerEntityModifier(this.mAllFallDownModifier);
-		}
+		/**
+		 * for (int i = 0; i < 4; i++) { TiledTextureRegion k = null; switch (i) { case 0: k = Resources.mBonus1TextureRegion; break; case 1: k = Resources.mBonus2TextureRegion; break; case 2: k = Resources.mBonus3TextureRegion; break; case 3: k = Resources.mBonus4TextureRegion; break; }
+		 * 
+		 * final BonusIcon h = new BonusIcon(k, this.mBackground) {
+		 * 
+		 * @Override public boolean onAreaTouched(final TouchEvent pTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) { final float pTouchX = pTouchEvent.getX() / Options.cameraRatioFactor; final float pTouchY = pTouchEvent.getY() / Options.cameraRatioFactor;
+		 * 
+		 *           switch (pTouchEvent.getAction()) { case TouchEvent.ACTION_UP: if (LevelScreen.this.lastAirgum != null) { LevelScreen.this.lastAirgum.initFinishPositionWithCorrection(pTouchX, pTouchY); LevelScreen.this.lastAirgum = null; } break; }
+		 * 
+		 *           return super.onAreaTouched(pTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY); }
+		 * @Override public void onClick() { super.onClick();
+		 * 
+		 *           this.init(48); } }; this.mBonusManager.add(h); h.enableBlendFunction(); h.registerEntityModifier(this.mAllFallUpModifier); h.registerEntityModifier(this.mAllFallDownModifier); }
+		 **/
 
 		this.mTutorialTexts = new ArrayList<TutorialText>();
 		for (int i = 0; i < 5; i++) {
@@ -566,6 +556,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		}
 
 		numbers.getByIndex(1).setCurrentTileIndex(10);
+
+		mLevelTime = 0;
+		mKillCount = 0;
 	}
 
 	// ===========================================================
@@ -620,7 +613,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 						if (this.isCollide(chiky, airgum)) {
 							airgum.addBirdsKills();
 							chiky.collide(airgum);
-							airgum.animate(40, 0);
+							if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
+								airgum.animate(40, 0);
+							}
 							airgum.collide();
 							deadBirds++;
 						}
@@ -672,7 +667,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					if (this.isCollide(airgum, laser)) {
 						airgum.collide();
 
-						if (Options.isMusicEnabled) {
+						if (Options.isSoundEnabled) {
 							Options.mAsteroidDeath.play();
 						}
 					}
@@ -855,6 +850,10 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			numbersSmall.getByIndex(2 + side).setVisible(true);
 			numbersSmall.getByIndex(3 + side).setVisible(true);
 		}
+
+		if (running) {
+			mLevelTime += pSecondsElapsed;
+		}
 	}
 
 	public void restart() {
@@ -894,7 +893,9 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 			if (this.mBonusType == 0) {
 				if (chikies.getCount() > 0 && this.lastAirgum == null && pTouchY > Options.cameraHeight - Options.touchHeight) {
 					this.lastAirgum = (Bubble) airgums.create();
-					this.lastAirgum.initStartPosition(pTouchX, pTouchY);
+					if (this.lastAirgum != null) {
+						this.lastAirgum.initStartPosition(pTouchX, pTouchY);
+					}
 				}
 			}
 			else {

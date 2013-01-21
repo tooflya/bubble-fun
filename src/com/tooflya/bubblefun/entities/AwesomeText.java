@@ -144,12 +144,23 @@ public class AwesomeText extends Entity {
 		}
 
 	}
-	/**
-	 * @Override public void setCenterPosition(final float pX, final float pY) { float x;
-	 * 
-	 *           if (pX > Options.cameraWidth - this.getWidth()) { x = Options.cameraWidth - (this.getWidth() * 2); } else if (pX < this.getWidth()) { x = this.getWidth() * 2; } else { x = pX; }
-	 * 
-	 *           super.setCenterPosition(x, pY); }
-	 */
 
+	@Override
+	public void setCenterPosition(final float pX, float pY) {
+		float x;
+
+		if (pX > Options.cameraWidth - this.getWidth()) {
+			x = Options.cameraWidth - (this.getWidth() * 2);
+		} else if (pX < this.getWidth()) {
+			x = this.getWidth() * 2;
+		} else {
+			x = pX;
+		}
+
+		if (pY < Options.cameraHeight / 8) {
+			pY += 150f;
+		}
+
+		super.setCenterPosition(x, pY);
+	}
 }

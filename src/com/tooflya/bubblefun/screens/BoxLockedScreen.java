@@ -65,7 +65,7 @@ public class BoxLockedScreen extends PopupScreen {
 
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
-		
+
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);
@@ -78,13 +78,19 @@ public class BoxLockedScreen extends PopupScreen {
 		Entity star;
 
 		star = this.mStarsCountText.create();
-		star.setPosition(95f, 86f, true);
+		if (star != null) {
+			star.setPosition(95f, 86f, true);
+		}
 
 		star = this.mStarsCountText.create();
-		star.setPosition(125f, 86f, true);
+		if (star != null) {
+			star.setPosition(125f, 86f, true);
+		}
 
 		star = this.mStarsCountText.create();
-		star.setPosition(155f, 86f, true);
+		if (star != null) {
+			star.setPosition(155f, 86f, true);
+		}
 	}
 
 	// ===========================================================
@@ -108,10 +114,10 @@ public class BoxLockedScreen extends PopupScreen {
 		this.mStarsNeeded = l - Game.db.getTotalStars();
 
 		if (this.mStarsNeeded < 10) {
-			this.mStarsCountText.getByIndex(0).setCurrentTileIndex(this.mStarsNeeded);
-			this.mStarsCountText.getByIndex(0).setVisible(true);
+			this.mStarsCountText.getByIndex(2).setCurrentTileIndex(this.mStarsNeeded);
+			this.mStarsCountText.getByIndex(0).setVisible(false);
 			this.mStarsCountText.getByIndex(1).setVisible(false);
-			this.mStarsCountText.getByIndex(2).setVisible(false);
+			this.mStarsCountText.getByIndex(2).setVisible(true);
 		} else if (this.mStarsNeeded < 100) {
 			this.mStarsCountText.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(this.mStarsNeeded / 10));
 			this.mStarsCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(this.mStarsNeeded % 10));

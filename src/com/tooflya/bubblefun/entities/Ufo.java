@@ -34,7 +34,7 @@ public class Ufo extends EntityBezier {
 			((LevelScreen) Game.screens.get(Screen.LEVEL)).mGreenLasers.create().init(this.getCenterX(), this.getCenterY(), pX, pY);
 			this.mTime = 0.2f;
 
-			if (Options.isMusicEnabled) {
+			if (Options.isSoundEnabled) {
 				Options.mLaser.play();
 			}
 		}

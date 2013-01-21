@@ -42,6 +42,16 @@ public class Resources {
 	// Texture Regions
 	// ===========================================================
 
+	/** Blank png's */
+	public static final TiledTextureRegion mBlank1024Png1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png2 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png3 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png4 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png5 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png6 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.context, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png7 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas9, Game.context, "blank1024.png", 0, 0, 1, 1);
+	/** Blank png's */
+
 	public static final TiledTextureRegion mBackgroundGradientTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundGradientTextureAtlas, Game.context, "bg-gr.png", 0, 0, 1, 1);
 
 	public static final TiledTextureRegion mBackgroundGrassTextureRegion1 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundElementsTextureAtlas, Game.context, "bg-grass.png", 2, 349, 1, 1);
@@ -65,10 +75,15 @@ public class Resources {
 	public static final TiledTextureRegion mMusicIconTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "melody-btn.png", 515, 549, 1, 2);
 	public static final TiledTextureRegion mPreloadTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, Game.getString("preload_text"), 388, 582, 1, 1);
 	public static final TiledTextureRegion mLevelEndTotalScoreTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "end-text-total-score.png", 388, 549, 1, 1);
-	public static final TiledTextureRegion mLevelEndScoreNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "end-text-numbers.png", 206, 978, 10, 1);
+	public static final TiledTextureRegion mLevelEndScoreNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "end-text-numbers.png", 206, 978, 13, 1);
 	public static final TiledTextureRegion mBoxNumbersTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "numbers-sprite-world-2.png", 648, 2, 11, 1);
 	public static final TiledTextureRegion mPopupBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "popup.png", 48, 618, 1, 1);
 	public static final TiledTextureRegion mStaticCoinTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "shop-coins.png", 552, 549, 1, 1);
+	public static final TiledTextureRegion mBonus1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "bonus-1-button.png", 978, 978, 1, 1);
+	public static final TiledTextureRegion mBonus2TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "bonus-2-button.png", 932, 978, 1, 1);
+	public static final TiledTextureRegion mBonus3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "bonus-3-button.png", 886, 978, 1, 1);
+	public static final TiledTextureRegion mBonus4TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "bonus-4-button.png", 840, 978, 1, 1);
+	public static final TiledTextureRegion mShopAvailableTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundCommonTextureAtlas, Game.context, "shop-num-sprite.png", 998, 846, 1, 5);
 
 	public static final TiledTextureRegion mBackgroundLogoNameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "main-name.png", 401, 67, 1, 1);
 	public static final TiledTextureRegion mTwitterTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "tw-btn.png", 950, 139, 1, 1);
@@ -81,6 +96,8 @@ public class Resources {
 	public static final TiledTextureRegion mTopPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "lvl-panel.png", 401, 2, 1, 1);
 	public static final TiledTextureRegion mLevelsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "level-btn.png", 2, 504, 1, 5);
 	public static final TiledTextureRegion mBoxesTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "box.png", 2, 2, 1, 2);
+	public static final TiledTextureRegion mCreditsTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "text-more-credits.png", 339, 504, 1, 1);
+	public static final TiledTextureRegion mGameResetTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "text-more-reset-process.png", 557, 624, 1, 1);
 	public static final TiledTextureRegion mBoxesPicture1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "box-picture-1.png", 401, 504, 1, 1);
 	public static final TiledTextureRegion mBoxesPicture2TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "box-picture-2.png", 564, 405, 1, 1);
 	public static final TiledTextureRegion mBoxesPicture3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "box-picture-3.png", 2, 845, 1, 1);
@@ -107,7 +124,7 @@ public class Resources {
 	public static final TiledTextureRegion mBoxCollect100TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "100-collect.png", 950, 113, 1, 1);
 	public static final TiledTextureRegion mSmallLogoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "logo_small_zero.png", 780, 207, 1, 1);
 	public static final TiledTextureRegion mBuyButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-btn.png", 401, 836, 1, 1);
-	public static final TiledTextureRegion mShopAvailableTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-num-sprite.png", 985, 280, 1, 5);
+	public static final TiledTextureRegion mPlayButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-menu-play-btn.png", 836, 611, 1, 1);
 	public static final TiledTextureRegion mShopPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "shop-panel.png", 454, 660, 1, 1);
 	public static final TiledTextureRegion mGetCoinsButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "get-coins-btn.png", 401, 908, 1, 1);
 	public static final TiledTextureRegion mRatePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas1, Game.context, "popup-rate-me.png", 523, 721, 1, 1);
@@ -119,7 +136,7 @@ public class Resources {
 	public static final TiledTextureRegion mStorePanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu.png", 2, 2, 1, 1);
 	public static final TiledTextureRegion mStoreTreesTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu-tree.png", 340, 2, 1, 1);
 	public static final TiledTextureRegion mStorePanelTopTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu-up.png", 2, 614, 1, 1);
-	public static final TiledTextureRegion mStorePanelDownTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu-down.png", 2, 668, 1, 1);
+	public static final TiledTextureRegion mStorePanelDownTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.context, "shop-menu-down.png", 2, 720, 1, 1);
 
 	public static final EmptyBitmapTextureAtlasSource mLevelGradientBitmap = new EmptyBitmapTextureAtlasSource(2, 512);
 	public static final LinearGradientFillBitmapTextureAtlasSourceDecoratorExtended mLevelBackgroundGradientSource = new LinearGradientFillBitmapTextureAtlasSourceDecoratorExtended(mLevelGradientBitmap,
@@ -156,16 +173,18 @@ public class Resources {
 	public static final TiledTextureRegion mLevelEndPanelTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "end-lvl-popup.png", 447, 508, 1, 1);
 	public static final TiledTextureRegion mLevelEndReturnButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "buttons-end-menu.png", 384, 397, 1, 1);
 	public static final TiledTextureRegion mLevelEndRestartButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "buttons-end-replay.png", 388, 261, 1, 1);
+	public static final TiledTextureRegion mStoreButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "buttons-end-shop.png", 824, 462, 1, 1);
 	public static final TiledTextureRegion mLevelEndNextButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "buttons-end-next.png", 385, 329, 1, 1);
 	public static final TiledTextureRegion mLevelEndCompleteCaptureTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "end_lvl_text_complete.png", 824, 338, 1, 1);
 	public static final TiledTextureRegion mLevelEndScoreTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "end-text-score.png", 379, 498, 1, 1);
 	public static final TiledTextureRegion mLevelEndStarsScoreTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "end-text-star.png", 379, 465, 1, 1);
+	public static final TiledTextureRegion mLevelEndTimeTextTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "end-text-time.png", 824, 434, 1, 1);
 	public static final TiledTextureRegion mAirRegularOneTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "air-bar.png", 466, 171, 1, 1);
 	public static final TiledTextureRegion mAngryCloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "anrgy-cloud.png", 2, 266, 4, 1);
 	public static final TiledTextureRegion mLighingTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "light.png", 740, 551, 1, 1);
 	public static final TiledTextureRegion mHoldCloudTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "angry-cloud-hold.png", 456, 266, 4, 1);
 	public static final TiledTextureRegion mHoldCloudWindTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "angry-cloud-hold-wind.png", 458, 227, 4, 1);
-	public static final TiledTextureRegion mMarkTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "wind.png", 740, 530, 1, 1);
+	public static final TiledTextureRegion mMarkTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "wind.png", 1007, 1007, 1, 1);
 	public static final TiledTextureRegion mSpaceBirdsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "small-bird-space.png", 830, 236, 4, 2);
 	public static final TiledTextureRegion mGlassesTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "glass.png", 356, 296, 3, 1);
 	public static final TiledTextureRegion mSpaceBlueBirdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "blue-bird-space.png", 446, 808, 4, 1);
@@ -178,10 +197,6 @@ public class Resources {
 	public static final TiledTextureRegion mSpecialNumbers3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "numbers-sprite-space.png", 476, 2, 11, 1);
 	public static final TiledTextureRegion mUfoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "ufo.png", 2, 2, 6, 1);
 	public static final TiledTextureRegion mMeteoritTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "meteorit.png", 2, 337, 3, 2);
-	public static final TiledTextureRegion mBonus1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "bonus-1-button.png", 290, 862, 1, 1);
-	public static final TiledTextureRegion mBonus2TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "bonus-2-button.png", 359, 827, 1, 1);
-	public static final TiledTextureRegion mBonus3TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "bonus-3-button.png", 172, 821, 1, 1);
-	public static final TiledTextureRegion mBonus4TextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "bonus-4-button.png", 122, 821, 1, 1);
 	public static final TiledTextureRegion mGreenLaserTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "lazer-light.png", 740, 519, 1, 1);
 	public static final TiledTextureRegion mRedLaserTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "lazer-light-sheep.png", 740, 508, 1, 1);
 	public static final TiledTextureRegion mAsteroidBrokenTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas3, Game.context, "space-asteroid-broke.png", 379, 531, 1, 2);

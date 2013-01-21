@@ -11,7 +11,7 @@ public class ShopIndicator extends Entity {
 	public ShopIndicator(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
-		this.create().setCenterPosition(105f, 10f);
+		this.create();
 
 		this.mModifier1 = new MoveYModifier(1f, this.getY(), this.getY() + 10f) {
 			@Override

@@ -29,6 +29,9 @@ public class MoreScreen extends ReflectionScreen {
 	private final ButtonScaleable b1;
 	private final ButtonScaleable b2;
 
+	private final Entity bc1;
+	private final Entity bc2;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -74,6 +77,10 @@ public class MoreScreen extends ReflectionScreen {
 				Game.screens.set(Screen.CREDITS);
 			}
 		};
+
+		this.bc1 = new Entity(Resources.mGameResetTextTextureRegion, this.b1);
+		this.bc2 = new Entity(Resources.mCreditsTextTextureRegion, this.b2);
+
 		this.mClouds.generateStartClouds();
 
 		this.mBackground.create().setBackgroundCenterPosition();
@@ -89,6 +96,9 @@ public class MoreScreen extends ReflectionScreen {
 
 		this.b1.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 - 30f);
 		this.b2.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 + 30f);
+
+		this.bc1.create().setCenterPosition(this.b1.getWidth() / 2, this.b1.getHeight() / 2);
+		this.bc2.create().setCenterPosition(this.b2.getWidth() / 2, this.b2.getHeight() / 2);
 	}
 
 	// ===========================================================

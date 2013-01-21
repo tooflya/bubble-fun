@@ -63,15 +63,17 @@ public class CreditsScreen extends ReflectionScreen {
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f);
 
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 150f * Options.cameraRatioFactor, Resources.mFont, "The premier debugging environemnt for"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 120f * Options.cameraRatioFactor, Resources.mFont, "Opera Presto-based browsers. Opera Drag-"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 90f * Options.cameraRatioFactor, Resources.mFont, "onfly is available directly from the Opera"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 60f * Options.cameraRatioFactor, Resources.mFont, "browser, no extra download requierd."));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 30f * Options.cameraRatioFactor, Resources.mFont, "Opera Dragonfly contains a full suite of"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY, Resources.mFont, "tools including DOM, CSS and Network"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 30f * Options.cameraRatioFactor, Resources.mFont, "Inspectors, a JavaScript Debugger, Com-"));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 60f * Options.cameraRatioFactor, Resources.mFont, "mand Line and Error Console."));
-		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 120f * Options.cameraRatioFactor, Resources.mFont, "Tooflya Inc."));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 150f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_1")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 120f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_2")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 90f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_3")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 60f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_4")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY - 30f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_5")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY, Resources.mFont, Game.getString("credits_6")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 30f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_7")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 60f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_8")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 90f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_9")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 120f * Options.cameraRatioFactor, Resources.mFont, Game.getString("credits_10")));
+		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 180f * Options.cameraRatioFactor, Resources.mFont, Game.getString("www.tooflya.com")));
 
 		try {
 			final PackageInfo pInfo = Game.instance.getPackageManager().getPackageInfo(Game.instance.getPackageName(), 0);

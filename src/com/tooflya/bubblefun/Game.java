@@ -1,7 +1,6 @@
 package com.tooflya.bubblefun;
 
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -23,26 +22,18 @@ import org.anddev.andengine.ui.activity.LayoutGameActivity;
 import org.anddev.andengine.util.user.IAsyncCallback;
 import org.anddev.andengine.util.user.ShakeEventListener;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.hardware.Sensor;
+import android.content.res.Resources.NotFoundException;
 import android.hardware.SensorManager;
 import android.opengl.GLException;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Patterns;
 import android.view.KeyEvent;
 
 import com.tooflya.bubblefun.database.DataStorage;
 import com.tooflya.bubblefun.managers.AdvertisementManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 import com.tooflya.bubblefun.screens.AndEngineScreen;
-import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
 /**
@@ -95,7 +86,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	/**  */
 	private long screenChangeTime = 0;
 
+	@SuppressWarnings("unused")
 	private SensorManager mSensorManager;
+	@SuppressWarnings("unused")
 	private ShakeEventListener mSensorListener;
 
 	// ===========================================================
@@ -109,17 +102,13 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onLoadComplete() {
-		this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		this.mSensorListener = new ShakeEventListener();
-
-		this.mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
-
-			public void onShake() {
-				if (LevelScreen.running) {
-					((LevelScreen) Game.screens.get(Screen.LEVEL)).restartMove1.reset();
-				}
-			}
-		});
+		/**
+		 * this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE); this.mSensorListener = new ShakeEventListener();
+		 * 
+		 * this.mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+		 * 
+		 * public void onShake() { if (LevelScreen.running) { ((LevelScreen) Game.screens.get(Screen.LEVEL)).restartMove1.reset(); } } });
+		 **/
 	}
 
 	/*
@@ -130,7 +119,6 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	@SuppressWarnings("unused")
 	@Override
 	public Engine onLoadEngine() {
-
 		/** Let's remember Context of this activity */
 		context = getApplicationContext();
 
@@ -299,70 +287,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 * 
 	 * @see com.tooflya.bouncekid.background.IAsyncCallback#onComplete()
 	 */
-	@SuppressWarnings("unused")
-	@TargetApi(8)
 	@Override
 	public void onComplete() {
-		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 8 && false) {
-			// ====================================================================================
-			// FOR THE BETA VERSION ONLY
-			// TODO: Remove this before relise
-			Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-			Account[] accounts = AccountManager.get(context).getAccounts();
-			for (Account account : accounts) {
-				if (emailPattern.matcher(account.name).matches()) {
-					Beta.mail = account.name;
-					break;
-				}
-			}
-
-			Beta.device = Beta.getDeviceName();
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.beta_testers_text).setTitle(R.string.beta_testers_title);
-			builder.setPositiveButton(R.string.beta_testers_yes, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-
-					Runnable runnable = new Runnable() {
-						@Override
-						public void run() {
-							Beta.sendFirstInformation();
-						}
-					};
-					new Thread(runnable).start();
-				}
-			});
-			builder.setNegativeButton(R.string.beta_testers_no, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					Game.close();
-				}
-			});
-			builder.create().show();
-			// ====================================================================================
-		}
-
 		screens.set(Screen.MENU);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
 	}
 
 	/*
@@ -444,7 +371,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	public void onResumeGame() {
 		super.onResumeGame();
 
-		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+		//mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
 
 		if (Options.mLastPlayedMusic != null) {
 			Options.mLastPlayedMusic.resume();
@@ -504,7 +431,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 
 			screenChangeTime = System.currentTimeMillis();
 
-			if (Options.isMusicEnabled) {
+			if (Options.isSoundEnabled) {
 				Options.mButtonSound.play();
 			}
 
@@ -549,6 +476,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	}
 
 	public static String getString(final String pString) {
-		return Game.context.getString(Game.context.getResources().getIdentifier(pString, "string", Game.context.getPackageName()));
+		try {
+			return Game.context.getString(Game.context.getResources().getIdentifier(pString, "string", Game.context.getPackageName()));
+		} catch (NotFoundException ex) {
+			return pString;
+		}
 	}
 }

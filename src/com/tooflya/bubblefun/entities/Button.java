@@ -21,7 +21,7 @@ public abstract class Button extends Entity {
 	public abstract void onClick();
 
 	protected void onClickStandartActions() {
-		if (Options.isMusicEnabled) {
+		if (Options.isSoundEnabled) {
 			Options.mButtonSound.play();
 		}
 	}

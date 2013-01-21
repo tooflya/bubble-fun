@@ -68,7 +68,7 @@ public class Airplane extends Entity {
 			if (chiky.isCanCollide()) {
 				screen.mRedLasers.create().init(this.getCenterX(), this.getCenterY(), chiky.getCenterX(), chiky.getCenterY());
 
-				if (Options.isMusicEnabled) {
+				if (Options.isSoundEnabled) {
 					Options.mLaser.play();
 				}
 			}

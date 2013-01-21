@@ -51,9 +51,6 @@ public class MenuScreen extends ReflectionScreen {
 	private final ButtonScaleable mBuyButton;
 	private final PlayIcon mPlayIcon;
 
-	@SuppressWarnings("unused")
-	private final ShopIndicator mShopAvailableItemsCount;
-
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
 
@@ -197,6 +194,7 @@ public class MenuScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
+				StoreScreen.ATTACH_TYPE = 0;
 				Game.screens.set(Screen.STORE);
 			}
 		};
@@ -267,7 +265,7 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
-		this.mShopAvailableItemsCount = new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mBuyButton);
+		new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mBuyButton).setCenterPosition(105f, 10f);
 
 		this.mClouds.generateStartClouds();
 
@@ -279,7 +277,6 @@ public class MenuScreen extends ReflectionScreen {
 		this.mLogoBackground.create().setCenterPosition(Options.cameraCenterX, mBackground.getY() + 170f);
 
 		this.mBlueBird.create().setPosition(Options.cameraWidth - ICONS_PADDING_BETWEEN - ICONS_PADDING - ICONS_SIZE * 2, Options.cameraHeight - ICONS_PADDING - ICONS_SIZE * 3);
-		//this.mParachuteBird1.create().setPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 150f);
 		this.mParachuteBird2.create().setPosition(Options.cameraCenterX + 100f, Options.cameraCenterY + 50f);
 		this.mBird1.create().setPosition(50f, Options.cameraCenterY);
 		this.mBird2.create().setPosition(30f, Options.cameraCenterY + 50f);
@@ -298,7 +295,7 @@ public class MenuScreen extends ReflectionScreen {
 		this.mPlayIcon.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY + 50f);
 		this.mBuyButton.create().setCenterPosition(Options.cameraCenterX - 100f, Options.cameraCenterY + 180f);
 
-		this.mSettingsIcon.create().setPosition(10f, Options.cameraHeight - 60f);
+		this.mSettingsIcon.create().setPosition(8f, Options.cameraHeight - 60f);
 		this.mMoreIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 		this.mSoundIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);
 		this.mMusicIcon.create().setPosition(ICONS_PADDING, Options.cameraHeight - 50f);

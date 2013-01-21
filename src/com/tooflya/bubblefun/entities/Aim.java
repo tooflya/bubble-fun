@@ -79,6 +79,20 @@ public class Aim extends Entity {
 		this.mTime = -1;
 	}
 
+	@Override
+	public void setWidth(final float pWidth) {
+		super.setWidth(pWidth);
+
+		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
+	}
+
+	@Override
+	public void setHeight(final float pHeight) {
+		super.setHeight(pHeight);
+
+		this.setRotationCenter(this.getWidth() / 2, this.getHeight() / 2);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

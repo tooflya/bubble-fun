@@ -12,6 +12,7 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.ShopIndicator;
 import com.tooflya.bubblefun.entities.Star;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
@@ -21,8 +22,23 @@ public class LevelEndScreen extends PopupScreen {
 	private static int mStarsCount;
 
 	private static int mStarsAnimationCount = 0;
+	private boolean mTimeAnimationRunning;
 
 	private final Entity mPanel = new Entity(Resources.mLevelEndPanelTextureRegion, this);
+
+	private final AlphaModifier mScoreToTimeModifier = new AlphaModifier(1f, 1f, 0f) {
+		@Override
+		public void onFinished() {
+			mTimeToScoreModifier.reset();
+		}
+	};
+
+	private final AlphaModifier mTimeToScoreModifier = new AlphaModifier(1f, 0f, 1f) {
+		@Override
+		public void onFinished() {
+
+		}
+	};
 
 	public final ButtonScaleable mMenu = new ButtonScaleable(Resources.mLevelEndReturnButtonTextureRegion, this.mPanel) {
 
@@ -79,6 +95,16 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	};
 
+	public final ButtonScaleable mStore = new ButtonScaleable(Resources.mStoreButtonTextureRegion, this.mPanel) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.ButtonScaleable#onClick()
+		 */
+		@Override
+		public void onClick() {
+		}
+	};
+
 	private final TimerHandler mTimer = new TimerHandler(0.5f, true, new ITimerCallback() {
 
 		@Override
@@ -97,6 +123,30 @@ public class LevelEndScreen extends PopupScreen {
 							particle.Init(i).setCenterPosition(star.getCenterX(), star.getCenterY());
 						}
 					}
+				} else {
+					registerUpdateHandler(mTimer2);
+					unregisterUpdateHandler(mTimer);
+				}
+			}
+		}
+	});
+
+	private final TimerHandler mTimer2 = new TimerHandler(0.2f, true, new ITimerCallback() {
+
+		@Override
+		public void onTimePassed(TimerHandler pTimerHandler) {
+			if (!mTimeAnimationRunning) {
+				mTimeAnimationRunning = true;
+
+				mScoreToTimeModifier.reset();
+			} else {
+				if (mScoreToTimeModifier.isFinished() && mTimeToScoreModifier.isFinished()) {
+					if (LevelScreen.mLevelTime < LevelScreen.mLevelTimeEtalon) {
+						LevelScreen.mLevelTime++;
+						LevelScreen.Score += 100;
+					} else {
+						unregisterUpdateHandler(mTimer2);
+					}
 				}
 			}
 		}
@@ -108,10 +158,12 @@ public class LevelEndScreen extends PopupScreen {
 
 	private final Entity mTotalScoreText = new Entity(Resources.mLevelEndTotalScoreTextTextureRegion, this.mPanel);
 	private final Entity mScoreText = new Entity(Resources.mLevelEndScoreTextTextureRegion, this.mPanel);
+	private final Entity mTimeText = new Entity(Resources.mLevelEndTimeTextTextureRegion, this.mPanel);
 	private final Entity mStarsText = new Entity(Resources.mLevelEndStarsScoreTextTextureRegion, this.mPanel);
 
 	private final EntityManager<Entity> mStarsCountText = new EntityManager<Entity>(1, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 	private final EntityManager<Entity> mScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final EntityManager<Entity> mTimeCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 	private final EntityManager<Entity> mTotalScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 
 	private final AwesomeText mLevelCompleteCapture = new AwesomeText(Resources.mLevelEndCompleteCaptureTextureRegion, false, this.mPanel) {
@@ -160,6 +212,12 @@ public class LevelEndScreen extends PopupScreen {
 		this.mPlayNext.setScaleCenter(this.mRePlay.getWidth() / 2, this.mRePlay.getHeight() / 2);
 		this.mPlayNext.setCenterPosition(this.mPanel.getWidth() - 80, this.mPanel.getHeight() + 50f);
 
+		this.mStore.create();
+		this.mStore.setScaleCenter(this.mStore.getWidth() / 2, this.mStore.getHeight() / 2);
+		this.mStore.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() + 120f);
+
+		new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mStore).setCenterPosition(50f, 5f);
+
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);
@@ -170,26 +228,71 @@ public class LevelEndScreen extends PopupScreen {
 		this.mTotalScoreText.create().setCenterPosition(this.mPanel.getWidth() / 2 - 30f, 235f);
 		this.mStarsText.create().setCenterPosition(this.mPanel.getWidth() / 2 - 30f, 155f);
 		this.mScoreText.create().setCenterPosition(this.mPanel.getWidth() / 2 - 30f, 185f);
+		this.mTimeText.create().setCenterPosition(this.mPanel.getWidth() / 2 - 30f, 184f);
+
+		this.mScoreText.registerEntityModifier(this.mScoreToTimeModifier);
+		this.mTimeText.registerEntityModifier(this.mTimeToScoreModifier);
+
+		this.mScoreText.enableBlendFunction();
+		this.mTimeText.enableBlendFunction();
 
 		this.mStarsCountText.create().setCenterPosition(this.mPanel.getWidth() / 2 + 10f, 155f);
 
 		for (int i = 0; i < 4; i++) {
-			this.mScoreCountText.create().setCenterPosition(this.mPanel.getWidth() / 2 + 10f + 18f * i, 185f);
+			final Entity entity = this.mScoreCountText.create();
+			entity.setCenterPosition(this.mPanel.getWidth() / 2 + 10f + 18f * i, 185f);
+			entity.registerEntityModifier(this.mScoreToTimeModifier);
+			entity.enableBlendFunction();
 		}
 
 		for (int i = 0; i < 4; i++) {
 			this.mTotalScoreCountText.create().setCenterPosition(this.mPanel.getWidth() / 2 + 40f + 18f * i, 235f);
 		}
 
+		for (int i = 0; i < 4; i++) {
+			float h = 0;
+			switch (i) {
+			case 1:
+				h = 13;
+				break;
+			case 2:
+				h = 26;
+				break;
+			case 3:
+				h = 44;
+				break;
+			}
+			final Entity entity = this.mTimeCountText.create();
+			entity.setCenterPosition(this.mPanel.getWidth() / 2 + 10f + h, 185f);
+			entity.registerEntityModifier(this.mTimeToScoreModifier);
+			entity.enableBlendFunction();
+		}
+
 		this.mRectangle.setWidth(200f);
 		this.mRectangle.setPosition(Options.screenWidth / 2 - this.mRectangle.getWidthScaled() / 2, this.mRectangle.getY());
 
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifier);
+
+		this.mScoreText.registerEntityModifier(this.mScoreToTimeModifier);
 	}
 
 	@Override
 	public void onAttached() {
 		super.onAttached();
+
+		mTimeAnimationRunning = false;
+
+		this.mTimeText.setAlpha(0);
+		for (int i = 0; i < 4; i++) {
+			final Entity entity = this.mTimeCountText.getByIndex(i);
+			entity.setAlpha(0);
+		}
+
+		this.mScoreText.setAlpha(1f);
+		for (int i = 0; i < 4; i++) {
+			final Entity entity = this.mScoreCountText.getByIndex(i);
+			entity.setAlpha(1f);
+		}
 
 		this.mRectangleAlphaModifier.stop();
 		this.mRectangle.setAlpha(0.4f);
@@ -335,6 +438,20 @@ public class LevelEndScreen extends PopupScreen {
 			this.mTotalScoreCountText.getByIndex(1).setVisible(true);
 			this.mTotalScoreCountText.getByIndex(2).setVisible(true);
 			this.mTotalScoreCountText.getByIndex(3).setVisible(true);
+		}
+
+		/* TIME */
+		this.mTimeCountText.getByIndex(0).setCurrentTileIndex(0);
+		this.mTimeCountText.getByIndex(1).setCurrentTileIndex(11);
+
+		final int time = (int) ((int) LevelScreen.mLevelTimeEtalon - LevelScreen.mLevelTime);
+
+		if (time > 0) {
+			this.mTimeCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(time / 10));
+			this.mTimeCountText.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(time % 10));
+		} else {
+			this.mTimeCountText.getByIndex(2).setCurrentTileIndex(0);
+			this.mTimeCountText.getByIndex(3).setCurrentTileIndex(0);
 		}
 	}
 }

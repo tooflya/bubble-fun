@@ -129,7 +129,7 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 		this.clearUpdateHandlers();
 		this.unloadResources();
 
-		if (Options.isMusicEnabled) {
+		if (Options.isSoundEnabled) {
 			Options.mAndEngineSound.release();
 		}
 	}
@@ -145,7 +145,7 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 			if (!this.mIsMusicLoaded) {
 				this.modifier1.reset();
 
-				if (Options.isMusicEnabled) {
+				if (Options.isSoundEnabled) {
 					Options.mAndEngineSound.play();
 				}
 

@@ -2,6 +2,9 @@ package com.tooflya.bubblefun.entities;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.content.Context;
+import android.os.Vibrator;
+
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
@@ -104,6 +107,8 @@ public class Chiky extends EntityBezier {
 	public void initScale(final float scale) {
 		this.setWidth(this.mBaseWidth * scale);
 		this.setHeight(this.mBaseHeight * scale);
+		this.mAim.setWidth(this.mAim.getBaseWidth() * scale);
+		this.mAim.setHeight(this.mAim.getBaseHeight() * scale);
 	}
 
 	public void initName(final String pName) {
@@ -207,17 +212,17 @@ public class Chiky extends EntityBezier {
 			if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
 				if (this.mBubble != null) {
 					final Bubble airgum = ((LevelScreen) Game.screens.get(Screen.LEVEL)).airgums.create();
-					if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
-						if (airgum != null) {
+					if (airgum != null) {
+						if (airgum.getTextureRegion().e(Resources.mBubbleTextureRegion)) {
 							airgum.setParent(mBubble);
 							airgum.setSize(this.mBubble.getWidth(), this.mBubble.getHeight());
 							airgum.initStartPosition(this.getCenterX(), this.getCenterY());
 							airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
+						} else {
+							airgum.setParent(mBubble);
+							airgum.initStartPosition(this.getCenterX(), this.getCenterY());
+							airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
 						}
-					} else {
-						airgum.setParent(mBubble);
-						airgum.initStartPosition(this.getCenterX(), this.getCenterY());
-						airgum.initFinishPositionWithCorrection(airgum.getCenterX(), airgum.getCenterY());
 					}
 				}
 
@@ -243,7 +248,7 @@ public class Chiky extends EntityBezier {
 
 		this.stopAnimation(6);
 
-		if (Options.isMusicEnabled) {
+		if (Options.isSoundEnabled) {
 			final int randomInt = Game.random.nextInt(3);
 			switch (randomInt) {
 			case 1:
@@ -308,7 +313,7 @@ public class Chiky extends EntityBezier {
 			}
 		}
 
-		if (Options.isMusicEnabled) {
+		if (Options.isSoundEnabled) {
 			if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 				Options.mGlassBroke.play();
 			} else {
@@ -336,18 +341,37 @@ public class Chiky extends EntityBezier {
 		} else {
 			super.onCollide(pEntity);
 
-			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
-			b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
-
 			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
-			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
+			if (a != null) {
+				a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 
-			if (this.isFirst()) {
-				a.setCurrentTileIndex(1);
-				b.setCurrentTileIndex(Game.random.nextInt(3));
-			} else {
-				a.setCurrentTileIndex(3);
-				b.setCurrentTileIndex(3);
+				if (this.isFirst()) {
+					a.setCurrentTileIndex(1);
+
+					if (LevelScreen.mKillCount > 1) {
+
+						final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+						if (b != null) {
+							b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
+
+							if (LevelScreen.mKillCount < 4) {
+								b.setCurrentTileIndex(LevelScreen.mKillCount - 1);
+							} else {
+								b.setCurrentTileIndex(2);
+							}
+						}
+					}
+					LevelScreen.mKillCount++;
+				} else {
+
+					final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+					b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
+
+					a.setCurrentTileIndex(3);
+					b.setCurrentTileIndex(3);
+
+					LevelScreen.mKillCount = 0;
+				}
 			}
 
 			this.mAim.animate();
@@ -384,7 +408,7 @@ public class Chiky extends EntityBezier {
 					}
 				}
 
-				if (Options.isMusicEnabled) {
+				if (Options.isSoundEnabled) {
 					if (this.mTextureRegion.e(Resources.mSpaceBirdsTextureRegion)) {
 						Options.mGlassBroke.play();
 					} else {
@@ -398,6 +422,16 @@ public class Chiky extends EntityBezier {
 			}
 
 			this.mState = States.WithGumMove;
+		}
+
+		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
+			Feather particle;
+			for (int i = 0; i < Options.particlesCount; i++) {
+				particle = ((LevelScreen) Game.screens.get(Screen.LEVEL)).feathers.create();
+				if (particle != null) {
+					particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
+				}
+			}
 		}
 	}
 

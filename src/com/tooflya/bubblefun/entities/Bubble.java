@@ -219,7 +219,7 @@ public class Bubble extends Entity {
 				}
 			}
 
-			if (Options.isMusicEnabled) {
+			if (Options.isSoundEnabled) {
 				if (Game.random.nextInt(2) == 1) {
 					Options.mBubbleFastCreate1.play();
 				} else {
@@ -291,7 +291,7 @@ public class Bubble extends Entity {
 			}
 			this.mCurrentState = States.Destroying;
 		}
-		else if (this.mY + this.getHeight() < 0) {
+		else if (this.mY + this.getHeight() < 0 || this.mX < -this.getWidth() || this.mX > Options.cameraWidth) {
 			this.mCurrentState = States.Destroying;
 		}
 	}
@@ -318,7 +318,7 @@ public class Bubble extends Entity {
 		super.onDestroy();
 
 		if (this.mTextureRegion.e(Resources.mRegularBirdsTextureRegion)) {
-			if (Options.isMusicEnabled) {
+			if (Options.isSoundEnabled) {
 				Options.mBubbleDeath.play();
 			}
 		}
@@ -331,6 +331,20 @@ public class Bubble extends Entity {
 		if (this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
 			for (int i = 0; i < 3; i++) {
 				((LevelScreen) Game.screens.get(Screen.LEVEL)).mBubbleBrokes.create().init(this.getCenterX(), this.getCenterY());
+			}
+		}
+
+		if (this.mBirdsKills <= 0 && !this.isHasParent()) {
+			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+			if (b != null) {
+				b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
+				b.setCurrentTileIndex(3);
+			}
+
+			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
+			if (a != null) {
+				a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
+				a.setCurrentTileIndex(2);
 			}
 		}
 	}

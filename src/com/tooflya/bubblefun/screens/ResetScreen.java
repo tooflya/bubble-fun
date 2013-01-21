@@ -64,7 +64,7 @@ public class ResetScreen extends PopupScreen {
 
 		this.mResetText.create();
 		this.mResetText.setScaleCenter(this.mResetText.getWidth() / 2, this.mResetText.getHeight() / 2);
-		this.mResetText.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 70f);
+		this.mResetText.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 100f);
 
 		this.mYIcon.create();
 		this.mYIcon.setScaleCenter(this.mYIcon.getWidth() / 2, this.mYIcon.getHeight() / 2);

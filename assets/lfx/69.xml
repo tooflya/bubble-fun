@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level r1="255" g1="138" b1="255" r2="230" g2="211" b2="255" bluebird="false">
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.2" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0" weight="1">
+<ctrPoint x="90" y="60"/>
+<ctrPoint x="10" y="20"/>
+</chiky>
+<chiky scale="1" minTime="0" maxTime="1" speedTime="0.3" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0" weight="0">
+<ctrPoint x="10" y="60"/>
+<ctrPoint x="90" y="20"/>
+</chiky>
+<tutorial x="0.62" y="0.8" text="tutorial_6" wait="1.5" show="5">
+<tutorial x="0.7" y="0.83" text="tutorial_7" wait="2" show="5">
+</level>

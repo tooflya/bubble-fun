@@ -1,5 +1,8 @@
 package com.tooflya.bubblefun.screens;
 
+import android.content.Intent;
+import android.net.Uri;
+
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
@@ -41,6 +44,7 @@ public class RateScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			modifier4.reset();
+			Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.tooflya.bubblefun")));
 		}
 	};
 

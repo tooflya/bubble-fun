@@ -34,7 +34,7 @@ public class PauseScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			Game.db.updateLevel(Options.levelNumber, 1, 0 ,0);
+			Game.db.updateLevel(Options.levelNumber, 1, 0, 0);
 
 			if (Options.levelNumber % 25 == 0) {
 				ScreenManager.mChangeAction = 3;
@@ -76,7 +76,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final ButtonScaleable mSoundIcon = new ButtonScaleable(Resources.mLevelSoundIconTextureRegion, this.mPanel) {
+	private final ButtonScaleable mMusicIcon = new ButtonScaleable(Resources.mMusicIconTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
@@ -95,6 +95,23 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
+	private final ButtonScaleable mSoundIcon = new ButtonScaleable(Resources.mLevelSoundIconTextureRegion, this.mPanel) {
+
+		/* (non-Javadoc)
+		 * @see com.tooflya.bubblefun.entities.Button#onClick()
+		 */
+		@Override
+		public void onClick() {
+			Options.isSoundEnabled = !Options.isSoundEnabled;
+
+			if (Options.isSoundEnabled) {
+				this.setCurrentTileIndex(0);
+			} else {
+				this.setCurrentTileIndex(1);
+			}
+		}
+	};
+
 	private final EntityManager<Entity> mLables = new EntityManager<Entity>(4, new Entity(Resources.mButtonsLabelsTextureRegion));
 
 	// ===========================================================
@@ -107,7 +124,8 @@ public class PauseScreen extends PopupScreen {
 		this.b3.create().setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 30f);
 		this.b4.create().setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() / 2 + 90f);
 
-		this.mSoundIcon.create().setCenterPosition(0 + 35f, this.mPanel.getHeight() - 40f);
+		this.mSoundIcon.create().setCenterPosition(35f, this.mPanel.getHeight() - 40f);
+		this.mMusicIcon.create().setCenterPosition(75f, this.mPanel.getHeight() - 40f);
 
 		Entity Entity;
 
@@ -139,7 +157,7 @@ public class PauseScreen extends PopupScreen {
 
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
-		
+
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);

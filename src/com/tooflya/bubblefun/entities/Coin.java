@@ -117,7 +117,7 @@ public class Coin extends Entity {
 		this.mFinishScaleModifier.reset();
 		this.mFinishMoveModifier.reset();
 
-		if (Options.isMusicEnabled) {
+		if (Options.isSoundEnabled) {
 			Options.mCoinPickup.play();
 		}
 	}
