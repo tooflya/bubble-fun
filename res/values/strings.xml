@@ -32,13 +32,13 @@
     <string name="tutorial_12">Sometimes the blue bird will disturb you!</string>
 
     <!-- Shop -->
-    <string name="shop_1">Slowdown</string>
+    <string name="shop_1">\"Slowdown\"</string>
     <string name="shop_2">Allows slow birds</string>
-    <string name="shop_3">Multiplication points</string>
+    <string name="shop_3">\"Multiplication points\"</string>
     <string name="shop_4">More chances to win</string>
-    <string name="shop_5">Mark all birds</string>
+    <string name="shop_5">\"Mark all birds\"</string>
     <string name="shop_6">You will be able to shoot at all</string>
-    <string name="shop_7">Murder</string>
+    <string name="shop_7">\"Murder\"</string>
     <string name="shop_8">Shoot down the tagged birds</string>
 
     <!-- Credits -->

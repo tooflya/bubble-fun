@@ -5,7 +5,7 @@ import android.util.FloatMath;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
-import com.tooflya.bubblefun.entities.Button;
+import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.EntityManager;
 
@@ -27,7 +27,7 @@ public class BoxLockedScreen extends PopupScreen {
 
 	private final Entity mText = new Entity(Resources.mLockTextTextureRegion, this.mPanel);
 
-	private final Button mOkIcon = new Button(Resources.mOkButtonTextureRegion, this.mPanel) {
+	private final ButtonScaleable mOkIcon = new ButtonScaleable(Resources.mOkButtonTextureRegion, this.mPanel) {
 
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()

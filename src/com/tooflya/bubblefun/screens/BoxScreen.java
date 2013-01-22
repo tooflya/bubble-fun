@@ -273,6 +273,10 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		mPoints.create().setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
 		mPoints.create().setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
 
+		mPoints.getByIndex(1).setScale(0.8f);
+		mPoints.getByIndex(2).setScale(0.8f);
+		mPoints.getByIndex(3).setScale(0.8f);
+		
 		Entity point;
 		point = mPoints2.create();
 		point.setCenterPosition(Options.cameraCenterX - 60, Options.cameraCenterY + 180f);
@@ -283,19 +287,19 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 		point.setCenterPosition(Options.cameraCenterX - 20, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
-		point.setScale(0f);
+		point.setVisible(false);
 
 		point = mPoints2.create();
 		point.setCenterPosition(Options.cameraCenterX + 20, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
-		point.setScale(0f);
+		point.setVisible(false);
 
 		point = mPoints2.create();
 		point.setCenterPosition(Options.cameraCenterX + 60, Options.cameraCenterY + 180f);
 		point.setCurrentTileIndex(1);
 		point.setScaleCenter(point.getWidth() / 2, point.getHeight() / 2);
-		point.setScale(0f);
+		point.setVisible(false);
 
 		for (int j = 0; j < mPoints2.getCount(); j++) {
 			mPoints.getByIndex(j).setScaleCenter(mPoints.getByIndex(j).getWidth() / 2, mPoints.getByIndex(j).getHeight() / 2);
@@ -396,6 +400,13 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 					} catch (NullPointerException e) {
 
 					}
+
+					for (int i = 0; i < this.mPoints2.getCount(); i++) {
+						this.mPoints.getByIndex(i).setScale(0.8f);
+						this.mPoints2.getByIndex(i).setVisible(false);
+					}
+					this.mPoints.getByIndex(G).setScale(1f);
+					this.mPoints2.getByIndex(G).setVisible(true);
 
 					final int A = G;
 
@@ -542,13 +553,8 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			final float x = box.getX() + box.getParent().getX();
 			final float alpha = Math.max(0f, 66 / Math.abs(x));
 
-			float scale = Math.min(1f, 66 / Math.abs(x));
-			scale = scale < 0.4f ? 0f : scale;
-
 			box.setAlpha(alpha);
 			pictures.get(y).setAlpha(alpha);
-
-			mPoints2.getByIndex(y).setScale(scale);
 		}
 
 		/* TOTAL Score */

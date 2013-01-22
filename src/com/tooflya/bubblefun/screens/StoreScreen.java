@@ -41,8 +41,11 @@ public class StoreScreen extends ReflectionScreen {
 	private final ButtonScaleable mPlayButton;
 
 	private final EntityManager<Entity> mCoinsNumbers;
+	private final EntityManager<Entity> mMarkers;
 
 	private final Rectangle mNumbersHolder;
+
+	private final ButtonScaleable mBuy1Button, mBuy2Button, mBuy3Button, mBuy4Button;
 
 	// ===========================================================
 	// Constructors
@@ -59,7 +62,7 @@ public class StoreScreen extends ReflectionScreen {
 		this.mCoin = new Entity(Resources.mStaticCoinTextureRegion, this.mBackground);
 
 		this.mNumbersHolder = new Rectangle(0, 0, 0, 0);
-		this.mTopPanel.attachChild(this.mNumbersHolder);
+		this.mBackground.attachChild(this.mNumbersHolder);
 
 		this.mCoinsNumbers = new EntityManager<Entity>(5, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mNumbersHolder));
 
@@ -90,6 +93,8 @@ public class StoreScreen extends ReflectionScreen {
 		this.mStoreBackgroundTop = new Entity(Resources.mStorePanelTopTextureRegion, this.mBackground);
 		this.mStoreBackgroundDown = new Entity(Resources.mStorePanelDownTextureRegion, this.mBackground);
 
+		this.mMarkers = new EntityManager<Entity>(4, new Entity(Resources.mShopMarkersTextureRegion, this.mBackground));
+
 		this.mGetCoinsButton = new ButtonScaleable(Resources.mGetCoinsButtonTextureRegion, this.mBackground) {
 
 			/* (non-Javadoc)
@@ -98,6 +103,58 @@ public class StoreScreen extends ReflectionScreen {
 			@Override
 			public void onClick() {
 				Game.screens.setChildScreen(Game.screens.get(Screen.COINS), false, false, true);
+			}
+		};
+
+		this.mBuy1Button = new ButtonScaleable(Resources.mBuyBonusButton1TextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				if (0 < 100) {
+					mGetCoinsButton.onClick();
+				}
+			}
+		};
+
+		this.mBuy2Button = new ButtonScaleable(Resources.mBuyBonusButton2TextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				if (0 < 150) {
+					mGetCoinsButton.onClick();
+				}
+			}
+		};
+
+		this.mBuy3Button = new ButtonScaleable(Resources.mBuyBonusButton3TextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				if (0 < 200) {
+					mGetCoinsButton.onClick();
+				}
+			}
+		};
+
+		this.mBuy4Button = new ButtonScaleable(Resources.mBuyBonusButton4TextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.entities.Button#onClick()
+			 */
+			@Override
+			public void onClick() {
+				if (0 < 250) {
+					mGetCoinsButton.onClick();
+				}
 			}
 		};
 
@@ -120,7 +177,7 @@ public class StoreScreen extends ReflectionScreen {
 		}
 
 		this.mStoreBackground.create().setCenterPosition(Options.cameraCenterX, Options.cameraCenterY);
-		this.mStoreBackgroundTop.create().setCenterPosition(Options.cameraCenterX, this.mStoreBackground.getY() - this.mStoreBackgroundTop.getHeight() / 2);
+		this.mStoreBackgroundTop.create().setCenterPosition(Options.cameraCenterX, this.mStoreBackground.getY() - this.mStoreBackgroundTop.getHeight() / 2 + 1);
 		this.mStoreBackgroundDown.create().setCenterPosition(Options.cameraCenterX, this.mStoreBackground.getY() + this.mStoreBackground.getHeight());
 
 		new Entity(Resources.mBonus1TextureRegion, this.mBackground).create().setCenterPosition(80f, 160f);
@@ -139,6 +196,16 @@ public class StoreScreen extends ReflectionScreen {
 
 		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY + 15f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_7"), true));
 		this.attachChild(new Text(Options.screenCenterX - 80f * Options.cameraRatioFactor, Options.screenCenterY + 35f * Options.cameraRatioFactor, Resources.mFont, Game.getString("shop_8"), true));
+
+		this.mMarkers.create().setCenterPosition(this.mStoreBackground.getCenterX(), 190f);
+		this.mMarkers.create().setCenterPosition(this.mStoreBackground.getCenterX(), 250f);
+		this.mMarkers.create().setCenterPosition(this.mStoreBackground.getCenterX(), 310f);
+		this.mMarkers.create().setCenterPosition(this.mStoreBackground.getCenterX(), 370f);
+
+		this.mBuy1Button.create().setCenterPosition(290f, 160f);
+		this.mBuy2Button.create().setCenterPosition(290f, 220f);
+		this.mBuy3Button.create().setCenterPosition(290f, 280f);
+		this.mBuy4Button.create().setCenterPosition(290f, 340f);
 	}
 
 	// ===========================================================
@@ -230,13 +297,17 @@ public class StoreScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onBackPressed() {
-		switch (ATTACH_TYPE) {
-		case 0:
-			Game.screens.set(Screen.MENU);
-			break;
-		case 1:
-			Game.screens.set(Screen.CHOISE);
-			break;
+		if (this.hasChildScene()) {
+			Game.screens.clearChildScreens();
+		} else {
+			switch (ATTACH_TYPE) {
+			case 0:
+				Game.screens.set(Screen.MENU);
+				break;
+			case 1:
+				Game.screens.set(Screen.CHOISE);
+				break;
+			}
 		}
 	}
 
