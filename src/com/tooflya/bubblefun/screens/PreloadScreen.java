@@ -67,16 +67,16 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 				if (loaded) {
 					switch (ScreenManager.mChangeAction) {
 					case 0:
-						Game.screens.set(Screen.LEVEL);
+						Game.mScreens.set(Screen.LEVEL);
 						break;
 					case 1:
-						Game.screens.set(Screen.MENU);
+						Game.mScreens.set(Screen.MENU);
 						break;
 					case 3:
-						Game.screens.set(Screen.BOX);
+						Game.mScreens.set(Screen.BOX);
 						break;
 					default:
-						Game.screens.set(Screen.CHOISE);
+						Game.mScreens.set(Screen.CHOISE);
 					}
 
 					/** Register timer of loading progressbar changes */

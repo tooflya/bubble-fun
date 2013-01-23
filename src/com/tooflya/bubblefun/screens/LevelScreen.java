@@ -287,7 +287,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		mMenuButton = new ButtonScaleable(Resources.mMenuButtonTextureRegion, this.mBackground) {
 			@Override
 			public void onClick() {
-				Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
+				Game.mScreens.setChildScreen(Game.mScreens.get(Screen.PAUSE), false, true, true);
 			}
 		};
 
@@ -698,7 +698,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public void onAttached() {
 		super.onAttached();
 
-		Game.isAlreadyPlayed = true;
+		Game.mIsAlreadyPlayed = true;
 
 		switch (Options.boxNumber) {
 		case 0:
@@ -739,7 +739,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	public void onDetached() {
 		super.onDetached();
 
-		Game.screens.get(Screen.LEVEL).clearChildScene();
+		Game.mScreens.get(Screen.LEVEL).clearChildScene();
 	}
 
 	/*
@@ -775,7 +775,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 					text.setVisible(false);
 				}
 
-				Game.screens.setChildScreen(Game.screens.get(Screen.LEVELEND), false, false, true);
+				Game.mScreens.setChildScreen(Game.mScreens.get(Screen.LEVELEND), false, false, true);
 				this.mLevelEndRunning = true;
 
 				bubbles.clear();
@@ -855,11 +855,11 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			if (this.getChildScene() != Game.screens.get(Screen.LEVELEND)) {
-				Game.screens.clearChildScreens();
+			if (this.getChildScene() != Game.mScreens.get(Screen.LEVELEND)) {
+				Game.mScreens.clearChildScreens();
 			}
 		} else {
-			Game.screens.setChildScreen(Game.screens.get(Screen.PAUSE), false, true, true);
+			Game.mScreens.setChildScreen(Game.mScreens.get(Screen.PAUSE), false, true, true);
 		}
 	}
 

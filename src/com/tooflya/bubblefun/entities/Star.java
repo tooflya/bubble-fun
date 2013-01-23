@@ -1,7 +1,5 @@
 package com.tooflya.bubblefun.entities;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import android.util.FloatMath;

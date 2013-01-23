@@ -44,7 +44,7 @@ public class RateScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			modifier4.reset();
-			Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.tooflya.bubblefun")));
+			Game.mInstance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.tooflya.bubblefun")));
 		}
 	};
 
@@ -92,7 +92,7 @@ public class RateScreen extends PopupScreen {
 	public void onAttached() {
 		super.onAttached();
 
-		Game.isAlreadyPlayed = false;
+		Game.mIsAlreadyPlayed = false;
 	}
 
 	/* (non-Javadoc)
@@ -100,7 +100,7 @@ public class RateScreen extends PopupScreen {
 	 */
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.MENU).clearChildScene();
+		Game.mScreens.get(Screen.MENU).clearChildScene();
 	}
 
 }

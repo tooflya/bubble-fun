@@ -97,7 +97,7 @@ public class ResetScreen extends PopupScreen {
 	 */
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.MORE).clearChildScene();
+		Game.mScreens.get(Screen.MORE).clearChildScene();
 	}
 
 }

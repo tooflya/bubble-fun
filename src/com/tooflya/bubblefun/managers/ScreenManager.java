@@ -58,13 +58,13 @@ public class ScreenManager {
 	private final AlphaModifier modifierOn = new AlphaModifier(0.4f, 0f, 1f) {
 		@Override
 		public void onFinished() {
-			Game.engine.getScene().onDetached();
+			Game.mEngine.getScene().onDetached();
 
 			if (Screen.screen != -1) {
-				Game.engine.setScene(screens[Screen.screen]);
+				Game.mEngine.setScene(screens[Screen.screen]);
 				screens[Screen.screen].onAttached();
 			} else {
-				Game.engine.setScene(tempScreen);
+				Game.mEngine.setScene(tempScreen);
 				tempScreen.onAttached();
 			}
 
@@ -78,7 +78,7 @@ public class ScreenManager {
 	private final AlphaModifier modifierOff = new AlphaModifier(0.4f, 1f, 0f) {
 		@Override
 		public void onFinished() {
-			((Screen) Game.engine.getScene()).onPostAttached();
+			((Screen) Game.mEngine.getScene()).onPostAttached();
 		}
 	};
 
@@ -95,7 +95,7 @@ public class ScreenManager {
 		this.rectangle.registerEntityModifier(this.modifierOn);
 		this.rectangle.registerEntityModifier(this.modifierOff);
 
-		Game.camera.setHUD(this.mHeadUpDisplay);
+		Game.mCamera.setHUD(this.mHeadUpDisplay);
 	}
 
 	// ===========================================================

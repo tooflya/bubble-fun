@@ -10,8 +10,6 @@ import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.input.touch.detector.ClickDetector;
-import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
 import org.anddev.andengine.input.touch.detector.ScrollDetector;
 import org.anddev.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.anddev.andengine.input.touch.detector.SurfaceScrollDetector;
@@ -110,7 +108,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.MENU);
+				Game.mScreens.set(Screen.MENU);
 			}
 		};
 
@@ -149,7 +147,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 				labels.add(picture1);
 			}
 
-			if (!Game.db.getBox(bi + 1).isOpen() && bi != 3) {
+			if (!Game.mDatabase.getBox(bi + 1).isOpen() && bi != 3) {
 				collects.add((BoxLabel) new BoxLabel(Options.cameraWidth * i + Options.cameraCenterX - Options.cameraCenterX / 1.5f * i, 400, Resources.mCollectTextTextureRegion, this.rectangle, true).create());
 				if (bi == 1) {
 					final Entity n = new Entity(Resources.mBoxCollect50TextureRegion, collects.get(bi));
@@ -176,19 +174,19 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 						boxes.get(bi).animation();
 
-						Game.screens.setChildScreen(Game.screens.get(Screen.BL), false, false, true);
+						Game.mScreens.setChildScreen(Game.mScreens.get(Screen.BL), false, false, true);
 
 						return;
 
 					}
 
 					Options.boxNumber = bi;
-					Game.screens.set(Screen.CHOISE);
+					Game.mScreens.set(Screen.CHOISE);
 				}
 
 				@Override
 				protected boolean prepare() {
-					return Game.db.getBox(bi + 1).isOpen();
+					return Game.mDatabase.getBox(bi + 1).isOpen();
 				}
 			};
 
@@ -217,7 +215,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 			pictures.add(picture);
 
-			if (!Game.db.getBox(bi + 1).isOpen() && bi != 3) {
+			if (!Game.mDatabase.getBox(bi + 1).isOpen() && bi != 3) {
 				final Entity chain = (Entity) new Entity(Resources.mChainTextureRegion, picture).create();
 				chain.setCenterPosition(picture.getWidth() / 2 + 5f, picture.getHeight() / 2 - 8f);
 				chain.enableFullBlendFunction();
@@ -325,7 +323,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	public void onAttached() {
 		super.onAttached();
 
-		SC = Game.db.getTotalCore();
+		SC = Game.mDatabase.getTotalCore();
 
 		Game.mAdvertisementManager.showSmall();
 	}
@@ -420,16 +418,16 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 						break;
 					}
 
-					int mStarsNeeded = l - Game.db.getTotalStars();
+					int mStarsNeeded = l - Game.mDatabase.getTotalStars();
 
-					if (!Game.db.getBox(G + 1).isOpen()) {
+					if (!Game.mDatabase.getBox(G + 1).isOpen()) {
 						try {
 							if (mStarsNeeded <= 0) {
 								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
 								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
 									@Override
 									public void onFinished() {
-										Game.db.updateBox(A + 1, 1);
+										Game.mDatabase.updateBox(A + 1, 1);
 										locks.get(A).destroy();
 
 										mBoxUnlockPanel.down();
@@ -462,7 +460,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 						}
 					}
 
-					if (!Game.db.getBox(G + 1).isOpen() && G != 3 && !this.mTimeToUnlockBox) {
+					if (!Game.mDatabase.getBox(G + 1).isOpen() && G != 3 && !this.mTimeToUnlockBox) {
 						this.mBoxUnlockPanel.up();
 					} else {
 						this.mBoxUnlockPanel.down();
@@ -482,14 +480,14 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 								break;
 							}
 
-							mStarsNeeded = l - Game.db.getTotalStars();
+							mStarsNeeded = l - Game.mDatabase.getTotalStars();
 
 							if (mStarsNeeded <= 0 || Options.DEBUG) {
 								final ScaleModifier lockAnimationOutScale = new ScaleModifier(1f, 1f, 2f);
 								final AlphaModifier lockAnimationOutAlpha = new AlphaModifier(1f, 1f, 0f) {
 									@Override
 									public void onFinished() {
-										Game.db.updateBox(A + 1, 1);
+										Game.mDatabase.updateBox(A + 1, 1);
 										locks.get(A).destroy();
 									}
 								};
@@ -521,7 +519,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 								BOX_INDEX = A;
 								boxes.get(A).animation();
 
-								Game.screens.setChildScreen(Game.screens.get(Screen.BL), false, false, true);
+								Game.mScreens.setChildScreen(Game.mScreens.get(Screen.BL), false, false, true);
 							}
 						}
 					} catch (NullPointerException ex) {
@@ -630,9 +628,9 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			Game.screens.clearChildScreens();
+			Game.mScreens.clearChildScreens();
 		} else {
-			Game.screens.set(Screen.MENU);
+			Game.mScreens.set(Screen.MENU);
 		}
 	}
 

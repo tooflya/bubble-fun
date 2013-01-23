@@ -52,7 +52,7 @@ public class MoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.MENU);
+				Game.mScreens.set(Screen.MENU);
 			}
 		};
 
@@ -63,7 +63,7 @@ public class MoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.setChildScreen(Game.screens.get(Screen.RESET), false, false, true);
+				Game.mScreens.setChildScreen(Game.mScreens.get(Screen.RESET), false, false, true);
 			}
 		};
 
@@ -74,7 +74,7 @@ public class MoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.CREDITS);
+				Game.mScreens.set(Screen.CREDITS);
 			}
 		};
 
@@ -144,9 +144,9 @@ public class MoreScreen extends ReflectionScreen {
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			Game.screens.clearChildScreens();
+			Game.mScreens.clearChildScreens();
 		} else {
-			Game.screens.set(Screen.MENU);
+			Game.mScreens.set(Screen.MENU);
 		}
 	}
 

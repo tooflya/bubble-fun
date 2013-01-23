@@ -7,7 +7,6 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.entities.Airplane;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.Chiky;
-import com.tooflya.bubblefun.entities.EntityBezier;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
@@ -18,7 +17,7 @@ public class BubbleFactory {
 		final float startAngle = 2 * Options.PI * Game.random.nextFloat();
 		final float stepAngle = 2 * Options.PI / pCount;
 		for (int i = 0; i < pCount; i++) {
-			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.create();
+			bubble = (Bubble) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).bubbles.create();
 			if (bubble != null) {
 				bubble.initStartPosition(pX, pY);
 				bubble.initFinishPosition(pX + pSpeed * FloatMath.cos(startAngle + i * stepAngle), pY + pSpeed * FloatMath.sin(startAngle + i * stepAngle));
@@ -29,7 +28,7 @@ public class BubbleFactory {
 	private static void BubblesRainRandom(final float pX, final float pY, final int pCount) {
 		Bubble bubble;
 		for (int i = 0; i < pCount; i++) {
-			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.create();
+			bubble = (Bubble) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).bubbles.create();
 			if (bubble != null) {
 				final float x = pX + (pCount * bubble.getWidth()) * (0.5f - Game.random.nextFloat());
 				final float y = pY + (pCount * bubble.getWidth()) * (0.5f - Game.random.nextFloat());
@@ -43,7 +42,7 @@ public class BubbleFactory {
 	private static void BubblesRainControl(final float pX, final float pY, final int pCount) {
 		Bubble bubble;
 		for (int i = 0; i < pCount; i++) {
-			bubble = (Bubble) ((LevelScreen) Game.screens.get(Screen.LEVEL)).bubbles.create();
+			bubble = (Bubble) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).bubbles.create();
 			if (bubble != null) {
 				final float x = pX + (i - pCount / 2) * 2 * bubble.getWidth();
 				final float speed = Options.bubbleMaxSpeed;
@@ -54,7 +53,7 @@ public class BubbleFactory {
 	}
 
 	private static void ChikiesSpeedUpDown(final float pSpeedKoef) {
-		final EntityManager<Chiky> chikies = ((LevelScreen) Game.screens.get(Screen.LEVEL)).chikies;
+		final EntityManager<Chiky> chikies = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).chikies;
 		for (int i = 0; i < chikies.getCount(); i++) {
 			if (chikies.getByIndex(i).isCanCollide()) {
 				chikies.getByIndex(i).mKoefSpeedTime = pSpeedKoef;
@@ -67,7 +66,7 @@ public class BubbleFactory {
 	}
 
 	public static void BonusAirplane() {
-		((Airplane) ((LevelScreen) Game.screens.get(Screen.LEVEL)).mAirplane.create()).init();
+		((Airplane) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mAirplane.create()).init();
 	}
 
 	public static void BubbleBonus(final float pX, final float pY, final int type) {

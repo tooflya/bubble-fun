@@ -62,7 +62,7 @@ public class Airplane extends Entity {
 		this.getTextureRegion().setFlippedHorizontal(this._mX - this.mX > 0);
 
 		if (this.mShootTime <= 0f) {
-			final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
+			final LevelScreen screen = (LevelScreen) Game.mScreens.get(Screen.LEVEL);
 			final Chiky chiky = screen.chikies.getByIndex(Game.random.nextInt(screen.chikies.getCount() + 1));
 
 			if (chiky.isCanCollide()) {

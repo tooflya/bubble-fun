@@ -5,8 +5,6 @@ import org.anddev.andengine.util.MathUtils;
 
 import com.tooflya.bubblefun.Options;
 
-import android.util.FloatMath;
-
 public class Laser extends Entity {
 
 	public Laser(TiledTextureRegion pTiledTextureRegion, org.anddev.andengine.entity.Entity pParentScreen) {

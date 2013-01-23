@@ -34,14 +34,14 @@ public class PauseScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			Game.db.updateLevel(Options.levelNumber, 1, 0, 0);
+			Game.mDatabase.updateLevel(Options.levelNumber, 1, 0, 0);
 
 			if (Options.levelNumber % 25 == 0) {
 				ScreenManager.mChangeAction = 3;
-				Game.screens.set(Screen.PRELOAD);
+				Game.mScreens.set(Screen.PRELOAD);
 			} else {
 				Options.levelNumber++;
-				((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+				((LevelScreen) Game.mScreens.get(Screen.LEVEL)).reInit();
 
 				modifier4.reset();
 			}
@@ -56,7 +56,7 @@ public class PauseScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			ScreenManager.mChangeAction = 2;
-			Game.screens.set(Screen.PRELOAD);
+			Game.mScreens.set(Screen.PRELOAD);
 
 			modifier4.reset();
 		}
@@ -70,7 +70,7 @@ public class PauseScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			ScreenManager.mChangeAction = 1;
-			Game.screens.set(Screen.PRELOAD);
+			Game.mScreens.set(Screen.PRELOAD);
 
 			modifier4.reset();
 		}
@@ -172,6 +172,6 @@ public class PauseScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.LEVEL).clearChildScene();
+		Game.mScreens.get(Screen.LEVEL).clearChildScene();
 	}
 }

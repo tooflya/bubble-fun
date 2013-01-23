@@ -49,7 +49,7 @@ public class CreditsScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.MORE);
+				Game.mScreens.set(Screen.MORE);
 			}
 		};
 
@@ -76,7 +76,7 @@ public class CreditsScreen extends ReflectionScreen {
 		this.attachChild(new Text(Options.screenCenterX, Options.screenCenterY + 180f * Options.cameraRatioFactor, Resources.mFont, Game.getString("www.tooflya.com")));
 
 		try {
-			final PackageInfo pInfo = Game.instance.getPackageManager().getPackageInfo(Game.instance.getPackageName(), 0);
+			final PackageInfo pInfo = Game.mInstance.getPackageManager().getPackageInfo(Game.mInstance.getPackageName(), 0);
 
 			this.attachChild(new Text(Options.screenWidth - 60f * Options.cameraRatioFactor, Options.screenHeight - 50f * Options.cameraRatioFactor, Resources.mFont, Game.getString("version") + pInfo.versionName));
 			this.attachChild(new Text(Options.screenWidth - 65f * Options.cameraRatioFactor, Options.screenHeight - 25f * Options.cameraRatioFactor, Resources.mFont, Game.getString("build") + pInfo.versionCode));
@@ -127,7 +127,7 @@ public class CreditsScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onBackPressed() {
-		Game.screens.set(Screen.MORE);
+		Game.mScreens.set(Screen.MORE);
 	}
 
 	// ===========================================================

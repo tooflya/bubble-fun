@@ -105,7 +105,7 @@ public class BoxLockedScreen extends PopupScreen {
 			break;
 		}
 
-		this.mStarsNeeded = l - Game.db.getTotalStars();
+		this.mStarsNeeded = l - Game.mDatabase.getTotalStars();
 
 		if (this.mStarsNeeded < 10) {
 			this.mStarsCountText.getByIndex(2).setCurrentTileIndex(this.mStarsNeeded);
@@ -130,7 +130,7 @@ public class BoxLockedScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.BOX).clearChildScene();
+		Game.mScreens.get(Screen.BOX).clearChildScene();
 	}
 
 }

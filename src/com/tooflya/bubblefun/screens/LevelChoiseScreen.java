@@ -5,8 +5,8 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
-import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.managers.CloudsManager;
 import com.tooflya.bubblefun.managers.EntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
@@ -68,7 +68,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.BOX);
+				Game.mScreens.set(Screen.BOX);
 			}
 		};
 
@@ -184,7 +184,7 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onBackPressed() {
-		Game.screens.set(Screen.BOX);
+		Game.mScreens.set(Screen.BOX);
 	}
 
 	// ===========================================================

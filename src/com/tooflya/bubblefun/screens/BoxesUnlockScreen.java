@@ -89,7 +89,7 @@ public class BoxesUnlockScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.BOX).clearChildScene();
+		Game.mScreens.get(Screen.BOX).clearChildScene();
 	}
 
 }

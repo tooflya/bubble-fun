@@ -20,12 +20,10 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.ui.activity.LayoutGameActivity;
 import org.anddev.andengine.util.user.IAsyncCallback;
-import org.anddev.andengine.util.user.ShakeEventListener;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
-import android.hardware.SensorManager;
 import android.opengl.GLException;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -37,6 +35,9 @@ import com.tooflya.bubblefun.screens.AndEngineScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
 /**
+ * That's simple main activity of game chich extends LayoutGameActivity for correct display of advertisiment.
+ * Also it implements IAsyncCallback because we need do some loading operations on background.
+ * 
  * @author Tooflya.com
  * @since
  */
@@ -46,50 +47,64 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	// Constants
 	// ===========================================================
 
-	/** Random instance for all application */
+	/**
+	 * Random instance for all application.
+	 * Using a one copy of the entire application, we obtain a more normal distribution.
+	 */
 	public final static Random random = new Random();
 
 	/** Instance of engine */
-	public static Engine engine;
+	public static Engine mEngine;
 
 	/**  */
-	public static Activity instance;
+	public static Activity mInstance;
 
 	/** Context of main activity */
-	public static Context context;
+	public static Context mContext;
 
-	/** Camera of the game */
-	public static Camera camera;
+	/**
+	 * An instance of the class to work with the camera.
+	 * The camera has various methods to display, rotation and displacement all display area.
+	 */
+	public static Camera mCamera;
 
-	/** */
-	public static DataStorage db;
+	/**
+	 * Instance of the class to work with SQLite.
+	 */
+	public static DataStorage mDatabase;
 
 	/**  */
-	public static boolean isGameLoaded = false;
-
-	/**  */
-	public static ScreenManager screens;
-
-	/** */
-	public static float mCurrentFramesPerSecond;
+	public static ScreenManager mScreens;
 
 	/** */
 	public static AdvertisementManager mAdvertisementManager;
 
-	/** */
-	public static boolean isAlreadyPlayed = false;
+	/**
+	 * Variable is used to determine the player's return after the game.
+	 * Typically, after such return we offer an various actions associated with an introduction to the game.
+	 */
+	public static boolean mIsAlreadyPlayed = false;
+
+	/** 
+	 * Flag knowing the extent of the congestion state of the game at the moment.
+	 */
+	public static boolean mIsGameLoaded = false;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	/**  */
-	private long screenChangeTime = 0;
+	/**
+	 * This variable contains the time elapsed since the last switch the screen.
+	 * Used to avoid double-clicking on the back button. 
+	 */
+	private long mScreenChangeTime = 0;
 
-	@SuppressWarnings("unused")
-	private SensorManager mSensorManager;
-	@SuppressWarnings("unused")
-	private ShakeEventListener mSensorListener;
+	/**
+	 * Frames Per Second. Serve as information data,
+	 * but is sometimes used to remove the unnecessary elements in lost productivity.
+	 */
+	private  float mCurrentFramesPerSecond;
 
 	// ===========================================================
 	// Virtual methods
@@ -102,13 +117,6 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onLoadComplete() {
-		/**
-		 * this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE); this.mSensorListener = new ShakeEventListener();
-		 * 
-		 * this.mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
-		 * 
-		 * public void onShake() { if (LevelScreen.running) { ((LevelScreen) Game.screens.get(Screen.LEVEL)).restartMove1.reset(); } } });
-		 **/
 	}
 
 	/*
@@ -120,7 +128,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	@Override
 	public Engine onLoadEngine() {
 		/** Let's remember Context of this activity */
-		context = getApplicationContext();
+		mContext = getApplicationContext();
 
 		/** Set the position and resolution of camera */
 		final DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -156,11 +164,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 		Options.cameraRatioFactor = Options.screenWidth / Options.cameraWidth > Options.screenHeight / Options.cameraHeight ? Options.screenWidth / Options.cameraWidth : Options.screenHeight / Options.cameraHeight;
 
 		/** Initialize camera instance */
-		camera = new Camera(0, 0, Options.screenWidth, Options.screenHeight);
+		mCamera = new Camera(0, 0, Options.screenWidth, Options.screenHeight);
 
 		/** Initialize the configuration of engine */
-		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), camera)
-				.setWakeLockOptions(WakeLockOptions.SCREEN_BRIGHT)
+		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), mCamera)
 				.setWakeLockOptions(WakeLockOptions.SCREEN_ON)
 				.setNeedsMusic(true)
 				.setNeedsSound(true);
@@ -172,7 +179,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 		options.getTouchOptions().setRunOnUpdateThread(true);
 
 		/** Try to init our engine. */
-		engine = new Engine(options) {
+		mEngine = new Engine(options) {
 
 			/*
 			 * (non-Javadoc)
@@ -183,10 +190,15 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 			public void onDrawFrame(GL10 pGL) throws InterruptedException {
 				super.onDrawFrame(pGL);
 
-				int error = pGL.glGetError();
+				final int error = pGL.glGetError();
 
 				/**
-				 * 1280 GL_INVALID_ENUM 1281 GL_INVALID_VALUE 1282 GL_INVALID_OPERATION 1283 GL_STACK_OVERFLOW 1284 GL_STACK_UNDERFLOW 1285 GL_OUT_OF_MEMORY
+				 * 1280 GL_INVALID_ENUM
+				 * 1281 GL_INVALID_VALUE
+				 * 1282 GL_INVALID_OPERATION
+				 * 1283 GL_STACK_OVERFLOW
+				 * 1284 GL_STACK_UNDERFLOW
+				 * 1285 GL_OUT_OF_MEMORY
 				 */
 				if (error != GL10.GL_NO_ERROR) {
 					throw new GLException(error, "OpenGL ES has error occurred: " + error);
@@ -201,21 +213,21 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 			@Override
 			protected void onDrawScene(GL10 pGL) {
 				super.onDrawScene(pGL);
-
+				mCamera.setRotation(mCamera.getRotation()+0.01f);
 				GLHelper.enableDither(pGL);
 			}
 		};
 
 		/** */
-		db = new DataStorage();
+		mDatabase = new DataStorage();
 
 		/** Create screen manager */
-		screens = new ScreenManager();
+		mScreens = new ScreenManager();
 
 		/**  */
-		instance = this;
+		mInstance = this;
 
-		return engine;
+		return mEngine;
 	}
 
 	/*
@@ -240,22 +252,22 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 			MusicFactory.setAssetBasePath("mfx/");
 
 			try {
-				Options.mMainSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W1.ogg");
-				Options.mLevelSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "W2.ogg");
-				Options.mButtonSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "button_click.wav");
-				Options.mAndEngineSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "W4.ogg");
-				Options.mBirdsDeath1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_1.wav");
-				Options.mBirdsDeath2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_2.wav");
-				Options.mBirdsDeath3 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_death_3.wav");
-				Options.mBirdsShotted1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_shooted_1.wav");
-				Options.mBirdsShotted2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "birds_shooted_2.wav");
-				Options.mBubbleDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_death.wav");
-				Options.mBubbleFastCreate1 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create1.wav");
-				Options.mBubbleFastCreate2 = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "bubble_fast_create2.wav");
-				Options.mLaser = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "laser.ogg");
-				Options.mGlassBroke = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "glass-broke.ogg");
-				Options.mAsteroidDeath = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "asteroid-boom.ogg");
-				Options.mCoinPickup = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "coin.ogg");
+				Options.mMainSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "W1.ogg");
+				Options.mLevelSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "W2.ogg");
+				Options.mButtonSound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "button_click.wav");
+				Options.mAndEngineSound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "W4.ogg");
+				Options.mBirdsDeath1 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "birds_death_1.wav");
+				Options.mBirdsDeath2 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "birds_death_2.wav");
+				Options.mBirdsDeath3 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "birds_death_3.wav");
+				Options.mBirdsShotted1 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "birds_shooted_1.wav");
+				Options.mBirdsShotted2 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "birds_shooted_2.wav");
+				Options.mBubbleDeath = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bubble_death.wav");
+				Options.mBubbleFastCreate1 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bubble_fast_create1.wav");
+				Options.mBubbleFastCreate2 = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bubble_fast_create2.wav");
+				Options.mLaser = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "laser.ogg");
+				Options.mGlassBroke = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "glass-broke.ogg");
+				Options.mAsteroidDeath = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "asteroid-boom.ogg");
+				Options.mCoinPickup = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "coin.ogg");
 
 				Options.mMainSound.setLooping(true);
 				Options.mLevelSound.setLooping(true);
@@ -275,11 +287,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 		Resources.loadCommonResources();
 		Resources.loadFirstResources();
 
-		screens.createSurfaces();
+		mScreens.createSurfaces();
 
 		/** Wait while progressbar is running */
-		while (!isGameLoaded) {
-		} // TODO: synchronized?
+		while (!mIsGameLoaded) {};
 	}
 
 	/*
@@ -289,7 +300,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 */
 	@Override
 	public void onComplete() {
-		screens.set(Screen.MENU);
+		mScreens.set(Screen.MENU);
 	}
 
 	/*
@@ -301,6 +312,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	public Scene onLoadScene() {
 		if (Options.DEBUG) {
 			this.getEngine().registerUpdateHandler(new FPSCounter() {
+				
+				/* (non-Javadoc)
+				 * @see org.anddev.andengine.entity.util.FPSCounter#onUpdate(float)
+				 */
 				@Override
 				public void onUpdate(float pSecondsElapsed) {
 					super.onUpdate(pSecondsElapsed);
@@ -313,6 +328,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 
 				private float mTime;
 
+				/* (non-Javadoc)
+				 * @see org.anddev.andengine.engine.handler.IUpdateHandler#onUpdate(float)
+				 */
 				@Override
 				public void onUpdate(float pSecondsElapsed) {
 					this.mTime += pSecondsElapsed;
@@ -326,6 +344,9 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 					}
 				}
 
+				/* (non-Javadoc)
+				 * @see org.anddev.andengine.engine.handler.IUpdateHandler#reset()
+				 */
 				@Override
 				public void reset() {
 				}
@@ -348,16 +369,16 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	public void onDestroy() {
 		super.onDestroy();
 
-		// TODO: Here we need to correctly shutdown our application and unload all resources
-		getTextureManager().unloadTextures();
-
 		/**
-		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues. NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
+		 * Notify the system to finalize and collect all objects of the application on exit so that the process running the application can be killed by the system without causing issues.
+		 * NOTE: If this is set to true then the process will not be killed until all of its threads have closed.
 		 */
 		System.runFinalizersOnExit(true);
 
 		/**
-		 * Force the system to close the application down completely instead of retaining it in the background. The process that runs the application will be killed. The application will be completely created as a new application in a new process if the user starts the application again.
+		 * Force the system to close the application down completely instead of retaining it in the background.
+		 * The process that runs the application will be killed.
+		 * The application will be completely created as a new application in a new process if the user starts the application again.
 		 */
 		System.exit(0);
 	}
@@ -371,15 +392,13 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	public void onResumeGame() {
 		super.onResumeGame();
 
-		//mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
-
 		if (Options.mLastPlayedMusic != null) {
 			Options.mLastPlayedMusic.resume();
 		}
 
 		try {
-			screens.getCurrent().setIgnoreUpdate(false);
-			screens.getCurrent().setChildrenIgnoreUpdate(false);
+			mScreens.getCurrent().setIgnoreUpdate(false);
+			mScreens.getCurrent().setChildrenIgnoreUpdate(false);
 		} catch (NullPointerException e) {
 		}
 	}
@@ -407,8 +426,8 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 		}
 
 		try {
-			screens.getCurrent().setIgnoreUpdate(true);
-			screens.getCurrent().setChildrenIgnoreUpdate(true);
+			mScreens.getCurrent().setIgnoreUpdate(true);
+			mScreens.getCurrent().setChildrenIgnoreUpdate(true);
 		} catch (NullPointerException e) {
 		}
 	}
@@ -425,17 +444,17 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 				return true;
 			}
 
-			if (System.currentTimeMillis() - screenChangeTime < 500) {
+			if (System.currentTimeMillis() - mScreenChangeTime < 500) {
 				return true;
 			}
 
-			screenChangeTime = System.currentTimeMillis();
+			mScreenChangeTime = System.currentTimeMillis();
 
 			if (Options.isSoundEnabled) {
 				Options.mButtonSound.play();
 			}
 
-			screens.get(Screen.screen).onBackPressed();
+			mScreens.get(Screen.screen).onBackPressed();
 
 			return true;
 		}
@@ -463,21 +482,34 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @param textures
+	 */
 	public static void loadTextures(final BitmapTextureAtlas... textures) {
-		engine.getTextureManager().loadTextures(textures);
+		mEngine.getTextureManager().loadTextures(textures);
 	}
 
+	/**
+	 * @param textures
+	 */
 	public static void unloadTextures(final BitmapTextureAtlas... textures) {
-		engine.getTextureManager().unloadTextures(textures);
+		mEngine.getTextureManager().unloadTextures(textures);
 	}
 
+	/**
+	 * 
+	 */
 	public static void close() {
-		instance.finish();
+		mInstance.finish();
 	}
 
+	/**
+	 * @param pString
+	 * @return
+	 */
 	public static String getString(final String pString) {
 		try {
-			return Game.context.getString(Game.context.getResources().getIdentifier(pString, "string", Game.context.getPackageName()));
+			return Game.mContext.getString(Game.mContext.getResources().getIdentifier(pString, "string", Game.mContext.getPackageName()));
 		} catch (NotFoundException ex) {
 			return pString;
 		}

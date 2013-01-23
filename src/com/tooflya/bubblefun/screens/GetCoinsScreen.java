@@ -133,7 +133,7 @@ public class GetCoinsScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.STORE).clearChildScene();
+		Game.mScreens.get(Screen.STORE).clearChildScene();
 	}
 
 }

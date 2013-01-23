@@ -37,7 +37,7 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 
 	private final Rectangle mBackground = new Rectangle(0, 0, 380, 610);
 
-	private final Entity mAndengineIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "andengine.png", 0, 0, 1, 1), this.mBackground);
+	private final Entity mAndengineIcon = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.mContext, "andengine.png", 0, 0, 1, 1), this.mBackground);
 
 	/**
 	 * Set the timer, which will change the size of the loading bar, depending on the load time.
@@ -45,7 +45,7 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 	private final TimerHandler mTimer = new TimerHandler(2.8f, true, new ITimerCallback() {
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			Game.screens.set(new SplashScreen());
+			Game.mScreens.set(new SplashScreen());
 		}
 	});
 
@@ -177,7 +177,7 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 			this.isClickedToContinue = true;
 
 			if (arg1.isActionDown()) {
-				Game.screens.set(new SplashScreen());
+				Game.mScreens.set(new SplashScreen());
 			}
 
 			return true;

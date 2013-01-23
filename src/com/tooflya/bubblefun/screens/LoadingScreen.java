@@ -30,10 +30,10 @@ public class LoadingScreen extends Screen {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	/** Declare the entity that acts as a background image of the screen. */
-	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-second.png", 0, 0, 1, 1), this);
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.mContext, "preload-screen-second.png", 0, 0, 1, 1), this);
 
 	/** Declare the entity that acts as a loading bar. */
-	private final Entity mProgressBar = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen-fill.png", 0, 660, 1, 1), this.mBackground);
+	private final Entity mProgressBar = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.mContext, "preload-screen-fill.png", 0, 660, 1, 1), this.mBackground);
 
 	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
 	private final TimerHandler mTimer = new TimerHandler(1f / 15.0f, true, new ITimerCallback() {
@@ -45,7 +45,7 @@ public class LoadingScreen extends Screen {
 				mProgressBar.setWidth(mProgressBar.getWidth() + 3);
 			} else {
 				/** If progressbar is full. */
-				Game.isGameLoaded = true;
+				Game.mIsGameLoaded = true;
 			}
 		}
 	});
@@ -84,14 +84,14 @@ public class LoadingScreen extends Screen {
 	@Override
 	public void onPostAttached() {
 
-		Game.instance.runOnUiThread(new Runnable() {
+		Game.mInstance.runOnUiThread(new Runnable() {
 			/* (non-Javadoc)
 			 * @see java.lang.Runnable#run()
 			 */
 			@Override
 			public void run() {
 				/** Start background loader */
-				new AsyncTaskLoader().execute((Game) Game.instance);
+				new AsyncTaskLoader().execute((Game) Game.mInstance);
 			}
 
 		});

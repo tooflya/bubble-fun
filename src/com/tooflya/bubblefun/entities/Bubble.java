@@ -168,7 +168,7 @@ public class Bubble extends Entity {
 		this.mCurrentState = States.Moving;
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.clear();
+			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glints.clear();
 		}
 	}
 
@@ -204,7 +204,7 @@ public class Bubble extends Entity {
 		this.mCurrentState = States.Moving;
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.clear();
+			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glints.clear();
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Bubble extends Entity {
 			// TODO: (R) Is it needed here?
 			Glint particle;
 			for (int i = 0; i < 15; i++) {
-				particle = ((Glint) ((LevelScreen) Game.screens.get(Screen.LEVEL)).glints.create());
+				particle = ((Glint) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glints.create());
 				if (particle != null) {
 					particle.Init(i, this);
 				}
@@ -227,7 +227,7 @@ public class Bubble extends Entity {
 				}
 			}
 		} else if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion) || this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
-			this.speed = ((LevelScreen) Game.screens.get(Screen.LEVEL)).mSnowBallSpeed.create();
+			this.speed = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mSnowBallSpeed.create();
 			this.speed.setRotationCenter(this.speed.getWidth() / 2, 0);
 
 			if (Options.isMusicEnabled) {
@@ -330,18 +330,18 @@ public class Bubble extends Entity {
 
 		if (this.mTextureRegion.e(Resources.mSpaceBubbleTextureRegion)) {
 			for (int i = 0; i < 3; i++) {
-				((LevelScreen) Game.screens.get(Screen.LEVEL)).mBubbleBrokes.create().init(this.getCenterX(), this.getCenterY());
+				((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mBubbleBrokes.create().init(this.getCenterX(), this.getCenterY());
 			}
 		}
 
 		if (this.mBirdsKills <= 0 && !this.isHasParent()) {
-			final Entity b = ((LevelScreen) Game.screens.get(Screen.LEVEL)).awesome.create();
+			final Entity b = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).awesome.create();
 			if (b != null) {
 				b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 				b.setCurrentTileIndex(3);
 			}
 
-			final Entity a = ((LevelScreen) Game.screens.get(Screen.LEVEL)).points.create();
+			final Entity a = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).points.create();
 			if (a != null) {
 				a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 				a.setCurrentTileIndex(2);

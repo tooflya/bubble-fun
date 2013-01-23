@@ -148,10 +148,10 @@ public class MenuScreen extends ReflectionScreen {
 				try {
 					Intent intent = new Intent(Intent.ACTION_VIEW,
 							Uri.parse("twitter://user?screen_name=tooflya"));
-					Game.instance.startActivity(intent);
+					Game.mInstance.startActivity(intent);
 
 				} catch (Exception e) {
-					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW,
+					Game.mInstance.startActivity(new Intent(Intent.ACTION_VIEW,
 							Uri.parse("https://twitter.com/#!/tooflya")));
 				}
 			}
@@ -166,10 +166,10 @@ public class MenuScreen extends ReflectionScreen {
 			@Override
 			public void onClick() {
 				try {
-					Game.context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
-					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/386292514777918")));
+					Game.mContext.getPackageManager().getPackageInfo("com.facebook.katana", 0);
+					Game.mInstance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/386292514777918")));
 				} catch (Exception e) {
-					Game.instance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/386292514777918")));
+					Game.mInstance.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/386292514777918")));
 				}
 			}
 		};
@@ -183,7 +183,7 @@ public class MenuScreen extends ReflectionScreen {
 			public void onClick() {
 				super.onClick();
 
-				Game.screens.set(Screen.BOX);
+				Game.mScreens.set(Screen.BOX);
 			}
 		};
 
@@ -195,7 +195,7 @@ public class MenuScreen extends ReflectionScreen {
 			@Override
 			public void onClick() {
 				StoreScreen.ATTACH_TYPE = 0;
-				Game.screens.set(Screen.STORE);
+				Game.mScreens.set(Screen.STORE);
 			}
 		};
 
@@ -206,7 +206,7 @@ public class MenuScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.set(Screen.MORE);
+				Game.mScreens.set(Screen.MORE);
 			}
 		};
 
@@ -356,8 +356,8 @@ public class MenuScreen extends ReflectionScreen {
 	 */
 	@Override
 	public void onPostAttached() {
-		if (Game.isAlreadyPlayed) {
-			Game.screens.setChildScreen(Game.screens.get(Screen.RATE), false, false, true);
+		if (Game.mIsAlreadyPlayed) {
+			Game.mScreens.setChildScreen(Game.mScreens.get(Screen.RATE), false, false, true);
 		}
 	}
 
@@ -379,9 +379,9 @@ public class MenuScreen extends ReflectionScreen {
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			Game.screens.clearChildScreens();
+			Game.mScreens.clearChildScreens();
 		} else {
-			Game.screens.setChildScreen(Game.screens.get(Screen.EXIT), false, false, true);
+			Game.mScreens.setChildScreen(Game.mScreens.get(Screen.EXIT), false, false, true);
 		}
 	}
 

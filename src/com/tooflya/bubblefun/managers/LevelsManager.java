@@ -118,7 +118,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 			icon.setCenterPosition(25f + X, 25f + Y);
 			icon.id = (i + 1);
 
-			Level level = Game.db.getLevel(icon.id);
+			Level level = Game.mDatabase.getLevel(icon.id);
 
 			if (icon.id == 1 || level.isOpen()) {
 				icon.blocked = false;
@@ -161,7 +161,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	}
 
 	public static void generateLevel(final int pLevel) {
-		final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
+		final LevelScreen screen = (LevelScreen) Game.mScreens.get(Screen.LEVEL);
 
 		tutorialCount = 0;
 		LevelScreen.mBirdsCount = 0;
@@ -342,7 +342,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 		} else {
 			try {
-				mLevelLoader.loadLevelFromAsset(Game.instance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
+				mLevelLoader.loadLevelFromAsset(Game.mInstance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

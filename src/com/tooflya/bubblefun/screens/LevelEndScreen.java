@@ -48,7 +48,7 @@ public class LevelEndScreen extends PopupScreen {
 		@Override
 		public void onClick() {
 			ScreenManager.mChangeAction = 2;
-			Game.screens.set(Screen.PRELOAD);
+			Game.mScreens.set(Screen.PRELOAD);
 
 			modifier4.reset();
 			mRectangleAlphaModifier.reset();
@@ -62,7 +62,7 @@ public class LevelEndScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).reInit();
 
 			modifier4.reset();
 			mRectangleAlphaModifier.reset();
@@ -79,10 +79,10 @@ public class LevelEndScreen extends PopupScreen {
 			if (Game.mAdvertisementManager.isAdvertisementDisabled()) {
 				if (Options.levelNumber % 25 == 0) {
 					ScreenManager.mChangeAction = 3;
-					Game.screens.set(Screen.PRELOAD);
+					Game.mScreens.set(Screen.PRELOAD);
 				} else {
 					Options.levelNumber++;
-					((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
+					((LevelScreen) Game.mScreens.get(Screen.LEVEL)).reInit();
 
 					modifier4.reset();
 					mRectangleAlphaModifier.reset();
@@ -90,7 +90,7 @@ public class LevelEndScreen extends PopupScreen {
 			} else {
 				modifier4.reset();
 				Options.levelNumber++;
-				Game.screens.set(Screen.ADS);
+				Game.mScreens.set(Screen.ADS);
 			}
 		}
 	};
@@ -326,8 +326,8 @@ public class LevelEndScreen extends PopupScreen {
 		score = 0;
 		totalscore = 0;
 
-		Game.db.updateLevel(Options.levelNumber, 1, mStarsCount, LevelScreen.Score);
-		Game.db.updateLevel(Options.levelNumber + 1, 1, 0, 0);
+		Game.mDatabase.updateLevel(Options.levelNumber, 1, mStarsCount, LevelScreen.Score);
+		Game.mDatabase.updateLevel(Options.levelNumber + 1, 1, 0, 0);
 
 		mLevelCompleteCapture.create().setPosition(this.mPanel.getWidth() / 2 - this.mLevelCompleteCapture.getWidth() / 2 - 5f, this.mPanel.getHeight() / 2 - 200 - this.mLevelCompleteCapture.getHeight() / 2, true);
 	}
@@ -340,7 +340,7 @@ public class LevelEndScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.LEVEL).clearChildScene();
+		Game.mScreens.get(Screen.LEVEL).clearChildScene();
 
 		/** Register timer of loading progressbar changes */
 		this.unregisterUpdateHandler(mTimer);

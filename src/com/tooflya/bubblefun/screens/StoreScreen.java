@@ -73,8 +73,8 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				((LevelScreen) Game.screens.get(Screen.LEVEL)).reInit();
-				Game.screens.set(Screen.PRELOAD);
+				((LevelScreen) Game.mScreens.get(Screen.LEVEL)).reInit();
+				Game.mScreens.set(Screen.PRELOAD);
 			}
 		};
 
@@ -102,7 +102,7 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				Game.screens.setChildScreen(Game.screens.get(Screen.COINS), false, false, true);
+				Game.mScreens.setChildScreen(Game.mScreens.get(Screen.COINS), false, false, true);
 			}
 		};
 
@@ -298,14 +298,14 @@ public class StoreScreen extends ReflectionScreen {
 	@Override
 	public void onBackPressed() {
 		if (this.hasChildScene()) {
-			Game.screens.clearChildScreens();
+			Game.mScreens.clearChildScreens();
 		} else {
 			switch (ATTACH_TYPE) {
 			case 0:
-				Game.screens.set(Screen.MENU);
+				Game.mScreens.set(Screen.MENU);
 				break;
 			case 1:
-				Game.screens.set(Screen.CHOISE);
+				Game.mScreens.set(Screen.CHOISE);
 				break;
 			}
 		}

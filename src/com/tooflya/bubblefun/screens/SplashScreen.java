@@ -32,13 +32,17 @@ public class SplashScreen extends Screen implements IOnSceneTouchListener {
 	private final BitmapTextureAtlas mBackgroundTextureAtlas = new BitmapTextureAtlas(512, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 	/** Declare the entity that acts as a background image of the screen. */
-	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.context, "preload-screen.png", 0, 0, 1, 1), this);
+	private final Entity mBackground = new Entity(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBackgroundTextureAtlas, Game.mContext, "preload-screen.png", 0, 0, 1, 1), this);
 
 	/** Set the timer, which will change the size of the loading bar, depending on the load time. */
 	private final TimerHandler mTimer = new TimerHandler(2f, true, new ITimerCallback() {
+
+		/* (non-Javadoc)
+		 * @see org.anddev.andengine.engine.handler.timer.ITimerCallback#onTimePassed(org.anddev.andengine.engine.handler.timer.TimerHandler)
+		 */
 		@Override
 		public void onTimePassed(TimerHandler pTimerHandler) {
-			Game.screens.set(new LoadingScreen());
+			Game.mScreens.set(new LoadingScreen());
 		}
 	});
 
@@ -111,7 +115,7 @@ public class SplashScreen extends Screen implements IOnSceneTouchListener {
 			this.isClickedToContinue = true;
 
 			if (arg1.isActionDown()) {
-				Game.screens.set(new LoadingScreen());
+				Game.mScreens.set(new LoadingScreen());
 			}
 
 			return true;

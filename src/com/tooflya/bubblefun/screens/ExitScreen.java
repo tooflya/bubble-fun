@@ -89,7 +89,7 @@ public class ExitScreen extends PopupScreen {
 
 	@Override
 	public void onClose() {
-		Game.screens.get(Screen.MENU).clearChildScene();
+		Game.mScreens.get(Screen.MENU).clearChildScene();
 	}
 
 }

@@ -1,13 +1,9 @@
 package com.tooflya.bubblefun.entities;
 
-import java.util.ArrayList;
-
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 import com.tooflya.bubblefun.Game;
-import com.tooflya.bubblefun.screens.LevelScreen;
-import com.tooflya.bubblefun.screens.Screen;
 
 public class HoldSwarm extends BaseSwarm {
 

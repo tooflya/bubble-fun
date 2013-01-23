@@ -42,8 +42,8 @@ public class BoxUnlockPanel extends Rectangle {
 			@Override
 			public void onClick() {
 
-				Game.screens.get(Screen.BOX).setChildScene(Game.screens.get(Screen.BOXESUNLOCK), false, false, true);
-				Game.screens.get(Screen.BOXESUNLOCK).onAttached();
+				Game.mScreens.get(Screen.BOX).setChildScene(Game.mScreens.get(Screen.BOXESUNLOCK), false, false, true);
+				Game.mScreens.get(Screen.BOXESUNLOCK).onAttached();
 			}
 		};
 		this.mButton.setPosition(this.mPanel.getX() + this.mPanel.getWidth() - 30f, 5f, true);

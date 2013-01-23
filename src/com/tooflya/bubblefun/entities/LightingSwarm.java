@@ -28,7 +28,7 @@ public class LightingSwarm extends BaseSwarm {
 	public void animation() {
 		super.animation();
 
-		final LevelScreen screen = (LevelScreen) Game.screens.get(Screen.LEVEL);
+		final LevelScreen screen = (LevelScreen) Game.mScreens.get(Screen.LEVEL);
 
 		screen.mLightings.clear();
 		mLights.clear();
@@ -77,7 +77,7 @@ public class LightingSwarm extends BaseSwarm {
 		if (this.mLightSecondsElapsed >= 0.5f) {
 			this.mLightSecondsElapsed = 0;
 
-			((LevelScreen) Game.screens.get(Screen.LEVEL)).mLightings.clear();
+			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mLightings.clear();
 			mLights.clear();
 		}
 	}

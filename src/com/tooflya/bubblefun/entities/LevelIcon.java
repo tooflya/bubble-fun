@@ -30,7 +30,7 @@ public class LevelIcon extends ButtonScaleable {
 		if (!this.blocked) {
 			Options.levelNumber = this.id;
 			StoreScreen.ATTACH_TYPE = 1;
-			Game.screens.set(Screen.STORE);
+			Game.mScreens.set(Screen.STORE);
 		}
 	}
 }

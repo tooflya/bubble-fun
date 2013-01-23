@@ -48,7 +48,7 @@ public class DataStorage extends SQLiteOpenHelper {
 	 * 
 	 */
 	public DataStorage() {
-		super(Game.context, DATABASE_NAME, null, DATABASE_VERSION);
+		super(Game.mContext, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	// ===========================================================

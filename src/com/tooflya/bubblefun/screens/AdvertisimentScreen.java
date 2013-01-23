@@ -7,7 +7,19 @@ import com.tooflya.bubblefun.entities.Button;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 
+/**
+ * @author Tooflya.com
+ * @since
+ */
 public class AdvertisimentScreen extends Screen {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
 
 	private final Entity mBackground;
 
@@ -15,6 +27,10 @@ public class AdvertisimentScreen extends Screen {
 	private final ButtonScaleable mAdsButton;
 
 	public final ButtonScaleable mClose;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	public AdvertisimentScreen() {
 		this.mBackground = new Entity(Resources.mPreloadBackgroundTextureRegion, this);
@@ -80,6 +96,9 @@ public class AdvertisimentScreen extends Screen {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onPostAttached()
+	 */
 	@Override
 	public void onPostAttached() {
 	}
@@ -103,7 +122,7 @@ public class AdvertisimentScreen extends Screen {
 	 */
 	@Override
 	public void onBackPressed() {
-		Game.screens.set(Screen.LEVEL);
+		Game.mScreens.set(Screen.LEVEL);
 	}
 
 	// ===========================================================
@@ -111,7 +130,7 @@ public class AdvertisimentScreen extends Screen {
 	// ===========================================================
 
 	private final void removeAds() {
-
+		// TODO: Open Google Play and buy "Remove Ads" item.
 	}
 
 }

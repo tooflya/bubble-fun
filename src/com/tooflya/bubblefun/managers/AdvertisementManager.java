@@ -65,7 +65,7 @@ public class AdvertisementManager {
 				mNoBigAdsView.setVisibility(View.VISIBLE);
 			}
 
-			((AdvertisimentScreen) Game.screens.get(Screen.ADS)).mClose.setVisible(true);
+			((AdvertisimentScreen) Game.mScreens.get(Screen.ADS)).mClose.setVisible(true);
 			mProgressBar.setVisibility(View.GONE);
 		}
 	};
@@ -98,13 +98,13 @@ public class AdvertisementManager {
 		this.mAdsRequest.addTestDevice("FA02AC6CC21C807191ED1A07863CD045");
 		this.mAdsRequest.addTestDevice("D964D0EE15FC33E6A1678227284CFA70");
 
-		this.mSmallAdvertisiment = (AdView) Game.instance.findViewById(R.id.adView);
-		this.mBigAdvertisiment = (AdView) Game.instance.findViewById(R.id.adViewBig);
+		this.mSmallAdvertisiment = (AdView) Game.mInstance.findViewById(R.id.adView);
+		this.mBigAdvertisiment = (AdView) Game.mInstance.findViewById(R.id.adViewBig);
 
-		this.mNoSmallAdsView = Game.instance.findViewById(R.id.noAdsSmall);
-		this.mNoBigAdsView = Game.instance.findViewById(R.id.noAdsBig);
+		this.mNoSmallAdsView = Game.mInstance.findViewById(R.id.noAdsSmall);
+		this.mNoBigAdsView = Game.mInstance.findViewById(R.id.noAdsBig);
 
-		this.mProgressBar = Game.instance.findViewById(R.id.progressBar);
+		this.mProgressBar = Game.mInstance.findViewById(R.id.progressBar);
 
 		if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 11) {
 			this.mBigAdvertisiment.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -113,7 +113,7 @@ public class AdvertisementManager {
 		this.mSmallAdvertisiment.setAdListener(new SmallAdListener());
 		this.mBigAdvertisiment.setAdListener(new BigAdListener());
 
-		this.isAdvertisementDisabled = Game.db.isAdvertisimentDisabled();
+		this.isAdvertisementDisabled = Game.mDatabase.isAdvertisimentDisabled();
 
 		if (!this.isAdvertisementDisabled()) {
 			this.mSmallAdvertisiment.loadAd(this.mAdsRequest);
@@ -132,22 +132,22 @@ public class AdvertisementManager {
 
 	public void showSmall() {
 		if (!this.isAdvertisementDisabled()) {
-			Game.instance.runOnUiThread(this.mShowSmallRunnable);
+			Game.mInstance.runOnUiThread(this.mShowSmallRunnable);
 		}
 	}
 
 	public void hideSmall() {
-		Game.instance.runOnUiThread(this.mHideSmallRunnable);
+		Game.mInstance.runOnUiThread(this.mHideSmallRunnable);
 	}
 
 	public void showBig() {
 		if (!this.isAdvertisementDisabled()) {
-			Game.instance.runOnUiThread(this.mLoadBigRunnable);
+			Game.mInstance.runOnUiThread(this.mLoadBigRunnable);
 		}
 	}
 
 	public void hideBig() {
-		Game.instance.runOnUiThread(this.mHideBigRunnable);
+		Game.mInstance.runOnUiThread(this.mHideBigRunnable);
 	}
 
 	private final class SmallAdListener implements AdListener {
@@ -185,7 +185,7 @@ public class AdvertisementManager {
 		@Override
 		public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 			AdvertisementManager.this.isBAdvertisementAvailable = false;
-			Game.instance.runOnUiThread(AdvertisementManager.this.mShowBigRunnable);
+			Game.mInstance.runOnUiThread(AdvertisementManager.this.mShowBigRunnable);
 		}
 
 		@Override
@@ -199,7 +199,7 @@ public class AdvertisementManager {
 		@Override
 		public void onReceiveAd(Ad arg0) {
 			AdvertisementManager.this.isBAdvertisementAvailable = true;
-			Game.instance.runOnUiThread(AdvertisementManager.this.mShowBigRunnable);
+			Game.mInstance.runOnUiThread(AdvertisementManager.this.mShowBigRunnable);
 		}
 	}
 }
