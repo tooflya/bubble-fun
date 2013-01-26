@@ -8,7 +8,8 @@ import android.os.Vibrator;
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
+import com.tooflya.bubblefun.managers.ListEntityManager;
 import com.tooflya.bubblefun.screens.LevelScreen;
 import com.tooflya.bubblefun.screens.Screen;
 
@@ -36,7 +37,7 @@ public class BlueBird extends Entity {
 
 	private boolean mIsSleep;
 
-	private EntityManager<?> mFeathersManager;
+	private ListEntityManager<?> mFeathersManager;
 
 	// ===========================================================
 	// Constructors
@@ -47,7 +48,7 @@ public class BlueBird extends Entity {
 	 * @param pFeathersManager
 	 * @param pParentScreen
 	 */
-	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final EntityManager<?> pFeathersManager, final org.anddev.andengine.entity.Entity pParentScreen) {
+	public BlueBird(final TiledTextureRegion pTiledTextureRegion, final ListEntityManager<?> pFeathersManager, final org.anddev.andengine.entity.Entity pParentScreen) {
 		super(pTiledTextureRegion, pParentScreen);
 
 		this.mFeathersManager = pFeathersManager;
@@ -77,7 +78,7 @@ public class BlueBird extends Entity {
 			} else if (this.mTextureRegion.e(Resources.mSpaceBlueBirdTextureRegion)) {
 				Glass particle;
 				for (int i = 0; i < Options.particlesCount; i++) {
-					particle = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glasses.create();
+					particle = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mGlasses.create();
 					if (particle != null) {
 						particle.Init().setCenterPosition(this.getCenterX(), this.getCenterY());
 					}
@@ -127,7 +128,7 @@ public class BlueBird extends Entity {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		this.setSpeedX(mSpeed);
 
 		this.mX = Game.random.nextInt(2) == 0 ? 0 - this.mWidth : Options.cameraWidth + this.mWidth;
@@ -150,7 +151,7 @@ public class BlueBird extends Entity {
 		}
 
 		if (this.mIsSleep) {
-			if (LevelScreen.running) {
+			if (LevelScreen.mLevelRunning) {
 				this.mSleepTime--;
 			}
 		} else {

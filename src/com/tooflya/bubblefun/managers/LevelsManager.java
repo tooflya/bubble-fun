@@ -19,7 +19,6 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.database.Level;
 import com.tooflya.bubblefun.entities.Bonus;
 import com.tooflya.bubblefun.entities.Chiky;
-import com.tooflya.bubblefun.entities.Coin;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.screens.LevelChoiseScreen;
@@ -30,7 +29,7 @@ import com.tooflya.bubblefun.screens.Screen;
  * @author Tooflya.com
  * @since
  */
-public class LevelsManager<T> extends EntityManager<Entity> {
+public class LevelsManager<T> extends ArrayEntityManager<Entity> {
 
 	// ===========================================================
 	// Constants
@@ -45,7 +44,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 
 	private static Chiky chiky = null;
 
-	private EntityManager<Entity> mNumbers;
+	private ArrayEntityManager<Entity> mNumbers;
 
 	private static LevelLoader mLevelLoader;
 
@@ -91,7 +90,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 	// Methods
 	// ===========================================================
 
-	public void generate(final EntityManager<Entity> pNumbers) {
+	public void generate(final ArrayEntityManager<Entity> pNumbers) {
 		this.mNumbers = pNumbers;
 
 		this.generate();
@@ -201,7 +200,7 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 		mLevelLoader.registerEntityLoader("chiky", new IEntityLoader() {
 			@Override
 			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				chiky = screen.chikies.create();
+				chiky = screen.mChikies.create();
 				if (chiky != null)
 				{
 					// TODO: (R) Try to not set default values. For example, how we can set Float.MAX_VALUE for normalMaxTime.
@@ -254,43 +253,6 @@ public class LevelsManager<T> extends EntityManager<Entity> {
 					final int y = SAXUtils.getIntAttribute(pAttributes, "y", 50);
 					chiky.addControlPoint((short) x, (short) y);
 				}
-			}
-		});
-
-		/**
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		mLevelLoader.registerEntityLoader("coin", new IEntityLoader() {
-			@Override
-			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Coin air = screen.coins.create();
-
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-				final float y = SAXUtils.getFloatAttributeOrThrow(pAttributes, "y");
-
-				air.setCenterPosition(x, y);
-			}
-		});
-
-		/**
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		mLevelLoader.registerEntityLoader("bonus", new IEntityLoader() {
-			@Override
-			public void onLoadEntity(final String pEntityName, final Attributes pAttributes) {
-				final Bonus bonus = screen.bonuses.create();
-
-				final float x = SAXUtils.getFloatAttributeOrThrow(pAttributes, "x");
-
-				final float time = SAXUtils.getFloatAttributeOrThrow(pAttributes, "time");
-
-				bonus.initTime(time, x, 1f);
 			}
 		});
 

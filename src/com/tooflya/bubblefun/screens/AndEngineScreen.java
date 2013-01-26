@@ -6,6 +6,7 @@ import org.anddev.andengine.entity.modifier.ScaleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -80,6 +81,8 @@ public class AndEngineScreen extends Screen implements IOnSceneTouchListener {
 
 	public AndEngineScreen() {
 		this.loadResources();
+
+		this.setBackground(new ColorBackground(1f, 1f, 1f, 1f));
 
 		this.mBackground.setColor(1f, 1f, 1f);
 

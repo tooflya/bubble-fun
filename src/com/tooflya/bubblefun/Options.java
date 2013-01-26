@@ -102,6 +102,27 @@ public class Options {
 	public final static float bubbleMaxTimeMove = 2f; // Seconds.
 
 	// ===========================================================
+	// Count of elements which will be created  immediately
+	// ===========================================================
+
+	public final static int COUNT_POINTS = 5;
+	public final static int COUNT_AWESOME = 5;
+	public final static int COUNT_MARKS = 20;
+	public final static int COUNT_BUBBLES = 10;
+	public final static int COUNT_FEATHERS = 100;
+	public final static int COUNT_GLASSES = 100;
+	public final static int COUNT_GLINTS = 50;
+	public final static int COUNT_AIMS = 10;
+	public final static int COUNT_ACCELERATORS = 0;
+	public final static int COUNT_ARROWS = 10;
+	public final static int COUNT_TIMER_BARS = 5;
+	public final static int COUNT_TIMER_NUMBERS = 5;
+	public final static int COUNT_CHIKIES = 10;
+	public final static int COUNT_HATS = 10;
+	public final static int COUNT_BROKES = 10;
+	public final static int COUNT_BLUE_FEATHERS = 30;
+
+	// ===========================================================
 	// Sound elements
 	// ===========================================================
 
@@ -114,4 +135,10 @@ public class Options {
 	public static Sound mGlassBroke;
 	public static Sound mAsteroidDeath;
 	public static Sound mCoinPickup;
+
+	public static class Debug {
+		public static float deltaFPS = 0;
+		public static float sumFPS = 0;
+		public static int countFPS = 0;
+	}
 }

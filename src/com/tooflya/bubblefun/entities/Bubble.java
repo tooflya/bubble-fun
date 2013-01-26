@@ -168,7 +168,7 @@ public class Bubble extends Entity {
 		this.mCurrentState = States.Moving;
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
-			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glints.clear();
+			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mGlints.clear();
 		}
 	}
 
@@ -204,7 +204,7 @@ public class Bubble extends Entity {
 		this.mCurrentState = States.Moving;
 
 		if (this.mTextureRegion.e(Resources.mSnowyBubbleTextureRegion)) {
-			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glints.clear();
+			((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mGlints.clear();
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Bubble extends Entity {
 			// TODO: (R) Is it needed here?
 			Glint particle;
 			for (int i = 0; i < 15; i++) {
-				particle = ((Glint) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).glints.create());
+				particle = ((Glint) ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mGlints.create());
 				if (particle != null) {
 					particle.Init(i, this);
 				}
@@ -335,13 +335,13 @@ public class Bubble extends Entity {
 		}
 
 		if (this.mBirdsKills <= 0 && !this.isHasParent()) {
-			final Entity b = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).awesome.create();
+			final Entity b = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mAwesome.create();
 			if (b != null) {
 				b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 				b.setCurrentTileIndex(3);
 			}
 
-			final Entity a = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).points.create();
+			final Entity a = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mPoints.create();
 			if (a != null) {
 				a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 				a.setCurrentTileIndex(2);

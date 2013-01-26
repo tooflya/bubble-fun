@@ -8,13 +8,13 @@ import com.tooflya.bubblefun.entities.Snowflake;
  * @author Tooflya.com
  * @since
  */
-public class SnowManager<T> extends EntityManager<Snowflake> {
+public class SnowManager<T> extends ArrayEntityManager<Snowflake> {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private final static int mSnowflakesAlwaysCount = 8;
+	private final static int mSnowflakesAlwaysCount = 30;
 
 	private final static float mSnowflakesMaxSpeed = 2f;
 	private final static float mSnowflakesMinSpeed = 0.2f;

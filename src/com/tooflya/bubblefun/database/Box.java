@@ -20,6 +20,9 @@ public class Box {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param pOpen
+	 */
 	public Box(final boolean pOpen) {
 		this.mOpen = pOpen;
 	}
@@ -28,6 +31,9 @@ public class Box {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @return
+	 */
 	public boolean isOpen() {
 		return this.mOpen;
 	}

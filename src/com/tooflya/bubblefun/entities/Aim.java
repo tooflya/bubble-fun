@@ -61,9 +61,9 @@ public class Aim extends Entity {
 
 		this.mTime = -1f;
 
-		this.mAimArrow = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).arrows.create();
-		this.mTimeBar = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).timerBars.create();
-		this.mTimeNumber = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).timerNumbers.create();
+		this.mAimArrow = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mArrows.create();
+		this.mTimeBar = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mTimerBars.create();
+		this.mTimeNumber = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mTimerNumbers.create();
 
 		this.mTimeBar.enableBlendFunction();
 		this.mTimeBar.setAlpha(0f);

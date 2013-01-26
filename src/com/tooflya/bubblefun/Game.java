@@ -11,7 +11,6 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
-import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.util.FPSCounter;
@@ -28,6 +27,7 @@ import android.opengl.GLException;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 
+import com.tooflya.bubblefun.Options.Debug;
 import com.tooflya.bubblefun.database.DataStorage;
 import com.tooflya.bubblefun.managers.AdvertisementManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
@@ -52,6 +52,10 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 * Using a one copy of the entire application, we obtain a more normal distribution.
 	 */
 	public final static Random random = new Random();
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
 
 	/** Instance of engine */
 	public static Engine mEngine;
@@ -89,10 +93,6 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 	 * Flag knowing the extent of the congestion state of the game at the moment.
 	 */
 	public static boolean mIsGameLoaded = false;
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
 
 	/**
 	 * This variable contains the time elapsed since the last switch the screen.
@@ -161,14 +161,15 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 		Options.touchHeight = Options.cameraHeight * Options.touchHeightPercents;
 		Options.chikyOffsetY = Options.cameraHeight * Options.chikyOffsetYPercent;
 
-		Options.cameraRatioFactor = Options.screenWidth / Options.cameraWidth > Options.screenHeight / Options.cameraHeight ? Options.screenWidth / Options.cameraWidth : Options.screenHeight / Options.cameraHeight;
+		Options.cameraRatioFactor = (Options.screenWidth / Options.cameraWidth > Options.screenHeight / Options.cameraHeight) ? 
+				Options.screenWidth / Options.cameraWidth :
+				Options.screenHeight / Options.cameraHeight;
 
 		/** Initialize camera instance */
 		mCamera = new Camera(0, 0, Options.screenWidth, Options.screenHeight);
 
 		/** Initialize the configuration of engine */
 		final EngineOptions options = new EngineOptions(true, ScreenOrientation.PORTRAIT, new FillResolutionPolicy(), mCamera)
-				.setWakeLockOptions(WakeLockOptions.SCREEN_ON)
 				.setNeedsMusic(true)
 				.setNeedsSound(true);
 
@@ -213,7 +214,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 			@Override
 			protected void onDrawScene(GL10 pGL) {
 				super.onDrawScene(pGL);
-				mCamera.setRotation(mCamera.getRotation()+0.01f);
+				
 				GLHelper.enableDither(pGL);
 			}
 		};

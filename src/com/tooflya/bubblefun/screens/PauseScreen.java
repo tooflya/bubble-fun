@@ -5,7 +5,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
 public class PauseScreen extends PopupScreen {
@@ -112,7 +112,7 @@ public class PauseScreen extends PopupScreen {
 		}
 	};
 
-	private final EntityManager<Entity> mLables = new EntityManager<Entity>(4, new Entity(Resources.mButtonsLabelsTextureRegion));
+	private final ArrayEntityManager<Entity> mLables = new ArrayEntityManager<Entity>(4, new Entity(Resources.mButtonsLabelsTextureRegion));
 
 	// ===========================================================
 	// Constructors

@@ -26,7 +26,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.managers.CloudsManager;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
@@ -58,7 +58,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 	private final Rectangle rectangle = new Rectangle(0, 0, Options.cameraWidth * MENUITEMS, 0);
 	private final Rectangle mScoreHolder;
-	private final EntityManager<Entity> mPoints, mPoints2;
+	private final ArrayEntityManager<Entity> mPoints, mPoints2;
 
 	private Entity mTopPanel;
 
@@ -72,7 +72,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 	private boolean mTimeToUnlockBox;
 
 	private Entity mTotalScoreText;
-	private final EntityManager<Entity> mTotalScoreCountText;
+	private final ArrayEntityManager<Entity> mTotalScoreCountText;
 
 	private int totalscore = 0;
 
@@ -112,8 +112,8 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 			}
 		};
 
-		mPoints = new EntityManager<Entity>(MENUITEMS, new Entity(Resources.mBoxesNavigationTextureRegion, this.mBackground));
-		mPoints2 = new EntityManager<Entity>(MENUITEMS, new Entity(Resources.mBoxesNavigationTextureRegion, this.mBackground));
+		mPoints = new ArrayEntityManager<Entity>(MENUITEMS, new Entity(Resources.mBoxesNavigationTextureRegion, this.mBackground));
+		mPoints2 = new ArrayEntityManager<Entity>(MENUITEMS, new Entity(Resources.mBoxesNavigationTextureRegion, this.mBackground));
 
 		this.mClouds.generateStartClouds();
 
@@ -305,7 +305,7 @@ public class BoxScreen extends ReflectionScreen implements IOnSceneTouchListener
 
 		this.mTotalScoreText.create().setPosition(0, 7f, true);
 
-		this.mTotalScoreCountText = new EntityManager<Entity>(10, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mScoreHolder));
+		this.mTotalScoreCountText = new ArrayEntityManager<Entity>(10, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mScoreHolder));
 		for (int a = 0; a < 5; a++) {
 			this.mTotalScoreCountText.create().setCenterPosition(this.mTotalScoreText.getX() + this.mTotalScoreText.getWidth() + 13f + 18f * a, 21f);
 		}

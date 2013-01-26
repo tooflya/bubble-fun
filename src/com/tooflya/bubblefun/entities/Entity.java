@@ -21,6 +21,8 @@ public class Entity extends AnimatedSprite {
 	// Constants
 	// ===========================================================
 
+	private static int LAST_ZINDEX = 0;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -44,6 +46,9 @@ public class Entity extends AnimatedSprite {
 
 	/** */
 	protected boolean mIsCanCollide;
+
+	/** */
+	protected boolean mIsAvailable;
 
 	// ===========================================================
 	// Constructors
@@ -73,18 +78,27 @@ public class Entity extends AnimatedSprite {
 			this.mParentScreen.attachChild(this);
 
 			/** If <i>pRegisterTouchArea</i> is defined we need to register this entity as clickable. */
-			if (pRegisterTouchArea) {
-				if (this.mParentScreen instanceof Screen) {
-					((Screen) this.mParentScreen).registerTouchArea(this);
-				} else {
-					if (this.mParentScreen.getParent() instanceof Screen) {
-						((Screen) this.mParentScreen.getParent()).registerTouchArea(this);
-					} else {
-						((Screen) this.mParentScreen.getParent().getParent()).registerTouchArea(this);
+			try {
+				if (pRegisterTouchArea) {
+					org.anddev.andengine.entity.Entity parent = this.mParentScreen;
+
+					/** At this point, we need to find the root of the parent of the entity, which, in turn, must be an instance of class Screen. */
+					while (true) {
+						if (parent instanceof Screen) {
+							((Screen) parent).registerTouchArea(this);
+
+							break;
+						}
+
+						parent = (org.anddev.andengine.entity.Entity) parent.getParent();
 					}
 				}
+			} catch (final StackOverflowError ex) {
+				/** If something went wrong. */
 			}
 		}
+
+		this.mZIndex = LAST_ZINDEX++;
 	}
 
 	/**
@@ -195,18 +209,26 @@ public class Entity extends AnimatedSprite {
 	private final void show() {
 		this.setVisible(true);
 		this.setIgnoreUpdate(false);
+
+		this.mIsAvailable = true;
 	}
 
 	/** Method wich used only for disapper (setting visible to false) this entity and set ignore to true. */
 	private final void hide() {
 		this.setVisible(false);
 		this.setIgnoreUpdate(true);
+
+		this.mIsAvailable = false;
 	}
 
 	/** Method wich return new Object of current extended Class by using Reflection to know current class name. */
-	public final Entity deepCopy() {
+	public final Entity deepCopy() throws NullPointerException {
 		try {
-			return (Entity) Class.forName(this.getClass().getName()).getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class).newInstance(getTextureRegion(), this.mParentScreen);
+			final Entity entity = (Entity) Class.forName(this.getClass().getName()).getConstructor(TiledTextureRegion.class, org.anddev.andengine.entity.Entity.class)
+					.newInstance(this.getTextureRegion(), this.mParentScreen);
+			entity.setZIndex(this.getZIndex());
+
+			return entity;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -293,6 +315,13 @@ public class Entity extends AnimatedSprite {
 	 */
 	public final boolean isCanCollide() {
 		return this.mIsCanCollide;
+	}
+
+	/**
+	 * @return
+	 */
+	public final boolean isAvailable() {
+		return this.mIsAvailable;
 	}
 
 	// ===========================================================

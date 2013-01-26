@@ -7,7 +7,7 @@ import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
 
 /**
  * @author Tooflya.com
@@ -38,7 +38,7 @@ public class BoxLockedScreen extends PopupScreen {
 		}
 	};
 
-	private final EntityManager<Entity> mStarsCountText;
+	private final ArrayEntityManager<Entity> mStarsCountText;
 
 	private int mStarsNeeded;
 
@@ -73,7 +73,7 @@ public class BoxLockedScreen extends PopupScreen {
 
 		this.mPanel.setScale(0f);
 
-		this.mStarsCountText = new EntityManager<Entity>(3, new Entity(Resources.mPopupStarsNumbersTextureRegion, this.mPanel));
+		this.mStarsCountText = new ArrayEntityManager<Entity>(3, new Entity(Resources.mPopupStarsNumbersTextureRegion, this.mPanel));
 
 		Entity star;
 

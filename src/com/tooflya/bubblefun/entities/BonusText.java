@@ -53,7 +53,7 @@ public class BonusText extends AwesomeText {
 			break;
 		}
 
-		LevelScreen.Score += this.mScoreIncrement;
+		LevelScreen.mCurrentScore += this.mScoreIncrement;
 	}
 
 	/*

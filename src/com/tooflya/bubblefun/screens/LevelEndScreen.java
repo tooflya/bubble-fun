@@ -14,7 +14,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.ShopIndicator;
 import com.tooflya.bubblefun.entities.Star;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
 public class LevelEndScreen extends PopupScreen {
@@ -141,9 +141,9 @@ public class LevelEndScreen extends PopupScreen {
 				mScoreToTimeModifier.reset();
 			} else {
 				if (mScoreToTimeModifier.isFinished() && mTimeToScoreModifier.isFinished()) {
-					if (LevelScreen.mLevelTime < LevelScreen.mLevelTimeEtalon) {
-						LevelScreen.mLevelTime++;
-						LevelScreen.Score += 100;
+					if (LevelScreen.mCurrentLevelTime < LevelScreen.mLevelTimeEtalon) {
+						LevelScreen.mCurrentLevelTime++;
+						LevelScreen.mCurrentScore += 100;
 					} else {
 						unregisterUpdateHandler(mTimer2);
 					}
@@ -152,7 +152,7 @@ public class LevelEndScreen extends PopupScreen {
 		}
 	});
 
-	public EntityManager<Star> stars = new EntityManager<Star>(100, new Star(Resources.mStarsTextureRegion, this.mPanel));
+	public ArrayEntityManager<Star> stars = new ArrayEntityManager<Star>(100, new Star(Resources.mStarsTextureRegion, this.mPanel));
 
 	private AlphaModifier mRectangleAlphaModifier = new AlphaModifier(0.1f, 0.4f, 0f);
 
@@ -161,10 +161,10 @@ public class LevelEndScreen extends PopupScreen {
 	private final Entity mTimeText = new Entity(Resources.mLevelEndTimeTextTextureRegion, this.mPanel);
 	private final Entity mStarsText = new Entity(Resources.mLevelEndStarsScoreTextTextureRegion, this.mPanel);
 
-	private final EntityManager<Entity> mStarsCountText = new EntityManager<Entity>(1, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
-	private final EntityManager<Entity> mScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
-	private final EntityManager<Entity> mTimeCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
-	private final EntityManager<Entity> mTotalScoreCountText = new EntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final ArrayEntityManager<Entity> mStarsCountText = new ArrayEntityManager<Entity>(1, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final ArrayEntityManager<Entity> mScoreCountText = new ArrayEntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final ArrayEntityManager<Entity> mTimeCountText = new ArrayEntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
+	private final ArrayEntityManager<Entity> mTotalScoreCountText = new ArrayEntityManager<Entity>(4, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mPanel));
 
 	private final AwesomeText mLevelCompleteCapture = new AwesomeText(Resources.mLevelEndCompleteCaptureTextureRegion, false, this.mPanel) {
 
@@ -299,11 +299,11 @@ public class LevelEndScreen extends PopupScreen {
 
 		mStarsAnimationCount = 0;
 
-		if (LevelScreen.Score == LevelScreen.mBirdsCount * 300) {
+		if (LevelScreen.mCurrentScore == LevelScreen.mBirdsCount * 300) {
 			mStarsCount = 3;
-		} else if (LevelScreen.Score >= LevelScreen.mBirdsCount * 150) {
+		} else if (LevelScreen.mCurrentScore >= LevelScreen.mBirdsCount * 150) {
 			mStarsCount = 2;
-		} else if (LevelScreen.Score >= LevelScreen.mBirdsCount * 100) {
+		} else if (LevelScreen.mCurrentScore >= LevelScreen.mBirdsCount * 100) {
 			mStarsCount = 1;
 		}
 
@@ -326,7 +326,7 @@ public class LevelEndScreen extends PopupScreen {
 		score = 0;
 		totalscore = 0;
 
-		Game.mDatabase.updateLevel(Options.levelNumber, 1, mStarsCount, LevelScreen.Score);
+		Game.mDatabase.updateLevel(Options.levelNumber, 1, mStarsCount, LevelScreen.mCurrentScore);
 		Game.mDatabase.updateLevel(Options.levelNumber + 1, 1, 0, 0);
 
 		mLevelCompleteCapture.create().setPosition(this.mPanel.getWidth() / 2 - this.mLevelCompleteCapture.getWidth() / 2 - 5f, this.mPanel.getHeight() / 2 - 200 - this.mLevelCompleteCapture.getHeight() / 2, true);
@@ -359,8 +359,8 @@ public class LevelEndScreen extends PopupScreen {
 		mStarsCountText.getByIndex(0).setCurrentTileIndex(mStarsAnimationCount);
 
 		/* Score */
-		if (score < LevelScreen.Score) {
-			if (LevelScreen.Score - score > 10) {
+		if (score < LevelScreen.mCurrentScore) {
+			if (LevelScreen.mCurrentScore - score > 10) {
 				score += 11;
 			} else {
 				score++;
@@ -400,8 +400,8 @@ public class LevelEndScreen extends PopupScreen {
 		}
 
 		/* TOTAL Score */
-		if (totalscore < LevelScreen.Score) {
-			if (LevelScreen.Score - totalscore > 10) {
+		if (totalscore < LevelScreen.mCurrentScore) {
+			if (LevelScreen.mCurrentScore - totalscore > 10) {
 				totalscore += 11;
 			} else {
 				totalscore++;
@@ -444,7 +444,7 @@ public class LevelEndScreen extends PopupScreen {
 		this.mTimeCountText.getByIndex(0).setCurrentTileIndex(0);
 		this.mTimeCountText.getByIndex(1).setCurrentTileIndex(11);
 
-		final int time = (int) ((int) LevelScreen.mLevelTimeEtalon - LevelScreen.mLevelTime);
+		final int time = (int) ((int) LevelScreen.mLevelTimeEtalon - LevelScreen.mCurrentLevelTime);
 
 		if (time > 0) {
 			this.mTimeCountText.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(time / 10));

@@ -8,7 +8,7 @@ import com.tooflya.bubblefun.entities.Cloud;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.LevelIcon;
 import com.tooflya.bubblefun.managers.CloudsManager;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
 import com.tooflya.bubblefun.managers.LevelsManager;
 import com.tooflya.bubblefun.managers.ScreenManager;
 
@@ -31,12 +31,12 @@ public class LevelChoiseScreen extends ReflectionScreen {
 	private final ButtonScaleable mBackButton;
 
 	private LevelsManager<LevelIcon> levels;
-	private EntityManager<Entity> numbers;
+	private ArrayEntityManager<Entity> numbers;
 
 	private final Entity mTopPanel;
 
-	private final EntityManager<Entity> mSmallnumbers;
-	private final EntityManager<Entity> mStars;
+	private final ArrayEntityManager<Entity> mSmallnumbers;
+	private final ArrayEntityManager<Entity> mStars;
 
 	// ===========================================================
 	// Constructors
@@ -55,11 +55,11 @@ public class LevelChoiseScreen extends ReflectionScreen {
 		this.mTopPanel = new Entity(Resources.mTopPanelTextureRegion, this.mBackground);
 
 		this.levels = new LevelsManager<LevelIcon>(25, new LevelIcon(Resources.mLevelsTextureRegion, this.mBackground));
-		this.numbers = new EntityManager<Entity>(100, new Entity(Resources.mNumbersTextureRegion));
+		this.numbers = new ArrayEntityManager<Entity>(100, new Entity(Resources.mNumbersTextureRegion));
 
-		this.mSmallnumbers = new EntityManager<Entity>(5, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
+		this.mSmallnumbers = new ArrayEntityManager<Entity>(5, new Entity(Resources.mSmallNumbersTextureRegion, this.mBackground));
 
-		this.mStars = new EntityManager<Entity>(2, new Entity(Resources.mStarsTextureRegion, this.mBackground));
+		this.mStars = new ArrayEntityManager<Entity>(2, new Entity(Resources.mStarsTextureRegion, this.mBackground));
 
 		this.mBackButton = new ButtonScaleable(Resources.mBackButtonTextureRegion, this.mBackground) {
 

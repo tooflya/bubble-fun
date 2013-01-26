@@ -165,14 +165,14 @@ public class ScreenManager {
 	 * @param pScreen
 	 * @return
 	 */
-	public Screen get(final int pScreen) {
+	public Screen get(final int pScreen) throws NullPointerException {
 		return screens[pScreen];
 	}
 
 	/**
 	 * @return
 	 */
-	public Screen getCurrent() {
+	public Screen getCurrent() throws NullPointerException {
 		return screens[Screen.screen];
 	}
 

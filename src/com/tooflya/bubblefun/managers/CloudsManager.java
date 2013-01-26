@@ -8,7 +8,7 @@ import com.tooflya.bubblefun.entities.Cloud;
  * @author Tooflya.com
  * @since
  */
-public class CloudsManager<T> extends EntityManager<Cloud> {
+public class CloudsManager<T> extends ArrayEntityManager<Cloud> {
 
 	// ===========================================================
 	// Constants

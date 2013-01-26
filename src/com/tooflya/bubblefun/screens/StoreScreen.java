@@ -10,7 +10,7 @@ import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Text;
-import com.tooflya.bubblefun.managers.EntityManager;
+import com.tooflya.bubblefun.managers.ArrayEntityManager;
 
 /**
  * @author Tooflya.com
@@ -40,8 +40,8 @@ public class StoreScreen extends ReflectionScreen {
 	private final ButtonScaleable mGetCoinsButton;
 	private final ButtonScaleable mPlayButton;
 
-	private final EntityManager<Entity> mCoinsNumbers;
-	private final EntityManager<Entity> mMarkers;
+	private final ArrayEntityManager<Entity> mCoinsNumbers;
+	private final ArrayEntityManager<Entity> mMarkers;
 
 	private final Rectangle mNumbersHolder;
 
@@ -64,7 +64,7 @@ public class StoreScreen extends ReflectionScreen {
 		this.mNumbersHolder = new Rectangle(0, 0, 0, 0);
 		this.mBackground.attachChild(this.mNumbersHolder);
 
-		this.mCoinsNumbers = new EntityManager<Entity>(5, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mNumbersHolder));
+		this.mCoinsNumbers = new ArrayEntityManager<Entity>(5, new Entity(Resources.mLevelEndScoreNumbersTextureRegion, this.mNumbersHolder));
 
 		this.mPlayButton = new ButtonScaleable(Resources.mPlayButtonTextureRegion, this.mBackground) {
 
@@ -93,7 +93,7 @@ public class StoreScreen extends ReflectionScreen {
 		this.mStoreBackgroundTop = new Entity(Resources.mStorePanelTopTextureRegion, this.mBackground);
 		this.mStoreBackgroundDown = new Entity(Resources.mStorePanelDownTextureRegion, this.mBackground);
 
-		this.mMarkers = new EntityManager<Entity>(4, new Entity(Resources.mShopMarkersTextureRegion, this.mBackground));
+		this.mMarkers = new ArrayEntityManager<Entity>(4, new Entity(Resources.mShopMarkersTextureRegion, this.mBackground));
 
 		this.mGetCoinsButton = new ButtonScaleable(Resources.mGetCoinsButtonTextureRegion, this.mBackground) {
 
