@@ -458,6 +458,7 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 		this.mAwesome.clear();
 		this.mPoints.clear();
 		this.mAims.clear();
+		this.mBubbleBrokes.clear();
 		this.mArrows.clear();
 		this.mChikies.clear();
 		this.mCristmasHats.clear();

@@ -16,7 +16,7 @@ public class ListEntityManager<T> extends EntityManager<T> {
 	// Constants
 	// ===========================================================
 
-	protected final ArrayList<Entity> mElements = new ArrayList<Entity>();
+	protected ArrayList<Entity> mElements;
 
 	// ===========================================================
 	// Fields
@@ -34,6 +34,8 @@ public class ListEntityManager<T> extends EntityManager<T> {
 	 * @param pElement
 	 */
 	public ListEntityManager(final int pCreateBeforeCount, final int pMaxElementCount, final Entity pElement) {
+		this.mElements = new ArrayList<Entity>(pCreateBeforeCount);
+		
 		this.mMaxElemetCount = pMaxElementCount;
 		this.mCurrentElemetCount = 0;
 
