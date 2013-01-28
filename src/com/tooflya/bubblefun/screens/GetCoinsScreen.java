@@ -44,6 +44,7 @@ public class GetCoinsScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
+			Game.mDatabase.addCoins(500);
 		}
 	};
 
@@ -54,6 +55,7 @@ public class GetCoinsScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
+			Game.mDatabase.addCoins(1000);
 		}
 	};
 
@@ -64,6 +66,7 @@ public class GetCoinsScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
+			Game.mDatabase.addCoins(2200);
 		}
 	};
 
@@ -74,6 +77,7 @@ public class GetCoinsScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
+			Game.mDatabase.addCoins(5000);
 		}
 	};
 

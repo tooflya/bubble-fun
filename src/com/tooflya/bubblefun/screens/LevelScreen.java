@@ -10,6 +10,7 @@ import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
 
 import android.util.FloatMath;
@@ -22,6 +23,7 @@ import com.tooflya.bubblefun.entities.Aim;
 import com.tooflya.bubblefun.entities.AimArrow;
 import com.tooflya.bubblefun.entities.AwesomeText;
 import com.tooflya.bubblefun.entities.BlueBird;
+import com.tooflya.bubblefun.entities.BonusIcon;
 import com.tooflya.bubblefun.entities.BonusText;
 import com.tooflya.bubblefun.entities.Bubble;
 import com.tooflya.bubblefun.entities.BubbleBrokes;
@@ -412,20 +414,54 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 
 		this.mBonusManager = new BonusManager(10);
 
-		/**
-		 * for (int i = 0; i < 4; i++) { TiledTextureRegion k = null; switch (i) { case 0: k = Resources.mBonus1TextureRegion; break; case 1: k = Resources.mBonus2TextureRegion; break; case 2: k = Resources.mBonus3TextureRegion; break; case 3: k = Resources.mBonus4TextureRegion; break; }
-		 * 
-		 * final BonusIcon h = new BonusIcon(k, this.mBackground) {
-		 * 
-		 * @Override public boolean onAreaTouched(final TouchEvent pTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) { final float pTouchX = pTouchEvent.getX() / Options.cameraRatioFactor; final float pTouchY = pTouchEvent.getY() / Options.cameraRatioFactor;
-		 * 
-		 *           switch (pTouchEvent.getAction()) { case TouchEvent.ACTION_UP: if (LevelScreen.this.lastAirgum != null) { LevelScreen.this.lastAirgum.initFinishPositionWithCorrection(pTouchX, pTouchY); LevelScreen.this.lastAirgum = null; } break; }
-		 * 
-		 *           return super.onAreaTouched(pTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY); }
-		 * @Override public void onClick() { super.onClick();
-		 * 
-		 *           this.init(48); } }; this.mBonusManager.add(h); h.enableBlendFunction(); h.registerEntityModifier(this.mAllFallUpModifier); h.registerEntityModifier(this.mAllFallDownModifier); }
-		 **/
+		for (int i = 0; i < 4; i++) {
+			TiledTextureRegion k = null;
+			switch (i) {
+			case 0:
+				k = Resources.mBonus1TextureRegion;
+				break;
+			case 1:
+				k = Resources.mBonus2TextureRegion;
+				break;
+			case 2:
+				k = Resources.mBonus3TextureRegion;
+				break;
+			case 3:
+				k = Resources.mBonus4TextureRegion;
+				break;
+			}
+
+			final BonusIcon h = new BonusIcon(k, this.mBackground) {
+
+				@Override
+				public boolean onAreaTouched(final TouchEvent pTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+					final float pTouchX = pTouchEvent.getX() / Options.cameraRatioFactor;
+					final float pTouchY = pTouchEvent.getY() / Options.cameraRatioFactor;
+
+					switch (pTouchEvent.getAction()) {
+					case TouchEvent.ACTION_UP:
+						if (LevelScreen.this.lastBubble != null) {
+							LevelScreen.this.lastBubble.initFinishPositionWithCorrection(pTouchX, pTouchY);
+							LevelScreen.this.lastBubble = null;
+						}
+						break;
+					}
+
+					return super.onAreaTouched(pTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+				}
+
+				@Override
+				public void onClick() {
+					super.onClick();
+
+					this.init(48);
+				}
+			};
+			this.mBonusManager.add(h);
+			h.enableBlendFunction();
+			h.registerEntityModifier(this.mAllFallUpModifier);
+			h.registerEntityModifier(this.mAllFallDownModifier);
+		}
 
 		// ===========================================================
 		// Tutorial

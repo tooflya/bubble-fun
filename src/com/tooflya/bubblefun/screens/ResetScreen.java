@@ -20,6 +20,8 @@ public class ResetScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
+	private boolean mResetWasCofrimed;
+
 	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
 
 	private final Entity mText = new Entity(Resources.mResetTextTextureRegion, this.mPanel);
@@ -38,12 +40,37 @@ public class ResetScreen extends PopupScreen {
 
 	private final ButtonScaleable mYIcon = new ButtonScaleable(Resources.mExitYesbuttonTextureRegion, this.mPanel) {
 
+		private float mTime;
+
 		/* (non-Javadoc)
 		 * @see com.tooflya.bubblefun.entities.Button#onClick()
 		 */
 		@Override
 		public void onClick() {
 			modifier4.reset();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.anddev.andengine.entity.sprite.AnimatedSprite#onManagedUpdate (float)
+		 */
+		@Override
+		protected void onManagedUpdate(final float pSecondsElapsed) {
+			super.onManagedUpdate(pSecondsElapsed);
+
+			if (this.isClicked) {
+				this.mTime += pSecondsElapsed;
+			} else {
+				this.mTime = 0f;
+			}
+
+			if (this.mTime >= 3f) {
+				Game.mDatabase.onUpgrade(Game.mDatabase.getReadableDatabase(), 1, 1);
+				Game.mScreens.createSurfaces();
+
+				mResetWasCofrimed = true;
+			}
 		}
 	};
 
@@ -98,6 +125,12 @@ public class ResetScreen extends PopupScreen {
 	@Override
 	public void onClose() {
 		Game.mScreens.get(Screen.MORE).clearChildScene();
+
+		if (this.mResetWasCofrimed) {
+			this.mResetWasCofrimed = false;
+
+			Game.mScreens.set(Screen.MENU);
+		}
 	}
 
 }

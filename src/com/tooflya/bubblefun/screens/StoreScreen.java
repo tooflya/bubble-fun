@@ -113,8 +113,10 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				if (0 < 100) {
+				if (Game.mDatabase.getTotalCoins() < 100) {
 					mGetCoinsButton.onClick();
+				} else {
+					Game.mDatabase.removeCoins(100);
 				}
 			}
 		};
@@ -126,8 +128,10 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				if (0 < 150) {
+				if (Game.mDatabase.getTotalCoins() < 150) {
 					mGetCoinsButton.onClick();
+				} else {
+					Game.mDatabase.removeCoins(150);
 				}
 			}
 		};
@@ -139,8 +143,10 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				if (0 < 200) {
+				if (Game.mDatabase.getTotalCoins() < 200) {
 					mGetCoinsButton.onClick();
+				} else {
+					Game.mDatabase.removeCoins(200);
 				}
 			}
 		};
@@ -152,8 +158,10 @@ public class StoreScreen extends ReflectionScreen {
 			 */
 			@Override
 			public void onClick() {
-				if (0 < 250) {
+				if (Game.mDatabase.getTotalCoins() < 250) {
 					mGetCoinsButton.onClick();
+				} else {
+					Game.mDatabase.removeCoins(250);
 				}
 			}
 		};
@@ -172,7 +180,7 @@ public class StoreScreen extends ReflectionScreen {
 		this.mGetCoinsButton.create().setPosition(Options.cameraWidth - 55f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 220f);
 		this.mPlayButton.create().setPosition(Options.cameraWidth - 5f - this.mGetCoinsButton.getWidth(), Options.cameraHeight - 75f);
 
-		for (int a = 0; a < 4; a++) {
+		for (int a = 0; a < 5; a++) {
 			this.mCoinsNumbers.create().setCenterPosition(13f + 18f * a, 23f);
 		}
 
@@ -219,51 +227,14 @@ public class StoreScreen extends ReflectionScreen {
 	public void onPostAttached() {
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.Screen#onAttached()
+	 */
 	@Override
 	public void onAttached() {
 		super.onAttached();
 
-		final int Score = 0;
-
-		if (Score < 10) {
-			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex(Score);
-			this.mCoinsNumbers.getByIndex(0).setVisible(true);
-			this.mCoinsNumbers.getByIndex(1).setVisible(false);
-			this.mCoinsNumbers.getByIndex(2).setVisible(false);
-			this.mCoinsNumbers.getByIndex(3).setVisible(false);
-
-			this.mNumbersHolder.setPosition(this.mCoin.getX() - 30f, 0);
-		} else if (Score < 100) {
-			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 10));
-			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
-			this.mCoinsNumbers.getByIndex(0).setVisible(true);
-			this.mCoinsNumbers.getByIndex(1).setVisible(true);
-			this.mCoinsNumbers.getByIndex(2).setVisible(false);
-			this.mCoinsNumbers.getByIndex(3).setVisible(false);
-
-			this.mNumbersHolder.setPosition(this.mCoin.getX() - 50f, 0);
-		} else if (Score < 1000) {
-			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 100));
-			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
-			this.mCoinsNumbers.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
-			this.mCoinsNumbers.getByIndex(0).setVisible(true);
-			this.mCoinsNumbers.getByIndex(1).setVisible(true);
-			this.mCoinsNumbers.getByIndex(2).setVisible(true);
-			this.mCoinsNumbers.getByIndex(3).setVisible(false);
-
-			this.mNumbersHolder.setPosition(this.mCoin.getX() - 70f, 0);
-		} else {
-			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Score / 1000));
-			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 1000) * 1000) / 100));
-			this.mCoinsNumbers.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor((Score - FloatMath.floor(Score / 100) * 100) / 10));
-			this.mCoinsNumbers.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(Score % 10));
-			this.mCoinsNumbers.getByIndex(0).setVisible(true);
-			this.mCoinsNumbers.getByIndex(1).setVisible(true);
-			this.mCoinsNumbers.getByIndex(2).setVisible(true);
-			this.mCoinsNumbers.getByIndex(3).setVisible(true);
-
-			this.mNumbersHolder.setPosition(this.mCoin.getX() - 90f, 0);
-		}
+		this.updateCoinsText();
 
 		Game.mAdvertisementManager.hideSmall();
 
@@ -315,4 +286,67 @@ public class StoreScreen extends ReflectionScreen {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * 
+	 */
+	public void updateCoinsText() {
+		final int Coins = Game.mDatabase.getTotalCoins();
+
+		if (Coins < 10) {
+			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex(Coins);
+			this.mCoinsNumbers.getByIndex(0).setVisible(true);
+			this.mCoinsNumbers.getByIndex(1).setVisible(false);
+			this.mCoinsNumbers.getByIndex(2).setVisible(false);
+			this.mCoinsNumbers.getByIndex(3).setVisible(false);
+			this.mCoinsNumbers.getByIndex(4).setVisible(false);
+
+			this.mNumbersHolder.setPosition(this.mCoin.getX() - 30f, 0);
+		} else if (Coins < 100) {
+			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Coins / 10));
+			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor(Coins % 10));
+			this.mCoinsNumbers.getByIndex(0).setVisible(true);
+			this.mCoinsNumbers.getByIndex(1).setVisible(true);
+			this.mCoinsNumbers.getByIndex(2).setVisible(false);
+			this.mCoinsNumbers.getByIndex(3).setVisible(false);
+			this.mCoinsNumbers.getByIndex(4).setVisible(false);
+
+			this.mNumbersHolder.setPosition(this.mCoin.getX() - 50f, 0);
+		} else if (Coins < 1000) {
+			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Coins / 100));
+			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Coins - FloatMath.floor(Coins / 100) * 100) / 10));
+			this.mCoinsNumbers.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor(Coins % 10));
+			this.mCoinsNumbers.getByIndex(0).setVisible(true);
+			this.mCoinsNumbers.getByIndex(1).setVisible(true);
+			this.mCoinsNumbers.getByIndex(2).setVisible(true);
+			this.mCoinsNumbers.getByIndex(3).setVisible(false);
+			this.mCoinsNumbers.getByIndex(4).setVisible(false);
+
+			this.mNumbersHolder.setPosition(this.mCoin.getX() - 70f, 0);
+		} else if (Coins < 10000) {
+			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Coins / 1000));
+			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Coins - FloatMath.floor(Coins / 1000) * 1000) / 100));
+			this.mCoinsNumbers.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor((Coins - FloatMath.floor(Coins / 100) * 100) / 10));
+			this.mCoinsNumbers.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor(Coins % 10));
+			this.mCoinsNumbers.getByIndex(0).setVisible(true);
+			this.mCoinsNumbers.getByIndex(1).setVisible(true);
+			this.mCoinsNumbers.getByIndex(2).setVisible(true);
+			this.mCoinsNumbers.getByIndex(3).setVisible(true);
+			this.mCoinsNumbers.getByIndex(4).setVisible(false);
+
+			this.mNumbersHolder.setPosition(this.mCoin.getX() - 90f, 0);
+		} else {
+			this.mCoinsNumbers.getByIndex(0).setCurrentTileIndex((int) FloatMath.floor(Coins / 10000));
+			this.mCoinsNumbers.getByIndex(1).setCurrentTileIndex((int) FloatMath.floor((Coins - FloatMath.floor(Coins / 10000) * 10000) / 1000));
+			this.mCoinsNumbers.getByIndex(2).setCurrentTileIndex((int) FloatMath.floor((Coins - FloatMath.floor(Coins / 1000) * 1000) / 100));
+			this.mCoinsNumbers.getByIndex(3).setCurrentTileIndex((int) FloatMath.floor((Coins - FloatMath.floor(Coins / 100) * 100) / 10));
+			this.mCoinsNumbers.getByIndex(4).setCurrentTileIndex((int) FloatMath.floor(Coins % 10));
+			this.mCoinsNumbers.getByIndex(0).setVisible(true);
+			this.mCoinsNumbers.getByIndex(1).setVisible(true);
+			this.mCoinsNumbers.getByIndex(2).setVisible(true);
+			this.mCoinsNumbers.getByIndex(3).setVisible(true);
+			this.mCoinsNumbers.getByIndex(4).setVisible(true);
+
+			this.mNumbersHolder.setPosition(this.mCoin.getX() - 110f, 0);
+		}
+	}
 }

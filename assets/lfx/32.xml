@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level r1="255" g1="131" b1="0" r2="216" g2="217" b2="2" bluebird="false">
+<level r1="67" g1="202" b1="255" r2="45" g2="117" b2="255" bluebird="true">
 <chiky scale="1" minTime="0" maxTime="1" speedTime="0.5" offsetTime="0" isRTime="True" normalMaxTime="10000" normalSpeedTime="0" unnormalMaxTime="0" unnormalSpeedTime="0" properties="0" weight="5">
 <ctrPoint x="60" y="65"/>
 <ctrPoint x="40" y="65"/>

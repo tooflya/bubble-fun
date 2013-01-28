@@ -346,6 +346,9 @@ public class Bubble extends Entity {
 				a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 				a.setCurrentTileIndex(2);
 			}
+			
+
+			LevelScreen.mKillCount = 0;
 		}
 	}
 

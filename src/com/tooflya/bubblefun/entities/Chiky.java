@@ -339,18 +339,14 @@ public class Chiky extends EntityBezier {
 		} else {
 			super.onCollide(pEntity);
 
-			final Entity b = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mAwesome.create();
-			b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
-
 			final Entity a = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mPoints.create();
 			a.setCenterPosition(this.getCenterX(), this.getCenterY() + 120f);
 
 				if (this.isFirst()) {
 					a.setCurrentTileIndex(1);
 
-					if (LevelScreen.mKillCount > 1) {
-
-						if (b != null) {
+					if (LevelScreen.mKillCount > 0) {
+						final Entity b = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mAwesome.create();
 							b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 
 							if (LevelScreen.mKillCount < 4) {
@@ -358,11 +354,13 @@ public class Chiky extends EntityBezier {
 							} else {
 								b.setCurrentTileIndex(2);
 							}
-						}
 					}
 					LevelScreen.mKillCount++;
 				} else {
 
+
+					final Entity b = ((LevelScreen) Game.mScreens.get(Screen.LEVEL)).mAwesome.create();
+					b.setCenterPosition(this.getCenterX(), this.getCenterY() + 50);
 					a.setCurrentTileIndex(3);
 					b.setCurrentTileIndex(3);
 

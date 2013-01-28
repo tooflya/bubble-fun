@@ -293,7 +293,7 @@ public class LevelsManager<T> extends ArrayEntityManager<Entity> {
 
 		if (Options.DEBUG) {
 			InputStream inputStream;
-			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel * (Options.boxNumber + 1) + ".xml");
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + pLevel * (Options.boxNumber) + ".xml");
 			try {
 				inputStream = new FileInputStream(file);
 				mLevelLoader.loadLevelFromStream(inputStream);
@@ -304,6 +304,8 @@ public class LevelsManager<T> extends ArrayEntityManager<Entity> {
 
 		} else {
 			try {
+				System.out.println(pLevel);
+				System.out.println(Options.boxNumber);
 				mLevelLoader.loadLevelFromAsset(Game.mInstance, "lfx/" + String.valueOf(pLevel + (25 * Options.boxNumber)) + ".xml");
 			} catch (IOException e) {
 				e.printStackTrace();

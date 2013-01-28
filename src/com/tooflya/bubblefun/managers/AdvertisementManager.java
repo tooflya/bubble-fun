@@ -32,6 +32,10 @@ public class AdvertisementManager {
 	private boolean isBAdvertisementAvailable = false;
 
 	private final Runnable mShowSmallRunnable = new Runnable() {
+
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run() {
 			if (isSAdvertisementAvailable) {
@@ -43,6 +47,10 @@ public class AdvertisementManager {
 	};
 
 	private final Runnable mHideSmallRunnable = new Runnable() {
+
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run() {
 			if (isSAdvertisementAvailable) {
@@ -57,6 +65,10 @@ public class AdvertisementManager {
 	};
 
 	private final Runnable mShowBigRunnable = new Runnable() {
+
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run() {
 			if (isBAdvertisementAvailable) {
@@ -71,6 +83,10 @@ public class AdvertisementManager {
 	};
 
 	private final Runnable mHideBigRunnable = new Runnable() {
+
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run() {
 			if (isBAdvertisementAvailable) {
@@ -82,6 +98,10 @@ public class AdvertisementManager {
 	};
 
 	private final Runnable mLoadBigRunnable = new Runnable() {
+
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run() {
 			mProgressBar.setVisibility(View.VISIBLE);
@@ -89,6 +109,9 @@ public class AdvertisementManager {
 		}
 	};
 
+	/**
+	 * 
+	 */
 	@TargetApi(11)
 	public AdvertisementManager() {
 		this.mAdsRequest = new AdRequest();
@@ -126,8 +149,8 @@ public class AdvertisementManager {
 			return true;
 		}
 
-		//return this.isAdvertisementDisabled;
-		return true;
+		return this.isAdvertisementDisabled;
+		//return true;
 	}
 
 	public void showSmall() {
@@ -152,23 +175,38 @@ public class AdvertisementManager {
 
 	private final class SmallAdListener implements AdListener {
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onDismissScreen(com.google.ads.Ad)
+		 */
 		@Override
 		public void onDismissScreen(Ad arg0) {
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onFailedToReceiveAd(com.google.ads.Ad, com.google.ads.AdRequest.ErrorCode)
+		 */
 		@Override
 		public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 			AdvertisementManager.this.isSAdvertisementAvailable = false;
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onLeaveApplication(com.google.ads.Ad)
+		 */
 		@Override
 		public void onLeaveApplication(Ad arg0) {
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onPresentScreen(com.google.ads.Ad)
+		 */
 		@Override
 		public void onPresentScreen(Ad arg0) {
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onReceiveAd(com.google.ads.Ad)
+		 */
 		@Override
 		public void onReceiveAd(Ad arg0) {
 			AdvertisementManager.this.isSAdvertisementAvailable = true;
@@ -178,24 +216,39 @@ public class AdvertisementManager {
 
 	private final class BigAdListener implements AdListener {
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onDismissScreen(com.google.ads.Ad)
+		 */
 		@Override
 		public void onDismissScreen(Ad arg0) {
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onFailedToReceiveAd(com.google.ads.Ad, com.google.ads.AdRequest.ErrorCode)
+		 */
 		@Override
 		public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 			AdvertisementManager.this.isBAdvertisementAvailable = false;
 			Game.mInstance.runOnUiThread(AdvertisementManager.this.mShowBigRunnable);
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onLeaveApplication(com.google.ads.Ad)
+		 */
 		@Override
 		public void onLeaveApplication(Ad arg0) {
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onPresentScreen(com.google.ads.Ad)
+		 */
 		@Override
 		public void onPresentScreen(Ad arg0) {
 		}
 
+		/* (non-Javadoc)
+		 * @see com.google.ads.AdListener#onReceiveAd(com.google.ads.Ad)
+		 */
 		@Override
 		public void onReceiveAd(Ad arg0) {
 			AdvertisementManager.this.isBAdvertisementAvailable = true;

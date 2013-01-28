@@ -54,6 +54,7 @@ public class BonusIcon extends ButtonScaleable {
 
 	@Override
 	public void onClick() {
+		this.setVisible(false);
 		switch (this.mState) {
 		case Empty:
 			// Don't do something.

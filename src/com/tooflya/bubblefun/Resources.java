@@ -34,10 +34,10 @@ public class Resources {
 	public static final BitmapTextureAtlas mElementsTextureAtlas8 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	public static final BitmapTextureAtlas mElementsTextureAtlas9 = new BitmapTextureAtlas(1024, 1024, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-	public static final BitmapTextureAtlas mTutorialFontTextureAtlas = new BitmapTextureAtlas(512, 512, TextureOptions.BILINEAR);
+	public static final BitmapTextureAtlas mTutorialFontTextureAtlas = new BitmapTextureAtlas(1024, 1024, TextureOptions.BILINEAR);
 
-	public static final Font mFont = FontFactory.createFromAsset(mTutorialFontTextureAtlas, Game.mContext, "font/Lobster.ttf", 16f * Options.cameraRatioFactor, true, Color.BLACK);
-
+	public static final Font mFont =FontFactory.createStrokeFromAsset(mTutorialFontTextureAtlas, Game.mContext, "font/JOINTBYPIZZADUDE.ttf", 15f * Options.cameraRatioFactor, true, Color.WHITE, 1f, Color.BLACK);
+	
 	// ===========================================================
 	// Blank PNG 1024x1024
 	// ===========================================================
@@ -49,6 +49,7 @@ public class Resources {
 	public static final TiledTextureRegion mBlank1024Png5 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas7, Game.mContext, "blank1024.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mBlank1024Png6 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas8, Game.mContext, "blank1024.png", 0, 0, 1, 1);
 	public static final TiledTextureRegion mBlank1024Png7 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mElementsTextureAtlas9, Game.mContext, "blank1024.png", 0, 0, 1, 1);
+	public static final TiledTextureRegion mBlank1024Png8 = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mTutorialFontTextureAtlas, Game.mContext, "blank1024.png", 0, 0, 1, 1);
 
 	// ===========================================================
 	// Texture Regions

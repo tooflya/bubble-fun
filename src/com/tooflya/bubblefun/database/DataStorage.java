@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.screens.Screen;
+import com.tooflya.bubblefun.screens.StoreScreen;
 
 /**
  * @author Tooflya.com
@@ -35,6 +37,7 @@ public class DataStorage extends SQLiteOpenHelper {
 	private static final String BOX_STATE = "state";
 
 	private static final String MORE_ADS = "ads";
+	private static final String MORE_COINS = "coins";
 
 	// ===========================================================
 	// Fields
@@ -183,6 +186,20 @@ public class DataStorage extends SQLiteOpenHelper {
 		return value;
 	}
 
+	/**
+	 * @return
+	 */
+	public int getTotalCoins() {
+		final Cursor cursor = this.getReadableDatabase().rawQuery("SELECT coins FROM " + MORE_TABLE, null);
+		cursor.moveToFirst();
+
+		final int value = cursor.getInt(0);
+
+		cursor.close();
+
+		return value;
+	}
+
 	public boolean isAdvertisimentDisabled() {
 		final Cursor cursor = this.getReadableDatabase().query(MORE_TABLE, new String[] { MORE_ADS }, null, null, null, null, null, null);
 		cursor.moveToFirst();
@@ -192,6 +209,26 @@ public class DataStorage extends SQLiteOpenHelper {
 		cursor.close();
 
 		return result;
+	}
+
+	public void addCoins(final int pCoins) {
+		final ContentValues values = new ContentValues();
+
+		values.put(MORE_COINS, this.getTotalCoins() + pCoins);
+
+		this.getReadableDatabase().update(MORE_TABLE, values, null, null);
+
+		((StoreScreen) Game.mScreens.get(Screen.STORE)).updateCoinsText();
+	}
+
+	public void removeCoins(final int pCoins) {
+		final ContentValues values = new ContentValues();
+
+		values.put(MORE_COINS, this.getTotalCoins() - pCoins);
+
+		this.getReadableDatabase().update(MORE_TABLE, values, null, null);
+
+		((StoreScreen) Game.mScreens.get(Screen.STORE)).updateCoinsText();
 	}
 
 	// ===========================================================
@@ -207,7 +244,7 @@ public class DataStorage extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + LEVEL_TABLE + "(" + LEVEL_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + LEVEL_STARS + " INTEGER DEFAULT 0,  " + LEVEL_SCORE + " INTEGER DEFAULT 0,  " + LEVEL_STATE + " INTEGER DEFAULT 0" + ")");
 		db.execSQL("CREATE TABLE " + BOX_TABLE + "(" + BOX_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + BOX_STATE + " INTEGER DEFAULT 0" + ")");
-		db.execSQL("CREATE TABLE " + MORE_TABLE + "(" + MORE_ADS + " INTEGER DEFAULT 0" + ")");
+		db.execSQL("CREATE TABLE " + MORE_TABLE + "(" + MORE_ADS + " INTEGER DEFAULT 0" + ", " + MORE_COINS + " INTEGER DEFAULT 0)");
 
 		for (int i = 1; i <= 25 * 3; i++) {
 			this.addLevel(db);
@@ -221,6 +258,7 @@ public class DataStorage extends SQLiteOpenHelper {
 		final ContentValues values = new ContentValues();
 
 		values.put(MORE_ADS, 0);
+		values.put(MORE_COINS, 0);
 
 		db.insert(MORE_TABLE, null, values);
 	}
@@ -234,7 +272,8 @@ public class DataStorage extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + LEVEL_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + BOX_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + MORE_TABLE);
 
-		onCreate(db);
+		this.onCreate(db);
 	}
 }
