@@ -51,6 +51,8 @@ public class MenuScreen extends ReflectionScreen {
 	private final ButtonScaleable mBuyButton;
 	private final PlayIcon mPlayIcon;
 
+	private final ShopIndicator mShopIndicator;
+
 	private final RotationModifier mRotateOn = new RotationModifier(0.3f, 0f, 405f);
 	private final RotationModifier mRotateOff = new RotationModifier(0.3f, 405f, 0f);
 
@@ -265,7 +267,8 @@ public class MenuScreen extends ReflectionScreen {
 			}
 		};
 
-		new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mBuyButton).setCenterPosition(105f, 10f);
+		this.mShopIndicator = new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mBuyButton);
+		this.mShopIndicator.setCenterPosition(105f, 10f);
 
 		this.mClouds.generateStartClouds();
 
@@ -341,6 +344,8 @@ public class MenuScreen extends ReflectionScreen {
 		super.onAttached();
 
 		ScreenManager.mChangeAction = 0;
+
+		this.mShopIndicator.update();
 
 		if (Options.isMusicEnabled) {
 			if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {

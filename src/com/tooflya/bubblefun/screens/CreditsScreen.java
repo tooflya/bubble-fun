@@ -78,8 +78,8 @@ public class CreditsScreen extends ReflectionScreen {
 		try {
 			final PackageInfo pInfo = Game.mInstance.getPackageManager().getPackageInfo(Game.mInstance.getPackageName(), 0);
 
-			this.attachChild(new Text(Options.screenWidth - 60f * Options.cameraRatioFactor, Options.screenHeight - 50f * Options.cameraRatioFactor, Resources.mFont, Game.getString("version") + pInfo.versionName));
-			this.attachChild(new Text(Options.screenWidth - 65f * Options.cameraRatioFactor, Options.screenHeight - 25f * Options.cameraRatioFactor, Resources.mFont, Game.getString("build") + pInfo.versionCode));
+			this.attachChild(new Text(Options.screenWidth - 70f * Options.cameraRatioFactor, Options.screenHeight - 50f * Options.cameraRatioFactor, Resources.mFont, Game.getString("version") + pInfo.versionName));
+			this.attachChild(new Text(Options.screenWidth - 80f * Options.cameraRatioFactor, Options.screenHeight - 25f * Options.cameraRatioFactor, Resources.mFont, Game.getString("build") + pInfo.versionCode));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

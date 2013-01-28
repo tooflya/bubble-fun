@@ -3,6 +3,8 @@ package com.tooflya.bubblefun.entities;
 import org.anddev.andengine.entity.modifier.MoveYModifier;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
+import com.tooflya.bubblefun.Game;
+
 public class ShopIndicator extends Entity {
 
 	private final MoveYModifier mModifier1;
@@ -31,6 +33,19 @@ public class ShopIndicator extends Entity {
 		this.registerEntityModifier(this.mModifier2);
 
 		this.mModifier1.reset();
+	}
+
+	public void update() {
+		final int coins = Game.mDatabase.getTotalCoins();
+
+		if (coins < 100) {
+			this.mVisible = false;
+		} else {
+			this.mVisible = true;
+
+			final int count = (coins / 100) - 1;
+			this.setCurrentTileIndex(count >= 4 ? 4 : count);
+		}
 	}
 
 	/* (non-Javadoc)
