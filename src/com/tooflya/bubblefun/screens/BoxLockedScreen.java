@@ -61,8 +61,6 @@ public class BoxLockedScreen extends PopupScreen {
 		this.mOkIcon.setScaleCenter(this.mOkIcon.getWidth() / 2, this.mOkIcon.getHeight() / 2);
 		this.mOkIcon.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() - 5f);
 
-		this.registerTouchArea(this.mOkIcon);
-
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
 

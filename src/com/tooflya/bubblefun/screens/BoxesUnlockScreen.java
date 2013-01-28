@@ -68,10 +68,7 @@ public class BoxesUnlockScreen extends PopupScreen {
 		this.mNIcon.create();
 		this.mNIcon.setScaleCenter(this.mNIcon.getWidth() / 2, this.mNIcon.getHeight() / 2);
 		this.mNIcon.setCenterPosition(this.mPanel.getWidth() - 70, this.mPanel.getHeight() - 5f);
-
-		this.registerTouchArea(this.mYIcon);
-		this.registerTouchArea(this.mNIcon);
-
+		
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
 		

@@ -67,9 +67,6 @@ public class RateScreen extends PopupScreen {
 		this.mNowIcon.setScaleCenter(this.mNowIcon.getWidth() / 2, this.mNowIcon.getHeight() / 2);
 		this.mNowIcon.setCenterPosition(this.mPanel.getWidth() - 70, this.mPanel.getHeight() - 5f);
 
-		this.registerTouchArea(this.mLaterIcon);
-		this.registerTouchArea(this.mNowIcon);
-
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
 
