@@ -20,6 +20,8 @@ public class ExitScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
+	private boolean mIsActionConfirmed;
+
 	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
 
 	private final Entity mText = new Entity(Resources.mExitTextTextureRegion, this.mPanel);
@@ -31,7 +33,9 @@ public class ExitScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
-			Game.close();
+			ExitScreen.this.mIsActionConfirmed = true;
+
+			modifier4.reset();
 		}
 	};
 
@@ -50,6 +54,9 @@ public class ExitScreen extends PopupScreen {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * 
+	 */
 	public ExitScreen() {
 		this.setBackgroundEnabled(false);
 
@@ -74,7 +81,7 @@ public class ExitScreen extends PopupScreen {
 
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOn);
 		this.mRectangle.registerEntityModifier(this.mRectangleAlphaModifierOff);
-		
+
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);
 		this.mPanel.registerEntityModifier(modifier3);
@@ -87,9 +94,16 @@ public class ExitScreen extends PopupScreen {
 	// Virtual methods
 	// ===========================================================
 
+	/* (non-Javadoc)
+	 * @see com.tooflya.bubblefun.screens.PopupScreen#onClose()
+	 */
 	@Override
 	public void onClose() {
-		Game.mScreens.get(Screen.MENU).clearChildScene();
+		if (this.mIsActionConfirmed) {
+			Game.close();
+		} else {
+			Game.mScreens.get(Screen.MENU).clearChildScene();
+		}
 	}
 
 }

@@ -1,16 +1,20 @@
 package com.tooflya.bubblefun.screens;
 
+import org.anddev.andengine.util.user.AsyncTaskLoader;
+import org.anddev.andengine.util.user.IAsyncCallback;
+
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com
  * @since
  */
-public class ResetScreen extends PopupScreen {
+public class ResetScreen extends PopupScreen implements IAsyncCallback {
 
 	// ===========================================================
 	// Constants
@@ -20,7 +24,7 @@ public class ResetScreen extends PopupScreen {
 	// Fields
 	// ===========================================================
 
-	private boolean mResetWasCofrimed;
+	private boolean mIsActionCorfimed;
 
 	private final Entity mPanel = new Entity(Resources.mPopupBackgroundTextureRegion, this);
 
@@ -66,10 +70,9 @@ public class ResetScreen extends PopupScreen {
 			}
 
 			if (this.mTime >= 3f) {
-				Game.mDatabase.onUpgrade(Game.mDatabase.getReadableDatabase(), 1, 1);
-				Game.mScreens.createSurfaces();
+				modifier4.reset();
 
-				mResetWasCofrimed = true;
+				mIsActionCorfimed = true;
 			}
 		}
 	};
@@ -126,11 +129,29 @@ public class ResetScreen extends PopupScreen {
 	public void onClose() {
 		Game.mScreens.get(Screen.MORE).clearChildScene();
 
-		if (this.mResetWasCofrimed) {
-			this.mResetWasCofrimed = false;
+		if (this.mIsActionCorfimed) {
+			this.mIsActionCorfimed = false;
 
-			Game.mScreens.set(Screen.MENU);
+			/** Start background loader */
+			new AsyncTaskLoader().execute(ResetScreen.this);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.util.user.IAsyncCallback#onComplete()
+	 */
+	@Override
+	public void onComplete() {
+		Game.mScreens.set(Screen.MENU);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.util.user.IAsyncCallback#workToDo()
+	 */
+	@Override
+	public void workToDo() {
+		Game.mDatabase.onUpgrade(Game.mDatabase.getReadableDatabase(), 1, 1);
+		Game.mScreens.createSurfaces();
 	}
 
 }

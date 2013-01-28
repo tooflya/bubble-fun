@@ -152,11 +152,17 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		super.onDetached();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.util.user.IAsyncCallback#onComplete()
+	 */
 	@Override
 	public void onComplete() {
 		loaded = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.util.user.IAsyncCallback#workToDo()
+	 */
 	@Override
 	public void workToDo() {
 		/**
