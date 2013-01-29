@@ -75,6 +75,9 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 					case 3:
 						Game.mScreens.set(Screen.BOX);
 						break;
+					case 4:
+						Game.mScreens.set(Screen.MENU);
+						break;
 					default:
 						Game.mScreens.set(Screen.CHOISE);
 					}
@@ -169,7 +172,10 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 		 * try { LevelScreen.mBirdsNames = Beta.readJsonFromUrl("http://bubblefun.tooflya.com/birds.php"); } catch (IOException e) { e.printStackTrace(); } catch (JSONException e) { e.printStackTrace(); }
 		 **/
 
-		if (ScreenManager.mChangeAction > 0) {
+		if (ScreenManager.mChangeAction == 4) {
+			Game.mDatabase.onUpgrade(Game.mDatabase.getReadableDatabase(), 1, 1);
+			Game.mScreens.createSurfaces();
+		} else if (ScreenManager.mChangeAction > 0) {
 			Resources.unloadSecondResources();
 			Resources.loadFirstResources();
 		} else {

@@ -1,19 +1,17 @@
 package com.tooflya.bubblefun.screens;
 
-import org.anddev.andengine.util.user.AsyncTaskLoader;
-import org.anddev.andengine.util.user.IAsyncCallback;
-
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com
  * @since
  */
-public class ResetScreen extends PopupScreen implements IAsyncCallback {
+public class ResetScreen extends PopupScreen {
 
 	// ===========================================================
 	// Constants
@@ -69,9 +67,11 @@ public class ResetScreen extends PopupScreen implements IAsyncCallback {
 			}
 
 			if (this.mTime >= 3f) {
-				modifier4.reset();
+				if (!mIsActionCorfimed) {
+					modifier4.reset();
 
-				mIsActionCorfimed = true;
+					mIsActionCorfimed = true;
+				}
 			}
 		}
 	};
@@ -128,26 +128,9 @@ public class ResetScreen extends PopupScreen implements IAsyncCallback {
 		if (this.mIsActionCorfimed) {
 			this.mIsActionCorfimed = false;
 
-			/** Start background loader */
-			new AsyncTaskLoader().execute(ResetScreen.this);
+			ScreenManager.mChangeAction = 4;
+
+			Game.mScreens.set(Screen.PRELOAD);
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see org.anddev.andengine.util.user.IAsyncCallback#onComplete()
-	 */
-	@Override
-	public void onComplete() {
-		Game.mScreens.set(Screen.MENU);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.anddev.andengine.util.user.IAsyncCallback#workToDo()
-	 */
-	@Override
-	public void workToDo() {
-		Game.mDatabase.onUpgrade(Game.mDatabase.getReadableDatabase(), 1, 1);
-		Game.mScreens.createSurfaces();
-	}
-
 }

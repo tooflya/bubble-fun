@@ -557,7 +557,6 @@ public class LevelScreen extends Screen implements IOnSceneTouchListener {
 	}
 
 	private void checkCollision() {
-
 		for (Bubble bubble : this.mBubbles.getElements()) {
 			if (bubble.isCanCollide()) {
 				for (final Chiky chiky : this.mChikies.getElements()) {
