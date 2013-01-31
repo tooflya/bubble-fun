@@ -38,6 +38,8 @@ public class DataStorage extends SQLiteOpenHelper {
 
 	private static final String MORE_ADS = "ads";
 	private static final String MORE_COINS = "coins";
+	private static final String MORE_RATING = "rating";
+	private static final String MORE_NAME = "name";
 
 	// ===========================================================
 	// Fields
@@ -200,6 +202,9 @@ public class DataStorage extends SQLiteOpenHelper {
 		return value;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isAdvertisimentDisabled() {
 		final Cursor cursor = this.getReadableDatabase().query(MORE_TABLE, new String[] { MORE_ADS }, null, null, null, null, null, null);
 		cursor.moveToFirst();
@@ -211,6 +216,9 @@ public class DataStorage extends SQLiteOpenHelper {
 		return result;
 	}
 
+	/**
+	 * @param pCoins
+	 */
 	public void addCoins(final int pCoins) {
 		final ContentValues values = new ContentValues();
 
@@ -221,6 +229,9 @@ public class DataStorage extends SQLiteOpenHelper {
 		((StoreScreen) Game.mScreens.get(Screen.STORE)).updateCoinsText();
 	}
 
+	/**
+	 * @param pCoins
+	 */
 	public void removeCoins(final int pCoins) {
 		final ContentValues values = new ContentValues();
 
@@ -229,6 +240,56 @@ public class DataStorage extends SQLiteOpenHelper {
 		this.getReadableDatabase().update(MORE_TABLE, values, null, null);
 
 		((StoreScreen) Game.mScreens.get(Screen.STORE)).updateCoinsText();
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isRatingDisabled() {
+		final Cursor cursor = this.getReadableDatabase().query(MORE_TABLE, new String[] { MORE_RATING }, null, null, null, null, null, null);
+		cursor.moveToFirst();
+
+		final boolean result = cursor.getInt(0) > 0;
+
+		cursor.close();
+
+		return result;
+	}
+
+	/**
+	 * 
+	 */
+	public void disableRating() {
+		final ContentValues values = new ContentValues();
+
+		values.put(MORE_RATING, 1);
+
+		this.getReadableDatabase().update(MORE_TABLE, values, null, null);
+	}
+
+	/**
+	 * @param pName
+	 */
+	public void setRatingName(final String pName) {
+		final ContentValues values = new ContentValues();
+
+		values.put(MORE_NAME, pName);
+
+		this.getReadableDatabase().update(MORE_TABLE, values, null, null);
+	}
+
+	/**
+	 * 
+	 */
+	public String getRatingName() {
+		final Cursor cursor = this.getReadableDatabase().query(MORE_TABLE, new String[] { MORE_NAME }, null, null, null, null, null, null);
+		cursor.moveToFirst();
+
+		final String result = cursor.getString(0);
+
+		cursor.close();
+
+		return result;
 	}
 
 	// ===========================================================
@@ -244,7 +305,7 @@ public class DataStorage extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + LEVEL_TABLE + "(" + LEVEL_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + LEVEL_STARS + " INTEGER DEFAULT 0,  " + LEVEL_SCORE + " INTEGER DEFAULT 0,  " + LEVEL_STATE + " INTEGER DEFAULT 0" + ")");
 		db.execSQL("CREATE TABLE " + BOX_TABLE + "(" + BOX_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + BOX_STATE + " INTEGER DEFAULT 0" + ")");
-		db.execSQL("CREATE TABLE " + MORE_TABLE + "(" + MORE_ADS + " INTEGER DEFAULT 0" + ", " + MORE_COINS + " INTEGER DEFAULT 0)");
+		db.execSQL("CREATE TABLE " + MORE_TABLE + "(" + MORE_ADS + " INTEGER DEFAULT 0" + ", " + MORE_NAME + " STRING" + ", " + MORE_RATING + " INTEGER DEFAULT 0" + ", " + MORE_COINS + " INTEGER DEFAULT 0)");
 
 		for (int i = 1; i <= 25 * 3; i++) {
 			this.addLevel(db);
@@ -259,6 +320,8 @@ public class DataStorage extends SQLiteOpenHelper {
 
 		values.put(MORE_ADS, 0);
 		values.put(MORE_COINS, 0);
+		values.put(MORE_RATING, 0);
+		values.put(MORE_NAME, "");
 
 		db.insert(MORE_TABLE, null, values);
 	}

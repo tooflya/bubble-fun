@@ -24,6 +24,8 @@ public class LevelEndScreen extends PopupScreen {
 	private static int mStarsAnimationCount = 0;
 	private boolean mTimeAnimationRunning;
 
+	private final ShopIndicator mShopIndicator;
+
 	private final Entity mPanel = new Entity(Resources.mLevelEndPanelTextureRegion, this);
 
 	private final AlphaModifier mScoreToTimeModifier = new AlphaModifier(1f, 1f, 0f) {
@@ -102,6 +104,9 @@ public class LevelEndScreen extends PopupScreen {
 		 */
 		@Override
 		public void onClick() {
+			Options.levelNumber++;
+			ScreenManager.mChangeAction = 5;
+			Game.mScreens.set(Screen.PRELOAD);
 		}
 	};
 
@@ -144,7 +149,15 @@ public class LevelEndScreen extends PopupScreen {
 					if (LevelScreen.mCurrentLevelTime < LevelScreen.mLevelTimeEtalon) {
 						LevelScreen.mCurrentLevelTime++;
 						LevelScreen.mCurrentScore += 100;
+
+						Game.mDatabase.addCoins(Options.levelNumber);
+
+						if (Options.isSoundEnabled) {
+							Options.mCoinPickup.play();
+						}
 					} else {
+						mShopIndicator.update();
+
 						unregisterUpdateHandler(mTimer2);
 					}
 				}
@@ -216,7 +229,8 @@ public class LevelEndScreen extends PopupScreen {
 		this.mStore.setScaleCenter(this.mStore.getWidth() / 2, this.mStore.getHeight() / 2);
 		this.mStore.setCenterPosition(this.mPanel.getWidth() / 2, this.mPanel.getHeight() + 120f);
 
-		new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mStore).setCenterPosition(50f, 5f);
+		this.mShopIndicator = new ShopIndicator(Resources.mShopAvailableTextureRegion, this.mStore);
+		this.mShopIndicator.setCenterPosition(50f, 5f);
 
 		this.mPanel.registerEntityModifier(modifier1);
 		this.mPanel.registerEntityModifier(modifier2);

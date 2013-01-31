@@ -3,11 +3,17 @@ package com.tooflya.bubblefun.screens;
 import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.modifier.RotationModifier;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 import com.tooflya.bubblefun.Game;
 import com.tooflya.bubblefun.Options;
+import com.tooflya.bubblefun.R;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Cloud;
@@ -119,6 +125,59 @@ public class MenuScreen extends ReflectionScreen {
 			unregisterTouchArea(mMusicIcon);
 		}
 	};
+
+	private final Runnable mShowRatingDialog = new Runnable() {
+		@Override
+		public void run() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(Game.mInstance);
+			builder.setTitle("Participation in the rating")
+					.setMessage("Do you want to participate in the game rating?")
+					.setNeutralButton("Later", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							mDontShopRating = true;
+						}
+					})
+					.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							mDontShopRating = true;
+						}
+					})
+					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							Game.mInstance.runOnUiThread(mShowNameDialog);
+						}
+					});
+			builder.create().show();
+		}
+	};
+
+	private final Runnable mShowNameDialog = new Runnable() {
+		@Override
+		public void run() {
+			final LayoutInflater in = LayoutInflater.from(Game.mInstance);
+			final View inf = in.inflate(R.layout.rating_name, null);
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(Game.mInstance);
+			builder.setView(inf);
+			builder.setTitle("Participation in the rating")
+					.setMessage("Please enter your user name. It will appear in the table of records.")
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							mDontShopRating = true;
+						}
+					})
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							Game.mDatabase.setRatingName(((EditText) inf.findViewById(R.id.username)).getText().toString());
+							System.out.println(Game.mDatabase.getRatingName());
+							Game.mDatabase.disableRating();
+						}
+					});
+			builder.create().show();
+		}
+	};
+
+	private boolean mDontShopRating = false;
 
 	// ===========================================================
 	// Constructors
@@ -363,6 +422,10 @@ public class MenuScreen extends ReflectionScreen {
 	public void onPostAttached() {
 		if (Game.mIsAlreadyPlayed) {
 			Game.mScreens.setChildScreen(Game.mScreens.get(Screen.RATE), false, false, true);
+		} else {
+			if (!Game.mDatabase.isRatingDisabled() && !this.mDontShopRating) {
+				Game.mInstance.runOnUiThread(this.mShowRatingDialog);
+			}
 		}
 	}
 
@@ -393,5 +456,4 @@ public class MenuScreen extends ReflectionScreen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
 }

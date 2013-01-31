@@ -11,6 +11,7 @@ import com.tooflya.bubblefun.entities.ButtonScaleable;
 import com.tooflya.bubblefun.entities.Entity;
 import com.tooflya.bubblefun.entities.Text;
 import com.tooflya.bubblefun.managers.ArrayEntityManager;
+import com.tooflya.bubblefun.managers.ScreenManager;
 
 /**
  * @author Tooflya.com
@@ -74,6 +75,7 @@ public class StoreScreen extends ReflectionScreen {
 			@Override
 			public void onClick() {
 				((LevelScreen) Game.mScreens.get(Screen.LEVEL)).reInit();
+				ScreenManager.mChangeAction = 0;
 				Game.mScreens.set(Screen.PRELOAD);
 			}
 		};
@@ -117,6 +119,10 @@ public class StoreScreen extends ReflectionScreen {
 					mGetCoinsButton.onClick();
 				} else {
 					Game.mDatabase.removeCoins(100);
+
+					if (Options.isSoundEnabled) {
+						Options.mShopSound.play();
+					}
 				}
 			}
 		};
@@ -132,6 +138,10 @@ public class StoreScreen extends ReflectionScreen {
 					mGetCoinsButton.onClick();
 				} else {
 					Game.mDatabase.removeCoins(150);
+
+					if (Options.isSoundEnabled) {
+						Options.mShopSound.play();
+					}
 				}
 			}
 		};
@@ -147,6 +157,10 @@ public class StoreScreen extends ReflectionScreen {
 					mGetCoinsButton.onClick();
 				} else {
 					Game.mDatabase.removeCoins(200);
+
+					if (Options.isSoundEnabled) {
+						Options.mShopSound.play();
+					}
 				}
 			}
 		};
@@ -162,6 +176,10 @@ public class StoreScreen extends ReflectionScreen {
 					mGetCoinsButton.onClick();
 				} else {
 					Game.mDatabase.removeCoins(250);
+
+					if (Options.isSoundEnabled) {
+						Options.mShopSound.play();
+					}
 				}
 			}
 		};
@@ -235,6 +253,12 @@ public class StoreScreen extends ReflectionScreen {
 		super.onAttached();
 
 		this.updateCoinsText();
+
+		if (Options.isMusicEnabled) {
+			if (!Options.mMainSound.isPlaying() && Options.isMusicEnabled) {
+				Options.mMainSound.play();
+			}
+		}
 
 		Game.mAdvertisementManager.hideSmall();
 

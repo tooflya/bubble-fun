@@ -23,6 +23,7 @@ import com.tooflya.bubblefun.screens.MoreScreen;
 import com.tooflya.bubblefun.screens.PauseScreen;
 import com.tooflya.bubblefun.screens.PreloadScreen;
 import com.tooflya.bubblefun.screens.RateScreen;
+import com.tooflya.bubblefun.screens.RatingScreen;
 import com.tooflya.bubblefun.screens.ResetScreen;
 import com.tooflya.bubblefun.screens.Screen;
 import com.tooflya.bubblefun.screens.StoreScreen;
@@ -130,6 +131,7 @@ public class ScreenManager {
 		this.screens[Screen.COINS] = new GetCoinsScreen();
 		this.screens[Screen.RATE] = new RateScreen();
 		this.screens[Screen.RESET] = new ResetScreen();
+		this.screens[Screen.RATING] = new RatingScreen();
 	}
 
 	// ===========================================================

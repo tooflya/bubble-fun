@@ -135,6 +135,7 @@ public class Options {
 	public static Sound mGlassBroke;
 	public static Sound mAsteroidDeath;
 	public static Sound mCoinPickup;
+	public static Sound mShopSound;
 
 	public static class Debug {
 		public static float deltaFPS = 0;

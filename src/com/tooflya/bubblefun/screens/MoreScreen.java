@@ -1,6 +1,7 @@
 package com.tooflya.bubblefun.screens;
 
 import com.tooflya.bubblefun.Game;
+import com.tooflya.bubblefun.Network;
 import com.tooflya.bubblefun.Options;
 import com.tooflya.bubblefun.Resources;
 import com.tooflya.bubblefun.entities.ButtonScaleable;
@@ -28,6 +29,7 @@ public class MoreScreen extends ReflectionScreen {
 
 	private final ButtonScaleable b1;
 	private final ButtonScaleable b2;
+	private final ButtonScaleable b3;
 
 	private final Entity bc1;
 	private final Entity bc2;
@@ -78,6 +80,17 @@ public class MoreScreen extends ReflectionScreen {
 			}
 		};
 
+		this.b3 = new ButtonScaleable(Resources.mButtonsTextureRegion, this.mBackground) {
+
+			/* (non-Javadoc)
+			 * @see com.tooflya.bubblefun.modifiers.ScaleModifier#onFinished()
+			 */
+			@Override
+			public void onClick() {
+				Game.mScreens.set(Screen.RATING);
+			}
+		};
+
 		this.bc1 = new Entity(Resources.mGameResetTextTextureRegion, this.b1);
 		this.bc2 = new Entity(Resources.mCreditsTextTextureRegion, this.b2);
 
@@ -94,8 +107,9 @@ public class MoreScreen extends ReflectionScreen {
 
 		this.mBackButton.create().setPosition(10f, Options.cameraHeight - 60f - Screen.ADS_PADDING);
 
-		this.b1.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 - 30f);
-		this.b2.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 + 30f);
+		this.b1.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 - 60f);
+		this.b2.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2);
+		this.b3.create().setCenterPosition(this.mBackground.getWidth() / 2, this.mBackground.getHeight() / 2 + 60f);
 
 		this.bc1.create().setCenterPosition(this.b1.getWidth() / 2, this.b1.getHeight() / 2);
 		this.bc2.create().setCenterPosition(this.b2.getWidth() / 2, this.b2.getHeight() / 2);
@@ -113,6 +127,12 @@ public class MoreScreen extends ReflectionScreen {
 	@Override
 	public void onAttached() {
 		super.onAttached();
+
+		if (Network.isNetworkAvailable() || !Game.mDatabase.isRatingDisabled()) {
+			this.b3.create();
+		} else {
+			this.b3.destroy();
+		}
 
 		Game.mAdvertisementManager.showSmall();
 	}
@@ -149,7 +169,7 @@ public class MoreScreen extends ReflectionScreen {
 			Game.mScreens.set(Screen.MENU);
 		}
 	}
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

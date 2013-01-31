@@ -269,6 +269,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 				Options.mGlassBroke = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "glass-broke.ogg");
 				Options.mAsteroidDeath = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "asteroid-boom.ogg");
 				Options.mCoinPickup = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "coin.ogg");
+				Options.mShopSound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "shop.ogg");
 
 				Options.mMainSound.setLooping(true);
 				Options.mLevelSound.setLooping(true);
@@ -289,7 +290,7 @@ public class Game extends LayoutGameActivity implements IAsyncCallback {
 		Resources.loadFirstResources();
 
 		mScreens.createSurfaces();
-
+		
 		/** Wait while progressbar is running */
 		while (!mIsGameLoaded) {};
 	}

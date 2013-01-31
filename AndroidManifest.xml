@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><manifest android:versionCode="3111" android:versionName="0.9.1" package="com.tooflya.bubblefun" xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?><manifest android:versionCode="3227" android:versionName="0.9.1" package="com.tooflya.bubblefun" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
 

@@ -78,6 +78,9 @@ public class PreloadScreen extends Screen implements IAsyncCallback {
 					case 4:
 						Game.mScreens.set(Screen.MENU);
 						break;
+					case 5:
+						Game.mScreens.set(Screen.STORE);
+						break;
 					default:
 						Game.mScreens.set(Screen.CHOISE);
 					}
