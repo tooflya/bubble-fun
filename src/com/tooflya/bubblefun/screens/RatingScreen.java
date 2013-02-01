@@ -73,6 +73,8 @@ public class RatingScreen extends ReflectionScreen implements IAsyncCallback {
 	// Virtual methods
 	// ===========================================================
 
+	ProgressDialog progress;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -85,15 +87,23 @@ public class RatingScreen extends ReflectionScreen implements IAsyncCallback {
 		Game.mAdvertisementManager.showSmall();
 
 		Game.mInstance.runOnUiThread(new Runnable() {
-			/* (non-Javadoc)
-			 * @see java.lang.Runnable#run()
-			 */
 			@Override
 			public void run() {
-				/** Start background loader */
-				new AsyncTaskLoader().execute(RatingScreen.this);
+				progress = ProgressDialog.show(Game.mInstance, "Please wait a moment...", "Please wait a moment while loaded rating results...", false);
 			}
 		});
+
+		Game.mEngine.runOnUpdateThread(new Runnable() {
+			@Override
+			public void run() {
+				RatingScreen.this.detachChildren();
+
+				RatingScreen.this.attachChild(RatingScreen.this.mBackground);
+				RatingScreen.this.mBackground.create().setBackgroundCenterPosition();
+			}
+		});
+
+		new AsyncTaskLoader().execute(RatingScreen.this);
 	}
 
 	/* (non-Javadoc)
@@ -132,17 +142,6 @@ public class RatingScreen extends ReflectionScreen implements IAsyncCallback {
 	 */
 	@Override
 	public void workToDo() {
-		Game.mEngine.runOnUpdateThread(new Runnable() {
-			@Override
-			public void run() {
-				for (int i = 0; i < RatingScreen.this.getChildCount() - 1; i++) {
-					if (RatingScreen.this.getChild(i) instanceof Text) {
-						RatingScreen.this.getChild(i).detachSelf();
-					}
-				}
-			}
-		});
-
 		if (Network.isNetworkAvailable()) {
 			Network.getRating();
 		}
@@ -157,6 +156,8 @@ public class RatingScreen extends ReflectionScreen implements IAsyncCallback {
 	 */
 	@Override
 	public void onComplete() {
+
+		progress.cancel();
 	}
 
 	// ===========================================================
